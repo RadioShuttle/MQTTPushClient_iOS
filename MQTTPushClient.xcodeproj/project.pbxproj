@@ -1,0 +1,472 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */; };
+		2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859D02142CC7000CFA5DC /* Cmd.m */; };
+		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
+		2A7DFF8A213EBBD7001B1546 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF89213EBBD7001B1546 /* Account.m */; };
+		2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */; };
+		2AC93088214BDD9700B603B4 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC93087214BDD9700B603B4 /* Message.m */; };
+		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
+		2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE456213D7515000664D3 /* AppDelegate.m */; };
+		2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45B213D7515000664D3 /* Main.storyboard */; };
+		2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45E213D7516000664D3 /* Assets.xcassets */; };
+		2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */; };
+		2ADBE465213D7516000664D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE464213D7516000664D3 /* main.m */; };
+		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
+		2AE87DBA214A50BB0057935D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AE87DB9214A50BB0057935D /* GoogleService-Info.plist */; };
+		2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE87DBD214AA9AB0057935D /* FCMData.m */; };
+		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
+		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
+		75E6D1E268F383A1482B4823 /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.release.xcconfig"; sourceTree = "<group>"; };
+		2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
+		2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
+		2A2859CF2142CC7000CFA5DC /* Cmd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cmd.h; sourceTree = "<group>"; };
+		2A2859D02142CC7000CFA5DC /* Cmd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cmd.m; sourceTree = "<group>"; };
+		2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerListTableViewController.h; sourceTree = "<group>"; };
+		2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewController.m; sourceTree = "<group>"; };
+		2A7DFF88213EBBD7001B1546 /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
+		2A7DFF89213EBBD7001B1546 /* Account.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		2A7DFF8B213EC414001B1546 /* MessageQueuingTelemetryTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageQueuingTelemetryTransport.h; sourceTree = "<group>"; };
+		2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageQueuingTelemetryTransport.m; sourceTree = "<group>"; };
+		2AC93086214BDD9700B603B4 /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		2AC93087214BDD9700B603B4 /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
+		2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
+		2ADBE452213D7515000664D3 /* MQTTPushClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQTTPushClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2ADBE455213D7515000664D3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		2ADBE456213D7515000664D3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		2ADBE45C213D7515000664D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		2ADBE45E213D7516000664D3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		2ADBE461213D7516000664D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		2ADBE463213D7516000664D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2ADBE464213D7516000664D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2AE609122146B3EF004F30B2 /* Connection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
+		2AE609132146B3EF004F30B2 /* Connection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
+		2AE87DB9214A50BB0057935D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClient.entitlements; sourceTree = "<group>"; };
+		2AE87DBC214AA9AB0057935D /* FCMData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMData.h; sourceTree = "<group>"; };
+		2AE87DBD214AA9AB0057935D /* FCMData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMData.m; sourceTree = "<group>"; };
+		2AEC5FCA214011890097D99A /* MessageListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListTableViewController.h; sourceTree = "<group>"; };
+		2AEC5FCB214011890097D99A /* MessageListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListTableViewController.m; sourceTree = "<group>"; };
+		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
+		2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerSetupTableViewController.m; sourceTree = "<group>"; };
+		686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		2ADBE44F213D7515000664D3 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75E6D1E268F383A1482B4823 /* libPods-MQTTPushClient.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
+			isa = PBXGroup;
+			children = (
+				2A7DFF88213EBBD7001B1546 /* Account.h */,
+				2A7DFF89213EBBD7001B1546 /* Account.m */,
+				2ADBE455213D7515000664D3 /* AppDelegate.h */,
+				2ADBE456213D7515000664D3 /* AppDelegate.m */,
+				2A2859CF2142CC7000CFA5DC /* Cmd.h */,
+				2A2859D02142CC7000CFA5DC /* Cmd.m */,
+				2AE609122146B3EF004F30B2 /* Connection.h */,
+				2AE609132146B3EF004F30B2 /* Connection.m */,
+				2AE87DBC214AA9AB0057935D /* FCMData.h */,
+				2AE87DBD214AA9AB0057935D /* FCMData.m */,
+				2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */,
+				2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */,
+				2AC93086214BDD9700B603B4 /* Message.h */,
+				2AC93087214BDD9700B603B4 /* Message.m */,
+				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
+				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
+				2A7DFF8B213EC414001B1546 /* MessageQueuingTelemetryTransport.h */,
+				2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */,
+				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
+				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
+				2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */,
+				2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */,
+				2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */,
+				2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */,
+			);
+			path = PushClient;
+			sourceTree = "<group>";
+		};
+		2ADBE449213D7515000664D3 = {
+			isa = PBXGroup;
+			children = (
+				2ADBE454213D7515000664D3 /* MQTTPushClient */,
+				2ADBE453213D7515000664D3 /* Products */,
+				44C49B383F37B00713AAEEB2 /* Pods */,
+				E4A46935F60EFDA587278ECF /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		2ADBE453213D7515000664D3 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				2ADBE452213D7515000664D3 /* MQTTPushClient.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2ADBE454213D7515000664D3 /* MQTTPushClient */ = {
+			isa = PBXGroup;
+			children = (
+				2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */,
+				2AE87DB9214A50BB0057935D /* GoogleService-Info.plist */,
+				2ADBE45E213D7516000664D3 /* Assets.xcassets */,
+				2ADBE463213D7516000664D3 /* Info.plist */,
+				2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */,
+				2ADBE464213D7516000664D3 /* main.m */,
+				2ADBE45B213D7515000664D3 /* Main.storyboard */,
+				2A7DFF86213EAFE6001B1546 /* PushClient */,
+			);
+			path = MQTTPushClient;
+			sourceTree = "<group>";
+		};
+		44C49B383F37B00713AAEEB2 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */,
+				0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		E4A46935F60EFDA587278ECF /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		2ADBE451213D7515000664D3 /* MQTTPushClient */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2ADBE468213D7516000664D3 /* Build configuration list for PBXNativeTarget "MQTTPushClient" */;
+			buildPhases = (
+				235B24F763E3F1DB41099A5A /* [CP] Check Pods Manifest.lock */,
+				2ADBE44E213D7515000664D3 /* Sources */,
+				2ADBE44F213D7515000664D3 /* Frameworks */,
+				2ADBE450213D7515000664D3 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MQTTPushClient;
+			productName = MQTTPushClient;
+			productReference = 2ADBE452213D7515000664D3 /* MQTTPushClient.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2ADBE44A213D7515000664D3 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0940;
+				ORGANIZATIONNAME = Helios;
+				TargetAttributes = {
+					2ADBE451213D7515000664D3 = {
+						CreatedOnToolsVersion = 9.4.1;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
+					};
+				};
+			};
+			buildConfigurationList = 2ADBE44D213D7515000664D3 /* Build configuration list for PBXProject "MQTTPushClient" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 2ADBE449213D7515000664D3;
+			productRefGroup = 2ADBE453213D7515000664D3 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				2ADBE451213D7515000664D3 /* MQTTPushClient */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		2ADBE450213D7515000664D3 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */,
+				2AE87DBA214A50BB0057935D /* GoogleService-Info.plist in Resources */,
+				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
+				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		235B24F763E3F1DB41099A5A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MQTTPushClient-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		2ADBE44E213D7515000664D3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
+				2AC93088214BDD9700B603B4 /* Message.m in Sources */,
+				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
+				2ADBE465213D7516000664D3 /* main.m in Sources */,
+				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
+				2A7DFF8A213EBBD7001B1546 /* Account.m in Sources */,
+				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
+				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
+				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
+				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
+				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
+				2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */,
+				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		2ADBE45B213D7515000664D3 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2ADBE45C213D7515000664D3 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				2ADBE461213D7516000664D3 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		2ADBE466213D7516000664D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		2ADBE467213D7516000664D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2ADBE469213D7516000664D3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MQTTPushClient/MQTTPushClient.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 36U648SHJ6;
+				INFOPLIST_FILE = MQTTPushClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = de.helios.MQTTPushClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2ADBE46A213D7516000664D3 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = MQTTPushClient/MQTTPushClient.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 36U648SHJ6;
+				INFOPLIST_FILE = MQTTPushClient/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = de.helios.MQTTPushClient;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2ADBE44D213D7515000664D3 /* Build configuration list for PBXProject "MQTTPushClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2ADBE466213D7516000664D3 /* Debug */,
+				2ADBE467213D7516000664D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2ADBE468213D7516000664D3 /* Build configuration list for PBXNativeTarget "MQTTPushClient" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2ADBE469213D7516000664D3 /* Debug */,
+				2ADBE46A213D7516000664D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2ADBE44A213D7515000664D3 /* Project object */;
+}
