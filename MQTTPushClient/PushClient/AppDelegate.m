@@ -30,7 +30,6 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 			self.accountList = [NSMutableArray arrayWithCapacity:properties.count];
 			for (NSDictionary *dictionary in properties) {
 				Account *account = [[Account alloc] init];
-				account.messageList = [[NSMutableArray alloc] init];
 				account.host = [dictionary objectForKey:@"address"];
 				account.mqtt.host = [dictionary objectForKey:@"mqtt.address"];
 				account.mqtt.port = [dictionary objectForKey:@"mqtt.port"];
