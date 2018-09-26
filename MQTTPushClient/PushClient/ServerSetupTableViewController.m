@@ -16,21 +16,21 @@
 @property (weak, nonatomic) IBOutlet UISwitch *mqttSecuritySwitch;
 @property (weak, nonatomic) IBOutlet UITextField *mqttUserTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mqttPasswordTextField;
-@property Account *server;
+@property Account *account;
 
 @end
 
 @implementation ServerSetupTableViewController
 
 - (void)saveSettings {
-	self.server.host = self.addressTextField.text;
-	self.server.mqtt.host = self.mqttAddressTextField.text;
-	self.server.mqtt.port = [NSNumber numberWithInt:[self.mqttPortTextField.text intValue]];
-	self.server.mqtt.secureTransport = self.mqttSecuritySwitch.on;
-	self.server.mqtt.user = self.mqttUserTextField.text;
-	self.server.mqtt.password = self.mqttPasswordTextField.text;
+	self.account.host = self.addressTextField.text;
+	self.account.mqtt.host = self.mqttAddressTextField.text;
+	self.account.mqtt.port = [NSNumber numberWithInt:[self.mqttPortTextField.text intValue]];
+	self.account.mqtt.secureTransport = self.mqttSecuritySwitch.on;
+	self.account.mqtt.user = self.mqttUserTextField.text;
+	self.account.mqtt.password = self.mqttPasswordTextField.text;
 	if (!self.indexPath)
-		[self.serverList addObject:self.server];
+		[self.accountList addObject:self.account];
 	UIApplication *app = [UIApplication sharedApplication];
 	AppDelegate *appDelegate = (AppDelegate *)app.delegate;
 	[appDelegate saveAccounts];
@@ -47,20 +47,20 @@
 }
 
 - (void)updateUI {
-	self.addressTextField.text = self.server.host;
-	self.mqttAddressTextField.text = self.server.mqtt.host;
-	self.mqttPortTextField.text = [NSString stringWithFormat:@"%@", self.server.mqtt.port];
-	self.mqttSecuritySwitch.on = self.server.mqtt.secureTransport;
-	self.mqttUserTextField.text = self.server.mqtt.user;
-	self.mqttPasswordTextField.text = self.server.mqtt.password;
+	self.addressTextField.text = self.account.host;
+	self.mqttAddressTextField.text = self.account.mqtt.host;
+	self.mqttPortTextField.text = [NSString stringWithFormat:@"%@", self.account.mqtt.port];
+	self.mqttSecuritySwitch.on = self.account.mqtt.secureTransport;
+	self.mqttUserTextField.text = self.account.mqtt.user;
+	self.mqttPasswordTextField.text = self.account.mqtt.password;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	if (self.indexPath)
-		self.server = self.serverList[self.indexPath.row];
+		self.account = self.accountList[self.indexPath.row];
 	else
-		self.server = [[Account alloc] init];
+		self.account = [[Account alloc] init];
 	[self updateUI];
 }
 

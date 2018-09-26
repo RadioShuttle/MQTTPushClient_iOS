@@ -86,11 +86,11 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"IDAddServer"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
-		controller.serverList = self.accountList;
+		controller.accountList = self.accountList;
 		controller.indexPath = nil;
 	} else if ([segue.identifier isEqualToString:@"IDShowSettings"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
-		controller.serverList = self.accountList;
+		controller.accountList = self.accountList;
 		controller.indexPath = [self.tableView indexPathForSelectedRow];
 	} else {
 		MessageListTableViewController *controller = segue.destinationViewController;

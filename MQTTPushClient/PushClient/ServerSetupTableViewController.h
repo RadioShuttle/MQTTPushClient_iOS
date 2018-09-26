@@ -8,7 +8,7 @@
 
 @interface ServerSetupTableViewController : UITableViewController
 
-@property NSMutableArray *serverList;
+@property NSMutableArray *accountList;
 @property NSIndexPath *indexPath;
 
 @end
