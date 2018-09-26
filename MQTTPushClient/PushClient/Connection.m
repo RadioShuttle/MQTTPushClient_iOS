@@ -116,7 +116,7 @@
 	[self performSelectorOnMainThread:@selector(cleanUp) withObject:nil waitUntilDone:YES];
 }
 
-- (void)updateMessageList:(Account *)account {
+- (void)sendFCMData:(Account *)account {
 	dispatch_async(self.serialQueue, ^{[self contactServerWith:account];});
 }
 

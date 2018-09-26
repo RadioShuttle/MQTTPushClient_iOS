@@ -8,6 +8,6 @@
 
 @interface Connection : NSObject
 
-- (void)updateMessageList:(Account *)account;
+- (void)sendFCMData:(Account *)account;
 
 @end

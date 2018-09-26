@@ -94,7 +94,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	[application registerForRemoteNotifications];
 	for (Account *account in self.accountList) {
 		Connection *connection = [[Connection alloc] init];
-		[connection updateMessageList:account];
+		[connection sendFCMData:account];
 	}
 	return YES;
 }
