@@ -8,6 +8,7 @@
 @import UserNotifications;
 #import "Account.h"
 #import "Message.h"
+#import "Connection.h"
 #import "AppDelegate.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate>
@@ -91,6 +92,10 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 		 }];
 	}
 	[application registerForRemoteNotifications];
+	for (Account *account in self.accountList) {
+		Connection *connection = [[Connection alloc] init];
+		[connection updateMessageList:account];
+	}
 	return YES;
 }
 

@@ -5,7 +5,6 @@
  */
 
 #import "Account.h"
-#import "Connection.h"
 #import "AppDelegate.h"
 #import "MessageListTableViewController.h"
 #import "ServerSetupTableViewController.h"
@@ -14,7 +13,7 @@
 @interface ServerListTableViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerBarButtonItem;
-@property NSMutableArray *serverList;
+@property NSMutableArray *accountList;
 @property NSIndexPath *indexPathSelected;
 
 @end
@@ -36,17 +35,13 @@
 	self.addServerBarButtonItem.enabled = self.editing;
 	UIApplication *app = [UIApplication sharedApplication];
 	AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-	self.serverList = appDelegate.accountList;
+	self.accountList = appDelegate.accountList;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
-	for (Account *account in self.serverList) {
-		Connection *connection = [[Connection alloc] init];
-		[connection updateMessageList:account];
-	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -57,11 +52,11 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return self.serverList.count;
+    return self.accountList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	Account *account = self.serverList[indexPath.row];
+	Account *account = self.accountList[indexPath.row];
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
 	NSString *text = [NSString stringWithFormat:@"%@@%@:%d", account.mqtt.user, account.mqtt.host, account.mqtt.port.intValue];
 	cell.textLabel.text = text;
@@ -70,7 +65,7 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[self.serverList removeObjectAtIndex:[indexPath row]];
+		[self.accountList removeObjectAtIndex:[indexPath row]];
 		UIApplication *app = [UIApplication sharedApplication];
 		AppDelegate *appDelegate = (AppDelegate *)app.delegate;
 		[appDelegate saveAccounts];
@@ -91,15 +86,15 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	if ([segue.identifier isEqualToString:@"IDAddServer"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
-		controller.serverList = self.serverList;
+		controller.serverList = self.accountList;
 		controller.indexPath = nil;
 	} else if ([segue.identifier isEqualToString:@"IDShowSettings"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
-		controller.serverList = self.serverList;
+		controller.serverList = self.accountList;
 		controller.indexPath = [self.tableView indexPathForSelectedRow];
 	} else {
 		MessageListTableViewController *controller = segue.destinationViewController;
-		Account *account = self.serverList[self.indexPathSelected.row];
+		Account *account = self.accountList[self.indexPathSelected.row];
 		controller.account = account;
 	}
 }
