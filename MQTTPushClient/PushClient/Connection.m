@@ -97,7 +97,10 @@
 					[command helloRequest:sequence];
 					break;
 				case CommandStateLogin:
-					string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
+					if (account.mqtt.secureTransport)
+						string = [NSString stringWithFormat:@"ssl://%@:%@", account.mqtt.host, account.mqtt.port];
+					else
+						string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
 					[command loginRequest:sequence uri:string user:account.mqtt.user password:account.mqtt.password];
 					break;
 				case CommandStateGetFCMData:

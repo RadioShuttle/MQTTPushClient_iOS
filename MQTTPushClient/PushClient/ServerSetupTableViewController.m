@@ -6,6 +6,7 @@
 
 #import "Account.h"
 #import "AppDelegate.h"
+#import "MessageQueuingTelemetryTransport.h"
 #import "ServerSetupTableViewController.h"
 
 @interface ServerSetupTableViewController ()
@@ -44,6 +45,13 @@
 
 - (IBAction)saveButtonAction:(UIButton *)sender {
 	[self saveSettings];
+}
+
+- (IBAction)setSecurity:(UISwitch *)sender {
+	if (sender.on)
+		self.mqttPortTextField.text = [NSString stringWithFormat:@"%d", MQTT_SECURE_PORT];
+	else
+		self.mqttPortTextField.text = [NSString stringWithFormat:@"%d", MQTT_DEFAULT_PORT];
 }
 
 - (void)updateUI {
