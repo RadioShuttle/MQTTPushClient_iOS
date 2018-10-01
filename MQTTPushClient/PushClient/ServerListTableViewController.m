@@ -73,6 +73,16 @@
 	}
 }
 
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+	UIApplication *app = [UIApplication sharedApplication];
+	AppDelegate *appDelegate = (AppDelegate *)app.delegate;
+	NSMutableArray *accountList = appDelegate.accountList;
+	Account *account = accountList[sourceIndexPath.row];
+	[accountList removeObjectAtIndex:sourceIndexPath.row];
+	[accountList insertObject:account atIndex:destinationIndexPath.row];
+	[appDelegate saveAccounts];
+}
+
 #pragma mark - navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
