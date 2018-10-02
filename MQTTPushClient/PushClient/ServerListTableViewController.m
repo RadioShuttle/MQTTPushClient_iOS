@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 #import "MessageListTableViewController.h"
 #import "ServerSetupTableViewController.h"
+#import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
 
 @interface ServerListTableViewController ()
@@ -15,12 +16,14 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerBarButtonItem;
 @property NSMutableArray *accountList;
 @property NSIndexPath *indexPathSelected;
+@property BOOL gotFCMData;
 
 @end
 
 @implementation ServerListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
+	self.gotFCMData = YES;
 	[self.tableView reloadData];
 }
 
@@ -40,7 +43,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[self.tableView reloadData];
+	self.gotFCMData = NO;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 }
 
@@ -57,9 +60,13 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	Account *account = self.accountList[indexPath.row];
-	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
+	ServerListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
 	NSString *text = [NSString stringWithFormat:@"%@@%@:%d", account.mqtt.user, account.mqtt.host, account.mqtt.port.intValue];
-	cell.textLabel.text = text;
+	if (self.gotFCMData)
+		cell.imageView.image = [UIImage imageNamed:@"Success"];
+	else
+		cell.imageView.image = [UIImage imageNamed:@"Error"];
+	cell.serverNameLabel.text = text;
 	return cell;
 }
 

@@ -41,6 +41,10 @@
 	self.fcmToken = appDelegate.fcmToken;
 }
 
+- (void)notifyUI {
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
+}
+
 - (void)getFCMData:(NSData *)data {
 	unsigned char *p = (unsigned char *)data.bytes;
 	int count = (p[0] << 8) + p[1];
@@ -59,6 +63,7 @@
 		name = array[0];
 	[FIRApp configureWithName:name options:firOptions];
 #endif
+	[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 }
 
 - (void)contactServerWith:(Account *)account {
