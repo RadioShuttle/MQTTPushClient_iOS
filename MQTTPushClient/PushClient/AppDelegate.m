@@ -236,7 +236,19 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 				message.date = date;
 				message.topic = topic;
 				message.text = text;
-				[[self.accountList[0] messageList] insertObject:message atIndex:0];
+				NSMutableArray *messageList = [self.accountList[0] messageList];
+				[messageList insertObject:message atIndex:0];
+				[messageList sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+					Message *message1 = obj1;
+					Message *message2 = obj2;
+					NSTimeInterval interval = [message1.date timeIntervalSinceDate:message2.date];
+					if (interval < 0)
+						return NSOrderedDescending;
+					else if (interval > 0)
+						return NSOrderedAscending;
+					else
+						return NSOrderedSame;
+				}];
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"MessageNotification" object:message];
 			}
 		}];
