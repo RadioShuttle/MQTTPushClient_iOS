@@ -77,6 +77,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	[self openAccounts];
 	self.fcmToken = nil;
 	[FIRApp configure];
+	[[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:NO];
 	[FIRMessaging messaging].shouldEstablishDirectChannel = YES;
 	[FIRMessaging messaging].delegate = self;
 	if ([UNUserNotificationCenter class] != nil) {
