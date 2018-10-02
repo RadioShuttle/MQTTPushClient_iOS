@@ -43,6 +43,7 @@
                                         <constraint firstItem="W4Q-s2-Rqo" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="14" id="3Ab-IG-Ehp"/>
                                         <constraint firstItem="W4Q-s2-Rqo" firstAttribute="leading" secondItem="dNO-GN-ZFf" secondAttribute="leading" constant="16" id="GAj-ve-ORl"/>
                                         <constraint firstAttribute="trailing" secondItem="ErG-hj-kmy" secondAttribute="trailing" constant="16" id="Vcl-2l-DKc"/>
+                                        <constraint firstAttribute="bottom" secondItem="ErG-hj-kmy" secondAttribute="bottom" constant="11.5" id="d6h-9m-y1j"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="11" id="fFN-bz-84b"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="leading" secondItem="W4Q-s2-Rqo" secondAttribute="trailing" constant="8" id="u92-mL-rXP"/>
                                     </constraints>
