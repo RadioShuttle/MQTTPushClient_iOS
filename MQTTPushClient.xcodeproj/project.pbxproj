@@ -22,6 +22,7 @@
 		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
 		2AE87DBA214A50BB0057935D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AE87DB9214A50BB0057935D /* GoogleService-Info.plist */; };
 		2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE87DBD214AA9AB0057935D /* FCMData.m */; };
+		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
 		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
 		75E6D1E268F383A1482B4823 /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */; };
@@ -57,6 +58,8 @@
 		2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClient.entitlements; sourceTree = "<group>"; };
 		2AE87DBC214AA9AB0057935D /* FCMData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMData.h; sourceTree = "<group>"; };
 		2AE87DBD214AA9AB0057935D /* FCMData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMData.m; sourceTree = "<group>"; };
+		2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerListTableViewCell.h; sourceTree = "<group>"; };
+		2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewCell.m; sourceTree = "<group>"; };
 		2AEC5FCA214011890097D99A /* MessageListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListTableViewController.h; sourceTree = "<group>"; };
 		2AEC5FCB214011890097D99A /* MessageListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListTableViewController.m; sourceTree = "<group>"; };
 		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
@@ -100,6 +103,8 @@
 				2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */,
 				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
 				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
+				2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */,
+				2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */,
 				2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */,
 				2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */,
 				2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */,
@@ -259,6 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2AC93088214BDD9700B603B4 /* Message.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
