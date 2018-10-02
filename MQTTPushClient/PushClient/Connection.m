@@ -4,8 +4,6 @@
  * 30827 Garbsen, Germany
  */
 
-#include <sys/time.h>
-#include <sys/select.h>
 #import "AppDelegate.h"
 #import "FIRApp.h"
 #import "FIROptions.h"
@@ -13,13 +11,6 @@
 #import "Account.h"
 #import "Cmd.h"
 #import "Connection.h"
-
-static void sleepMilliSeconds(int ms) {
-	struct timeval tv;
-	tv.tv_sec = 0;
-	tv.tv_usec = ms * 1000;
-	select(0, NULL, NULL, NULL, &tv);
-}
 
 @interface Connection()
 
@@ -101,7 +92,7 @@ static void sleepMilliSeconds(int ms) {
 			if (currentState == CommandStateEnd)
 				break;
 			while (currentState == command.state)
-				sleepMilliSeconds(20);
+				[NSThread sleepForTimeInterval:0.02f];
 			currentState = command.state;
 			switch (command.state) {
 				case CommandStateError:
