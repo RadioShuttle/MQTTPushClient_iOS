@@ -7,6 +7,7 @@
 #import "Account.h"
 #import "AppDelegate.h"
 #import "MessageQueuingTelemetryTransport.h"
+#import "Connection.h"
 #import "ServerSetupTableViewController.h"
 
 @interface ServerSetupTableViewController ()
@@ -40,10 +41,14 @@
 }
 
 - (IBAction)saveAction:(UIButton *)sender {
+	Connection *connection = [[Connection alloc] init];
+	[connection sendFCMData:self.account];
 	[self saveSettings];
 }
 
 - (IBAction)saveButtonAction:(UIButton *)sender {
+	Connection *connection = [[Connection alloc] init];
+	[connection sendFCMData:self.account];
 	[self saveSettings];
 }
 
