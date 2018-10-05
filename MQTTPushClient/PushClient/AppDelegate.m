@@ -7,8 +7,8 @@
 @import Firebase;
 @import UserNotifications;
 #import "Account.h"
-#import "Message.h"
 #import "Connection.h"
+#import "MessageDataHandler.h"
 #import "AppDelegate.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate>
@@ -154,7 +154,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 	
 	// Print full message.
-	NSLog(@"%@", userInfo);
+	NSLog(@"didReceiveRemoteNotification: %@", userInfo);
 	
 	completionHandler(UIBackgroundFetchResultNewData);
 
@@ -198,7 +198,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	}
 	
 	// Print full message.
-	NSLog(@"%@", userInfo);
+	NSLog(@"willPresentNotification: %@", userInfo);
 	
 	// Change this to your preferred presentation option
 	completionHandler(UNNotificationPresentationOptionNone);
@@ -214,7 +214,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 	}
 	
 	// Print full message.
-	NSLog(@"%@", userInfo);
+	NSLog(@"didReceiveNotificationResponse: %@", userInfo);
 	
 	completionHandler();
 }
@@ -222,38 +222,9 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
 // To enable direct data messages, you can set [Messaging messaging].shouldEstablishDirectChannel to YES.
 - (void)messaging:(FIRMessaging *)messaging didReceiveMessage:(FIRMessagingRemoteMessage *)remoteMessage {
-	NSData *json = [remoteMessage.appData[@"messages"] dataUsingEncoding:NSUTF8StringEncoding];
-	NSArray *messages = [NSJSONSerialization JSONObjectWithData:json options:0 error:nil];
-	for (NSDictionary *msg in messages) {
-		[msg enumerateKeysAndObjectsUsingBlock:^(NSString *topic, NSDictionary *value, BOOL * _Nonnull stop) {
-			NSArray *mdata = value[@"mdata"];
-			for (NSArray *array in mdata) {
-				NSInteger timeStamp = [array[0] integerValue];
-				NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeStamp];
-				NSData *data = [[NSData alloc] initWithBase64EncodedString:array[1] options:0];
-				NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-				NSLog(@"%@, %@, %@", date, topic, text);
-				Message *message = [[Message alloc] init];
-				message.date = date;
-				message.topic = topic;
-				message.text = text;
-				NSMutableArray *messageList = [self.accountList[0] messageList];
-				[messageList insertObject:message atIndex:0];
-				[messageList sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-					Message *message1 = obj1;
-					Message *message2 = obj2;
-					NSTimeInterval interval = [message1.date timeIntervalSinceDate:message2.date];
-					if (interval < 0)
-						return NSOrderedDescending;
-					else if (interval > 0)
-						return NSOrderedAscending;
-					else
-						return NSOrderedSame;
-				}];
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"MessageNotification" object:message];
-			}
-		}];
-	}
+	NSMutableArray *messageList = [self.accountList[0] messageList];
+	MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
+	[messageDataHandler handleRemoteMessage:remoteMessage forList:messageList];
 }
 
 
