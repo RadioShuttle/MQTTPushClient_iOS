@@ -14,5 +14,6 @@
 @property NSString *host;
 @property MessageQueuingTelemetryTransport *mqtt;
 @property NSMutableArray *messageList;
+@property BOOL connectionEstablished;
 
 @end
