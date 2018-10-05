@@ -16,14 +16,12 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerBarButtonItem;
 @property NSMutableArray *accountList;
 @property NSIndexPath *indexPathSelected;
-@property BOOL statusOK;
 
 @end
 
 @implementation ServerListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-	self.statusOK = YES;
 	[self.tableView reloadData];
 }
 
@@ -43,7 +41,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	self.statusOK = NO;
 	[self.tableView reloadData];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 }
@@ -63,7 +60,7 @@
 	Account *account = self.accountList[indexPath.row];
 	ServerListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
 	NSString *text = [NSString stringWithFormat:@"%@@%@:%d", account.mqtt.user, account.mqtt.host, account.mqtt.port.intValue];
-	if (self.statusOK)
+	if (account.connectionEstablished)
 		cell.imageView.image = [UIImage imageNamed:@"Success"];
 	else
 		cell.imageView.image = [UIImage imageNamed:@"Error"];

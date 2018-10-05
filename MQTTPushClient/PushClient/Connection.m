@@ -63,7 +63,6 @@
 		name = array[0];
 	[FIRApp configureWithName:name options:firOptions];
 #endif
-	[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 }
 
 - (void)contactServerWith:(Account *)account {
@@ -112,6 +111,8 @@
 					[command fcmDataRequest:sequence];
 					break;
 				case CommandStateSetDeviceInfo:
+					account.connectionEstablished = YES;
+					[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 					[self getFCMData:command.rawCmd.data];
 					[command setDeviceInfo:sequence clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
 					break;
