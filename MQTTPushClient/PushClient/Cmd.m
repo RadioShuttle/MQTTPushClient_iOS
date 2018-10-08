@@ -56,6 +56,16 @@ enum StateProtocol {
 	ProtocolStateEnd
 };
 
+enum StateCommand {
+	CommandStateError,
+	CommandStateConnect,
+	CommandStateHello,
+	CommandStateLogin,
+	CommandStateGetFCMData,
+	CommandStateSetDeviceInfo,
+	CommandStateEnd
+};
+
 @interface RawCmd()
 
 @end
@@ -78,7 +88,7 @@ enum StateProtocol {
 @property NSLock *lock;
 @property GCDAsyncSocket *socket;
 @property NSTimeInterval timeout;
-- (instancetype)initWithHost:(NSString *)host port:(int)port;
+@property enum StateCommand state;
 
 @end
 
@@ -154,13 +164,15 @@ enum StateProtocol {
 - (RawCmd *)readCommand {
 	[self.socket readDataToLength:MAGIC_SIZE withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateMagicReceived];
 	[self.socket readDataToLength:HEADER_SIZE withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:MAGIC_SIZE tag:ProtocolStateHeaderReceived];
-	self.rawCmd.seqNo++;
 	return self.rawCmd;
 }
 
 - (void)writeCommand:(int)cmd seqNo:(int)seqNo flags:(int)flags rc:(int)rc data:(NSData *)data {
-	self.rawCmd.seqNo = seqNo;
-	[self writeHeader:cmd seqNo:seqNo flags:flags rc:rc contentSize:data.length];
+	if (seqNo)
+		self.rawCmd.seqNo = seqNo;
+	else
+		self.rawCmd.seqNo++;
+	[self writeHeader:cmd seqNo:self.rawCmd.seqNo flags:flags rc:rc contentSize:data.length];
 	[self writeContent:data];
 }
 
@@ -179,35 +191,6 @@ enum StateProtocol {
 	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:2];
 	[data appendData:dataString];
 	return data;
-}
-
-- (RawCmd *)helloRequest:(int)seqNo {
-	unsigned char protocol[] = {PROTOCOL_MAJOR, PROTOCOL_MINOR};
-	NSData *data = [NSData dataWithBytes:protocol length:2];
-	[self writeCommand:CMD_HELLO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
-	return [self readCommand];
-}
-
-- (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
-	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
-	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:password encoding:NSUTF16BigEndianStringEncoding]];
-	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
-	return [self readCommand];
-}
-
-- (RawCmd *)fcmDataRequest:(int)seqNo {
-	return [self request:CMD_GET_FCM_DATA seqNo:seqNo];
-}
-
-- (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken extra:(NSString *)extra {
-	NSMutableData *data = [self dataFromString:clientOS encoding:NSUTF8StringEncoding];
-	[data appendData:[self dataFromString:osver encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:device encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:fcmToken encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:extra encoding:NSUTF8StringEncoding]];
-	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
-	return [self readCommand];
 }
 
 - (void)setNextState {
@@ -231,6 +214,60 @@ enum StateProtocol {
 			self.state = CommandStateEnd;
 			break;
 	}
+}
+
+- (void)waitWhileInState:(enum StateCommand)currentState {
+	while (currentState == self.state)
+		[NSThread sleepForTimeInterval:0.02f];
+}
+
+- (RawCmd *)helloRequest:(int)seqNo {
+	unsigned char protocol[] = {PROTOCOL_MAJOR, PROTOCOL_MINOR};
+	NSData *data = [NSData dataWithBytes:protocol length:2];
+	enum StateCommand currentState = self.state;
+	if (currentState == CommandStateEnd)
+		return nil;
+	[self writeCommand:CMD_HELLO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitWhileInState:currentState];
+	return self.rawCmd;
+}
+
+- (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
+	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
+	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:password encoding:NSUTF16BigEndianStringEncoding]];
+	enum StateCommand currentState = self.state;
+	if (currentState == CommandStateEnd)
+		return nil;
+	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitWhileInState:currentState];
+	return self.rawCmd;
+}
+
+- (RawCmd *)fcmDataRequest:(int)seqNo {
+	enum StateCommand currentState = self.state;
+	if (currentState == CommandStateEnd)
+		return nil;
+	[self request:CMD_GET_FCM_DATA seqNo:seqNo];
+	[self waitWhileInState:currentState];
+	return self.rawCmd;
+}
+
+- (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken extra:(NSString *)extra {
+	NSMutableData *data = [self dataFromString:clientOS encoding:NSUTF8StringEncoding];
+	[data appendData:[self dataFromString:osver encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:device encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:fcmToken encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:extra encoding:NSUTF8StringEncoding]];
+	enum StateCommand currentState = self.state;
+	if (currentState == CommandStateEnd)
+		return nil;
+	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitWhileInState:currentState];
+	return self.rawCmd;
 }
 
 # pragma - socket delegate

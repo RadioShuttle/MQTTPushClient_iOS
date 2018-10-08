@@ -84,43 +84,18 @@
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
 	if (command) {
 		NSString *string;
-		unsigned char *buffer;
-		enum StateCommand currentState = command.state;
-		for (;;) {
-			int sequence = command.rawCmd.seqNo;
-			if (currentState == CommandStateEnd)
-				break;
-			while (currentState == command.state)
-				[NSThread sleepForTimeInterval:0.02f];
-			currentState = command.state;
-			switch (command.state) {
-				case CommandStateError:
-					buffer = (unsigned char *)command.rawCmd.data.bytes;
-					break;
-				case CommandStateHello:
-					[command helloRequest:sequence];
-					break;
-				case CommandStateLogin:
-					if (account.mqtt.secureTransport)
-						string = [NSString stringWithFormat:@"ssl://%@:%@", account.mqtt.host, account.mqtt.port];
-					else
-						string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
-					[command loginRequest:sequence uri:string user:account.mqtt.user password:account.mqtt.password];
-					break;
-				case CommandStateGetFCMData:
-					[command fcmDataRequest:sequence];
-					break;
-				case CommandStateSetDeviceInfo:
-					account.connectionEstablished = YES;
-					[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
-					[self getFCMData:command.rawCmd.data];
-					[command setDeviceInfo:sequence clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
-					break;
-				default:
-					[command exit];
-					break;
-			}
-		}
+		[command helloRequest:0];
+		if (account.mqtt.secureTransport)
+			string = [NSString stringWithFormat:@"ssl://%@:%@", account.mqtt.host, account.mqtt.port];
+		else
+			string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
+		[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
+		[command fcmDataRequest:0];
+		account.connectionEstablished = YES;
+		[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
+		[self getFCMData:command.rawCmd.data];
+		[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
+		[command exit];
 	}
 	[self performSelectorOnMainThread:@selector(cleanUp) withObject:nil waitUntilDone:YES];
 }

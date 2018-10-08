@@ -6,16 +6,6 @@
 
 #import <Foundation/Foundation.h>
 
-enum StateCommand {
-	CommandStateError,
-	CommandStateConnect,
-	CommandStateHello,
-	CommandStateLogin,
-	CommandStateGetFCMData,
-	CommandStateSetDeviceInfo,
-	CommandStateEnd
-};
-
 
 @interface RawCmd : NSObject
 
@@ -30,7 +20,6 @@ enum StateCommand {
 
 @interface Cmd : NSObject
 
-@property enum StateCommand state;
 @property RawCmd *rawCmd;
 
 - (instancetype)initWithHost:(NSString *)host port:(int)port;
