@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */; };
 		2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859D02142CC7000CFA5DC /* Cmd.m */; };
+		2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A39166021674CE4001316EB /* GoogleService-Info.plist */; };
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
 		2A7DFF8A213EBBD7001B1546 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF89213EBBD7001B1546 /* Account.m */; };
 		2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */; };
@@ -19,8 +20,8 @@
 		2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45E213D7516000664D3 /* Assets.xcassets */; };
 		2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */; };
 		2ADBE465213D7516000664D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE464213D7516000664D3 /* main.m */; };
+		2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
 		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
-		2AE87DBA214A50BB0057935D /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2AE87DB9214A50BB0057935D /* GoogleService-Info.plist */; };
 		2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE87DBD214AA9AB0057935D /* FCMData.m */; };
 		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
@@ -34,6 +35,7 @@
 		2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		2A2859CF2142CC7000CFA5DC /* Cmd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cmd.h; sourceTree = "<group>"; };
 		2A2859D02142CC7000CFA5DC /* Cmd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cmd.m; sourceTree = "<group>"; };
+		2A39166021674CE4001316EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerListTableViewController.h; sourceTree = "<group>"; };
 		2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewController.m; sourceTree = "<group>"; };
 		2A7DFF88213EBBD7001B1546 /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
@@ -52,9 +54,10 @@
 		2ADBE461213D7516000664D3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2ADBE463213D7516000664D3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2ADBE464213D7516000664D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		2ADFE5662166286600FB19E4 /* MessageDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageDataHandler.h; sourceTree = "<group>"; };
+		2ADFE5672166286600FB19E4 /* MessageDataHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDataHandler.m; sourceTree = "<group>"; };
 		2AE609122146B3EF004F30B2 /* Connection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		2AE609132146B3EF004F30B2 /* Connection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
-		2AE87DB9214A50BB0057935D /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClient.entitlements; sourceTree = "<group>"; };
 		2AE87DBC214AA9AB0057935D /* FCMData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FCMData.h; sourceTree = "<group>"; };
 		2AE87DBD214AA9AB0057935D /* FCMData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMData.m; sourceTree = "<group>"; };
@@ -97,6 +100,8 @@
 				2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */,
 				2AC93086214BDD9700B603B4 /* Message.h */,
 				2AC93087214BDD9700B603B4 /* Message.m */,
+				2ADFE5662166286600FB19E4 /* MessageDataHandler.h */,
+				2ADFE5672166286600FB19E4 /* MessageDataHandler.m */,
 				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
 				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
 				2A7DFF8B213EC414001B1546 /* MessageQueuingTelemetryTransport.h */,
@@ -134,8 +139,8 @@
 		2ADBE454213D7515000664D3 /* MQTTPushClient */ = {
 			isa = PBXGroup;
 			children = (
+				2A39166021674CE4001316EB /* GoogleService-Info.plist */,
 				2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */,
-				2AE87DB9214A50BB0057935D /* GoogleService-Info.plist */,
 				2ADBE45E213D7516000664D3 /* Assets.xcassets */,
 				2ADBE463213D7516000664D3 /* Info.plist */,
 				2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */,
@@ -230,7 +235,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */,
-				2AE87DBA214A50BB0057935D /* GoogleService-Info.plist in Resources */,
+				2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
 			);
@@ -271,6 +276,7 @@
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
 				2A7DFF8A213EBBD7001B1546 /* Account.m in Sources */,
+				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
