@@ -90,10 +90,11 @@
 		else
 			string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
 		[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
-		[command fcmDataRequest:0];
-		account.connectionEstablished = YES;
-		[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
-		[self getFCMData:command.rawCmd.data];
+		if ([command fcmDataRequest:0]) {
+			[self getFCMData:command.rawCmd.data];
+			account.connectionEstablished = YES;
+			[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
+		}
 		[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
 		[command exit];
 	}
