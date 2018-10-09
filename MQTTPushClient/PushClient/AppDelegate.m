@@ -226,15 +226,12 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 	//NSString *listEntryName = remoteMessage.appData[@"account"];
 	//NSNumber *from = remoteMessage.appData[@"from"];
 	NSString *pushServerID = remoteMessage.appData[@"pushserverid"];
-	int index = 0;
 	for (Account *account in self.accountList) {
 		if ([pushServerID isEqualToString:account.pushServerID]) {
-			NSMutableArray *messageList = [self.accountList[index] messageList];
 			MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
-			[messageDataHandler handleRemoteMessage:remoteMessage forList:messageList];
+			[messageDataHandler handleRemoteMessage:remoteMessage forList:account.messageList];
 			break;
 		}
-		index++;
 	}
 }
 
