@@ -28,16 +28,9 @@
 				message.topic = topic;
 				message.text = text;
 				[list insertObject:message atIndex:0];
-				[list sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-					Message *message1 = obj1;
-					Message *message2 = obj2;
-					NSTimeInterval interval = [message1.date timeIntervalSinceDate:message2.date];
-					if (interval < 0)
-						return NSOrderedDescending;
-					else if (interval > 0)
-						return NSOrderedAscending;
-					else
-						return NSOrderedSame;
+				// Sort according to `date`, newest entry first:
+				[list sortUsingComparator:^NSComparisonResult(Message *message1, Message *message2) {
+					return [message2.date compare:message1.date];
 				}];
 				[[NSNotificationCenter defaultCenter] postNotificationName:@"MessageNotification" object:message];
 			}
