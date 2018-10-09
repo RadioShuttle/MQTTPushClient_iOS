@@ -62,7 +62,8 @@
 	NSArray *array = [name componentsSeparatedByString:@":"];
 	if ([array count] == 2)
 		name = array[0];
-	[FIRApp configureWithName:@"MQTTPushClient" options:firOptions];
+	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
+	[FIRApp configureWithName:appName options:firOptions];
 }
 
 - (void)contactServerWith:(Account *)account {
