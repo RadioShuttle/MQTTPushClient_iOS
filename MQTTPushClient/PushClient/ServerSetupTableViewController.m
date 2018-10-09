@@ -42,13 +42,13 @@
 
 - (IBAction)saveAction:(UIButton *)sender {
 	Connection *connection = [[Connection alloc] init];
-	[connection sendFCMData:self.account];
+	[connection getFcmDataForAccount:self.account];
 	[self saveSettings];
 }
 
 - (IBAction)saveButtonAction:(UIButton *)sender {
 	Connection *connection = [[Connection alloc] init];
-	[connection sendFCMData:self.account];
+	[connection getFcmDataForAccount:self.account];
 	[self saveSettings];
 }
 

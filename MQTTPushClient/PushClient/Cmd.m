@@ -30,7 +30,10 @@ enum Command {
 	CMD_REMOVE_ACTIONS = 13,
 	CMD_LOGOUT = 14,
 	CMD_BYE = 15,
-	CMD_PUBLISH = 17
+	CMD_PUBLISH = 17,
+	CMD_GET_FCM_DATA_IOS = 18,
+	CMD_GET_MESSAGES = 19,
+	CMD_ADM = 20
 };
 
 enum ReturnCode {
@@ -116,9 +119,9 @@ enum StateCommand {
 		NSError *error = nil;
 		_state = CommandStateConnect;
 		_lock = [[NSLock alloc] init];
-		_timeout = 2.1;
+		_timeout = 10;
 		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-		if ([self.socket connectToHost:host onPort:port withTimeout:0.3 error:&error])
+		if ([self.socket connectToHost:host onPort:port withTimeout:0.4 error:&error])
 			_rawCmd = [[RawCmd alloc] init];
 		else
 			return nil;
@@ -250,7 +253,7 @@ enum StateCommand {
 	enum StateCommand currentState = self.state;
 	if (currentState == CommandStateEnd)
 		return nil;
-	[self request:CMD_GET_FCM_DATA seqNo:seqNo];
+	[self request:CMD_GET_FCM_DATA_IOS seqNo:seqNo];
 	[self waitWhileInState:currentState];
 	return self.rawCmd;
 }

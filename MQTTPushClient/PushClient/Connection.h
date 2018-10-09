@@ -8,6 +8,6 @@
 
 @interface Connection : NSObject
 
-- (void)sendFCMData:(Account *)account;
+- (void)getFcmDataForAccount:(Account *)account;
 
 @end
