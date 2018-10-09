@@ -13,6 +13,7 @@
 
 @property NSString *host;
 @property MessageQueuingTelemetryTransport *mqtt;
+@property NSString *pushServerID;
 @property NSMutableArray *messageList;
 @property BOOL connectionEstablished;
 

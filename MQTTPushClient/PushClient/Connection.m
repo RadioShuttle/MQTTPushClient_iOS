@@ -43,7 +43,7 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 }
 
-- (void)decodeFcmData:(NSData *)data {
+- (void)applyFcmData:(NSData *)data forAccount:(Account *)account {
 	FCMData *fcmData = [[FCMData alloc] init];
 	unsigned char *p = (unsigned char *)data.bytes;
 	int count = (p[0] << 8) + p[1];
@@ -59,9 +59,7 @@
 	firOptions.APIKey = fcmData.api_key;
 	firOptions.googleAppID = fcmData.app_id;
 	NSString *name = fcmData.pushserverid;
-	NSArray *array = [name componentsSeparatedByString:@":"];
-	if ([array count] == 2)
-		name = array[0];
+	account.pushServerID = name;
 	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	[FIRApp configureWithName:appName options:firOptions];
 }
@@ -93,7 +91,7 @@
 		[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
 		[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
 		if ([command fcmDataRequest:0]) {
-			[self decodeFcmData:command.rawCmd.data];
+			[self applyFcmData:command.rawCmd.data forAccount:account];
 			account.connectionEstablished = YES;
 			[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 		}

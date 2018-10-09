@@ -222,9 +222,20 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 // Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
 // To enable direct data messages, you can set [Messaging messaging].shouldEstablishDirectChannel to YES.
 - (void)messaging:(FIRMessaging *)messaging didReceiveMessage:(FIRMessagingRemoteMessage *)remoteMessage {
-	NSMutableArray *messageList = [self.accountList[0] messageList];
-	MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
-	[messageDataHandler handleRemoteMessage:remoteMessage forList:messageList];
+	// The following two entries are currently unused:
+	//NSString *listEntryName = remoteMessage.appData[@"account"];
+	//NSNumber *from = remoteMessage.appData[@"from"];
+	NSString *pushServerID = remoteMessage.appData[@"pushserverid"];
+	int index = 0;
+	for (Account *account in self.accountList) {
+		if ([pushServerID isEqualToString:account.pushServerID]) {
+			NSMutableArray *messageList = [self.accountList[index] messageList];
+			MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
+			[messageDataHandler handleRemoteMessage:remoteMessage forList:messageList];
+			break;
+		}
+		index++;
+	}
 }
 
 
