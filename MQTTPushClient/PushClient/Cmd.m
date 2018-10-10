@@ -60,12 +60,8 @@ enum StateProtocol {
 };
 
 enum StateCommand {
-	CommandStateError,
-	CommandStateConnect,
-	CommandStateHello,
-	CommandStateLogin,
-	CommandStateGetFCMData,
-	CommandStateSetDeviceInfo,
+	CommandStateBusy,
+	CommandStateDone,
 	CommandStateEnd
 };
 
@@ -117,7 +113,7 @@ enum StateCommand {
 	self = [super init];
 	if (self) {
 		NSError *error = nil;
-		_state = CommandStateConnect;
+		_state = CommandStateBusy;
 		_lock = [[NSLock alloc] init];
 		_timeout = 10;
 		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
@@ -196,43 +192,20 @@ enum StateCommand {
 	return data;
 }
 
-- (void)setNextState {
-	switch (self.state) {
-		case CommandStateError:
-			self.state = CommandStateEnd;
-			break;
-		case CommandStateHello:
-			self.state = CommandStateLogin;
-			break;
-		case CommandStateLogin:
-			self.state = CommandStateGetFCMData;
-			break;
-		case CommandStateGetFCMData:
-			self.state = CommandStateSetDeviceInfo;
-			break;
-		case CommandStateSetDeviceInfo:
-			self.state = CommandStateEnd;
-			break;
-		default:
-			self.state = CommandStateEnd;
-			break;
-	}
-}
-
-- (void)waitWhileInState:(enum StateCommand)currentState {
-	while (currentState == self.state)
+- (void)waitForCommand {
+	while (self.state == CommandStateBusy)
 		[NSThread sleepForTimeInterval:0.02f];
+	self.state = CommandStateBusy;
 }
 
 - (RawCmd *)helloRequest:(int)seqNo {
 	unsigned char protocol[] = {PROTOCOL_MAJOR, PROTOCOL_MINOR};
 	NSData *data = [NSData dataWithBytes:protocol length:2];
-	enum StateCommand currentState = self.state;
-	if (currentState == CommandStateEnd)
+	if (self.state == CommandStateEnd)
 		return nil;
 	[self writeCommand:CMD_HELLO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
-	[self waitWhileInState:currentState];
+	[self waitForCommand];
 	return self.rawCmd;
 }
 
@@ -240,21 +213,19 @@ enum StateCommand {
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:password encoding:NSUTF16BigEndianStringEncoding]];
-	enum StateCommand currentState = self.state;
-	if (currentState == CommandStateEnd)
+	if (self.state == CommandStateEnd)
 		return nil;
 	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
-	[self waitWhileInState:currentState];
+	[self waitForCommand];
 	return self.rawCmd;
 }
 
 - (RawCmd *)fcmDataRequest:(int)seqNo {
-	enum StateCommand currentState = self.state;
-	if (currentState == CommandStateEnd)
+	if (self.state == CommandStateEnd)
 		return nil;
 	[self request:CMD_GET_FCM_DATA_IOS seqNo:seqNo];
-	[self waitWhileInState:currentState];
+	[self waitForCommand];
 	return self.rawCmd;
 }
 
@@ -264,12 +235,11 @@ enum StateCommand {
 	[data appendData:[self dataFromString:device encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:fcmToken encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:extra encoding:NSUTF8StringEncoding]];
-	enum StateCommand currentState = self.state;
-	if (currentState == CommandStateEnd)
+	if (self.state == CommandStateEnd)
 		return nil;
 	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
-	[self waitWhileInState:currentState];
+	[self waitForCommand];
 	return self.rawCmd;
 }
 
@@ -277,7 +247,6 @@ enum StateCommand {
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {
 	NSLog(@"connected to: %@ port: %d", host, port);
-	self.state = CommandStateHello;
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
@@ -311,12 +280,12 @@ enum StateCommand {
 			if (self.rawCmd.dataLength)
 				[self.socket readDataToLength:self.rawCmd.dataLength withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateDataReceived];
 			else
-				[self setNextState];
+				self.state = CommandStateDone;
 			break;
 		case ProtocolStateDataReceived:
 			dp = (unsigned char *)self.rawCmd.data.bytes;
 			self.rawCmd.data = [NSMutableData dataWithBytes:dp length:self.rawCmd.dataLength];
-			[self setNextState];
+			self.state = CommandStateDone;
 			break;
 		default:
 			self.state = CommandStateEnd;
