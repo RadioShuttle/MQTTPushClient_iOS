@@ -195,7 +195,8 @@ enum StateCommand {
 - (void)waitForCommand {
 	while (self.state == CommandStateBusy)
 		[NSThread sleepForTimeInterval:0.02f];
-	self.state = CommandStateBusy;
+	if (self.state != CommandStateEnd)
+		self.state = CommandStateBusy;
 }
 
 - (RawCmd *)helloRequest:(int)seqNo {

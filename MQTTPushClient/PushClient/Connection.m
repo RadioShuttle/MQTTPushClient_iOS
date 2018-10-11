@@ -30,17 +30,14 @@
 	return self;
 }
 
-- (void)cleanUp {
+- (void)notifyUI {
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 }
 
 - (void)getFcmToken {
 	UIApplication *app = [UIApplication sharedApplication];
 	AppDelegate *appDelegate = (AppDelegate *)app.delegate;
 	self.fcmToken = appDelegate.fcmToken;
-}
-
-- (void)notifyUI {
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 }
 
 - (void)applyFcmData:(NSData *)data forAccount:(Account *)account {
@@ -55,7 +52,7 @@
 	count = (p[0] << 8) + p[1];
 	fcmData.pushserverid = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
 	account.pushServerID = fcmData.pushserverid;
-	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:@"1234"];
+	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.pushserverid];
 	firOptions.APIKey = fcmData.api_key;
 	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	[FIRApp configureWithName:appName options:firOptions];
@@ -90,12 +87,11 @@
 		if ([command fcmDataRequest:0]) {
 			[self applyFcmData:command.rawCmd.data forAccount:account];
 			account.connectionEstablished = YES;
-			[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 		}
 		[command bye:0];
 		[command exit];
 	}
-	[self performSelectorOnMainThread:@selector(cleanUp) withObject:nil waitUntilDone:YES];
+	[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 }
 
 - (void)getFcmDataForAccount:(Account *)account {

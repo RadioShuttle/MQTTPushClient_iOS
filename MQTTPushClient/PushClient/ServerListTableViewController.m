@@ -5,6 +5,7 @@
  */
 
 #import "Account.h"
+#import "Connection.h"
 #import "AppDelegate.h"
 #import "MessageListTableViewController.h"
 #import "ServerSetupTableViewController.h"
@@ -23,6 +24,14 @@
 
 - (void)updateList:(NSNotification *)sender {
 	[self.tableView reloadData];
+	[self.refreshControl endRefreshing];
+}
+
+- (void)updateAccounts {
+	for (Account *account in self.accountList) {
+		Connection *connection = [[Connection alloc] init];
+		[connection getFcmDataForAccount:account];
+	}
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -32,6 +41,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+	self.tableView.refreshControl = [[UIRefreshControl alloc] init];
+	self.tableView.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Updating Server List" attributes:nil];
+	[self.tableView.refreshControl addTarget:self action:@selector(updateAccounts) forControlEvents:UIControlEventValueChanged];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.addServerBarButtonItem.enabled = self.editing;
 	UIApplication *app = [UIApplication sharedApplication];
