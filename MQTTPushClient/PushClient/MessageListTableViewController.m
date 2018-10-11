@@ -19,9 +19,8 @@
 @implementation MessageListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-//	Message *message = sender.object;
-	//[self.tableView reloadData];
-	[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+	[self.tableView reloadData];
+//	[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
