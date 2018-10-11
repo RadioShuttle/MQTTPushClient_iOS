@@ -54,12 +54,9 @@
 	p += 2 + count;
 	count = (p[0] << 8) + p[1];
 	fcmData.pushserverid = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
-	NSString *file = [NSBundle.mainBundle pathForResource:@"GoogleService-Info" ofType:@"plist"];
-	FIROptions *firOptions = [[FIROptions alloc] initWithContentsOfFile:file];
+	account.pushServerID = fcmData.pushserverid;
+	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:@"1234"];
 	firOptions.APIKey = fcmData.api_key;
-	firOptions.googleAppID = fcmData.app_id;
-	NSString *name = fcmData.pushserverid;
-	account.pushServerID = name;
 	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	[FIRApp configureWithName:appName options:firOptions];
 }
