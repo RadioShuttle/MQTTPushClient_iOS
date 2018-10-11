@@ -25,6 +25,7 @@
 - (instancetype)initWithHost:(NSString *)host port:(int)port;
 - (void)exit;
 - (RawCmd *)helloRequest:(int)seqNo;
+- (void)bye:(int)seqNo;
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password;
 - (RawCmd *)fcmDataRequest:(int)seqNo;
 - (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken extra:(NSString *)extra;

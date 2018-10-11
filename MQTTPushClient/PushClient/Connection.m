@@ -92,6 +92,7 @@
 			account.connectionEstablished = YES;
 			[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 		}
+		[command bye:0];
 		[command exit];
 	}
 	[self performSelectorOnMainThread:@selector(cleanUp) withObject:nil waitUntilDone:YES];

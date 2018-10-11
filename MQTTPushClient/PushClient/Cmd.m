@@ -209,6 +209,11 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (void)bye:(int)seqNo {
+	NSData *data = [[NSData alloc] init];
+	[self writeCommand:CMD_BYE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+ }
+	 
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
@@ -250,7 +255,7 @@ enum StateCommand {
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
-	NSLog(@"disconnected: %@", error);
+	NSLog(@"disconnected: %@", error ? error : @"normally");
 	self.state = CommandStateEnd;
 }
 
