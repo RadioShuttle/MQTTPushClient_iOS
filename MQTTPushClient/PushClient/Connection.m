@@ -88,6 +88,7 @@
 			[self applyFcmData:command.rawCmd.data forAccount:account];
 			account.connectionEstablished = YES;
 		}
+		account.error = command.rawCmd.error;
 		[command bye:0];
 		[command exit];
 	}
@@ -95,6 +96,7 @@
 }
 
 - (void)getFcmDataForAccount:(Account *)account {
+	account.error = nil;
 	dispatch_async(self.serialQueue, ^{[self contactServerWith:account];});
 }
 

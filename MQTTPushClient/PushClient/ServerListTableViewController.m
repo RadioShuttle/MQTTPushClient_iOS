@@ -73,10 +73,11 @@
 	ServerListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
 	NSString *text = [NSString stringWithFormat:@"%@@%@:%d", account.mqtt.user, account.mqtt.host, account.mqtt.port.intValue];
 	if (account.connectionEstablished)
-		cell.imageView.image = [UIImage imageNamed:@"Success"];
+		cell.statusImageView.image = [UIImage imageNamed:@"Success"];
 	else
-		cell.imageView.image = [UIImage imageNamed:@"Error"];
+		cell.statusImageView.image = [UIImage imageNamed:@"Error"];
 	cell.serverNameLabel.text = text;
+	cell.errorMessageLabel.text = [account.error localizedDescription];
 	return cell;
 }
 

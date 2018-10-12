@@ -257,6 +257,7 @@ enum StateCommand {
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
 	NSLog(@"disconnected: %@", error ? error : @"normally");
+	self.rawCmd.error = error;
 	self.state = CommandStateEnd;
 }
 

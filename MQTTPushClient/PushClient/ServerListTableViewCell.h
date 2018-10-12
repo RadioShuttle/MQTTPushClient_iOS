@@ -10,5 +10,6 @@
 
 @property (weak, nonatomic) IBOutlet UIImageView *statusImageView;
 @property (weak, nonatomic) IBOutlet UILabel *serverNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *errorMessageLabel;
 
 @end

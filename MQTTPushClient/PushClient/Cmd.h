@@ -15,6 +15,7 @@
 @property int rc;
 @property int dataLength;
 @property NSMutableData *data;
+@property NSError *error;
 
 @end
 

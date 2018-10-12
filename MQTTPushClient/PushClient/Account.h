@@ -16,5 +16,6 @@
 @property NSString *pushServerID;
 @property NSMutableArray *messageList;
 @property BOOL connectionEstablished;
+@property NSError *error;
 
 @end
