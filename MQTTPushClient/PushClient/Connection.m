@@ -84,10 +84,8 @@
 			string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
 		[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
 		[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
-		if ([command fcmDataRequest:0]) {
+		if ([command fcmDataRequest:0])
 			[self applyFcmData:command.rawCmd.data forAccount:account];
-			account.connectionEstablished = YES;
-		}
 		account.error = command.rawCmd.error;
 		[command bye:0];
 		[command exit];

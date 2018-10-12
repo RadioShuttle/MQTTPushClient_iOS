@@ -15,7 +15,6 @@
 @property MessageQueuingTelemetryTransport *mqtt;
 @property NSString *pushServerID;
 @property NSMutableArray *messageList;
-@property BOOL connectionEstablished;
 @property NSError *error;
 
 @end

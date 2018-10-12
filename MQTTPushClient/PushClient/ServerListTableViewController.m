@@ -72,7 +72,7 @@
 	Account *account = self.accountList[indexPath.row];
 	ServerListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
 	NSString *text = [NSString stringWithFormat:@"%@@%@:%d", account.mqtt.user, account.mqtt.host, account.mqtt.port.intValue];
-	if (account.connectionEstablished)
+	if (account.error == nil)
 		cell.statusImageView.image = [UIImage imageNamed:@"Success"];
 	else
 		cell.statusImageView.image = [UIImage imageNamed:@"Error"];

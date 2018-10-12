@@ -18,7 +18,6 @@
 		_host = @"";
 		_mqtt = [[MessageQueuingTelemetryTransport alloc] init];
 		_messageList = [[NSMutableArray alloc] init];
-		_connectionEstablished = NO;
 	}
 	return self;
 }
