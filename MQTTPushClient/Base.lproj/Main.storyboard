@@ -18,11 +18,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="IDServerCell" id="vNc-ee-U55" customClass="ServerListTableViewCell">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="IDServerCell" rowHeight="61" id="vNc-ee-U55" customClass="ServerListTableViewCell">
+                                <rect key="frame" x="0.0" y="28" width="375" height="61"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vNc-ee-U55" id="dNO-GN-ZFf">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="60.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="W4Q-s2-Rqo">
@@ -33,22 +33,31 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ErG-hj-kmy">
-                                            <rect key="frame" x="39" y="11" width="320" height="21"/>
+                                            <rect key="frame" x="39" y="11" width="320" height="20.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error message" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Koz-Q1-yNH">
+                                            <rect key="frame" x="16" y="39" width="76" height="14"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="Koz-Q1-yNH" secondAttribute="bottom" constant="7.5" id="1nI-Ly-kaa"/>
                                         <constraint firstItem="W4Q-s2-Rqo" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="14" id="3Ab-IG-Ehp"/>
                                         <constraint firstItem="W4Q-s2-Rqo" firstAttribute="leading" secondItem="dNO-GN-ZFf" secondAttribute="leading" constant="16" id="GAj-ve-ORl"/>
                                         <constraint firstAttribute="trailing" secondItem="ErG-hj-kmy" secondAttribute="trailing" constant="16" id="Vcl-2l-DKc"/>
-                                        <constraint firstAttribute="bottom" secondItem="ErG-hj-kmy" secondAttribute="bottom" constant="11.5" id="d6h-9m-y1j"/>
+                                        <constraint firstItem="Koz-Q1-yNH" firstAttribute="leading" secondItem="dNO-GN-ZFf" secondAttribute="leading" constant="16" id="ZZ2-J6-Lyh"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="11" id="fFN-bz-84b"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="leading" secondItem="W4Q-s2-Rqo" secondAttribute="trailing" constant="8" id="u92-mL-rXP"/>
+                                        <constraint firstItem="Koz-Q1-yNH" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="39" id="yNg-7h-IBy"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="errorMessageLabel" destination="Koz-Q1-yNH" id="l1s-FN-u4i"/>
                                     <outlet property="serverNameLabel" destination="ErG-hj-kmy" id="3Mi-oX-b6I"/>
                                     <outlet property="statusImageView" destination="W4Q-s2-Rqo" id="f4C-wi-HTb"/>
                                 </connections>
