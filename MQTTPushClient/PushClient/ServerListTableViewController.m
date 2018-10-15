@@ -7,7 +7,7 @@
 #import "Account.h"
 #import "Connection.h"
 #import "AppDelegate.h"
-#import "MessageListTableViewController.h"
+#import "AccountViewController.h"
 #import "ServerSetupTableViewController.h"
 #import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
@@ -55,6 +55,7 @@
 	[super viewWillAppear:animated];
 	[self.tableView reloadData];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
+	self.navigationController.toolbarHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -108,7 +109,7 @@
 	if (self.tableView.editing)
 		[self performSegueWithIdentifier:@"IDShowSettings" sender:nil];
 	else
-		[self performSegueWithIdentifier:@"IDShowMessage" sender:nil];
+		[self performSegueWithIdentifier:@"IDShowMessageList" sender:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -121,7 +122,7 @@
 		controller.accountList = self.accountList;
 		controller.indexPath = [self.tableView indexPathForSelectedRow];
 	} else {
-		MessageListTableViewController *controller = segue.destinationViewController;
+		AccountViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];
 		controller.account = account;
 	}

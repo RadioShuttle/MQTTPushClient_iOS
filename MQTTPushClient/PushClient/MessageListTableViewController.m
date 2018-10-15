@@ -11,7 +11,8 @@
 
 @interface MessageListTableViewController ()
 
-@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (strong, nonatomic) IBOutlet UILabel *errorMessageLabel;
 @property NSDateFormatter *dateFormatter;
 
 @end
@@ -29,6 +30,8 @@
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
 	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+	self.toolbarItems = self.toolbar.items;
+	self.navigationController.toolbarHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
