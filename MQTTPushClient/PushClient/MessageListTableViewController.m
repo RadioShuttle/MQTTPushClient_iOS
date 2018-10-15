@@ -6,13 +6,13 @@
 
 #import "Message.h"
 #import "Account.h"
+#import "Connection.h"
 #import "MessageTableViewCell.h"
 #import "MessageListTableViewController.h"
 
 @interface MessageListTableViewController ()
 
 @property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
-@property (strong, nonatomic) IBOutlet UILabel *errorMessageLabel;
 @property NSDateFormatter *dateFormatter;
 
 @end
@@ -22,6 +22,23 @@
 - (void)updateList:(NSNotification *)sender {
 	[self.tableView reloadData];
 //	[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+	if (self.account.error)
+		self.errorMessageLabel.text = [self.account.error localizedDescription];
+	else
+		self.errorMessageLabel.text = @"";
+}
+
+- (void)updateAccount {
+	Connection *connection = [[Connection alloc] init];
+	[connection getFcmDataForAccount:self.account];
+	[self.refreshControl endRefreshing];
+}
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	self.tableView.refreshControl = [[UIRefreshControl alloc] init];
+	self.tableView.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Updating Message List" attributes:nil];
+	[self.tableView.refreshControl addTarget:self action:@selector(updateAccount) forControlEvents:UIControlEventValueChanged];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

@@ -9,5 +9,6 @@
 @interface MessageListTableViewController : UITableViewController
 
 @property Account *account;
+@property UILabel *errorMessageLabel;
 
 @end

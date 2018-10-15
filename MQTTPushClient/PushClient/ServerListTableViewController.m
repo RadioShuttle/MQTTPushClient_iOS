@@ -24,7 +24,6 @@
 
 - (void)updateList:(NSNotification *)sender {
 	[self.tableView reloadData];
-	[self.refreshControl endRefreshing];
 }
 
 - (void)updateAccounts {
@@ -32,6 +31,7 @@
 		Connection *connection = [[Connection alloc] init];
 		[connection getFcmDataForAccount:account];
 	}
+	[self.refreshControl endRefreshing];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {

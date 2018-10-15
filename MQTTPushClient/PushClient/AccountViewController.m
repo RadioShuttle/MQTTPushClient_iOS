@@ -29,6 +29,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	MessageListTableViewController *controller = segue.destinationViewController;
 	controller.account = self.account;
+	controller.errorMessageLabel = self.errorMessageLabel;
 }
 
 @end
