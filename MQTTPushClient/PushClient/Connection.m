@@ -55,7 +55,8 @@
 	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.pushserverid];
 	firOptions.APIKey = fcmData.api_key;
 	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-	[FIRApp configureWithName:appName options:firOptions];
+	if (![FIRApp appNamed:appName])
+		[FIRApp configureWithName:appName options:firOptions];
 }
 
 - (void)contactServerWith:(Account *)account {
