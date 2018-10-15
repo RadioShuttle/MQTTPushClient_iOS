@@ -132,6 +132,7 @@
 				E4A46935F60EFDA587278ECF /* Frameworks */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		2ADBE453213D7515000664D3 /* Products */ = {
 			isa = PBXGroup;
@@ -206,6 +207,9 @@
 					2ADBE451213D7515000664D3 = {
 						CreatedOnToolsVersion = 9.4.1;
 						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
 							com.apple.BackgroundModes = {
 								enabled = 1;
 							};
