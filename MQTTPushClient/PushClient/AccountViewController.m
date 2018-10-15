@@ -11,6 +11,7 @@
 @interface AccountViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *errorMessageLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *statusBarButtonItem;
 
 @end
 
@@ -30,6 +31,7 @@
 	MessageListTableViewController *controller = segue.destinationViewController;
 	controller.account = self.account;
 	controller.errorMessageLabel = self.errorMessageLabel;
+	controller.statusBarButtonItem = self.statusBarButtonItem;
 }
 
 @end

@@ -12,7 +12,6 @@
 
 @interface MessageListTableViewController ()
 
-@property (strong, nonatomic) IBOutlet UIToolbar *toolbar;
 @property NSDateFormatter *dateFormatter;
 
 @end
@@ -22,10 +21,14 @@
 - (void)updateList:(NSNotification *)sender {
 	[self.tableView reloadData];
 //	[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)updateAccountStatus:(NSNotification *)sender {
+	self.statusBarButtonItem.title = [self.account.error localizedDescription];
 	if (self.account.error)
-		self.errorMessageLabel.text = [self.account.error localizedDescription];
+		[self.navigationController setToolbarHidden:NO animated:YES];
 	else
-		self.errorMessageLabel.text = @"";
+		self.navigationController.toolbarHidden = YES;
 }
 
 - (void)updateAccount {
@@ -44,11 +47,12 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"MessageNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccountStatus:) name:@"ServerUpdateNotification" object:nil];
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
 	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-	self.toolbarItems = self.toolbar.items;
-	self.navigationController.toolbarHidden = YES;
+	self.errorMessageLabel.text = @"";
+	[self updateAccountStatus:nil];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

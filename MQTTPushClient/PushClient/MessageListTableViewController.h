@@ -10,5 +10,6 @@
 
 @property Account *account;
 @property UILabel *errorMessageLabel;
+@property UIBarButtonItem *statusBarButtonItem;
 
 @end
