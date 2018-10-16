@@ -24,6 +24,7 @@
 }
 
 - (void)updateAccountStatus:(NSNotification *)sender {
+	self.statusBarButtonItem.enabled = NO;
 	self.statusBarButtonItem.title = [self.account.error localizedDescription];
 	if (self.account.error)
 		[self.navigationController setToolbarHidden:NO animated:YES];
@@ -51,7 +52,6 @@
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
 	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
-	self.errorMessageLabel.text = @"";
 	[self updateAccountStatus:nil];
 }
 

@@ -7,7 +7,7 @@
 #import "Account.h"
 #import "Connection.h"
 #import "AppDelegate.h"
-#import "AccountViewController.h"
+#import "MessageListTableViewController.h"
 #import "ServerSetupTableViewController.h"
 #import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
@@ -122,9 +122,10 @@
 		controller.accountList = self.accountList;
 		controller.indexPath = [self.tableView indexPathForSelectedRow];
 	} else {
-		AccountViewController *controller = segue.destinationViewController;
+		MessageListTableViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];
 		controller.account = account;
+		controller.statusBarButtonItem.title = [account.error localizedDescription];
 	}
 }
 

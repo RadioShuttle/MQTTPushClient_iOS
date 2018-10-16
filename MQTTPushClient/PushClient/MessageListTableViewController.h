@@ -9,7 +9,6 @@
 @interface MessageListTableViewController : UITableViewController
 
 @property Account *account;
-@property UILabel *errorMessageLabel;
-@property UIBarButtonItem *statusBarButtonItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *statusBarButtonItem;
 
 @end
