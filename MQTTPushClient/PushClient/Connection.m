@@ -76,13 +76,13 @@
 	}
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
 	NSString *string;
-	if ([command helloRequest:0] == nil) {
+	if ([command helloRequest:0 secureTransport:account.mqtt.secureTransport] == nil) {
 		int major = command.protocolMajor;
 		int minor = command.protocolMinor;
 		command = [[Cmd alloc] initWithHost:host port:port];
 		command.protocolMajor = major;
 		command.protocolMinor = minor;
-		[command helloRequest:0];
+		[command helloRequest:0 secureTransport:account.mqtt.secureTransport];
 	}
 	if (account.mqtt.secureTransport)
 		string = [NSString stringWithFormat:@"ssl://%@:%@", account.mqtt.host, account.mqtt.port];

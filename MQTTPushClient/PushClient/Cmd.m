@@ -46,8 +46,10 @@ enum ReturnCode {
 };
 
 enum TransmissionFlag {
-	FLAG_REQUEST,
-	FLAG_RESPONSE
+	FLAG_REQUEST = 0,
+	FLAG_RESPONSE = 1,
+	FLAG_SSL = 2,
+	FLAG_ADM =4
 };
 
 enum StateProtocol {
@@ -201,14 +203,19 @@ enum StateCommand {
 		self.state = CommandStateBusy;
 }
 
-- (RawCmd *)helloRequest:(int)seqNo {
+- (RawCmd *)helloRequest:(int)seqNo secureTransport:(BOOL)secureTransport {
 	unsigned char protocol[2];
 	protocol[0] = self.protocolMajor;
 	protocol[1] = self.protocolMinor;
 	NSData *data = [NSData dataWithBytes:protocol length:2];
 	if (self.state == CommandStateEnd)
 		return nil;
-	[self writeCommand:CMD_HELLO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	enum TransmissionFlag flag = FLAG_REQUEST;
+	if (secureTransport) {
+		flag |= FLAG_SSL;
+		[self.socket startTLS:nil];
+	}
+	[self writeCommand:CMD_HELLO seqNo:seqNo flags:flag rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
 	if (self.rawCmd.data.length) {

@@ -6,7 +6,6 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface RawCmd : NSObject
 
 @property int command;
@@ -26,7 +25,7 @@
 
 - (instancetype)initWithHost:(NSString *)host port:(int)port;
 - (void)exit;
-- (RawCmd *)helloRequest:(int)seqNo;
+- (RawCmd *)helloRequest:(int)seqNo secureTransport:(BOOL)secureTransport;
 - (void)bye:(int)seqNo;
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password;
 - (RawCmd *)fcmDataRequest:(int)seqNo;
