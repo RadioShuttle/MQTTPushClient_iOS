@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		2A103F562170E9B8004CF091 /* AccountViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A103F552170E9B8004CF091 /* AccountViewController.m */; };
 		2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */; };
 		2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859D02142CC7000CFA5DC /* Cmd.m */; };
 		2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A39166021674CE4001316EB /* GoogleService-Info.plist */; };
@@ -32,8 +31,6 @@
 
 /* Begin PBXFileReference section */
 		0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.release.xcconfig"; sourceTree = "<group>"; };
-		2A103F542170E9B8004CF091 /* AccountViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountViewController.h; sourceTree = "<group>"; };
-		2A103F552170E9B8004CF091 /* AccountViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountViewController.m; sourceTree = "<group>"; };
 		2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		2A2859CF2142CC7000CFA5DC /* Cmd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cmd.h; sourceTree = "<group>"; };
@@ -91,8 +88,6 @@
 			children = (
 				2A7DFF88213EBBD7001B1546 /* Account.h */,
 				2A7DFF89213EBBD7001B1546 /* Account.m */,
-				2A103F542170E9B8004CF091 /* AccountViewController.h */,
-				2A103F552170E9B8004CF091 /* AccountViewController.m */,
 				2ADBE455213D7515000664D3 /* AppDelegate.h */,
 				2ADBE456213D7515000664D3 /* AppDelegate.m */,
 				2A2859CF2142CC7000CFA5DC /* Cmd.h */,
@@ -292,7 +287,6 @@
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
 				2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */,
-				2A103F562170E9B8004CF091 /* AccountViewController.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
