@@ -47,13 +47,12 @@
 	fcmData.app_id = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
 	p += 2 + count;
 	count = (p[0] << 8) + p[1];
-	fcmData.api_key = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
+	fcmData.sender_id = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
 	p += 2 + count;
 	count = (p[0] << 8) + p[1];
 	fcmData.pushserverid = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
 	account.pushServerID = fcmData.pushserverid;
-	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.pushserverid];
-	firOptions.APIKey = fcmData.api_key;
+	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.sender_id];
 	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
 	if (![FIRApp appNamed:appName])
 		[FIRApp configureWithName:appName options:firOptions];
@@ -76,21 +75,26 @@
 		port = portString.intValue;
 	}
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
-	if (command) {
-		NSString *string;
+	NSString *string;
+	if ([command helloRequest:0] == nil) {
+		int major = command.protocolMajor;
+		int minor = command.protocolMinor;
+		command = [[Cmd alloc] initWithHost:host port:port];
+		command.protocolMajor = major;
+		command.protocolMinor = minor;
 		[command helloRequest:0];
-		if (account.mqtt.secureTransport)
-			string = [NSString stringWithFormat:@"ssl://%@:%@", account.mqtt.host, account.mqtt.port];
-		else
-			string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
-		[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
-		[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
-		if ([command fcmDataRequest:0])
-			[self applyFcmData:command.rawCmd.data forAccount:account];
-		account.error = command.rawCmd.error;
-		[command bye:0];
-		[command exit];
 	}
+	if (account.mqtt.secureTransport)
+		string = [NSString stringWithFormat:@"ssl://%@:%@", account.mqtt.host, account.mqtt.port];
+	else
+		string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
+	[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
+	[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
+	if ([command fcmDataRequest:0])
+		[self applyFcmData:command.rawCmd.data forAccount:account];
+	account.error = command.rawCmd.error;
+	[command bye:0];
+	[command exit];
 	[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
 }
 

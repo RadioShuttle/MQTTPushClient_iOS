@@ -9,7 +9,7 @@
 @interface FCMData : NSObject
 
 @property NSString *app_id;
-@property NSString *api_key;
+@property NSString *sender_id;
 @property NSString *pushserverid;
 
 @end

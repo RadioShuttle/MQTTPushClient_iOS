@@ -10,7 +10,7 @@
 
 #define MAGIC "MQTP"
 #define PROTOCOL_MAJOR 1
-#define PROTOCOL_MINOR 0
+#define PROTOCOL_MINOR 3
 #define MAGIC_SIZE 4
 #define HEADER_SIZE 12
 
@@ -116,6 +116,8 @@ enum StateCommand {
 		_state = CommandStateBusy;
 		_lock = [[NSLock alloc] init];
 		_timeout = 10;
+		_protocolMajor = PROTOCOL_MAJOR;
+		_protocolMinor = PROTOCOL_MINOR;
 		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
 		if ([self.socket connectToHost:host onPort:port withTimeout:0.4 error:&error])
 			_rawCmd = [[RawCmd alloc] init];
@@ -200,13 +202,21 @@ enum StateCommand {
 }
 
 - (RawCmd *)helloRequest:(int)seqNo {
-	unsigned char protocol[] = {PROTOCOL_MAJOR, PROTOCOL_MINOR};
+	unsigned char protocol[2];
+	protocol[0] = self.protocolMajor;
+	protocol[1] = self.protocolMinor;
 	NSData *data = [NSData dataWithBytes:protocol length:2];
 	if (self.state == CommandStateEnd)
 		return nil;
 	[self writeCommand:CMD_HELLO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
+	if (self.rawCmd.data.length) {
+		unsigned char *p = (unsigned char *)self.rawCmd.data.bytes;
+		self.protocolMajor = p[0];
+		self.protocolMinor = p[1];
+		return nil;
+	}
 	return self.rawCmd;
 }
 
@@ -218,7 +228,10 @@ enum StateCommand {
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:password encoding:NSUTF16BigEndianStringEncoding]];
+	if (self.protocolMajor == 1 && self.protocolMinor < 2)
+		[data appendData:[self dataFromString:password encoding:NSUTF16BigEndianStringEncoding]];
+	else
+		[data appendData:[self dataFromString:password encoding:NSUTF8StringEncoding]];
 	if (self.state == CommandStateEnd)
 		return nil;
 	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
@@ -281,17 +294,17 @@ enum StateCommand {
 			self.rawCmd.seqNo = (dp[2] << 8) + (dp[3] & 0xff);
 			self.rawCmd.flags = (dp[4] << 8) + (dp[5] & 0xff);
 			self.rawCmd.rc = (dp[6] << 8) + (dp[7] & 0xff);
-			self.rawCmd.dataLength = (dp[8] << 24) + (dp[9] << 16) + (dp[10] << 8) + (dp[11] & 0xff);
+			int dataLength = (dp[8] << 24) + (dp[9] << 16) + (dp[10] << 8) + (dp[11] & 0xff);
 			NSLog(@"header: cmd=%d seqNo=%d flags=%d rc=%d", self.rawCmd.command, self.rawCmd.seqNo, self.rawCmd.flags, self.rawCmd.rc);
-			NSLog(@"data length: %d", self.rawCmd.dataLength);
-			if (self.rawCmd.dataLength)
-				[self.socket readDataToLength:self.rawCmd.dataLength withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateDataReceived];
+			NSLog(@"data length: %d", dataLength);
+			if (dataLength)
+				[self.socket readDataToLength:dataLength withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateDataReceived];
 			else
 				self.state = CommandStateDone;
 			break;
 		case ProtocolStateDataReceived:
 			dp = (unsigned char *)self.rawCmd.data.bytes;
-			self.rawCmd.data = [NSMutableData dataWithBytes:dp length:self.rawCmd.dataLength];
+			self.rawCmd.data = [NSMutableData dataWithBytes:dp length:self.rawCmd.data.length];
 			self.state = CommandStateDone;
 			break;
 		default:

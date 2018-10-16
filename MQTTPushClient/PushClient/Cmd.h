@@ -13,7 +13,6 @@
 @property int seqNo;
 @property int flags;
 @property int rc;
-@property int dataLength;
 @property NSMutableData *data;
 @property NSError *error;
 
@@ -22,6 +21,8 @@
 @interface Cmd : NSObject
 
 @property RawCmd *rawCmd;
+@property int protocolMajor;
+@property int protocolMinor;
 
 - (instancetype)initWithHost:(NSString *)host port:(int)port;
 - (void)exit;
