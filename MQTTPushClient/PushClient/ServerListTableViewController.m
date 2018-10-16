@@ -125,7 +125,6 @@
 		MessageListTableViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];
 		controller.account = account;
-		controller.statusBarButtonItem.title = [account.error localizedDescription];
 	}
 }
 

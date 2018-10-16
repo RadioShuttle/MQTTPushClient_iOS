@@ -12,6 +12,7 @@
 
 @interface MessageListTableViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property NSDateFormatter *dateFormatter;
 
 @end
@@ -24,12 +25,13 @@
 }
 
 - (void)updateAccountStatus:(NSNotification *)sender {
-	self.statusBarButtonItem.enabled = NO;
-	self.statusBarButtonItem.title = [self.account.error localizedDescription];
-	if (self.account.error)
+	if (self.account.error) {
+		self.statusLabel.text = self.account.error.localizedDescription;
 		[self.navigationController setToolbarHidden:NO animated:YES];
-	else
-		self.navigationController.toolbarHidden = YES;
+	} else {
+		self.statusLabel.text = @"";
+		[self.navigationController setToolbarHidden:YES animated:YES];
+	}
 }
 
 - (void)updateAccount {
