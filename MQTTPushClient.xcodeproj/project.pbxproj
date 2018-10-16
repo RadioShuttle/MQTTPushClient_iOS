@@ -27,7 +27,33 @@
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
 		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
 		75E6D1E268F383A1482B4823 /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */; };
+		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
+		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		84B9EDCB2175E0A1001A9D7D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2ADBE44A213D7515000664D3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 84B9EDC42175E0A1001A9D7D;
+			remoteInfo = MQTTPushClientServiceExtension;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		84B9EDD12175E0A1001A9D7D /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.release.xcconfig"; sourceTree = "<group>"; };
@@ -68,6 +94,11 @@
 		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
 		2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerSetupTableViewController.m; sourceTree = "<group>"; };
 		686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MQTTPushClientServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		84B9EDC72175E0A1001A9D7D /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
+		84B9EDC82175E0A1001A9D7D /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
+		84B9EDCA2175E0A1001A9D7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		84B9EDD22175E120001A9D7D /* MQTTPushClientServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClientServiceExtension.entitlements; sourceTree = "<group>"; };
 		C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -77,6 +108,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				75E6D1E268F383A1482B4823 /* libPods-MQTTPushClient.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84B9EDC22175E0A1001A9D7D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,6 +160,7 @@
 			isa = PBXGroup;
 			children = (
 				2ADBE454213D7515000664D3 /* MQTTPushClient */,
+				84B9EDC62175E0A1001A9D7D /* MQTTPushClientServiceExtension */,
 				2ADBE453213D7515000664D3 /* Products */,
 				44C49B383F37B00713AAEEB2 /* Pods */,
 				E4A46935F60EFDA587278ECF /* Frameworks */,
@@ -133,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				2ADBE452213D7515000664D3 /* MQTTPushClient.app */,
+				84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,6 +201,17 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		84B9EDC62175E0A1001A9D7D /* MQTTPushClientServiceExtension */ = {
+			isa = PBXGroup;
+			children = (
+				84B9EDD22175E120001A9D7D /* MQTTPushClientServiceExtension.entitlements */,
+				84B9EDC72175E0A1001A9D7D /* NotificationService.h */,
+				84B9EDC82175E0A1001A9D7D /* NotificationService.m */,
+				84B9EDCA2175E0A1001A9D7D /* Info.plist */,
+			);
+			path = MQTTPushClientServiceExtension;
+			sourceTree = "<group>";
+		};
 		E4A46935F60EFDA587278ECF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -180,15 +231,34 @@
 				2ADBE44E213D7515000664D3 /* Sources */,
 				2ADBE44F213D7515000664D3 /* Frameworks */,
 				2ADBE450213D7515000664D3 /* Resources */,
+				84B9EDD12175E0A1001A9D7D /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				84B9EDCC2175E0A1001A9D7D /* PBXTargetDependency */,
 			);
 			name = MQTTPushClient;
 			productName = MQTTPushClient;
 			productReference = 2ADBE452213D7515000664D3 /* MQTTPushClient.app */;
 			productType = "com.apple.product-type.application";
+		};
+		84B9EDC42175E0A1001A9D7D /* MQTTPushClientServiceExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 84B9EDD02175E0A1001A9D7D /* Build configuration list for PBXNativeTarget "MQTTPushClientServiceExtension" */;
+			buildPhases = (
+				84B9EDC12175E0A1001A9D7D /* Sources */,
+				84B9EDC22175E0A1001A9D7D /* Frameworks */,
+				84B9EDC32175E0A1001A9D7D /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MQTTPushClientServiceExtension;
+			productName = MQTTPushClientServiceExtension;
+			productReference = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
 		};
 /* End PBXNativeTarget section */
 
@@ -213,6 +283,14 @@
 							};
 						};
 					};
+					84B9EDC42175E0A1001A9D7D = {
+						CreatedOnToolsVersion = 10.0;
+						SystemCapabilities = {
+							com.apple.ApplicationGroups.iOS = {
+								enabled = 1;
+							};
+						};
+					};
 				};
 			};
 			buildConfigurationList = 2ADBE44D213D7515000664D3 /* Build configuration list for PBXProject "MQTTPushClient" */;
@@ -229,6 +307,7 @@
 			projectRoot = "";
 			targets = (
 				2ADBE451213D7515000664D3 /* MQTTPushClient */,
+				84B9EDC42175E0A1001A9D7D /* MQTTPushClientServiceExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -242,6 +321,13 @@
 				2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		84B9EDC32175E0A1001A9D7D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -291,7 +377,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		84B9EDC12175E0A1001A9D7D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		84B9EDCC2175E0A1001A9D7D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 84B9EDC42175E0A1001A9D7D /* MQTTPushClientServiceExtension */;
+			targetProxy = 84B9EDCB2175E0A1001A9D7D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		2ADBE45B213D7515000664D3 /* Main.storyboard */ = {
@@ -461,6 +563,49 @@
 			};
 			name = Release;
 		};
+		84B9EDCE2175E0A1001A9D7D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MQTTPushClientServiceExtension/MQTTPushClientServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 36U648SHJ6;
+				INFOPLIST_FILE = MQTTPushClientServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = de.helios.MQTTPushClient.MQTTPushClientServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		84B9EDCF2175E0A1001A9D7D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = MQTTPushClientServiceExtension/MQTTPushClientServiceExtension.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 36U648SHJ6;
+				INFOPLIST_FILE = MQTTPushClientServiceExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = de.helios.MQTTPushClient.MQTTPushClientServiceExtension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -478,6 +623,15 @@
 			buildConfigurations = (
 				2ADBE469213D7516000664D3 /* Debug */,
 				2ADBE46A213D7516000664D3 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		84B9EDD02175E0A1001A9D7D /* Build configuration list for PBXNativeTarget "MQTTPushClientServiceExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				84B9EDCE2175E0A1001A9D7D /* Debug */,
+				84B9EDCF2175E0A1001A9D7D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
