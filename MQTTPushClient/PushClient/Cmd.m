@@ -213,17 +213,19 @@ enum StateCommand {
 	enum TransmissionFlag flag = FLAG_REQUEST;
 	if (secureTransport) {
 		flag |= FLAG_SSL;
-		[self.socket startTLS:nil];
 	}
 	[self writeCommand:CMD_HELLO seqNo:seqNo flags:flag rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
-	if (self.rawCmd.data.length) {
+	if (self.rawCmd.rc == RC_INVALID_PROTOCOL && self.rawCmd.data.length == 2) {
 		unsigned char *p = (unsigned char *)self.rawCmd.data.bytes;
 		self.protocolMajor = p[0];
 		self.protocolMinor = p[1];
 		return nil;
 	}
+	flag = self.rawCmd.flags;
+	if (flag & FLAG_SSL)
+		[self.socket startTLS:nil];
 	return self.rawCmd;
 }
 
