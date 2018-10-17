@@ -12,6 +12,7 @@
 @property int seqNo;
 @property int flags;
 @property int rc;
+@property NSMutableData *header;
 @property NSMutableData *data;
 @property NSError *error;
 

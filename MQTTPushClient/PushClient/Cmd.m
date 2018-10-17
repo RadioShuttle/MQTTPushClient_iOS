@@ -77,6 +77,7 @@ enum StateCommand {
 	self = [super init];
 	if (self) {
 		_seqNo = 9200;
+		_header = [[NSMutableData alloc] initWithLength:MAGIC_SIZE + HEADER_SIZE];
 		_data = [[NSMutableData alloc] initWithLength:4000];
 	}
 	return self;
@@ -165,8 +166,8 @@ enum StateCommand {
 }
 
 - (RawCmd *)readCommand {
-	[self.socket readDataToLength:MAGIC_SIZE withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateMagicReceived];
-	[self.socket readDataToLength:HEADER_SIZE withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:MAGIC_SIZE tag:ProtocolStateHeaderReceived];
+	[self.socket readDataToLength:MAGIC_SIZE withTimeout:self.timeout buffer:self.rawCmd.header bufferOffset:0 tag:ProtocolStateMagicReceived];
+	[self.socket readDataToLength:HEADER_SIZE withTimeout:self.timeout buffer:self.rawCmd.header bufferOffset:MAGIC_SIZE tag:ProtocolStateHeaderReceived];
 	return self.rawCmd;
 }
 
@@ -286,7 +287,7 @@ enum StateCommand {
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
 	NSLog(@"data received (tag:%ld)", tag);
 	char *text;
-	unsigned char *dp;
+	unsigned char *hp, *dp;
 	enum StateProtocol protocol = (enum StateProtocol)tag;
 	switch (protocol) {
 		case ProtocolStateMagicReceived:
@@ -297,13 +298,13 @@ enum StateCommand {
 			}
 			break;
 		case ProtocolStateHeaderReceived:
-			dp = (unsigned char *)self.rawCmd.data.bytes;
-			dp += MAGIC_SIZE;
-			self.rawCmd.command = (dp[0] << 8) + (dp[1] & 0xff);
-			self.rawCmd.seqNo = (dp[2] << 8) + (dp[3] & 0xff);
-			self.rawCmd.flags = (dp[4] << 8) + (dp[5] & 0xff);
-			self.rawCmd.rc = (dp[6] << 8) + (dp[7] & 0xff);
-			int dataLength = (dp[8] << 24) + (dp[9] << 16) + (dp[10] << 8) + (dp[11] & 0xff);
+			hp = (unsigned char *)self.rawCmd.header.bytes;
+			hp += MAGIC_SIZE;
+			self.rawCmd.command = (hp[0] << 8) + (hp[1] & 0xff);
+			self.rawCmd.seqNo = (hp[2] << 8) + (hp[3] & 0xff);
+			self.rawCmd.flags = (hp[4] << 8) + (hp[5] & 0xff);
+			self.rawCmd.rc = (hp[6] << 8) + (hp[7] & 0xff);
+			int dataLength = (hp[8] << 24) + (hp[9] << 16) + (hp[10] << 8) + (hp[11] & 0xff);
 			NSLog(@"header: cmd=%d seqNo=%d flags=%d rc=%d", self.rawCmd.command, self.rawCmd.seqNo, self.rawCmd.flags, self.rawCmd.rc);
 			NSLog(@"data length: %d", dataLength);
 			if (dataLength)
