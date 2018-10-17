@@ -287,7 +287,7 @@ enum StateCommand {
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
 	NSLog(@"data received (tag:%ld)", tag);
 	char *text;
-	unsigned char *hp, *dp;
+	unsigned char *hp;
 	enum StateProtocol protocol = (enum StateProtocol)tag;
 	switch (protocol) {
 		case ProtocolStateMagicReceived:
@@ -313,8 +313,6 @@ enum StateCommand {
 				self.state = CommandStateDone;
 			break;
 		case ProtocolStateDataReceived:
-			dp = (unsigned char *)self.rawCmd.data.bytes;
-			self.rawCmd.data = [NSMutableData dataWithBytes:dp length:self.rawCmd.data.length];
 			self.state = CommandStateDone;
 			break;
 		default:
