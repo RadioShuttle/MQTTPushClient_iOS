@@ -85,10 +85,10 @@
             </objects>
             <point key="canvasLocation" x="144.80000000000001" y="116.49175412293854"/>
         </scene>
-        <!--Message List Table View Controller-->
+        <!--Message List-->
         <scene sceneID="12f-PV-aIe">
             <objects>
-                <tableViewController id="k5Q-cm-GtU" customClass="MessageListTableViewController" sceneMemberID="viewController">
+                <tableViewController title="Message List" id="k5Q-cm-GtU" customClass="MessageListTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zIr-sl-BuY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -169,9 +169,17 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="statusLabel" destination="5WO-nn-elx" id="2xx-nK-Re0"/>
+                        <outlet property="tableViewHeaderLabel" destination="jMb-eE-EF0" id="o1O-VU-VSp"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D3X-ps-hNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jMb-eE-EF0">
+                    <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </objects>
             <point key="canvasLocation" x="145" y="913"/>
         </scene>

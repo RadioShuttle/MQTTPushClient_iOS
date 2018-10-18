@@ -13,6 +13,7 @@
 @interface MessageListTableViewController ()
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
+@property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
 @property NSDateFormatter *dateFormatter;
 
 @end
@@ -45,6 +46,8 @@
 	self.tableView.refreshControl = [[UIRefreshControl alloc] init];
 	self.tableView.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Updating Message List" attributes:nil];
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccount) forControlEvents:UIControlEventValueChanged];
+	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqtt.user, self.account.mqtt.host, self.account.mqtt.port.intValue];
+	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
