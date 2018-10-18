@@ -144,13 +144,19 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
+                        <barButtonItem systemItem="trash" id="jYR-Ne-NLa">
+                            <connections>
+                                <action selector="trashAction:" destination="k5Q-cm-GtU" id="bbW-b0-j0S"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem systemItem="flexibleSpace" id="Xee-3T-ep3"/>
                         <barButtonItem style="plain" id="Qdu-Ql-xed">
                             <view key="customView" contentMode="scaleToFill" id="2rd-HO-GUn">
-                                <rect key="frame" x="16" y="5.5" width="343" height="33"/>
+                                <rect key="frame" x="53" y="5.5" width="306" height="33"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-nn-elx">
-                                        <rect key="frame" x="0.0" y="0.0" width="343" height="33"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="306" height="33"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -170,6 +176,7 @@
                     <connections>
                         <outlet property="statusLabel" destination="5WO-nn-elx" id="2xx-nK-Re0"/>
                         <outlet property="tableViewHeaderLabel" destination="jMb-eE-EF0" id="o1O-VU-VSp"/>
+                        <outlet property="trashBarButtonItem" destination="jYR-Ne-NLa" id="ZAD-jE-wuu"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D3X-ps-hNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -181,7 +188,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </objects>
-            <point key="canvasLocation" x="145" y="913"/>
+            <point key="canvasLocation" x="144.80000000000001" y="912.5937031484259"/>
         </scene>
         <!--Server Setup-->
         <scene sceneID="gHD-ja-Nag">

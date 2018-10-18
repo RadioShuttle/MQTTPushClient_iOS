@@ -14,6 +14,7 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *trashBarButtonItem;
 @property NSDateFormatter *dateFormatter;
 
 @end
@@ -41,6 +42,9 @@
 	[self.refreshControl endRefreshing];
 }
 
+- (IBAction)trashAction:(UIBarButtonItem *)sender {
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.tableView.refreshControl = [[UIRefreshControl alloc] init];
@@ -58,6 +62,8 @@
 	self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
 	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
 	[self updateAccountStatus:nil];
+	if (self.account.messageList.count == 0)
+		self.trashBarButtonItem.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
