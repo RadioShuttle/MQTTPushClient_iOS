@@ -9,9 +9,17 @@
 
 @interface TopicsListTableViewController ()
 
+@property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
+
 @end
 
 @implementation TopicsListTableViewController
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqtt.user, self.account.mqtt.host, self.account.mqtt.port.intValue];
+	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
+}
 
 #pragma mark - Table view data source
 
