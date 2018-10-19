@@ -7,6 +7,7 @@
 #import "Account.h"
 #import "Connection.h"
 #import "AppDelegate.h"
+#import "TopicsListTableViewController.h"
 #import "MessageListTableViewController.h"
 #import "ServerSetupTableViewController.h"
 #import "ServerListTableViewCell.h"
@@ -101,6 +102,11 @@
 	[accountList insertObject:account atIndex:destinationIndexPath.row];
 	[appDelegate saveAccounts];
 }
+#pragma mark - delegate
+
+-(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
+	[self performSegueWithIdentifier:@"IDShowTopics" sender:indexPath];
+}
 
 #pragma mark - navigation
 
@@ -113,15 +119,21 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	if ([segue.identifier isEqualToString:@"IDAddServer"]) {
+	NSString *identifier = segue.identifier;
+	if ([identifier isEqualToString:@"IDAddServer"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
 		controller.accountList = self.accountList;
 		controller.indexPath = nil;
-	} else if ([segue.identifier isEqualToString:@"IDShowSettings"]) {
+	} else if ([identifier isEqualToString:@"IDShowSettings"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
 		controller.accountList = self.accountList;
 		controller.indexPath = [self.tableView indexPathForSelectedRow];
-	} else {
+	} else if ([identifier isEqualToString:@"IDShowTopics"]) {
+		TopicsListTableViewController *controller = segue.destinationViewController;
+		NSIndexPath *indexPath = sender;
+		Account *account = self.accountList[indexPath.row];
+		controller.account = account;
+	} else if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];
 		controller.account = account;

@@ -13,6 +13,7 @@
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
 		2A7DFF8A213EBBD7001B1546 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF89213EBBD7001B1546 /* Account.m */; };
 		2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */; };
+		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
 		2AC93088214BDD9700B603B4 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC93087214BDD9700B603B4 /* Message.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
 		2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE456213D7515000664D3 /* AppDelegate.m */; };
@@ -68,6 +69,8 @@
 		2A7DFF89213EBBD7001B1546 /* Account.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		2A7DFF8B213EC414001B1546 /* MessageQueuingTelemetryTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageQueuingTelemetryTransport.h; sourceTree = "<group>"; };
 		2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageQueuingTelemetryTransport.m; sourceTree = "<group>"; };
+		2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewController.h; sourceTree = "<group>"; };
+		2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewController.m; sourceTree = "<group>"; };
 		2AC93086214BDD9700B603B4 /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		2AC93087214BDD9700B603B4 /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
@@ -152,6 +155,8 @@
 				2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */,
 				2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */,
 				2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */,
+				2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */,
+				2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -374,6 +379,7 @@
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
 				2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
+				2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
