@@ -58,14 +58,7 @@
 		[FIRApp configureWithName:appName options:firOptions];
 }
 
-- (void)getFcmDataAsync:(Account *)account {
-	for (;;) {
-		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
-		if (self.fcmToken)
-			break;
-		NSLog(@"waiting for FCM token...");
-		sleep(1);
-	}
+- (Cmd *)login:(Account *)account {
 	int port = SERVER_DEFAULT_PORT;
 	NSString *host = account.host;
 	NSArray *array = [account.host componentsSeparatedByString:@":"];
@@ -89,20 +82,45 @@
 	else
 		string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
 	[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
-	[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
-	if ([command fcmDataRequest:0])
-		[self applyFcmData:command.rawCmd.data forAccount:account];
+	return command;
+}
+
+- (void)disconnect:(Account *)account withCommand:(Cmd *)command {
 	account.error = command.rawCmd.error;
 	[command bye:0];
 	[command exit];
 	[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
 }
 
+- (void)getFcmDataAsync:(Account *)account {
+	for (;;) {
+		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
+		if (self.fcmToken)
+			break;
+		NSLog(@"waiting for FCM token...");
+		sleep(1);
+	}
+	Cmd *command = [self login:account];
+	[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
+	if ([command fcmDataRequest:0])
+		[self applyFcmData:command.rawCmd.data forAccount:account];
+	[self disconnect:account withCommand:command];
+}
+
 - (void)getTopicsAsync:(Account *)account {
-	[account.topicList addObject:@"mytopic/myentry1"];
-	[account.topicList addObject:@"mytopic/myentry2"];
-	[account.topicList addObject:@"mytopic/myentry3"];
-	[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
+	Cmd *command = [self login:account];
+	[command getTopicsRequest:0];
+	unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+	int numRecords = (p[0] << 8) + p[1];
+	p += 2;
+	while (numRecords--) {
+		int count = (p[0] << 8) + p[1];
+		NSString *name = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
+		int notificationType = p[2 + count];
+		p += 3 + count;
+		[account.topicList addObject:name];
+	}
+	[self disconnect:account withCommand:command];
 }
 
 - (void)getFcmDataForAccount:(Account *)account {

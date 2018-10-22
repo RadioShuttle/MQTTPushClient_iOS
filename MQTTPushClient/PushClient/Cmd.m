@@ -18,19 +18,19 @@ enum Command {
 	CMD_HELLO = 1,
 	CMD_LOGIN = 2,
 	CMD_GET_FCM_DATA = 3,
-	CMD_GET_SUBSCR = 4,
-	CMD_SUBSCRIBE = 5,
-	CMD_UNSUBSCRIBE = 6,
-	CMD_UPDATE_TOPICS = 7,
+	CMD_GET_TOPICS = 4,
+	CMD_ADD_TOPICS = 5,
+	CMD_DEL_TOPICS = 6,
+	CMD_UPD_TOPICS = 7,
 	CMD_SET_DEVICE_INFO = 8,
 	CMD_REMOVE_TOKEN = 9,
 	CMD_GET_ACTIONS = 10,
 	CMD_ADD_ACTION = 11,
-	CMD_UPDATE_ACTION = 12,
-	CMD_REMOVE_ACTIONS = 13,
+	CMD_UPD_ACTION = 12,
+	CMD_DEL_ACTIONS = 13,
 	CMD_LOGOUT = 14,
-	CMD_BYE = 15,
-	CMD_PUBLISH = 17,
+	CMD_DISCONNECT = 15,
+	CMD_MQTT_PUBLISH = 17,
 	CMD_GET_FCM_DATA_IOS = 18,
 	CMD_GET_MESSAGES = 19,
 	CMD_ADM = 20
@@ -232,7 +232,7 @@ enum StateCommand {
 
 - (void)bye:(int)seqNo {
 	NSData *data = [[NSData alloc] init];
-	[self writeCommand:CMD_BYE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self writeCommand:CMD_DISCONNECT seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
  }
 	 
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
@@ -268,6 +268,14 @@ enum StateCommand {
 		return nil;
 	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+- (RawCmd *)getTopicsRequest:(int)seqNo {
+	if (self.state == CommandStateEnd)
+		return nil;
+	[self request:CMD_GET_TOPICS seqNo:seqNo];
 	[self waitForCommand];
 	return self.rawCmd;
 }
