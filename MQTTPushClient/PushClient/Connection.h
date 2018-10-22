@@ -9,5 +9,6 @@
 @interface Connection : NSObject
 
 - (void)getFcmDataForAccount:(Account *)account;
+- (void)getTopicsForAccount:(Account *)account;
 
 @end

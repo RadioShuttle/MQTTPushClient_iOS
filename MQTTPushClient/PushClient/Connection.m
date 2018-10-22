@@ -30,7 +30,7 @@
 	return self;
 }
 
-- (void)notifyUI {
+- (void)postServerUpdateNotification {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 }
 
@@ -58,7 +58,7 @@
 		[FIRApp configureWithName:appName options:firOptions];
 }
 
-- (void)contactServerWith:(Account *)account {
+- (void)getFcmDataAsync:(Account *)account {
 	for (;;) {
 		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
 		if (self.fcmToken)
@@ -95,12 +95,23 @@
 	account.error = command.rawCmd.error;
 	[command bye:0];
 	[command exit];
-	[self performSelectorOnMainThread:@selector(notifyUI) withObject:nil waitUntilDone:YES];
+	[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
+}
+
+- (void)getTopicsAsync:(Account *)account {
+	[account.topicList addObject:@"mytopic/myentry1"];
+	[account.topicList addObject:@"mytopic/myentry2"];
+	[account.topicList addObject:@"mytopic/myentry3"];
+	[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
 }
 
 - (void)getFcmDataForAccount:(Account *)account {
 	account.error = nil;
-	dispatch_async(self.serialQueue, ^{[self contactServerWith:account];});
+	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
+}
+
+- (void)getTopicsForAccount:(Account *)account {
+	dispatch_async(self.serialQueue, ^{[self getTopicsAsync:account];});
 }
 
 @end

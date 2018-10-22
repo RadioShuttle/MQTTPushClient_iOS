@@ -5,6 +5,7 @@
  */
 
 #import "Account.h"
+#import "Connection.h"
 #import "TopicsListTableViewController.h"
 
 @interface TopicsListTableViewController ()
@@ -15,20 +16,38 @@
 
 @implementation TopicsListTableViewController
 
+- (void)updateList:(NSNotification *)sender {
+	[self.tableView reloadData];
+}
+
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqtt.user, self.account.mqtt.host, self.account.mqtt.port.intValue];
 	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"TopicsUpdateNotification" object:nil];
+	Connection *connection = [[Connection alloc] init];
+	[connection getTopicsForAccount:self.account];
+	self.navigationController.toolbarHidden = YES;
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-	return 0;
+	return self.account.topicList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
+	cell.textLabel.text = self.account.topicList[indexPath.row];
 	return cell;
 }
 

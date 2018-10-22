@@ -15,6 +15,7 @@
 @property MessageQueuingTelemetryTransport *mqtt;
 @property NSString *pushServerID;
 @property NSMutableArray *messageList;
+@property NSMutableArray *topicList;
 @property NSError *error;
 
 @end
