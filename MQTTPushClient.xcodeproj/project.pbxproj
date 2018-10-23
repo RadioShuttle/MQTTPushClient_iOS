@@ -35,6 +35,16 @@
 		847874EF2177777B0059881B /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EB2177777B0059881B /* KeychainUtils.m */; };
 		847874F2217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
 		847874F3217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
+		84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */; };
+		84B49947217F5A6D0016F9CB /* MQTT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */; };
+		84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */; };
+		84B49951217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */; };
+		84B49952217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994A217F5B720016F9CB /* CDAccount+CoreDataClass.m */; };
+		84B49953217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994A217F5B720016F9CB /* CDAccount+CoreDataClass.m */; };
+		84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994B217F5B720016F9CB /* CDMessage+CoreDataProperties.m */; };
+		84B49955217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994B217F5B720016F9CB /* CDMessage+CoreDataProperties.m */; };
+		84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994D217F5B720016F9CB /* CDAccount+CoreDataProperties.m */; };
+		84B49957217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994D217F5B720016F9CB /* CDAccount+CoreDataProperties.m */; };
 		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
 		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */; };
@@ -110,6 +120,15 @@
 		847874EB2177777B0059881B /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
 		847874F1217865700059881B /* SharedConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedConstants.m; sourceTree = "<group>"; };
 		847874F42178658F0059881B /* SharedConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedConstants.h; sourceTree = "<group>"; };
+		84B49945217F595E0016F9CB /* MQTT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MQTT.xcdatamodel; sourceTree = "<group>"; };
+		84B49948217F5B720016F9CB /* CDMessage+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDMessage+CoreDataClass.h"; sourceTree = "<group>"; };
+		84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CDMessage+CoreDataClass.m"; sourceTree = "<group>"; };
+		84B4994A217F5B720016F9CB /* CDAccount+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CDAccount+CoreDataClass.m"; sourceTree = "<group>"; };
+		84B4994B217F5B720016F9CB /* CDMessage+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CDMessage+CoreDataProperties.m"; sourceTree = "<group>"; };
+		84B4994C217F5B720016F9CB /* CDAccount+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDAccount+CoreDataClass.h"; sourceTree = "<group>"; };
+		84B4994D217F5B720016F9CB /* CDAccount+CoreDataProperties.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CDAccount+CoreDataProperties.m"; sourceTree = "<group>"; };
+		84B4994E217F5B720016F9CB /* CDAccount+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDAccount+CoreDataProperties.h"; sourceTree = "<group>"; };
+		84B4994F217F5B720016F9CB /* CDMessage+CoreDataProperties.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDMessage+CoreDataProperties.h"; sourceTree = "<group>"; };
 		84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MQTTPushClientServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B9EDC72175E0A1001A9D7D /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		84B9EDC82175E0A1001A9D7D /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
@@ -174,6 +193,7 @@
 		2ADBE449213D7515000664D3 = {
 			isa = PBXGroup;
 			children = (
+				84B49943217F59430016F9CB /* CoreData */,
 				847874DF217760620059881B /* Shared */,
 				2ADBE454213D7515000664D3 /* MQTTPushClient */,
 				84B9EDC62175E0A1001A9D7D /* MQTTPushClientServiceExtension */,
@@ -232,6 +252,22 @@
 				847874F1217865700059881B /* SharedConstants.m */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		84B49943217F59430016F9CB /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				84B4994C217F5B720016F9CB /* CDAccount+CoreDataClass.h */,
+				84B4994A217F5B720016F9CB /* CDAccount+CoreDataClass.m */,
+				84B4994E217F5B720016F9CB /* CDAccount+CoreDataProperties.h */,
+				84B4994D217F5B720016F9CB /* CDAccount+CoreDataProperties.m */,
+				84B49948217F5B720016F9CB /* CDMessage+CoreDataClass.h */,
+				84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */,
+				84B4994F217F5B720016F9CB /* CDMessage+CoreDataProperties.h */,
+				84B4994B217F5B720016F9CB /* CDMessage+CoreDataProperties.m */,
+				84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */,
+			);
+			path = CoreData;
 			sourceTree = "<group>";
 		};
 		84B9EDC62175E0A1001A9D7D /* MQTTPushClientServiceExtension */ = {
@@ -402,14 +438,19 @@
 				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
 				847874F2217865700059881B /* SharedConstants.m in Sources */,
 				847874E6217762B10059881B /* AccountList.m in Sources */,
+				84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
 				847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
+				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
+				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
+				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
+				84B49952217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
 				2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -418,9 +459,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				84B49957217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */,
+				84B49947217F5A6D0016F9CB /* MQTT.xcdatamodeld in Sources */,
+				84B49953217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
 				847874EF2177777B0059881B /* KeychainUtils.m in Sources */,
 				847874F3217865700059881B /* SharedConstants.m in Sources */,
+				84B49951217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
+				84B49955217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				847874E3217761040059881B /* Account.m in Sources */,
 				847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
 				847874E7217762B10059881B /* AccountList.m in Sources */,
@@ -677,6 +723,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				84B49945217F595E0016F9CB /* MQTT.xcdatamodel */,
+			);
+			currentVersion = 84B49945217F595E0016F9CB /* MQTT.xcdatamodel */;
+			path = MQTT.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 2ADBE44A213D7515000664D3 /* Project object */;
 }

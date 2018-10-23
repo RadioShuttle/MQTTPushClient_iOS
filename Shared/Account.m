@@ -18,6 +18,10 @@
 @property(readwrite, copy) NSString *mqttUser;
 @property(readwrite, copy) NSString *uuid;
 @property(readwrite, copy) NSURL *cacheURL;
+@property(readwrite) NSManagedObjectContext *context;
+@property(readwrite) NSManagedObjectContext *backgroundContext;
+@property(readwrite) CDAccount *cdaccount;
+
 
 @end
 
@@ -36,20 +40,48 @@
 	account.mqttUser = mqttUser;
 	account.uuid = uuid;
 	
-	account.messageList = [NSMutableArray array];
 	account.topicList = [NSMutableArray array];
 	return account;
 }
 
-- (BOOL)configure {
-	if (self.uuid == nil) {
-		return [self createUuidAndCacheURL];
+- (BOOL) configure
+{
+	if (self.uuid.length == 0) {
+		if (![self createUuidAndCacheURL])
+			return NO;
 	} else {
-		return [self createCacheURL];
+		if (![self createCacheURL])
+			return NO;
 	}
+	
+	if (![self setupCoreData])
+		return NO;
+	if (![self createCDAccount])
+		return NO;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(backgroundContextDidSave:)
+												 name:NSManagedObjectContextDidSaveNotification
+											   object:self.backgroundContext];
+
+	
+	return YES;
 }
 
 - (void)clearCache {
+	NSPersistentStoreCoordinator *coord = self.context.persistentStoreCoordinator;
+	self.context = nil;
+	self.backgroundContext = nil;
+	self.cdaccount = nil;
+	
+	[coord performBlockAndWait:^{
+		for (NSPersistentStore *store in coord.persistentStores) {
+			NSError *error;
+			if (![coord removePersistentStore:store error:&error]) {
+				NSLog(@"%@", error);
+			}
+		}
+	}];
 	[[NSFileManager defaultManager] removeItemAtURL:self.cacheURL error:nil];
 }
 
@@ -125,6 +157,82 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 	}
 	self.cacheURL = cacheURL;
 	return YES;
+}
+
+- (BOOL) setupCoreData
+{
+	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"MQTT" withExtension:@"momd"];
+	NSManagedObjectModel *model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+	
+	// Create persistent store:
+	NSError *error;
+	NSURL *storeURL = [self.cacheURL URLByAppendingPathComponent:@"messages.sqlite"];
+	NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+	
+	// Automatic migration from previous version, using the given mapping model:
+	NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
+							  NSInferMappingModelAutomaticallyOption: @NO};
+	
+	NSPersistentStore *store = [coord addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
+	if (store == nil) {
+		NSLog(@"Could not open store (first attempt). URL=%@, error=%@", storeURL, error.userInfo);
+		/*
+		 * The most likely reason that the store could not be opened is that
+		 * the Core Data model has been changed in the App and is now incompatible
+		 * with the model that was used to create the store.
+		 *
+		 * The only thing we can do here is to delete the store and recreate it.
+		 * We delete the entire cache directory, because all downloaded files
+		 * are not accessible anymore if the store is recreated.
+		 */
+		[self clearCache];
+		[[NSFileManager defaultManager] createDirectoryAtURL:self.cacheURL withIntermediateDirectories:NO attributes:nil error:NULL];
+		store = [coord addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error];
+		if (store == nil) {
+			NSLog(@"Could not open store (second attempt). URL=%@, error=%@", storeURL, error.userInfo);
+			return NO;
+		}
+	}
+	
+	// Create main managed object context:
+	self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+	self.context.persistentStoreCoordinator = coord;
+	self.context.undoManager = nil;
+	
+	// Create managed object context for background tasks:
+	self.backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+	self.backgroundContext.persistentStoreCoordinator = coord;
+	self.backgroundContext.undoManager = nil;
+	self.backgroundContext.mergePolicy = NSOverwriteMergePolicy;
+	
+	return YES;
+}
+
+
+- (BOOL) createCDAccount
+{
+	NSFetchRequest *fetchRequest = [CDAccount fetchRequest];
+	
+	NSError *error = nil;
+	NSArray *result = [self.context executeFetchRequest:fetchRequest error:&error];
+	if (result == nil) {
+		NSLog(@"Unresolved error %@, %@", error, error.userInfo);
+		return NO;
+	}
+	if (result.count > 0) {
+		self.cdaccount = result[0];
+	} else {
+		self.cdaccount = [NSEntityDescription insertNewObjectForEntityForName:@"CDAccount" inManagedObjectContext:self.context];
+		[self.context save:&error];
+	}
+	return YES;
+}
+
+- (void)backgroundContextDidSave:(NSNotification *)notification
+{
+	[self.context performBlock:^{
+		[self.context mergeChangesFromContextDidSaveNotification:notification];
+	}];
 }
 
 @end

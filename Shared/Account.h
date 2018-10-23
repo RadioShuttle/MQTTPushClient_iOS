@@ -5,6 +5,8 @@
  */
 
 @import Foundation;
+@import CoreData;
+#import "CDAccount+CoreDataProperties.h"
 
 #define SERVER_DEFAULT_PORT 2033
 #define MQTT_DEFAULT_PORT 1883
@@ -28,9 +30,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Runtime properties which are stored in memory only:
 @property (readonly) NSURL *cacheURL; // Cache directory for this account
-@property NSMutableArray *messageList;
 @property NSMutableArray *topicList;
 @property(nullable) NSError *error;
+
+// Core Data related properties:
+@property (readonly) NSManagedObjectContext *context;
+@property (readonly) NSManagedObjectContext *backgroundContext;
+@property(readonly) CDAccount *cdaccount;
 
 
 + (instancetype)accountWithHost:(NSString *)host

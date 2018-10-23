@@ -4,10 +4,11 @@
  * 30827 Garbsen, Germany
  */
 
-#import <Foundation/Foundation.h>
+@import Foundation;
+#import "Account.h"
 
 @interface MessageDataHandler : NSObject
 
-- (void)handleRemoteMessage:(NSDictionary *)remoteMessage forList:(NSMutableArray *)list;
++ (void)handleRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account;
 
 @end

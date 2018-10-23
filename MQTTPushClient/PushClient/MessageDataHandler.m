@@ -7,35 +7,84 @@
 @import UserNotifications;
 #import "Message.h"
 #import "MessageDataHandler.h"
+#import "CDMessage+CoreDataClass.h"
 
 @implementation MessageDataHandler
 
-- (void)handleRemoteMessage:(NSDictionary *)remoteMessage forList:(NSMutableArray *)list {
++ (void)handleRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account {
 	NSData *json = [remoteMessage[@"messages"] dataUsingEncoding:NSUTF8StringEncoding];
 	NSArray *messages = [NSJSONSerialization JSONObjectWithData:json options:0 error:nil];
-	for (NSDictionary *dictionary in messages) {
-		[dictionary enumerateKeysAndObjectsUsingBlock:^(NSString *topic, NSDictionary *value, BOOL * _Nonnull stop) {
-			NSArray *mdata = value[@"mdata"];
-			for (NSArray *array in mdata) {
-				NSInteger timeStamp = [array[0] integerValue];
-				NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeStamp];
-				NSData *data = [[NSData alloc] initWithBase64EncodedString:array[1] options:0];
-				NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-				NSLog(@"%@, %@, %@", date, topic, text);
-				Message *message = [[Message alloc] init];
-				message.date = date;
-				message.topic = topic;
-				message.text = text;
-				[list insertObject:message atIndex:0];
-				// Sort according to `date`, newest entry first:
-				[list sortUsingComparator:^NSComparisonResult(Message *message1, Message *message2) {
-					return [message2.date compare:message1.date];
-				}];
-				[[NSNotificationCenter defaultCenter] postNotificationName:@"MessageNotification" object:message];
-			}
-		}];
+	if (![messages isKindOfClass:[NSArray class]]) {
+		NSLog(@"Unexpected JSON data (array expected)");
+		return;
 	}
-}
+	
+	NSManagedObjectContext *bgContext = account.backgroundContext;
+	[bgContext performBlock:^{
+		[bgContext reset];
+		CDAccount *cdaccount = (CDAccount *)[account.backgroundContext
+											 existingObjectWithID:account.cdaccount.objectID
+											 error:NULL];
+		if (cdaccount == nil) {
+			return;
+		}
+		for (NSDictionary *dictionary in messages) {
+			if (![dictionary isKindOfClass:[NSDictionary class]]) {
+				NSLog(@"Unexpected JSON data (dictionary expected)");
+				continue;
+			}
+			[dictionary enumerateKeysAndObjectsUsingBlock:^(NSString *topic, NSDictionary *value, BOOL * _Nonnull stop) {
+				if (![topic isKindOfClass:[NSString class]]) {
+					NSLog(@"Unexpected JSON data (string topic expected)");
+					return;
+				}
+				if (![value isKindOfClass:[NSDictionary class]]) {
+					NSLog(@"Unexpected JSON data (dictionary value expected)");
+					return;
+				}
+				NSArray *mdata = value[@"mdata"];
+				if (![mdata isKindOfClass:[NSArray class]]) {
+					NSLog(@"Unexpected JSON data (array mdata expected)");
+					return;
+				}
+				for (NSArray *array in mdata) {
+					if (![array isKindOfClass:[NSArray class]] || array.count < 2) {
+						NSLog(@"Unexpected JSON data (array[2] mdata expected)");
+						continue;
+					}
+					NSInteger timeStamp = [array[0] integerValue];
+					if (timeStamp < 0) {
+						NSLog(@"Unexpected JSON data (invalid timestamp)");
+						continue;
+					}
+					NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeStamp];
+					NSData *data = [[NSData alloc] initWithBase64EncodedString:array[1] options:0];
+					if (data == nil) {
+						NSLog(@"Unexpected JSON data (invalid Base64 data)");
+						continue;
+					}
+					NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+					if (text == nil) {
+						NSLog(@"Unexpected JSON data (invalid Base64 text)");
+						continue;
+					}
+					NSLog(@"Insert message: %@, %@, %@", date, topic, text);
 
+					CDMessage *msg = [[CDMessage alloc] initWithContext:bgContext];
+					msg.topic = topic;
+					msg.text = text;
+					msg.timestamp = date;
+					msg.message_id = @"XXX TODO";
+					msg.account = cdaccount;
+				}
+			}];
+		}
+		cdaccount.last_update = [NSDate date];
+		NSError *error = nil;
+		if (![bgContext save:&error]) {
+			NSLog(@"Could not save background context: %@", error.localizedDescription);
+		}
+	}];
+}
 
 @end
