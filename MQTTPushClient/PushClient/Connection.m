@@ -58,7 +58,7 @@
 		[FIRApp configureWithName:appName options:firOptions];
 }
 
-- (Cmd *)login:(Account *)account {
+- (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password {
 	int port = SERVER_DEFAULT_PORT;
 	NSString *host = account.host;
 	NSArray *array = [account.host componentsSeparatedByString:@":"];
@@ -68,23 +68,22 @@
 		port = portString.intValue;
 	}
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
-	NSString *string;
-	if ([command helloRequest:0 secureTransport:account.mqtt.secureTransport] == nil) {
+	if ([command helloRequest:0 secureTransport:account.mqttSecureTransport] == nil) {
 		int major = command.protocolMajor;
 		int minor = command.protocolMinor;
 		command = [[Cmd alloc] initWithHost:host port:port];
 		command.protocolMajor = major;
 		command.protocolMinor = minor;
-		[command helloRequest:0 secureTransport:account.mqtt.secureTransport];
+		[command helloRequest:0 secureTransport:account.mqttSecureTransport];
 	}
-	if (account.mqtt.secureTransport)
-		string = [NSString stringWithFormat:@"ssl://%@:%@", account.mqtt.host, account.mqtt.port];
-	else
-		string = [NSString stringWithFormat:@"tcp://%@:%@", account.mqtt.host, account.mqtt.port];
-	[command loginRequest:0 uri:string user:account.mqtt.user password:account.mqtt.password];
+	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
 	return command;
 }
 
+
+- (Cmd *)login:(Account *)account {
+	return [self login:account withMqttPassword:account.mqttPassword];
+}
 - (void)disconnect:(Account *)account withCommand:(Cmd *)command {
 	account.error = command.rawCmd.error;
 	[command bye:0];

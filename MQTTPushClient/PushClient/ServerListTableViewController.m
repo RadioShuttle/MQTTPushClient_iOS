@@ -6,17 +6,17 @@
 
 #import "Account.h"
 #import "Connection.h"
-#import "AppDelegate.h"
-#import "TopicsListTableViewController.h"
 #import "MessageListTableViewController.h"
 #import "ServerSetupTableViewController.h"
 #import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
+#import "TopicsListTableViewController.h"
+#import "AccountList.h"
 
 @interface ServerListTableViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerBarButtonItem;
-@property NSMutableArray *accountList;
+@property AccountList *accountList;
 @property NSIndexPath *indexPathSelected;
 
 @end
@@ -47,9 +47,7 @@
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccounts) forControlEvents:UIControlEventValueChanged];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.addServerBarButtonItem.enabled = self.editing;
-	UIApplication *app = [UIApplication sharedApplication];
-	AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-	self.accountList = appDelegate.accountList;
+	self.accountList = [AccountList sharedAccountList];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -73,7 +71,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	Account *account = self.accountList[indexPath.row];
 	ServerListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
-	NSString *text = [NSString stringWithFormat:@"%@@%@:%d", account.mqtt.user, account.mqtt.host, account.mqtt.port.intValue];
+	NSString *text = [NSString stringWithFormat:@"%@@%@", account.mqttUser, account.mqttHost];
 	if (account.error == nil)
 		cell.statusImageView.image = [UIImage imageNamed:@"Success"];
 	else
@@ -85,22 +83,16 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		[self.accountList removeObjectAtIndex:[indexPath row]];
-		UIApplication *app = [UIApplication sharedApplication];
-		AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-		[appDelegate saveAccounts];
+		[self.accountList[indexPath.row] clearCache];
+		[self.accountList removeAccountAtIndex:[indexPath row]];
+		[self.accountList save];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-	UIApplication *app = [UIApplication sharedApplication];
-	AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-	NSMutableArray *accountList = appDelegate.accountList;
-	Account *account = accountList[sourceIndexPath.row];
-	[accountList removeObjectAtIndex:sourceIndexPath.row];
-	[accountList insertObject:account atIndex:destinationIndexPath.row];
-	[appDelegate saveAccounts];
+	[self.accountList moveAccountAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+	[self.accountList save];
 }
 #pragma mark - delegate
 

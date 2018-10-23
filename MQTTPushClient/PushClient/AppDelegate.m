@@ -10,6 +10,7 @@
 #import "Connection.h"
 #import "MessageDataHandler.h"
 #import "AppDelegate.h"
+#import "AccountList.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate>
 
@@ -19,62 +20,8 @@
 
 NSString *const kGCMMessageIDKey = @"gcm.message_id";
 
-- (void)openAccounts {
-	self.accountList = [[NSMutableArray alloc] init];
-	NSError *error;
-	NSURL *url = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:&error];
-	if (url) {
-		url = [url URLByAppendingPathComponent:@"ServerList.xml"];
-		NSData *data = [NSData dataWithContentsOfURL:url];
-		if (data) {
-			NSArray *properties = (NSArray *)[NSPropertyListSerialization propertyListWithData:data options:NSPropertyListImmutable format:nil error:&error];
-			self.accountList = [NSMutableArray arrayWithCapacity:properties.count];
-			for (NSDictionary *dictionary in properties) {
-				Account *account = [[Account alloc] init];
-				account.host = [dictionary objectForKey:@"address"];
-				account.mqtt.host = [dictionary objectForKey:@"mqtt.address"];
-				account.mqtt.port = [dictionary objectForKey:@"mqtt.port"];
-				NSNumber *secureTransport = [dictionary objectForKey:@"mqtt.secureTransport"];
-				account.mqtt.user = [dictionary objectForKey:@"mqtt.user"];
-				account.mqtt.password = [dictionary objectForKey:@"mqtt.password"];
-				if (!account.host)
-					account.host = @"";
-				if (!account.mqtt.host)
-					account.mqtt.host = @"";
-				if (!account.mqtt.port)
-					account.mqtt.port = [NSNumber numberWithInt:MQTT_DEFAULT_PORT];
-				if (secureTransport)
-					account.mqtt.secureTransport = secureTransport.boolValue;
-				else
-					account.mqtt.secureTransport = NO;
-				if (!account.mqtt.user)
-					account.mqtt.user = @"";
-				if (!account.mqtt.password)
-					account.mqtt.password = @"";
-				[self.accountList addObject:account];
-			}
-		}
-	}
-}
-
-- (void)saveAccounts {
-	NSError *error;
-	NSURL *url = [[NSFileManager defaultManager] URLForDirectory:NSDocumentDirectory inDomain:NSUserDomainMask appropriateForURL:nil create:NO error:&error];
-	if (url) {
-		url = [url URLByAppendingPathComponent:@"ServerList.xml"];
-		NSMutableArray *servers = [NSMutableArray arrayWithCapacity:[self.accountList count]];
-		for (Account *account in self.accountList) {
-			NSNumber *secureTransport = [NSNumber numberWithBool:account.mqtt.secureTransport];
-			NSDictionary *dictionary = @{@"address": account.host, @"mqtt.address": account.mqtt.host, @"mqtt.port": account.mqtt.port, @"mqtt.secureTransport": secureTransport, @"mqtt.user": account.mqtt.user, @"mqtt.password": account.mqtt.password};
-			[servers addObject:dictionary];
-		}
-		NSData *data = [NSPropertyListSerialization dataWithPropertyList:servers format:NSPropertyListXMLFormat_v1_0 options:0 error:&error];
-		[data writeToURL:url atomically:YES];
-	}
-}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-	[self openAccounts];
 	self.fcmToken = nil;
 	[FIRApp configure];
 	[[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:NO];
@@ -93,7 +40,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 		 }];
 	}
 	[application registerForRemoteNotifications];
-	for (Account *account in self.accountList) {
+	for (Account *account in [AccountList sharedAccountList]) {
 		Connection *connection = [[Connection alloc] init];
 		[connection getFcmDataForAccount:account];
 	}
@@ -204,7 +151,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	completionHandler(UNNotificationPresentationOptionNone);
 
 	NSString *pushServerID = userInfo[@"pushserverid"];
-	for (Account *account in self.accountList) {
+	for (Account *account in [AccountList sharedAccountList]) {
 		if ([pushServerID isEqualToString:account.pushServerID]) {
 			MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
 			[messageDataHandler handleRemoteMessage:userInfo forList:account.messageList];
@@ -236,7 +183,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 	//NSNumber *from = remoteMessage.appData[@"from"];
 /*
 	NSString *pushServerID = remoteMessage.appData[@"pushserverid"];
-	for (Account *account in self.accountList) {
+	for (Account *account in [AccountList sharedAccountList]) {
 		if ([pushServerID isEqualToString:account.pushServerID]) {
 			MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
 			[messageDataHandler handleRemoteMessage:remoteMessage forList:account.messageList];

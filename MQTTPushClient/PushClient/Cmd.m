@@ -36,15 +36,6 @@ enum Command {
 	CMD_ADM = 20
 };
 
-enum ReturnCode {
-	RC_OK = 0,
-	RC_INVALID_ARGS = 400,
-	RC_NOT_AUTHORIZED = 401,
-	RC_INVALID_PROTOCOL = 403,
-	RC_SERVER_ERROR = 500,
-	RC_MQTT_ERROR = 503
-};
-
 enum TransmissionFlag {
 	FLAG_REQUEST = 0,
 	FLAG_RESPONSE = 1,

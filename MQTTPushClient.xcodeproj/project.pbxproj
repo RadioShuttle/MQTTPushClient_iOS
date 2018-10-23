@@ -11,8 +11,6 @@
 		2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859D02142CC7000CFA5DC /* Cmd.m */; };
 		2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A39166021674CE4001316EB /* GoogleService-Info.plist */; };
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
-		2A7DFF8A213EBBD7001B1546 /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF89213EBBD7001B1546 /* Account.m */; };
-		2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */; };
 		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
 		2AC93088214BDD9700B603B4 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC93087214BDD9700B603B4 /* Message.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
@@ -27,9 +25,19 @@
 		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
 		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
-		75E6D1E268F383A1482B4823 /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */; };
+		847874E2217760F00059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
+		847874E3217761040059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
+		847874E6217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
+		847874E7217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
+		847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */; };
+		847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */; };
+		847874EE2177777B0059881B /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EB2177777B0059881B /* KeychainUtils.m */; };
+		847874EF2177777B0059881B /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EB2177777B0059881B /* KeychainUtils.m */; };
+		847874F2217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
+		847874F3217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
 		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
 		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,10 +73,6 @@
 		2A39166021674CE4001316EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerListTableViewController.h; sourceTree = "<group>"; };
 		2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewController.m; sourceTree = "<group>"; };
-		2A7DFF88213EBBD7001B1546 /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
-		2A7DFF89213EBBD7001B1546 /* Account.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
-		2A7DFF8B213EC414001B1546 /* MessageQueuingTelemetryTransport.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageQueuingTelemetryTransport.h; sourceTree = "<group>"; };
-		2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageQueuingTelemetryTransport.m; sourceTree = "<group>"; };
 		2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewController.h; sourceTree = "<group>"; };
 		2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewController.m; sourceTree = "<group>"; };
 		2AC93086214BDD9700B603B4 /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
@@ -96,13 +100,23 @@
 		2AEC5FCB214011890097D99A /* MessageListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListTableViewController.m; sourceTree = "<group>"; };
 		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
 		2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerSetupTableViewController.m; sourceTree = "<group>"; };
-		686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		847874E0217760F00059881B /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
+		847874E1217760F00059881B /* Account.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
+		847874E4217762B00059881B /* AccountList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountList.h; sourceTree = "<group>"; };
+		847874E5217762B00059881B /* AccountList.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AccountList.m; sourceTree = "<group>"; };
+		847874E82177777B0059881B /* NSDictionary+HelSafeAccessors.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+HelSafeAccessors.h"; sourceTree = "<group>"; };
+		847874E92177777B0059881B /* KeychainUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainUtils.h; sourceTree = "<group>"; };
+		847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+HelSafeAccessors.m"; sourceTree = "<group>"; };
+		847874EB2177777B0059881B /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
+		847874F1217865700059881B /* SharedConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedConstants.m; sourceTree = "<group>"; };
+		847874F42178658F0059881B /* SharedConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedConstants.h; sourceTree = "<group>"; };
 		84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = MQTTPushClientServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		84B9EDC72175E0A1001A9D7D /* NotificationService.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationService.h; sourceTree = "<group>"; };
 		84B9EDC82175E0A1001A9D7D /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
 		84B9EDCA2175E0A1001A9D7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84B9EDD22175E120001A9D7D /* MQTTPushClientServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClientServiceExtension.entitlements; sourceTree = "<group>"; };
 		C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.debug.xcconfig"; sourceTree = "<group>"; };
+		E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,7 +124,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				75E6D1E268F383A1482B4823 /* libPods-MQTTPushClient.a in Frameworks */,
+				A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,8 +141,6 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
-				2A7DFF88213EBBD7001B1546 /* Account.h */,
-				2A7DFF89213EBBD7001B1546 /* Account.m */,
 				2ADBE455213D7515000664D3 /* AppDelegate.h */,
 				2ADBE456213D7515000664D3 /* AppDelegate.m */,
 				2A2859CF2142CC7000CFA5DC /* Cmd.h */,
@@ -145,8 +157,6 @@
 				2ADFE5672166286600FB19E4 /* MessageDataHandler.m */,
 				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
 				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
-				2A7DFF8B213EC414001B1546 /* MessageQueuingTelemetryTransport.h */,
-				2A7DFF8C213EC414001B1546 /* MessageQueuingTelemetryTransport.m */,
 				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
 				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
 				2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */,
@@ -164,6 +174,7 @@
 		2ADBE449213D7515000664D3 = {
 			isa = PBXGroup;
 			children = (
+				847874DF217760620059881B /* Shared */,
 				2ADBE454213D7515000664D3 /* MQTTPushClient */,
 				84B9EDC62175E0A1001A9D7D /* MQTTPushClientServiceExtension */,
 				2ADBE453213D7515000664D3 /* Products */,
@@ -206,6 +217,23 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		847874DF217760620059881B /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				847874E92177777B0059881B /* KeychainUtils.h */,
+				847874EB2177777B0059881B /* KeychainUtils.m */,
+				847874E82177777B0059881B /* NSDictionary+HelSafeAccessors.h */,
+				847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */,
+				847874E0217760F00059881B /* Account.h */,
+				847874E1217760F00059881B /* Account.m */,
+				847874E4217762B00059881B /* AccountList.h */,
+				847874E5217762B00059881B /* AccountList.m */,
+				847874F42178658F0059881B /* SharedConstants.h */,
+				847874F1217865700059881B /* SharedConstants.m */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		84B9EDC62175E0A1001A9D7D /* MQTTPushClientServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -220,7 +248,7 @@
 		E4A46935F60EFDA587278ECF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				686EDD7D748364DEF145F8B9 /* libPods-MQTTPushClient.a */,
+				E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -365,19 +393,22 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
+				847874E2217760F00059881B /* Account.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2AC93088214BDD9700B603B4 /* Message.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
-				2A7DFF8A213EBBD7001B1546 /* Account.m in Sources */,
+				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
+				847874F2217865700059881B /* SharedConstants.m in Sources */,
+				847874E6217762B10059881B /* AccountList.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
+				847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
-				2A7DFF8D213EC414001B1546 /* MessageQueuingTelemetryTransport.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
 				2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */,
 			);
@@ -388,6 +419,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */,
+				847874EF2177777B0059881B /* KeychainUtils.m in Sources */,
+				847874F3217865700059881B /* SharedConstants.m in Sources */,
+				847874E3217761040059881B /* Account.m in Sources */,
+				847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
+				847874E7217762B10059881B /* AccountList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

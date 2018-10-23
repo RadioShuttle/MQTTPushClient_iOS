@@ -22,7 +22,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqtt.user, self.account.mqtt.host, self.account.mqtt.port.intValue];
+	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@", self.account.mqttUser, self.account.mqttHost];
 	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
 }
 

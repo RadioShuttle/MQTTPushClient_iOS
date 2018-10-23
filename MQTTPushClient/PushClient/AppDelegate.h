@@ -9,10 +9,7 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property NSMutableArray *accountList;
 @property NSString *fcmToken;
-
-- (void)saveAccounts;
 
 @end
 

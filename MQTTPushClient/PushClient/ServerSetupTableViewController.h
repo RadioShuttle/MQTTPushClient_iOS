@@ -5,10 +5,11 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "AccountList.h"
 
 @interface ServerSetupTableViewController : UITableViewController
 
-@property NSMutableArray *accountList;
+@property AccountList *accountList;
 @property NSIndexPath *indexPath;
 
 @end

@@ -6,6 +6,15 @@
 
 #import <Foundation/Foundation.h>
 
+enum ReturnCode {
+	RC_OK = 0,
+	RC_INVALID_ARGS = 400,
+	RC_NOT_AUTHORIZED = 401,
+	RC_INVALID_PROTOCOL = 403,
+	RC_SERVER_ERROR = 500,
+	RC_MQTT_ERROR = 503
+};
+
 @interface RawCmd : NSObject
 
 @property int command;
