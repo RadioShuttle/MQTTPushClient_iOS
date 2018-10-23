@@ -38,6 +38,26 @@
 }
 
 - (IBAction)trashAction:(UIBarButtonItem *)sender {
+	NSManagedObjectContext *bgContext =self.account.backgroundContext;
+	[bgContext performBlock:^{
+		[bgContext reset];
+		CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
+											 existingObjectWithID:self.account.cdaccount.objectID
+											 error:NULL];
+		if (cdaccount == nil) {
+			return;
+		}
+		NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@", self.account.cdaccount];
+		fetchRequest.predicate = predicate;
+		
+		NSArray<CDMessage *> *messages = [bgContext executeFetchRequest:fetchRequest error:NULL];
+		for (CDMessage *msg in messages) {
+			[bgContext deleteObject:msg];
+		}
+		[bgContext save:NULL];
+
+	}];
 }
 
 - (void)viewDidLoad {
@@ -57,8 +77,6 @@
 	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
 	[self.navigationController setToolbarHidden:NO animated:YES];
 	[self updateAccountStatus:nil];
-	// XXX TODO if (self.account.messageList.count == 0)
-	//	self.trashBarButtonItem.enabled = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -109,6 +127,8 @@
 													 sectionNameKeyPath:nil cacheName:nil];
 	aFrc.delegate = self;
 	[aFrc performFetch:NULL];
+	
+	self.trashBarButtonItem.enabled = aFrc.fetchedObjects.count > 0;
 	
 	_frc = aFrc;
 	return _frc;
@@ -161,6 +181,7 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
+	self.trashBarButtonItem.enabled = controller.fetchedObjects.count > 0;
 }
 
 @end
