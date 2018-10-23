@@ -8,6 +8,6 @@
 
 @interface MessageDataHandler : NSObject
 
-- (void)handleRemoteMessage:(FIRMessagingRemoteMessage *)remoteMessage forList:(NSMutableArray *)list;
+- (void)handleRemoteMessage:(NSDictionary *)remoteMessage forList:(NSMutableArray *)list;
 
 @end

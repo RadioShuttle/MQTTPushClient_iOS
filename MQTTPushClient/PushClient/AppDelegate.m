@@ -202,6 +202,15 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	
 	// Change this to your preferred presentation option
 	completionHandler(UNNotificationPresentationOptionNone);
+
+	NSString *pushServerID = userInfo[@"pushserverid"];
+	for (Account *account in self.accountList) {
+		if ([pushServerID isEqualToString:account.pushServerID]) {
+			MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
+			[messageDataHandler handleRemoteMessage:userInfo forList:account.messageList];
+			break;
+		}
+	}
 }
 
 // Handle notification messages after display notification is tapped by the user.
@@ -225,6 +234,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 	// The following two entries are currently unused:
 	//NSString *listEntryName = remoteMessage.appData[@"account"];
 	//NSNumber *from = remoteMessage.appData[@"from"];
+/*
 	NSString *pushServerID = remoteMessage.appData[@"pushserverid"];
 	for (Account *account in self.accountList) {
 		if ([pushServerID isEqualToString:account.pushServerID]) {
@@ -233,6 +243,7 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 			break;
 		}
 	}
+*/
 }
 
 

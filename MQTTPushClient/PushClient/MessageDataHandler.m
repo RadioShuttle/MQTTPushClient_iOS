@@ -4,15 +4,14 @@
  * 30827 Garbsen, Germany
  */
 
-@import Firebase;
 @import UserNotifications;
 #import "Message.h"
 #import "MessageDataHandler.h"
 
 @implementation MessageDataHandler
 
-- (void)handleRemoteMessage:(FIRMessagingRemoteMessage *)remoteMessage forList:(NSMutableArray *)list {
-	NSData *json = [remoteMessage.appData[@"messages"] dataUsingEncoding:NSUTF8StringEncoding];
+- (void)handleRemoteMessage:(NSDictionary *)remoteMessage forList:(NSMutableArray *)list {
+	NSData *json = [remoteMessage[@"messages"] dataUsingEncoding:NSUTF8StringEncoding];
 	NSArray *messages = [NSJSONSerialization JSONObjectWithData:json options:0 error:nil];
 	for (NSDictionary *dictionary in messages) {
 		[dictionary enumerateKeysAndObjectsUsingBlock:^(NSString *topic, NSDictionary *value, BOOL * _Nonnull stop) {
