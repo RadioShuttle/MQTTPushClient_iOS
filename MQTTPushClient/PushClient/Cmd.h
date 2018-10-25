@@ -40,6 +40,7 @@ enum ReturnCode {
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password;
 - (RawCmd *)fcmDataRequest:(int)seqNo;
 - (RawCmd *)getTopicsRequest:(int)seqNo;
+- (RawCmd *)addTopicsRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type;
 - (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken extra:(NSString *)extra;
 
 @end

@@ -6,6 +6,7 @@
 
 #import "Account.h"
 #import "Connection.h"
+#import "Topic.h"
 #import "TopicsListTableViewController.h"
 
 @interface TopicsListTableViewController ()
@@ -47,7 +48,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
-	cell.textLabel.text = self.account.topicList[indexPath.row];
+	Topic *topic = self.account.topicList[indexPath.row];
+	cell.textLabel.text = topic.name;
 	return cell;
 }
 

@@ -6,6 +6,7 @@
 
 #import "GCDAsyncSocket.h"
 #import "FCMData.h"
+#import "Topic.h"
 #import "Cmd.h"
 
 #define MAGIC "MQTP"
@@ -196,12 +197,12 @@ enum StateCommand {
 }
 
 - (RawCmd *)helloRequest:(int)seqNo secureTransport:(BOOL)secureTransport {
+	if (self.state == CommandStateEnd)
+		return nil;
 	unsigned char protocol[2];
 	protocol[0] = self.protocolMajor;
 	protocol[1] = self.protocolMinor;
 	NSData *data = [NSData dataWithBytes:protocol length:2];
-	if (self.state == CommandStateEnd)
-		return nil;
 	enum TransmissionFlag flag = FLAG_REQUEST;
 	if (secureTransport) {
 		flag |= FLAG_SSL;
@@ -222,19 +223,21 @@ enum StateCommand {
 }
 
 - (void)bye:(int)seqNo {
+	if (self.state == CommandStateEnd)
+		return;
 	NSData *data = [[NSData alloc] init];
 	[self writeCommand:CMD_DISCONNECT seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
  }
 	 
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
+	if (self.state == CommandStateEnd)
+		return nil;
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
 	if (self.protocolMajor == 1 && self.protocolMinor < 2)
 		[data appendData:[self dataFromString:password encoding:NSUTF16BigEndianStringEncoding]];
 	else
 		[data appendData:[self dataFromString:password encoding:NSUTF8StringEncoding]];
-	if (self.state == CommandStateEnd)
-		return nil;
 	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
@@ -249,20 +252,6 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken extra:(NSString *)extra {
-	NSMutableData *data = [self dataFromString:clientOS encoding:NSUTF8StringEncoding];
-	[data appendData:[self dataFromString:osver encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:device encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:fcmToken encoding:NSUTF8StringEncoding]];
-	[data appendData:[self dataFromString:extra encoding:NSUTF8StringEncoding]];
-	if (self.state == CommandStateEnd)
-		return nil;
-	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
-	[self readCommand];
-	[self waitForCommand];
-	return self.rawCmd;
-}
-
 - (RawCmd *)getTopicsRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
@@ -271,6 +260,32 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)addTopicsRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
+	if (self.state == CommandStateEnd)
+		return nil;
+	unsigned char buffer[1];
+	buffer[0] = type;
+	NSMutableData *data = [self dataFromString:name encoding:NSUTF8StringEncoding];
+	[data appendBytes:buffer length:1];
+	[self writeCommand:CMD_ADD_TOPICS seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+- (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken extra:(NSString *)extra {
+	if (self.state == CommandStateEnd)
+		return nil;
+	NSMutableData *data = [self dataFromString:clientOS encoding:NSUTF8StringEncoding];
+	[data appendData:[self dataFromString:osver encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:device encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:fcmToken encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:extra encoding:NSUTF8StringEncoding]];
+	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
 # pragma - socket delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {

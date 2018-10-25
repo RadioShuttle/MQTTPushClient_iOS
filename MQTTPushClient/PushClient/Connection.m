@@ -10,6 +10,7 @@
 #import "FCMData.h"
 #import "Account.h"
 #import "Cmd.h"
+#import "Topic.h"
 #import "Connection.h"
 
 @interface Connection()
@@ -113,11 +114,12 @@
 	int numRecords = (p[0] << 8) + p[1];
 	p += 2;
 	while (numRecords--) {
+		Topic *topic = [[Topic alloc] init];
 		int count = (p[0] << 8) + p[1];
-		NSString *name = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
-		int notificationType = p[2 + count];
+		topic.name = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
+		topic.type = p[2 + count];
 		p += 3 + count;
-		[account.topicList addObject:name];
+		[account.topicList addObject:topic];
 	}
 	[self disconnect:account withCommand:command];
 }
