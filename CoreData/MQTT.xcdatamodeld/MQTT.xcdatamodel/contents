@@ -5,7 +5,7 @@
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDMessage" inverseName="account" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
-        <attribute name="message_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="seqno" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <attribute name="topic" optional="YES" attributeType="String" syncable="YES"/>

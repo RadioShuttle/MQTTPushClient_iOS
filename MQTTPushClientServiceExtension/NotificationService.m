@@ -5,6 +5,9 @@
  */
 
 #import "NotificationService.h"
+#import "AccountList.h"
+#import "MessageDataHandler.h"
+#import "NSDictionary+HelSafeAccessors.h"
 
 @interface NotificationService ()
 
@@ -18,7 +21,17 @@
 - (void)didReceiveNotificationRequest:(UNNotificationRequest *)request withContentHandler:(void (^)(UNNotificationContent * _Nonnull))contentHandler {
     self.contentHandler = contentHandler;
     self.bestAttemptContent = [request.content mutableCopy];
-    
+	
+	NSDictionary *userInfo = request.content.userInfo;
+	NSString *pushServerID = [userInfo helStringForKey:@"pushserverid"];
+
+	for (Account *account in [AccountList sharedAccountList]) {
+		if ([pushServerID isEqualToString:account.pushServerID]) {
+			[MessageDataHandler handleRemoteMessage:userInfo forAccount:account];
+			break;
+		}
+	}
+
     // Modify the notification content here...
     self.bestAttemptContent.title = [NSString stringWithFormat:@"%@ [modified]", self.bestAttemptContent.title];
     

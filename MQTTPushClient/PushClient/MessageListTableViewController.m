@@ -48,7 +48,6 @@
 		}
 		cdaccount.messages = nil;
 		[bgContext save:NULL];
-
 	}];
 }
 

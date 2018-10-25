@@ -20,12 +20,13 @@
 
 NSString *const kGCMMessageIDKey = @"gcm.message_id";
 
-
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+	
+	application.applicationIconBadgeNumber = 0;
+	
 	self.fcmToken = nil;
 	[FIRApp configure];
 	[[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:NO];
-	[FIRMessaging messaging].shouldEstablishDirectChannel = YES;
 	[FIRMessaging messaging].delegate = self;
 	if ([UNUserNotificationCenter class] != nil) {
 		// iOS 10 or later
@@ -73,22 +74,6 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 - (void)applicationWillTerminate:(UIApplication *)application {
 	// Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Firebase Cloud Messaging
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
@@ -172,24 +157,6 @@ didReceiveNotificationResponse:(UNNotificationResponse *)response
 	NSLog(@"didReceiveNotificationResponse: %@", userInfo);
 	
 	completionHandler();
-}
-
-// Receive data messages on iOS 10+ directly from FCM (bypassing APNs) when the app is in the foreground.
-// To enable direct data messages, you can set [Messaging messaging].shouldEstablishDirectChannel to YES.
-- (void)messaging:(FIRMessaging *)messaging didReceiveMessage:(FIRMessagingRemoteMessage *)remoteMessage {
-	// The following two entries are currently unused:
-	//NSString *listEntryName = remoteMessage.appData[@"account"];
-	//NSNumber *from = remoteMessage.appData[@"from"];
-/*
-	NSString *pushServerID = remoteMessage.appData[@"pushserverid"];
-	for (Account *account in [AccountList sharedAccountList]) {
-		if ([pushServerID isEqualToString:account.pushServerID]) {
-			MessageDataHandler *messageDataHandler = [[MessageDataHandler alloc] init];
-			[messageDataHandler handleRemoteMessage:remoteMessage forList:account.messageList];
-			break;
-		}
-	}
-*/
 }
 
 

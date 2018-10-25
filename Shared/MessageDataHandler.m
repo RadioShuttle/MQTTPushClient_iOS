@@ -47,12 +47,12 @@
 					return;
 				}
 				for (NSArray *array in mdata) {
-					if (![array isKindOfClass:[NSArray class]] || array.count < 2) {
-						NSLog(@"Unexpected JSON data (array[2] mdata expected)");
+					if (![array isKindOfClass:[NSArray class]] || array.count < 3) {
+						NSLog(@"Unexpected JSON data (array[3] mdata expected)");
 						continue;
 					}
 					NSInteger timeStamp = [array[0] integerValue];
-					if (timeStamp < 0) {
+					if (timeStamp <= 0) {
 						NSLog(@"Unexpected JSON data (invalid timestamp)");
 						continue;
 					}
@@ -67,13 +67,18 @@
 						NSLog(@"Unexpected JSON data (invalid Base64 text)");
 						continue;
 					}
-					NSLog(@"Insert message: %@, %@, %@", date, topic, text);
+					NSNumber *seqno = array[2];
+					if (![seqno isKindOfClass:[NSNumber class]]) {
+						NSLog(@"Unexpected JSON data (invalid sequence number)");
+						continue;
+					}
+					NSLog(@"Insert message: %@(%@), %@, %@", date, seqno, topic, text);
 
 					CDMessage *msg = [[CDMessage alloc] initWithContext:bgContext];
 					msg.topic = topic;
 					msg.text = text;
 					msg.timestamp = date;
-					msg.message_id = @"XXX TODO";
+					msg.seqno = seqno;
 					msg.account = cdaccount;
 				}
 			}];

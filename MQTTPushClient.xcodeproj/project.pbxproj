@@ -35,6 +35,7 @@
 		847874EF2177777B0059881B /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EB2177777B0059881B /* KeychainUtils.m */; };
 		847874F2217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
 		847874F3217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
+		84B045602181DB8100C261F8 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
 		84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */; };
 		84B49947217F5A6D0016F9CB /* MQTT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */; };
 		84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */; };
@@ -172,8 +173,6 @@
 				2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */,
 				2AC93086214BDD9700B603B4 /* Message.h */,
 				2AC93087214BDD9700B603B4 /* Message.m */,
-				2ADFE5662166286600FB19E4 /* MessageDataHandler.h */,
-				2ADFE5672166286600FB19E4 /* MessageDataHandler.m */,
 				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
 				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
 				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
@@ -250,6 +249,8 @@
 				847874E5217762B00059881B /* AccountList.m */,
 				847874F42178658F0059881B /* SharedConstants.h */,
 				847874F1217865700059881B /* SharedConstants.m */,
+				2ADFE5662166286600FB19E4 /* MessageDataHandler.h */,
+				2ADFE5672166286600FB19E4 /* MessageDataHandler.m */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -463,6 +464,7 @@
 				84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */,
 				84B49947217F5A6D0016F9CB /* MQTT.xcdatamodeld in Sources */,
 				84B49953217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
+				84B045602181DB8100C261F8 /* MessageDataHandler.m in Sources */,
 				847874EF2177777B0059881B /* KeychainUtils.m in Sources */,
 				847874F3217865700059881B /* SharedConstants.m in Sources */,
 				84B49951217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
