@@ -216,8 +216,12 @@ enum StateCommand {
 		return nil;
 	}
 	flag = self.rawCmd.flags;
-	if (flag & FLAG_SSL)
-		[self.socket startTLS:nil];
+	if (flag & FLAG_SSL) {
+		NSDictionary *tlsSettings = @{
+									  GCDAsyncSocketManuallyEvaluateTrust : @(YES),
+									  };
+		[self.socket startTLS:tlsSettings];
+	}
 	return self.rawCmd;
 }
 
@@ -359,6 +363,39 @@ enum StateCommand {
 
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag {
 	NSLog(@"data written (tag:%ld)", tag);
+}
+
+- (void)socket:(GCDAsyncSocket *)sock didReceiveTrust:(SecTrustRef)trust
+completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler {
+	NSLog(@"socket:didReceiveTrust:");
+	
+	dispatch_queue_t bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+	dispatch_async(bgQueue, ^{
+		SecTrustResultType result = kSecTrustResultDeny;
+		OSStatus status = SecTrustEvaluate(trust, &result);
+		BOOL trusted = (status == noErr) && ((result == kSecTrustResultProceed || result == kSecTrustResultUnspecified));
+		
+		NSLog(@"socket:didReceiveTrust: trusted=%@", @(trusted));
+		if (trusted) {
+			completionHandler(YES);
+		} else {
+			
+			/*
+			 TODO: Present warning for invalid certificate, and
+			 allow user to accept or reject.
+			 
+			 Resources:
+			 https://developer.apple.com/library/archive/technotes/tn2232/_index.html
+			 https://github.com/robbiehanson/CocoaAsyncSocket/blob/master/Examples/GCD/SimpleHTTPClient/Mobile/SimpleHTTPClient/SimpleHTTPClientAppDelegate.m
+			 */
+			
+			completionHandler(YES);
+		}
+	});
+}
+
+- (void)socketDidSecure:(GCDAsyncSocket *)sock {
+	NSLog(@"socketDidSecure:");
 }
 
 @end
