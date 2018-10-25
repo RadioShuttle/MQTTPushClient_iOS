@@ -106,6 +106,8 @@
 	unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 	int numRecords = (p[0] << 8) + p[1];
 	p += 2;
+	if (!command.rawCmd.error)
+		[account.topicList removeAllObjects];
 	while (numRecords--) {
 		Topic *topic = [[Topic alloc] init];
 		int count = (p[0] << 8) + p[1];
