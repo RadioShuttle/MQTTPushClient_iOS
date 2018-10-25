@@ -5,6 +5,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "Topic.h"
 
 enum ReturnCode {
 	RC_OK = 0,
