@@ -40,21 +40,13 @@
 - (IBAction)trashAction:(UIBarButtonItem *)sender {
 	NSManagedObjectContext *bgContext =self.account.backgroundContext;
 	[bgContext performBlock:^{
-		[bgContext reset];
 		CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
 											 existingObjectWithID:self.account.cdaccount.objectID
 											 error:NULL];
 		if (cdaccount == nil) {
 			return;
 		}
-		NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@", self.account.cdaccount];
-		fetchRequest.predicate = predicate;
-		
-		NSArray<CDMessage *> *messages = [bgContext executeFetchRequest:fetchRequest error:NULL];
-		for (CDMessage *msg in messages) {
-			[bgContext deleteObject:msg];
-		}
+		cdaccount.messages = nil;
 		[bgContext save:NULL];
 
 	}];
