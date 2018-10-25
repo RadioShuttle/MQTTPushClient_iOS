@@ -69,14 +69,7 @@
 		port = portString.intValue;
 	}
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
-	if ([command helloRequest:0 secureTransport:account.mqttSecureTransport] == nil) {
-		int major = command.protocolMajor;
-		int minor = command.protocolMinor;
-		command = [[Cmd alloc] initWithHost:host port:port];
-		command.protocolMajor = major;
-		command.protocolMinor = minor;
-		[command helloRequest:0 secureTransport:account.mqttSecureTransport];
-	}
+	[command helloRequest:0 secureTransport:YES];
 	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
 	return command;
 }
