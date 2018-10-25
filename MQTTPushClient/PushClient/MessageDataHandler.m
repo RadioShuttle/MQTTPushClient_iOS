@@ -21,7 +21,6 @@
 	
 	NSManagedObjectContext *bgContext = account.backgroundContext;
 	[bgContext performBlock:^{
-		[bgContext reset];
 		CDAccount *cdaccount = (CDAccount *)[account.backgroundContext
 											 existingObjectWithID:account.cdaccount.objectID
 											 error:NULL];
