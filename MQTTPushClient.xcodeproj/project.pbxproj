@@ -14,6 +14,7 @@
 		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
 		2AC93088214BDD9700B603B4 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC93087214BDD9700B603B4 /* Message.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
+		2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAB1882181DE3200EBDC4D /* Topic.m */; };
 		2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE456213D7515000664D3 /* AppDelegate.m */; };
 		2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45B213D7515000664D3 /* Main.storyboard */; };
 		2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45E213D7516000664D3 /* Assets.xcassets */; };
@@ -90,6 +91,8 @@
 		2AC93087214BDD9700B603B4 /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
 		2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
+		2ADAB1872181DE3200EBDC4D /* Topic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Topic.h; sourceTree = "<group>"; };
+		2ADAB1882181DE3200EBDC4D /* Topic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Topic.m; sourceTree = "<group>"; };
 		2ADBE452213D7515000664D3 /* MQTTPushClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQTTPushClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2ADBE455213D7515000664D3 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		2ADBE456213D7515000664D3 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -183,6 +186,8 @@
 				2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */,
 				2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */,
 				2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */,
+				2ADAB1872181DE3200EBDC4D /* Topic.h */,
+				2ADAB1882181DE3200EBDC4D /* Topic.m */,
 				2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */,
 				2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */,
 			);
@@ -432,6 +437,7 @@
 				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
 				847874E2217760F00059881B /* Account.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
+				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
 				2AC93088214BDD9700B603B4 /* Message.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
