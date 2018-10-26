@@ -74,10 +74,10 @@
 	return command;
 }
 
-
 - (Cmd *)login:(Account *)account {
 	return [self login:account withMqttPassword:account.mqttPassword];
 }
+
 - (void)disconnect:(Account *)account withCommand:(Cmd *)command {
 	account.error = command.rawCmd.error;
 	[command bye:0];
@@ -119,6 +119,12 @@
 	[self disconnect:account withCommand:command];
 }
 
+- (void)addTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
+	Cmd *command = [self login:account];
+	[command addTopicsRequest:0 name:name type:type];
+	[self disconnect:account withCommand:command];
+}
+
 - (void)getFcmDataForAccount:(Account *)account {
 	account.error = nil;
 	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
@@ -126,6 +132,10 @@
 
 - (void)getTopicsForAccount:(Account *)account {
 	dispatch_async(self.serialQueue, ^{[self getTopicsAsync:account];});
+}
+
+- (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
+	dispatch_async(self.serialQueue, ^{[self addTopicAsync:account name:name type:type];});
 }
 
 @end

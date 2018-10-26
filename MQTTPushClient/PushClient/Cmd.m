@@ -266,9 +266,12 @@ enum StateCommand {
 - (RawCmd *)addTopicsRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
 	if (self.state == CommandStateEnd)
 		return nil;
-	unsigned char buffer[1];
+	unsigned char buffer[2];
+	buffer[0] = 0;
+	buffer[1] = 1;
+	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:2];
+	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
 	buffer[0] = type;
-	NSMutableData *data = [self dataFromString:name encoding:NSUTF8StringEncoding];
 	[data appendBytes:buffer length:1];
 	[self writeCommand:CMD_ADD_TOPICS seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
