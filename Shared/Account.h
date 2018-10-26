@@ -48,6 +48,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)configure;
 - (void)clearCache;
 
+// Reading from and writing to user defaults:
++ (nullable instancetype)accountFromUserDefaultsDict:(NSDictionary *)dict;
+- (NSDictionary *)userDefaultsDict;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)save;
 
++ (nullable Account *)loadAccount:(NSString *)pushServerID;
+
 @end
 
 NS_ASSUME_NONNULL_END

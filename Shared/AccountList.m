@@ -8,13 +8,6 @@
 #import "NSDictionary+HelSafeAccessors.h"
 #import "SharedConstants.h"
 
-static NSString *kPrefkeyHost = @"pushserver.host";
-static NSString *kPrefkeyMqttHost = @"mqtt.host";
-static NSString *kPrefkeyMqttSecureTransport = @"mqtt.securetransport";
-static NSString *kPrefkeyMqttUser = @"mqtt.user";
-static NSString *kPrefkeyUuid = @"uuid";
-static NSString *kPrefkeyPushServerID = @"pushserver.id";
-
 @interface AccountList ()
 @property NSMutableArray<Account *> *accounts;
 @end
@@ -73,49 +66,47 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 }
 
 // Private
+
 - (void)load {
 	[self.accounts removeAllObjects];
 	NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroup];
 	NSArray *accountsPref = [sharedDefaults arrayForKey:@"Accounts"];
 	if (accountsPref != nil) {
-		for (NSDictionary *d in accountsPref) {
-			NSString *host = [d helStringForKey:kPrefkeyHost];
-			NSString *mqttHost = [d helStringForKey:kPrefkeyMqttHost];
-			NSNumber *mqttSecureTransport = [d helNumberForKey:kPrefkeyMqttSecureTransport];
-			NSString *mqttUser = [d helStringForKey:kPrefkeyMqttUser];
-			NSString *uuid = [d helStringForKey:kPrefkeyUuid];
-			if (uuid.length > 0 && host.length > 0 && mqttHost.length > 0 && mqttUser.length > 0) {
-				if ([self accountWithUuid:uuid] == nil) {
-					Account *account = [Account accountWithHost:host
-															 mqttHost:mqttHost
-												  mqttSecureTransport:mqttSecureTransport.boolValue
-															 mqttUser:mqttUser
-																 uuid:uuid];
+		for (NSDictionary *dict in accountsPref) {
+			Account *account = [Account accountFromUserDefaultsDict:dict];
+			if (account != nil) {
+				if ([self accountWithUuid:account.uuid] == nil) {
 					if ([account configure]) {
 						[self addAccount:account];
-						account.pushServerID = [d helStringForKey:kPrefkeyPushServerID];
 					}
 				} else {
-					NSLog(@"Duplicate account uuid '%@' in preferences", uuid);
+					NSLog(@"Duplicate account uuid '%@' in preferences", account.uuid);
 				}
 			}
 		}
 	}
 }
 
++ (nullable Account *)loadAccount:(NSString *)pushServerID {
+	NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroup];
+	NSArray *accountsPref = [sharedDefaults arrayForKey:@"Accounts"];
+	if (accountsPref != nil) {
+		for (NSDictionary *dict in accountsPref) {
+			Account *account = [Account accountFromUserDefaultsDict:dict];
+			if (account != nil && [account.pushServerID isEqualToString:pushServerID]) {
+				if ([account configure]) {
+					return account;
+				}
+			}
+		}
+	}
+	return nil;
+}
+
 - (void)save {
 	NSMutableArray *accountsPref = [NSMutableArray arrayWithCapacity:self.accounts.count];
 	for (Account *account in self.accounts) {
-		// Required properties:
-		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
-								  account.host, kPrefkeyHost,
-								  account.mqttHost, kPrefkeyMqttHost,
-								  @(account.mqttSecureTransport), kPrefkeyMqttSecureTransport,
-								  account.mqttUser, kPrefkeyMqttUser,
-								  account.uuid, kPrefkeyUuid,
-								  nil];
-		// Optional properties:
-		dict[kPrefkeyPushServerID] = account.pushServerID;
+		NSDictionary *dict = [account userDefaultsDict];
 		[accountsPref addObject:dict];
 	}
 	NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroup];

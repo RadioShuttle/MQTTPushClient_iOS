@@ -7,7 +7,15 @@
 #import "Account.h"
 #import "KeychainUtils.h"
 #import "SharedConstants.h"
+#import "NSDictionary+HelSafeAccessors.h"
 #include <sys/stat.h>    // for mkdir()
+
+static NSString *kPrefkeyHost = @"pushserver.host";
+static NSString *kPrefkeyMqttHost = @"mqtt.host";
+static NSString *kPrefkeyMqttSecureTransport = @"mqtt.securetransport";
+static NSString *kPrefkeyMqttUser = @"mqtt.user";
+static NSString *kPrefkeyUuid = @"uuid";
+static NSString *kPrefkeyPushServerID = @"pushserver.id";
 
 @interface Account ()
 
@@ -22,7 +30,6 @@
 @property(readwrite) NSManagedObjectContext *backgroundContext;
 @property(readwrite) CDAccount *cdaccount;
 
-
 @end
 
 @implementation Account
@@ -32,7 +39,7 @@
 			mqttSecureTransport:(BOOL)mqttSecureTransport
 					   mqttUser:(NSString *)mqttUser
 						   uuid:(nullable NSString *)uuid {
-
+	
 	Account *account = [[Account alloc] init];
 	account.host = host;
 	account.mqttHost = mqttHost;
@@ -42,6 +49,39 @@
 	
 	account.topicList = [NSMutableArray array];
 	return account;
+}
+
++ (nullable instancetype)accountFromUserDefaultsDict:(NSDictionary *)dict {
+	NSString *host = [dict helStringForKey:kPrefkeyHost];
+	NSString *mqttHost = [dict helStringForKey:kPrefkeyMqttHost];
+	NSNumber *mqttSecureTransport = [dict helNumberForKey:kPrefkeyMqttSecureTransport];
+	NSString *mqttUser = [dict helStringForKey:kPrefkeyMqttUser];
+	NSString *uuid = [dict helStringForKey:kPrefkeyUuid];
+	if (uuid.length > 0 && host.length > 0 && mqttHost.length > 0 && mqttUser.length > 0) {
+		Account *account = [Account accountWithHost:host
+										   mqttHost:mqttHost
+								mqttSecureTransport:mqttSecureTransport.boolValue
+										   mqttUser:mqttUser
+											   uuid:uuid];
+		account.pushServerID = [dict helStringForKey:kPrefkeyPushServerID];
+		return account;
+	} else {
+		return nil;
+	}
+}
+
+- (NSDictionary *)userDefaultsDict {
+	// Required properties:
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+								 self.host, kPrefkeyHost,
+								 self.mqttHost, kPrefkeyMqttHost,
+								 @(self.mqttSecureTransport), kPrefkeyMqttSecureTransport,
+								 self.mqttUser, kPrefkeyMqttUser,
+								 self.uuid, kPrefkeyUuid,
+								 nil];
+	// Optional properties:
+	dict[kPrefkeyPushServerID] = self.pushServerID;
+	return dict;
 }
 
 - (BOOL) configure
@@ -63,7 +103,7 @@
 											 selector:@selector(backgroundContextDidSave:)
 												 name:NSManagedObjectContextDidSaveNotification
 											   object:self.backgroundContext];
-
+	
 	
 	return YES;
 }
