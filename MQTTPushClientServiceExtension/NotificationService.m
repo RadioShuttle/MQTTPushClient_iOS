@@ -24,12 +24,10 @@
 	
 	NSDictionary *userInfo = request.content.userInfo;
 	NSString *pushServerID = [userInfo helStringForKey:@"pushserverid"];
-
-	for (Account *account in [AccountList sharedAccountList]) {
-		if ([pushServerID isEqualToString:account.pushServerID]) {
-			[MessageDataHandler handleRemoteMessage:userInfo forAccount:account];
-			break;
-		}
+	
+	Account *account = [AccountList loadAccount:pushServerID];
+	if (account != nil) {
+		[MessageDataHandler handleRemoteMessage:userInfo forAccount:account];
 	}
 
     // Modify the notification content here...
