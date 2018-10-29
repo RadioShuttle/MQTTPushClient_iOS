@@ -39,6 +39,7 @@ enum ReturnCode {
 - (RawCmd *)helloRequest:(int)seqNo secureTransport:(BOOL)secureTransport;
 - (void)bye:(int)seqNo;
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password;
+- (RawCmd *)removeTokenRequest:(int)seqNo token:(NSString *)token;
 - (RawCmd *)fcmDataRequest:(int)seqNo;
 - (RawCmd *)getTopicsRequest:(int)seqNo;
 - (RawCmd *)addTopicsRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type;

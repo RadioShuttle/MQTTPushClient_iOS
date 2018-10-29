@@ -247,6 +247,16 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)removeTokenRequest:(int)seqNo token:(NSString *)token {
+	if (self.state == CommandStateEnd)
+		return nil;
+	NSMutableData *data = [self dataFromString:token encoding:NSUTF8StringEncoding];
+	[self writeCommand:CMD_REMOVE_TOKEN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
 - (RawCmd *)fcmDataRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
