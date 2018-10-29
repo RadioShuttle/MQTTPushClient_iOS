@@ -125,6 +125,12 @@
 	[self disconnect:account withCommand:command];
 }
 
+- (void)deleteTopicAsync:(Account *)account name:(NSString *)name {
+	Cmd *command = [self login:account];
+	[command deleteTopicsRequest:0 name:name];
+	[self disconnect:account withCommand:command];
+}
+
 - (void)getFcmDataForAccount:(Account *)account {
 	account.error = nil;
 	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
@@ -136,6 +142,10 @@
 
 - (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
 	dispatch_async(self.serialQueue, ^{[self addTopicAsync:account name:name type:type];});
+}
+
+- (void)deleteTopicForAccount:(Account *)account name:(NSString *)name {
+	dispatch_async(self.serialQueue, ^{[self deleteTopicAsync:account name:name];});
 }
 
 @end

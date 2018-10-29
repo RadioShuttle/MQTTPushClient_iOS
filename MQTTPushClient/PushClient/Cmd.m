@@ -282,7 +282,11 @@ enum StateCommand {
 - (RawCmd *)deleteTopicsRequest:(int)seqNo name:(NSString *)name {
 	if (self.state == CommandStateEnd)
 		return nil;
-	NSMutableData *data = [self dataFromString:name encoding:NSUTF8StringEncoding];
+	unsigned char buffer[2];
+	buffer[0] = 0;
+	buffer[1] = 1;
+	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:2];
+	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_DEL_TOPICS seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];

@@ -13,30 +13,14 @@
 @interface TopicsListTableViewController ()
 
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
-@property BOOL showAddButton;
 
 @end
 
 @implementation TopicsListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-	[self.tableView reloadData];
-}
-
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-	[super setEditing:editing animated:animated];
-	if (editing) {
-		if (!self.showAddButton) {
-			Topic *topic = [[Topic alloc] init];
-			[self.account.topicList insertObject:topic atIndex:0];
-			self.showAddButton = YES;
-		}
-	} else {
-		if (self.showAddButton) {
-			[self.account.topicList removeObjectAtIndex:0];
-			self.showAddButton = NO;
-		}
-	}
+	Topic *topic = [[Topic alloc] init];
+	[self.account.topicList insertObject:topic atIndex:0];
 	[self.tableView reloadData];
 }
 
@@ -53,14 +37,13 @@
 	Connection *connection = [[Connection alloc] init];
 	[connection getTopicsForAccount:self.account];
 	self.navigationController.toolbarHidden = YES;
-	self.showAddButton = NO;
-	self.editing = NO;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	if (self.showAddButton)
+	Topic *topic = self.account.topicList[0];
+	if (topic.name == nil)
 		[self.account.topicList removeObjectAtIndex:0];
 }
 
@@ -72,37 +55,38 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell;
-	if (self.editing) {
-		if (indexPath.row == 0) {
-			cell = [tableView dequeueReusableCellWithIdentifier:@"IDAddTopicCell" forIndexPath:indexPath];
-			return cell;
-		}
+	if (indexPath.row == 0) {
+		cell = [tableView dequeueReusableCellWithIdentifier:@"IDAddTopicCell" forIndexPath:indexPath];
+	} else {
+		cell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
+		Topic *topic = self.account.topicList[indexPath.row];
+		cell.textLabel.text = topic.name;
 	}
-	cell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
-	Topic *topic = self.account.topicList[indexPath.row];
-	cell.textLabel.text = topic.name;
 	return cell;
 }
 
 #pragma mark - Table view delegate
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.editing && indexPath.row == 0)
+	if (indexPath.row == 0)
 		return UITableViewCellEditingStyleInsert;
 	return UITableViewCellEditingStyleDelete;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-	} else if (editingStyle == UITableViewCellEditingStyleInsert) {
-		// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+		Connection *connection = [[Connection alloc] init];
+		Topic *topic = self.account.topicList[indexPath.row];
+		[connection deleteTopicForAccount:self.account name:topic.name];
+		[connection getTopicsForAccount:self.account];
 	}
 }
 
 #pragma mark - navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	[self performSegueWithIdentifier:@"IDAddTopic" sender:nil];
+	if (indexPath.row == 0)
+		[self performSegueWithIdentifier:@"IDAddTopic" sender:nil];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
