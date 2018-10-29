@@ -4,7 +4,6 @@
  * 30827 Garbsen, Germany
  */
 
-#import "Message.h"
 #import "Account.h"
 #import "Connection.h"
 #import "MessageTableViewCell.h"

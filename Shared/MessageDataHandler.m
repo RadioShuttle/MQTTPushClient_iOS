@@ -5,7 +5,6 @@
  */
 
 @import UserNotifications;
-#import "Message.h"
 #import "MessageDataHandler.h"
 #import "CDMessage+CoreDataClass.h"
 

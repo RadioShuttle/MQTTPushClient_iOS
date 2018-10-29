@@ -13,7 +13,6 @@
 		2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A39166021674CE4001316EB /* GoogleService-Info.plist */; };
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
 		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
-		2AC93088214BDD9700B603B4 /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC93087214BDD9700B603B4 /* Message.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
 		2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAB1882181DE3200EBDC4D /* Topic.m */; };
 		2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE456213D7515000664D3 /* AppDelegate.m */; };
@@ -90,8 +89,6 @@
 		2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewController.m; sourceTree = "<group>"; };
 		2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewController.h; sourceTree = "<group>"; };
 		2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewController.m; sourceTree = "<group>"; };
-		2AC93086214BDD9700B603B4 /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
-		2AC93087214BDD9700B603B4 /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
 		2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
 		2ADAB1872181DE3200EBDC4D /* Topic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Topic.h; sourceTree = "<group>"; };
@@ -179,8 +176,6 @@
 				2AE87DBD214AA9AB0057935D /* FCMData.m */,
 				2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */,
 				2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */,
-				2AC93086214BDD9700B603B4 /* Message.h */,
-				2AC93087214BDD9700B603B4 /* Message.m */,
 				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
 				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
 				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
@@ -443,7 +438,6 @@
 				847874E2217760F00059881B /* Account.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
-				2AC93088214BDD9700B603B4 /* Message.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
