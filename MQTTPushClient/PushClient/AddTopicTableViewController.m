@@ -41,7 +41,6 @@
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
-	self.subscribeBarButtonItem.enabled = self.topicTextField.text.length > 0;
 	return YES;
 }
 
