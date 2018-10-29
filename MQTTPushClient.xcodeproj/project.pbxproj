@@ -10,7 +10,6 @@
 		2A0E8DF3218332780080DF12 /* AddTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */; };
 		2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */; };
 		2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859D02142CC7000CFA5DC /* Cmd.m */; };
-		2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 2A39166021674CE4001316EB /* GoogleService-Info.plist */; };
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
 		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
@@ -84,7 +83,6 @@
 		2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		2A2859CF2142CC7000CFA5DC /* Cmd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cmd.h; sourceTree = "<group>"; };
 		2A2859D02142CC7000CFA5DC /* Cmd.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Cmd.m; sourceTree = "<group>"; };
-		2A39166021674CE4001316EB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerListTableViewController.h; sourceTree = "<group>"; };
 		2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewController.m; sourceTree = "<group>"; };
 		2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewController.h; sourceTree = "<group>"; };
@@ -220,7 +218,6 @@
 		2ADBE454213D7515000664D3 /* MQTTPushClient */ = {
 			isa = PBXGroup;
 			children = (
-				2A39166021674CE4001316EB /* GoogleService-Info.plist */,
 				2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */,
 				2ADBE45E213D7516000664D3 /* Assets.xcassets */,
 				2ADBE463213D7516000664D3 /* Info.plist */,
@@ -393,7 +390,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */,
-				2A39166121674CE4001316EB /* GoogleService-Info.plist in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
 			);

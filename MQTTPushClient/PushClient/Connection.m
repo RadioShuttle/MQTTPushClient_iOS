@@ -54,9 +54,9 @@
 	fcmData.pushserverid = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
 	account.pushServerID = fcmData.pushserverid;
 	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.sender_id];
-	NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleName"];
-	if (![FIRApp appNamed:appName])
-		[FIRApp configureWithName:appName options:firOptions];
+	dispatch_async(dispatch_get_main_queue(), ^{
+		[FIRApp configureWithOptions:firOptions];
+	});
 }
 
 - (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password {
@@ -86,6 +86,10 @@
 }
 
 - (void)getFcmDataAsync:(Account *)account {
+	Cmd *command = [self login:account];
+	if ([command fcmDataRequest:0]) {
+		[self applyFcmData:command.rawCmd.data forAccount:account];
+	}
 	for (;;) {
 		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
 		if (self.fcmToken)
@@ -93,10 +97,7 @@
 		NSLog(@"waiting for FCM token...");
 		sleep(1);
 	}
-	Cmd *command = [self login:account];
 	[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
-	if ([command fcmDataRequest:0])
-		[self applyFcmData:command.rawCmd.data forAccount:account];
 	[self disconnect:account withCommand:command];
 }
 
