@@ -55,7 +55,9 @@
 	account.pushServerID = fcmData.pushserverid;
 	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.sender_id];
 	dispatch_async(dispatch_get_main_queue(), ^{
-		[FIRApp configureWithOptions:firOptions];
+		if ([FIRApp defaultApp] == nil) {
+			[FIRApp configureWithOptions:firOptions];
+		}
 	});
 }
 
