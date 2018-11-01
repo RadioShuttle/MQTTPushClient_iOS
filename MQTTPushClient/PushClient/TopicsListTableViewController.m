@@ -24,24 +24,13 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	dispatch_queue_t serialQueue = dispatch_queue_create("topics.list.serial.queue", NULL);
-	dispatch_async(serialQueue, ^{
-		[NSThread sleepForTimeInterval:0.3f];
-		if (editing) {
-			Topic *topic = [[Topic alloc] init];
-			[self.account.topicList insertObject:topic atIndex:0];
-		} else {
-			if (self.account.topicList.count) {
-				Topic *topic = self.account.topicList[0];
-				if (topic.name == nil || topic.name.length == 0) {
-					[self.account.topicList removeObjectAtIndex:0];
-				}
-			}
-		}
-		dispatch_async(dispatch_get_main_queue(), ^{
-			[self.tableView reloadData];
-		});
-	});
+	if (editing) {
+		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationAutomatic];
+	} else {
+		[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationAutomatic];
+	}
 }
 
 - (void)viewDidLoad {
@@ -56,7 +45,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 	Connection *connection = [[Connection alloc] init];
 	[connection getTopicsForAccount:self.account];
-	self.editing = NO;
 	self.navigationController.toolbarHidden = YES;
 }
 
@@ -68,6 +56,8 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (self.editing)
+		return 1 + self.account.topicList.count; // because of entry "add new item" in the UI
 	return self.account.topicList.count;
 }
 
@@ -77,7 +67,8 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"IDAddTopicCell" forIndexPath:indexPath];
 	} else {
 		cell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
-		Topic *topic = self.account.topicList[indexPath.row];
+		NSUInteger row = self.editing ? indexPath.row - 1 : indexPath.row; // because of entry "add new item" in the UI
+		Topic *topic = self.account.topicList[row];
 		cell.textLabel.text = topic.name;
 	}
 	return cell;
@@ -94,7 +85,8 @@
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		Connection *connection = [[Connection alloc] init];
-		Topic *topic = self.account.topicList[indexPath.row];
+		NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
+		Topic *topic = self.account.topicList[row];
 		[connection deleteTopicForAccount:self.account name:topic.name];
 		[connection getTopicsForAccount:self.account];
 	}
