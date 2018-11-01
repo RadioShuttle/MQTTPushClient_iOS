@@ -7,6 +7,7 @@
 #import "Account.h"
 #import "Connection.h"
 #import "Topic.h"
+#import "TopicsListTableViewCell.h"
 #import "AddTopicTableViewController.h"
 #import "TopicsListTableViewController.h"
 
@@ -63,13 +64,26 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell;
+	TopicsListTableViewCell *topicCell;
 	if (self.editing && indexPath.row == 0) {
 		cell = [tableView dequeueReusableCellWithIdentifier:@"IDAddTopicCell" forIndexPath:indexPath];
 	} else {
-		cell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
+		topicCell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
 		NSUInteger row = self.editing ? indexPath.row - 1 : indexPath.row; // because of entry "add new item" in the UI
 		Topic *topic = self.account.topicList[row];
-		cell.textLabel.text = topic.name;
+		topicCell.topicLabel.text = topic.name;
+		switch (topic.type) {
+			case NotificationBannerSound:
+				topicCell.topicTypeImageView.image = [UIImage imageNamed:@"BannerSound"];
+				break;
+			case NotificationBanner:
+				topicCell.topicTypeImageView.image = [UIImage imageNamed:@"Banner"];
+				break;
+			default:
+				topicCell.topicTypeImageView.image = [UIImage imageNamed:@"NotificationNone"];
+				break;
+		}
+		cell = topicCell;
 	}
 	return cell;
 }
