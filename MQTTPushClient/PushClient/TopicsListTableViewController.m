@@ -19,9 +19,29 @@
 @implementation TopicsListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-	Topic *topic = [[Topic alloc] init];
-	[self.account.topicList insertObject:topic atIndex:0];
 	[self.tableView reloadData];
+}
+
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+	[super setEditing:editing animated:animated];
+	dispatch_queue_t serialQueue = dispatch_queue_create("topics.list.serial.queue", NULL);
+	dispatch_async(serialQueue, ^{
+		[NSThread sleepForTimeInterval:0.3f];
+		if (editing) {
+			Topic *topic = [[Topic alloc] init];
+			[self.account.topicList insertObject:topic atIndex:0];
+		} else {
+			if (self.account.topicList.count) {
+				Topic *topic = self.account.topicList[0];
+				if (topic.name == nil || topic.name.length == 0) {
+					[self.account.topicList removeObjectAtIndex:0];
+				}
+			}
+		}
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[self.tableView reloadData];
+		});
+	});
 }
 
 - (void)viewDidLoad {
@@ -36,15 +56,13 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 	Connection *connection = [[Connection alloc] init];
 	[connection getTopicsForAccount:self.account];
+	self.editing = NO;
 	self.navigationController.toolbarHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	Topic *topic = self.account.topicList[0];
-	if (topic.name == nil)
-		[self.account.topicList removeObjectAtIndex:0];
 }
 
 #pragma mark - Table view data source
@@ -55,7 +73,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
 	UITableViewCell *cell;
-	if (indexPath.row == 0) {
+	if (self.editing && indexPath.row == 0) {
 		cell = [tableView dequeueReusableCellWithIdentifier:@"IDAddTopicCell" forIndexPath:indexPath];
 	} else {
 		cell = [tableView dequeueReusableCellWithIdentifier:@"IDTopicCell" forIndexPath:indexPath];
@@ -85,8 +103,11 @@
 #pragma mark - navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == 0)
+	if (indexPath.row == 0) {
+		Topic *topic = [[Topic alloc] init];
+		[self.account.topicList insertObject:topic atIndex:0];
 		[self performSegueWithIdentifier:@"IDAddTopic" sender:nil];
+	}
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
