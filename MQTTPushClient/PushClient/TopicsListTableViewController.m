@@ -103,9 +103,7 @@
 #pragma mark - navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (indexPath.row == 0) {
-		Topic *topic = [[Topic alloc] init];
-		[self.account.topicList insertObject:topic atIndex:0];
+	if (self.editing && indexPath.row == 0) {
 		[self performSegueWithIdentifier:@"IDAddTopic" sender:nil];
 	}
 }
