@@ -137,10 +137,26 @@ enum ConnectionState {
 	NSDate *date = [gregorian startOfDayForDate:[NSDate date]];
 	Cmd *command = [self login:account];
 	[command getMessagesRequest:0 date:date id:0];
-	unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
-	int numRecords = (p[0] << 8) + p[1];
-	p += 2;
-	while (numRecords--) {
+	if (!command.rawCmd.error) {
+		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+		int numRecords = (p[0] << 8) + p[1];
+		p += 2;
+		while (numRecords--) {
+			NSTimeInterval seconds = (p[0] << 56) + (p[1] << 48) + (p[2] << 40) + (p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
+			date = [NSDate dateWithTimeIntervalSince1970:seconds];
+			p += 8;
+			int count = (p[0] << 8) + p[1];
+			p += 2;
+			NSString *topic = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			p += count;
+			count = (p[0] << 8) + p[1];
+			p += 2;
+			NSString *content = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			p += count;
+			int messageID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+			p += 4;
+			NSLog(@"[%d] %@: %@ (%@)", messageID, date, topic, content);
+		}
 	}
 	[self disconnect:account withCommand:command];
 }
