@@ -56,6 +56,7 @@
 	if (self.topic) {
 		self.subscribeBarButtonItem.enabled = YES;
 		self.topicTextField.text = self.topic.name;
+		self.topicTextField.enabled = NO;
 		switch (self.topic.type) {
 			case NotificationBannerSound:
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
