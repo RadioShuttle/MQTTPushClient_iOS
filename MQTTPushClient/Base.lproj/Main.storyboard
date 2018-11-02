@@ -180,11 +180,11 @@
                         <sections>
                             <tableViewSection id="rKu-1Q-qIs">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="86" id="L0K-co-nzU">
-                                        <rect key="frame" x="0.0" y="0.0" width="375" height="86"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="414" id="L0K-co-nzU">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="414"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L0K-co-nzU" id="ncR-mI-a7n">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="85.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="413.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subscribe to topic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kvy-dR-dIi">
@@ -203,23 +203,35 @@
                                                         <outlet property="delegate" destination="8cN-Oa-f6G" id="2EQ-dz-Zaq"/>
                                                     </connections>
                                                 </textField>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification Type" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpj-dg-Tmq">
+                                                    <rect key="frame" x="16" y="112" width="343" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="C39-c2-fvT">
+                                                    <rect key="frame" x="16" y="141" width="343" height="29"/>
+                                                    <segments>
+                                                        <segment title="" image="NotificationNone"/>
+                                                        <segment title="" image="Banner"/>
+                                                        <segment title="" image="BannerSound"/>
+                                                    </segments>
+                                                </segmentedControl>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="GNs-ak-LHO" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="40" id="APC-AH-PbL"/>
+                                                <constraint firstItem="C39-c2-fvT" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="141" id="Ajl-pH-7Sa"/>
+                                                <constraint firstItem="C39-c2-fvT" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="KQ6-pm-Tmq"/>
                                                 <constraint firstAttribute="trailing" secondItem="Kvy-dR-dIi" secondAttribute="trailing" constant="16" id="Mtc-Ui-8UP"/>
+                                                <constraint firstAttribute="trailing" secondItem="C39-c2-fvT" secondAttribute="trailing" constant="16" id="d7w-fH-Thj"/>
+                                                <constraint firstItem="Rpj-dg-Tmq" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="dO6-ho-bxs"/>
+                                                <constraint firstItem="Rpj-dg-Tmq" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="112" id="hqA-eW-WTa"/>
                                                 <constraint firstItem="Kvy-dR-dIi" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="jyb-id-o8S"/>
                                                 <constraint firstItem="GNs-ak-LHO" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="kMt-ga-bDA"/>
+                                                <constraint firstAttribute="trailing" secondItem="Rpj-dg-Tmq" secondAttribute="trailing" constant="16" id="qGk-q0-pCB"/>
                                                 <constraint firstAttribute="trailing" secondItem="GNs-ak-LHO" secondAttribute="trailing" constant="16" id="uUw-lD-gHl"/>
                                                 <constraint firstItem="Kvy-dR-dIi" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="11" id="wb0-Dt-7qW"/>
                                             </constraints>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="6lK-5x-BPk">
-                                        <rect key="frame" x="0.0" y="86" width="375" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6lK-5x-BPk" id="lHL-xt-h9d">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -238,6 +250,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="notificationTypeSegmentedControl" destination="C39-c2-fvT" id="jd0-W3-50a"/>
                         <outlet property="subscribeBarButtonItem" destination="hrg-PE-ymE" id="9Ks-ww-7bM"/>
                         <outlet property="topicTextField" destination="GNs-ak-LHO" id="IL7-pz-gzQ"/>
                     </connections>
@@ -588,7 +601,9 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Banner" width="18" height="18"/>
         <image name="BannerSound" width="18" height="18"/>
+        <image name="NotificationNone" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ZQo-Xl-dGb"/>

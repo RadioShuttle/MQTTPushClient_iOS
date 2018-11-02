@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *subscribeBarButtonItem;
 @property (weak, nonatomic) IBOutlet UITextField *topicTextField;
+@property (weak, nonatomic) IBOutlet UISegmentedControl *notificationTypeSegmentedControl;
 
 @end
 
@@ -26,7 +27,19 @@
 	NSString *topic = self.topicTextField.text;
 	if (topic.length) {
 		Connection *connection = [[Connection alloc] init];
-		[connection addTopicForAccount:self.account name:topic type:NotificationBanner];
+		enum NotificationType type = NotificationDisabled;
+		switch (self.notificationTypeSegmentedControl.selectedSegmentIndex) {
+			case 2:
+				type = NotificationBannerSound;
+				break;
+			case 1:
+				type = NotificationBanner;
+				break;
+			default:
+				type = NotificationNone;
+				break;
+		}
+		[connection addTopicForAccount:self.account name:topic type:type];
 		[connection getTopicsForAccount:self.account];
 		[self.navigationController popViewControllerAnimated:YES];
 	}
@@ -35,6 +48,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.subscribeBarButtonItem.enabled = NO;
+	self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
 }
 
 #pragma mark - UITextFieldDelegate
