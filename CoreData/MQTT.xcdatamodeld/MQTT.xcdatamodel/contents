@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14315.18" systemVersion="17G3020" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="14460.32" systemVersion="17G4005" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="1.0">
     <entity name="CDAccount" representedClassName="CDAccount" syncable="YES">
         <attribute name="last_update" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
         <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CDMessage" inverseName="account" inverseEntity="CDMessage" syncable="YES"/>
     </entity>
     <entity name="CDMessage" representedClassName="CDMessage" syncable="YES">
+        <attribute name="sectionIdentifier" optional="YES" transient="YES" attributeType="String" syncable="YES"/>
         <attribute name="seqno" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
         <attribute name="text" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO" syncable="YES"/>
@@ -13,6 +14,6 @@
     </entity>
     <elements>
         <element name="CDAccount" positionX="-63" positionY="-18" width="128" height="75"/>
-        <element name="CDMessage" positionX="-54" positionY="-9" width="128" height="120"/>
+        <element name="CDMessage" positionX="-54" positionY="-9" width="128" height="135"/>
     </elements>
 </model>

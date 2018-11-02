@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nullable, nonatomic, copy) NSString *text;
 @property (nullable, nonatomic, copy) NSDate *timestamp;
 @property (nullable, nonatomic, retain) CDAccount *account;
+@property (nullable, nonatomic, copy) NSString *sectionIdentifier; // transient
 
 @end
 
