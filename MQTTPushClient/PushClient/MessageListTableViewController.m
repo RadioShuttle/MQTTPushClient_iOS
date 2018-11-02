@@ -16,6 +16,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashBarButtonItem;
 @property NSDateFormatter *dateFormatter;
+@property NSDateFormatter *sectionDateFormatter;
 @property (strong, nonatomic) NSFetchedResultsController<CDMessage *> *frc;
 
 @end
@@ -57,14 +58,22 @@
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccount) forControlEvents:UIControlEventValueChanged];
 	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@", self.account.mqttUser, self.account.mqttHost];
 	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
+	
+	// Formatter for the section headers (one section per day).
+	self.sectionDateFormatter = [[NSDateFormatter alloc] init];
+	self.sectionDateFormatter.dateStyle = NSDateFormatterLongStyle;
+	self.sectionDateFormatter.timeStyle = NSDateFormatterNoStyle;
+	self.sectionDateFormatter.doesRelativeDateFormatting = YES;
+
+	// Formatter for the time field in the message cells.
+	self.dateFormatter = [[NSDateFormatter alloc] init];
+	self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
+	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccountStatus:) name:@"ServerUpdateNotification" object:nil];
-	self.dateFormatter = [[NSDateFormatter alloc] init];
-	self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
-	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
 	[self.navigationController setToolbarHidden:NO animated:YES];
 	[self updateAccountStatus:nil];
 }
@@ -98,6 +107,27 @@
 	cell.messageLabel.text = cdmessage.text;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
+{
+	id <NSFetchedResultsSectionInfo> sectionInfo = self.frc.sections[section];
+	
+	/*
+	 * Create (localized) date from the section identifier, which is
+	 * a string of the form "YYYYMMDD".
+	 */
+	NSInteger numericSection = sectionInfo.name.integerValue;
+	NSDateComponents *dateComponents = [[NSDateComponents alloc] init];
+	dateComponents.day = numericSection % 100;;
+	numericSection /= 100;
+	dateComponents.month = numericSection % 100;
+	numericSection /= 100;
+	dateComponents.year = numericSection;
+	NSDate *date = [[NSCalendar currentCalendar] dateFromComponents:dateComponents];
+	
+	return [self.sectionDateFormatter stringFromDate:date];
+}
+
+
 #pragma mark - Fetched results controller
 
 - (NSFetchedResultsController<CDMessage *> *)frc {
@@ -114,7 +144,8 @@
 	NSFetchedResultsController<CDMessage *> *aFrc = [[NSFetchedResultsController alloc]
 													 initWithFetchRequest:fetchRequest
 													 managedObjectContext:self.account.context
-													 sectionNameKeyPath:nil cacheName:nil];
+													 sectionNameKeyPath:@"sectionIdentifier"
+													 cacheName:nil];
 	aFrc.delegate = self;
 	[aFrc performFetch:NULL];
 	
