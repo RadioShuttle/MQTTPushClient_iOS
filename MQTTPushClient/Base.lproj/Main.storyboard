@@ -156,6 +156,7 @@
                     <connections>
                         <outlet property="tableViewHeaderLabel" destination="oUF-im-Luw" id="IiK-CS-mTl"/>
                         <segue destination="8cN-Oa-f6G" kind="show" identifier="IDAddTopic" id="3zb-GV-1CN"/>
+                        <segue destination="8cN-Oa-f6G" kind="show" identifier="IDShowTopic" id="vfE-Bn-KJx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ttz-K4-OGB" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -607,5 +608,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="ZQo-Xl-dGb"/>
+        <segue reference="vfE-Bn-KJx"/>
     </inferredMetricsTieBreakers>
 </document>

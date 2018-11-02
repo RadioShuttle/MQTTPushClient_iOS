@@ -19,13 +19,17 @@
 
 @implementation AddTopicTableViewController
 
+- (void)getResult:(NSNotification *)sender {
+	[self.navigationController popViewControllerAnimated:YES];
+}
+
 - (IBAction)validateFields:(id)sender {
 	self.subscribeBarButtonItem.enabled = self.topicTextField.text.length > 0;
 }
 
 - (IBAction)subscribeAction:(UIBarButtonItem *)sender {
-	NSString *topic = self.topicTextField.text;
-	if (topic.length) {
+	NSString *topicName = self.topicTextField.text;
+	if (topicName.length) {
 		Connection *connection = [[Connection alloc] init];
 		enum NotificationType type = NotificationDisabled;
 		switch (self.notificationTypeSegmentedControl.selectedSegmentIndex) {
@@ -39,16 +43,39 @@
 				type = NotificationNone;
 				break;
 		}
-		[connection addTopicForAccount:self.account name:topic type:type];
-		[connection getTopicsForAccount:self.account];
-		[self.navigationController popViewControllerAnimated:YES];
+		if (self.topic)
+			[connection updateTopicForAccount:self.account name:topicName type:type];
+		else
+			[connection addTopicForAccount:self.account name:topicName type:type];
 	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	self.subscribeBarButtonItem.enabled = NO;
-	self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
+	if (self.topic) {
+		self.subscribeBarButtonItem.enabled = YES;
+		self.topicTextField.text = self.topic.name;
+		switch (self.topic.type) {
+			case NotificationBannerSound:
+				self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
+				break;
+			case NotificationBanner:
+				self.notificationTypeSegmentedControl.selectedSegmentIndex = 1;
+				break;
+			default:
+				self.notificationTypeSegmentedControl.selectedSegmentIndex = 0;
+				break;
+		}
+	} else {
+		self.subscribeBarButtonItem.enabled = NO;
+		self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
+	}
+}
+
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - UITextFieldDelegate

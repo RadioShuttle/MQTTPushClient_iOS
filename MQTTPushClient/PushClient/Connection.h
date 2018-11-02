@@ -13,6 +13,7 @@
 - (void)getFcmDataForAccount:(Account *)account;
 - (void)getTopicsForAccount:(Account *)account;
 - (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type;
+- (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type;
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name;
 
 @end

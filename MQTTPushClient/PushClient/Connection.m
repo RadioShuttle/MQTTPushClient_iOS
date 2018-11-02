@@ -13,10 +13,16 @@
 #import "Topic.h"
 #import "Connection.h"
 
+enum ConnectionState {
+	StateBusy,
+	StateReady
+};
+
 @interface Connection()
 
 @property dispatch_queue_t serialQueue;
 @property NSString *fcmToken;
+@property enum ConnectionState state;
 
 @end
 
@@ -27,11 +33,13 @@
 	if (self) {
 		_serialQueue = dispatch_queue_create("connection.serial.queue", NULL);
 		_fcmToken = nil;
+		_state = StateReady;
 	}
 	return self;
 }
 
 - (void)postServerUpdateNotification {
+	self.state = StateReady;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 }
 
@@ -62,6 +70,8 @@
 }
 
 - (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password {
+	while (self.state == StateBusy)
+		[NSThread sleepForTimeInterval:0.02f];
 	int port = SERVER_DEFAULT_PORT;
 	NSString *host = account.host;
 	NSArray *array = [account.host componentsSeparatedByString:@":"];
@@ -128,6 +138,12 @@
 	[self disconnect:account withCommand:command];
 }
 
+- (void)updateTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
+	Cmd *command = [self login:account];
+	[command updateTopicsRequest:0 name:name type:type];
+	[self disconnect:account withCommand:command];
+}
+
 - (void)deleteTopicAsync:(Account *)account name:(NSString *)name {
 	Cmd *command = [self login:account];
 	[command deleteTopicsRequest:0 name:name];
@@ -145,6 +161,10 @@
 
 - (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
 	dispatch_async(self.serialQueue, ^{[self addTopicAsync:account name:name type:type];});
+}
+
+- (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
+	dispatch_async(self.serialQueue, ^{[self updateTopicAsync:account name:name type:type];});
 }
 
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name {

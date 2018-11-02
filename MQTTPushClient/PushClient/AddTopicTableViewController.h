@@ -9,5 +9,6 @@
 @interface AddTopicTableViewController : UITableViewController
 
 @property Account *account;
+@property Topic *topic;
 
 @end

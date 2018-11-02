@@ -109,14 +109,21 @@
 #pragma mark - navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.editing && indexPath.row == 0) {
-		[self performSegueWithIdentifier:@"IDAddTopic" sender:nil];
+	if (self.editing) {
+		if (indexPath.row == 0) {
+			[self performSegueWithIdentifier:@"IDAddTopic" sender:nil];
+		} else {
+			NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
+			Topic *topic = self.account.topicList[row];
+			[self performSegueWithIdentifier:@"IDShowTopic" sender:topic];
+		}
 	}
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	AddTopicTableViewController *controller = segue.destinationViewController;
 	controller.account = self.account;
+	controller.topic = sender;
 }
 
 @end
