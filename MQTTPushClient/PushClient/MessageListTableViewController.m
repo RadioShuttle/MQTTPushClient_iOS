@@ -33,7 +33,7 @@
 
 - (void)updateAccount {
 	Connection *connection = [[Connection alloc] init];
-	[connection getFcmDataForAccount:self.account];
+	[connection getMessagesForAccount:self.account];
 	[self.refreshControl endRefreshing];
 }
 

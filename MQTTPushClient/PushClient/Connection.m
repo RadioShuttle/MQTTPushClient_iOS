@@ -132,6 +132,19 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
+- (void)getMessagesAsync:(Account *)account {
+	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+	NSDate *date = [gregorian startOfDayForDate:[NSDate date]];
+	Cmd *command = [self login:account];
+	[command getMessagesRequest:0 date:date id:0];
+	unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+	int numRecords = (p[0] << 8) + p[1];
+	p += 2;
+	while (numRecords--) {
+	}
+	[self disconnect:account withCommand:command];
+}
+
 - (void)addTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
 	Cmd *command = [self login:account];
 	[command addTopicsRequest:0 name:name type:type];
@@ -153,6 +166,10 @@ enum ConnectionState {
 - (void)getFcmDataForAccount:(Account *)account {
 	account.error = nil;
 	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
+}
+
+- (void)getMessagesForAccount:(Account *)account {
+	dispatch_async(self.serialQueue, ^{[self getMessagesAsync:account];});
 }
 
 - (void)getTopicsForAccount:(Account *)account {

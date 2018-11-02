@@ -265,6 +265,31 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)getMessagesRequest:(int)seqNo date:(NSDate *)date id:(NSUInteger)messageID {
+	if (self.state == CommandStateEnd)
+		return nil;
+	NSInteger seconds = [date timeIntervalSince1970];
+	unsigned char buffer[8];
+	buffer[7] = seconds & 0xff;;
+	buffer[6] = seconds >> 8;
+	buffer[5] = seconds >> 16;
+	buffer[4] = seconds >> 24;
+	buffer[3] = seconds >> 32;
+	buffer[2] = seconds >> 40;
+	buffer[1] = seconds >> 48;
+	buffer[0] = seconds >> 56;
+	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:8];
+	buffer[3] = messageID & 0xff;;
+	buffer[2] = messageID >> 8;
+	buffer[1] = messageID >> 16;
+	buffer[0] = messageID >> 24;
+	[data appendBytes:buffer length:4];
+	[self writeCommand:CMD_GET_MESSAGES seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
 - (RawCmd *)getTopicsRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
@@ -332,6 +357,7 @@ enum StateCommand {
 	[self waitForCommand];
 	return self.rawCmd;
 }
+
 # pragma - socket delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {

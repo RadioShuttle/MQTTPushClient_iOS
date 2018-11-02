@@ -41,6 +41,7 @@ enum ReturnCode {
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password;
 - (RawCmd *)removeTokenRequest:(int)seqNo token:(NSString *)token;
 - (RawCmd *)fcmDataRequest:(int)seqNo;
+- (RawCmd *)getMessagesRequest:(int)seqNo date:(NSDate *)date id:(NSUInteger)messageID;
 - (RawCmd *)getTopicsRequest:(int)seqNo;
 - (RawCmd *)addTopicsRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type;
 - (RawCmd *)deleteTopicsRequest:(int)seqNo name:(NSString *)name;
