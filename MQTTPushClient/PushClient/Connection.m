@@ -11,6 +11,7 @@
 #import "Account.h"
 #import "Cmd.h"
 #import "Topic.h"
+#import "Action.h"
 #import "Connection.h"
 
 enum ConnectionState {
@@ -116,18 +117,19 @@ enum ConnectionState {
 - (void)getTopicsAsync:(Account *)account {
 	Cmd *command = [self login:account];
 	[command getTopicsRequest:0];
-	unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
-	int numRecords = (p[0] << 8) + p[1];
-	p += 2;
-	if (!command.rawCmd.error)
+	if (!command.rawCmd.error) {
 		[account.topicList removeAllObjects];
-	while (numRecords--) {
-		Topic *topic = [[Topic alloc] init];
-		int count = (p[0] << 8) + p[1];
-		topic.name = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
-		topic.type = p[2 + count];
-		p += 3 + count;
-		[account.topicList addObject:topic];
+		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+		int numRecords = (p[0] << 8) + p[1];
+		p += 2;
+		while (numRecords--) {
+			Topic *topic = [[Topic alloc] init];
+			int count = (p[0] << 8) + p[1];
+			topic.name = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
+			topic.type = p[2 + count];
+			p += 3 + count;
+			[account.topicList addObject:topic];
+		}
 	}
 	[self disconnect:account withCommand:command];
 }
@@ -187,6 +189,38 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
+- (void)getActionsAsync:(Account *)account {
+	Cmd *command = [self login:account];
+	[command getActionsRequest:0];
+	if (!command.rawCmd.error) {
+		[account.actionList removeAllObjects];
+		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+		int numRecords = (p[0] << 8) + p[1];
+		p += 2;
+		while (numRecords--) {
+			Action *action = [[Action alloc] init];
+			int count = (p[0] << 8) + p[1];
+			p += 2;
+			action.name = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			p += count;
+			count = (p[0] << 8) + p[1];
+			p += 2;
+			action.topic = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			p += count;
+			count = (p[0] << 8) + p[1];
+			p += 2;
+			action.content = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			p += count;
+			action.retainFlag = p[0];
+			p++;
+			[account.actionList addObject:action];
+		}
+	}
+	[self disconnect:account withCommand:command];
+}
+
+#pragma public methods
+
 - (void)getFcmDataForAccount:(Account *)account {
 	account.error = nil;
 	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
@@ -210,6 +244,10 @@ enum ConnectionState {
 
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name {
 	dispatch_async(self.serialQueue, ^{[self deleteTopicAsync:account name:name];});
+}
+
+- (void)getActionsForAccount:(Account *)account {
+	dispatch_async(self.serialQueue, ^{[self getActionsAsync:account];});
 }
 
 @end

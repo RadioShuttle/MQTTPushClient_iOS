@@ -6,9 +6,10 @@
 
 #import "Account.h"
 #import "Connection.h"
-#import "MessageTableViewCell.h"
-#import "MessageListTableViewController.h"
 #import "CDMessage+CoreDataClass.h"
+#import "MessageTableViewCell.h"
+#import "ActionListTableViewController.h"
+#import "MessageListTableViewController.h"
 
 @interface MessageListTableViewController () <NSFetchedResultsControllerDelegate>
 
@@ -204,6 +205,13 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
 	self.trashBarButtonItem.enabled = controller.fetchedObjects.count > 0;
+}
+
+#pragma mark - navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	ActionListTableViewController *controller = segue.destinationViewController;
+	controller.account = self.account;
 }
 
 @end

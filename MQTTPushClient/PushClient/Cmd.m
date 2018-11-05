@@ -358,6 +358,14 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)getActionsRequest:(int)seqNo {
+	if (self.state == CommandStateEnd)
+		return nil;
+	[self request:CMD_GET_ACTIONS seqNo:seqNo];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
 # pragma - socket delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {
