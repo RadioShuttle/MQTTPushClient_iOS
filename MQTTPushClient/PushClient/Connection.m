@@ -140,6 +140,7 @@ enum ConnectionState {
 	if (!command.rawCmd.error) {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
+		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		p += 2;
 		while (numRecords--) {
 			NSTimeInterval seconds = (p[0] << 56) + (p[1] << 48) + (p[2] << 40) + (p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
@@ -153,10 +154,16 @@ enum ConnectionState {
 			p += 2;
 			NSString *content = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
-			int messageID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+			int msgID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
 			p += 4;
-			NSLog(@"[%d] %@: %@ (%@)", messageID, date, topic, content);
+			NSLog(@"[%d] %@: %@ (%@)", msgID, date, topic, content);
+			Message *message = [[Message alloc] init];
+			message.timestamp = date;
+			message.messageID = [NSNumber numberWithInt:msgID];
+			message.topic = topic;
+			message.content = content;
 		}
+		[account addMessageList:messageList];
 	}
 	[self disconnect:account withCommand:command];
 }
