@@ -415,13 +415,31 @@ enum StateCommand {
 completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler {
 	NSLog(@"socket:didReceiveTrust:");
 	
+	// Load "ca-certificate.der":
+	static CFArrayRef trustedAnchors = NULL;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		NSURL *certUrl = [[NSBundle mainBundle] URLForResource:@"ca-certificate" withExtension:@"der"];
+		NSData *certData = [NSData dataWithContentsOfURL:certUrl];
+		SecCertificateRef cert = SecCertificateCreateWithData(NULL, (__bridge CFDataRef) certData);
+		if (cert != NULL) {
+			trustedAnchors = CFArrayCreate(NULL, (void *)&cert, 1, &kCFTypeArrayCallBacks);
+			CFRelease(cert);
+		}
+	});
+	
 	dispatch_queue_t bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 	dispatch_async(bgQueue, ^{
+		if (trustedAnchors != NULL) {
+			SecTrustSetAnchorCertificates(trust, trustedAnchors);
+			SecTrustSetAnchorCertificatesOnly(trust, false);
+		}
+		
 		SecTrustResultType result = kSecTrustResultDeny;
 		OSStatus status = SecTrustEvaluate(trust, &result);
 		BOOL trusted = (status == noErr) && ((result == kSecTrustResultProceed || result == kSecTrustResultUnspecified));
 		
-		NSLog(@"socket:didReceiveTrust: trusted=%@", @(trusted));
+		NSLog(@"socket:didReceiveTrust: trusted=%@, result=%d", @(trusted), result);
 		if (trusted) {
 			completionHandler(YES);
 		} else {
