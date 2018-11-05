@@ -143,7 +143,7 @@ enum ConnectionState {
 		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		p += 2;
 		while (numRecords--) {
-			NSTimeInterval seconds = (p[0] << 56) + (p[1] << 48) + (p[2] << 40) + (p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
+			NSTimeInterval seconds = ((uint64_t)p[0] << 56) + ((uint64_t)p[1] << 48) + ((uint64_t)p[2] << 40) + ((uint64_t)p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
 			date = [NSDate dateWithTimeIntervalSince1970:seconds];
 			p += 8;
 			int count = (p[0] << 8) + p[1];
@@ -162,6 +162,7 @@ enum ConnectionState {
 			message.messageID = [NSNumber numberWithInt:msgID];
 			message.topic = topic;
 			message.content = content;
+			[messageList addObject:message];
 		}
 		[account addMessageList:messageList];
 	}
