@@ -47,6 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)configure;
 - (void)clearCache;
+- (void)addMessageList:(NSArray<Message *>*)messageList;
 
 // Reading from and writing to user defaults:
 + (nullable instancetype)accountFromUserDefaultsDict:(NSDictionary *)dict;

@@ -6,12 +6,15 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreData/CoreData.h>
+#import "Message.h"
 
 @class CDMessage;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface CDAccount : NSManagedObject
+
+-(void)addMessageList:(NSArray<Message *>*)messageList;
 
 @end
 

@@ -8,6 +8,7 @@
 #import "KeychainUtils.h"
 #import "SharedConstants.h"
 #import "NSDictionary+HelSafeAccessors.h"
+#import "Message.h"
 #include <sys/stat.h>    // for mkdir()
 
 static NSString *kPrefkeyHost = @"pushserver.host";
@@ -123,6 +124,16 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 		}
 	}];
 	[[NSFileManager defaultManager] removeItemAtURL:self.cacheURL error:nil];
+}
+
+- (void)addMessageList:(NSArray<Message *>*)messageList {
+	NSManagedObjectContext *bgContext = self.backgroundContext;
+	[bgContext performBlock:^{
+		CDAccount *cdaccount = (CDAccount *)[self.backgroundContext
+											 existingObjectWithID:self.cdaccount.objectID
+											 error:NULL];
+		[cdaccount addMessageList:messageList];
+	}];
 }
 
 #pragma mark - Accessor methods

@@ -26,6 +26,8 @@
 		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
 		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
+		84095D0721903E8300CFC1DB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 84095D0621903E8300CFC1DB /* Message.m */; };
+		84095D0821903E8E00CFC1DB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 84095D0621903E8300CFC1DB /* Message.m */; };
 		847874E2217760F00059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
 		847874E3217761040059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
 		847874E6217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
@@ -115,6 +117,8 @@
 		2AEC5FCB214011890097D99A /* MessageListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListTableViewController.m; sourceTree = "<group>"; };
 		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
 		2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerSetupTableViewController.m; sourceTree = "<group>"; };
+		84095D0521903E8300CFC1DB /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		84095D0621903E8300CFC1DB /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		847874E0217760F00059881B /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		847874E1217760F00059881B /* Account.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		847874E4217762B00059881B /* AccountList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountList.h; sourceTree = "<group>"; };
@@ -258,6 +262,8 @@
 				847874F1217865700059881B /* SharedConstants.m */,
 				2ADFE5662166286600FB19E4 /* MessageDataHandler.h */,
 				2ADFE5672166286600FB19E4 /* MessageDataHandler.m */,
+				84095D0521903E8300CFC1DB /* Message.h */,
+				84095D0621903E8300CFC1DB /* Message.m */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -451,6 +457,7 @@
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
+				84095D0721903E8300CFC1DB /* Message.m in Sources */,
 				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
@@ -479,6 +486,7 @@
 				84B49955217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				847874E3217761040059881B /* Account.m in Sources */,
 				847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
+				84095D0821903E8E00CFC1DB /* Message.m in Sources */,
 				847874E7217762B10059881B /* AccountList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
