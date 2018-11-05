@@ -21,6 +21,8 @@
 		2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */; };
 		2ADBE465213D7516000664D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE464213D7516000664D3 /* main.m */; };
 		2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
+		2AE57BC221906A3900012A04 /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC121906A3900012A04 /* Action.m */; };
+		2AE57BC52190826600012A04 /* ActionListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC42190826600012A04 /* ActionListTableViewController.m */; };
 		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
 		2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE87DBD214AA9AB0057935D /* FCMData.m */; };
 		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
@@ -107,6 +109,10 @@
 		2ADBE464213D7516000664D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2ADFE5662166286600FB19E4 /* MessageDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageDataHandler.h; sourceTree = "<group>"; };
 		2ADFE5672166286600FB19E4 /* MessageDataHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDataHandler.m; sourceTree = "<group>"; };
+		2AE57BC021906A3900012A04 /* Action.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
+		2AE57BC121906A3900012A04 /* Action.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
+		2AE57BC32190826600012A04 /* ActionListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActionListTableViewController.h; sourceTree = "<group>"; };
+		2AE57BC42190826600012A04 /* ActionListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ActionListTableViewController.m; sourceTree = "<group>"; };
 		2AE609122146B3EF004F30B2 /* Connection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Connection.h; sourceTree = "<group>"; };
 		2AE609132146B3EF004F30B2 /* Connection.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Connection.m; sourceTree = "<group>"; };
 		2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClient.entitlements; sourceTree = "<group>"; };
@@ -171,6 +177,10 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
+				2AE57BC021906A3900012A04 /* Action.h */,
+				2AE57BC121906A3900012A04 /* Action.m */,
+				2AE57BC32190826600012A04 /* ActionListTableViewController.h */,
+				2AE57BC42190826600012A04 /* ActionListTableViewController.m */,
 				2A0E8DF1218332780080DF12 /* AddTopicTableViewController.h */,
 				2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */,
 				2ADBE455213D7515000664D3 /* AppDelegate.h */,
@@ -454,6 +464,7 @@
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
 				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
 				847874F2217865700059881B /* SharedConstants.m in Sources */,
+				2AE57BC221906A3900012A04 /* Action.m in Sources */,
 				847874E6217762B10059881B /* AccountList.m in Sources */,
 				84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
@@ -461,6 +472,7 @@
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
+				2AE57BC52190826600012A04 /* ActionListTableViewController.m in Sources */,
 				84095D0721903E8300CFC1DB /* Message.m in Sources */,
 				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
