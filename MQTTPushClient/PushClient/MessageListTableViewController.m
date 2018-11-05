@@ -104,7 +104,7 @@
 - (void)configureCell:(MessageTableViewCell *)cell withObject:(CDMessage *)cdmessage {
 	cell.dateLabel.text = [self.dateFormatter stringFromDate:cdmessage.timestamp];
 	cell.topicLabel.text = cdmessage.topic;
-	cell.messageLabel.text = cdmessage.text;
+	cell.messageLabel.text = cdmessage.content;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section

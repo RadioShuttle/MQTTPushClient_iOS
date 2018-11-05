@@ -24,14 +24,15 @@
 											 existingObjectWithID:account.cdaccount.objectID
 											 error:NULL];
 		if (cdaccount == nil) {
-			return;
+			return; // Account does not exit anymore.
 		}
+		
 		for (NSDictionary *dictionary in messages) {
 			if (![dictionary isKindOfClass:[NSDictionary class]]) {
 				NSLog(@"Unexpected JSON data (dictionary expected)");
 				continue;
 			}
-			[dictionary enumerateKeysAndObjectsUsingBlock:^(NSString *topic, NSDictionary *value, BOOL * _Nonnull stop) {
+			[dictionary enumerateKeysAndObjectsUsingBlock:^(NSString *topic, NSDictionary *value, BOOL *stop) {
 				if (![topic isKindOfClass:[NSString class]]) {
 					NSLog(@"Unexpected JSON data (string topic expected)");
 					return;
@@ -61,23 +62,33 @@
 						NSLog(@"Unexpected JSON data (invalid Base64 data)");
 						continue;
 					}
-					NSString *text = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-					if (text == nil) {
+					NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+					if (content == nil) {
 						NSLog(@"Unexpected JSON data (invalid Base64 text)");
 						continue;
 					}
-					NSNumber *seqno = array[2];
-					if (![seqno isKindOfClass:[NSNumber class]]) {
+					NSNumber *messageID = array[2];
+					if (![messageID isKindOfClass:[NSNumber class]]) {
 						NSLog(@"Unexpected JSON data (invalid sequence number)");
 						continue;
 					}
-					NSLog(@"Insert message: %@(%@), %@, %@", date, seqno, topic, text);
-
+					
+					NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
+					NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp = %@ AND messageID = %@",
+											  cdaccount, date, messageID];
+					fetchRequest.predicate = predicate;
+					NSArray *result = [bgContext executeFetchRequest:fetchRequest error:NULL];
+					if (result.count > 0) {
+						for (CDMessage *msg in result) {
+							[bgContext deleteObject:msg];
+						}
+					}
+					
 					CDMessage *msg = [[CDMessage alloc] initWithContext:bgContext];
 					msg.topic = topic;
-					msg.text = text;
+					msg.content = content;
 					msg.timestamp = date;
-					msg.seqno = seqno;
+					msg.messageID = messageID;
 					msg.account = cdaccount;
 				}
 			}];

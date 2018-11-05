@@ -13,9 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<CDMessage *> *)fetchRequest;
 
-@property (nullable, nonatomic, copy) NSNumber *seqno;
+@property (nullable, nonatomic, copy) NSNumber *messageID;
 @property (nullable, nonatomic, copy) NSString *topic;
-@property (nullable, nonatomic, copy) NSString *text;
+@property (nullable, nonatomic, copy) NSString *content;
 @property (nullable, nonatomic, copy) NSDate *timestamp;
 @property (nullable, nonatomic, retain) CDAccount *account;
 @property (nullable, nonatomic, copy) NSString *sectionIdentifier; // transient

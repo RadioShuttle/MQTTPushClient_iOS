@@ -12,9 +12,9 @@
 	return [NSFetchRequest fetchRequestWithEntityName:@"CDMessage"];
 }
 
-@dynamic seqno;
+@dynamic messageID;
 @dynamic topic;
-@dynamic text;
+@dynamic content;
 @dynamic timestamp;
 @dynamic account;
 @dynamic sectionIdentifier;
