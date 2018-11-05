@@ -76,6 +76,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccountStatus:) name:@"ServerUpdateNotification" object:nil];
 	[self.navigationController setToolbarHidden:NO animated:YES];
 	[self updateAccountStatus:nil];
+	[self updateAccount];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
