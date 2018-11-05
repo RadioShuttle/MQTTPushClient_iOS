@@ -49,6 +49,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	account.uuid = uuid;
 	
 	account.topicList = [NSMutableArray array];
+	account.actionList = [NSMutableArray array];
 	return account;
 }
 

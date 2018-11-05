@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 // Runtime properties which are stored in memory only:
 @property (readonly) NSURL *cacheURL; // Cache directory for this account
 @property NSMutableArray *topicList;
+@property NSMutableArray *actionList;
 @property(nullable) NSError *error;
 
 // Core Data related properties:
