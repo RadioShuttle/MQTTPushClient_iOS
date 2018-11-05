@@ -10,10 +10,11 @@
 @implementation CDAccount
 
 -(void)addMessageList:(NSArray<Message *>*)messageList {
-	NSManagedObjectContext *context = self.managedObjectContext;
-	if (context == nil) {
+	if (self.isDeleted || self.managedObjectContext == nil) {
 		return;
 	}
+	NSManagedObjectContext *context = self.managedObjectContext;
+
 	for (Message *msg in messageList) {
 		
 		NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
