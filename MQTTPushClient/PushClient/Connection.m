@@ -137,11 +137,15 @@ enum ConnectionState {
 
 - (void)getMessagesAsync:(Account *)account {
 	Cmd *command = [self login:account];
-	[command getMessagesRequest:(account.cdaccount.lastMessageID + 1)
-						   date:account.cdaccount.lastTimestamp id:0];
+	// NSLog(@"getMessages after %d(%d)", (int)account.cdaccount.lastTimestamp.timeIntervalSince1970,
+		  account.cdaccount.lastMessageID);
+	[command getMessagesRequest:0
+						   date:account.cdaccount.lastTimestamp
+							 id:account.cdaccount.lastMessageID];
 	if (!command.rawCmd.error) {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
+		// NSLog(@"getMessages: %d records", numRecords);
 		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		p += 2;
 		while (numRecords--) {
@@ -161,6 +165,7 @@ enum ConnectionState {
 			message.messageID = msgID;
 			p += 4;
 			[messageList addObject:message];
+			// NSLog(@"    msg: %d(%d)", (int)seconds, msgID);
 		}
 		[account addMessageList:messageList];
 	}
