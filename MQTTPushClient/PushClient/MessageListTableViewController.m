@@ -140,8 +140,9 @@
 	NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
 	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@", self.account.cdaccount];
 	fetchRequest.predicate = predicate;
-	NSSortDescriptor *sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
-	fetchRequest.sortDescriptors = @[sortDescriptor];
+	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+	NSSortDescriptor *sort2 = [[NSSortDescriptor alloc] initWithKey:@"messageID" ascending:NO];
+	fetchRequest.sortDescriptors = @[sort1, sort2];
 	
 	NSFetchedResultsController<CDMessage *> *aFrc = [[NSFetchedResultsController alloc]
 													 initWithFetchRequest:fetchRequest
