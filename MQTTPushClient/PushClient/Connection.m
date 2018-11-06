@@ -9,6 +9,7 @@
 #import "FIROptions.h"
 #import "FCMData.h"
 #import "Account.h"
+#import "Action.h"
 #import "Cmd.h"
 #import "Topic.h"
 #import "Action.h"
@@ -169,19 +170,19 @@ enum ConnectionState {
 
 - (void)addTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
 	Cmd *command = [self login:account];
-	[command addTopicsRequest:0 name:name type:type];
+	[command addTopicRequest:0 name:name type:type];
 	[self disconnect:account withCommand:command];
 }
 
 - (void)updateTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
 	Cmd *command = [self login:account];
-	[command updateTopicsRequest:0 name:name type:type];
+	[command updateTopicRequest:0 name:name type:type];
 	[self disconnect:account withCommand:command];
 }
 
 - (void)deleteTopicAsync:(Account *)account name:(NSString *)name {
 	Cmd *command = [self login:account];
-	[command deleteTopicsRequest:0 name:name];
+	[command deleteTopicRequest:0 name:name];
 	[self disconnect:account withCommand:command];
 }
 
@@ -221,6 +222,18 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
+- (void)addActionAsync:(Account *)account action:(Action *)action {
+	Cmd *command = [self login:account];
+	[command addActionRequest:0 action:action];
+	[self disconnect:account withCommand:command];
+}
+
+- (void)updateActionAsync:(Account *)account action:(Action *)action name:(NSString *)name {
+	Cmd *command = [self login:account];
+	[command addActionRequest:0 action:action];
+	[self disconnect:account withCommand:command];
+}
+
 #pragma public methods
 
 - (void)getFcmDataForAccount:(Account *)account {
@@ -254,6 +267,14 @@ enum ConnectionState {
 
 - (void)publishMessageForAccount:(Account *)account action:(Action *)action {
 	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account action:action];});
+}
+
+- (void)addActionForAccount:(Account *)account action:(Action *)action {
+	dispatch_async(self.serialQueue, ^{[self addActionAsync:account action:action];});
+}
+
+- (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name {
+	dispatch_async(self.serialQueue, ^{[self addActionAsync:account action:action];});
 }
 
 @end

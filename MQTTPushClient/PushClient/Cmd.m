@@ -6,6 +6,7 @@
 
 #import "GCDAsyncSocket.h"
 #import "FCMData.h"
+#import "Action.h"
 #import "Cmd.h"
 
 #define MAGIC "MQTP"
@@ -298,7 +299,7 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)addTopicsRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
+- (RawCmd *)addTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
 	if (self.state == CommandStateEnd)
 		return nil;
 	unsigned char buffer[2];
@@ -314,7 +315,7 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)deleteTopicsRequest:(int)seqNo name:(NSString *)name {
+- (RawCmd *)deleteTopicRequest:(int)seqNo name:(NSString *)name {
 	if (self.state == CommandStateEnd)
 		return nil;
 	unsigned char buffer[2];
@@ -328,7 +329,7 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)updateTopicsRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
+- (RawCmd *)updateTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
 	if (self.state == CommandStateEnd)
 		return nil;
 	unsigned char buffer[2];
@@ -375,6 +376,51 @@ enum StateCommand {
 	buffer[0] = retainFlag;
 	[data appendBytes:buffer length:1];
 	[self writeCommand:CMD_MQTT_PUBLISH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+- (RawCmd *)addActionRequest:(int)seqNo action:(Action *)action {
+	if (self.state == CommandStateEnd)
+		return nil;
+	NSMutableData *data = [self dataFromString:action.name encoding:NSUTF8StringEncoding];
+	[data appendData:[self dataFromString:action.topic encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:action.content encoding:NSUTF8StringEncoding]];
+	unsigned char buffer[1];
+	buffer[0] = action.retainFlag;
+	[data appendBytes:buffer length:1];
+	[self writeCommand:CMD_ADD_ACTION seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+- (RawCmd *)updateActionRequest:(int)seqNo action:(Action *)action name:(NSString *)name {
+	if (self.state == CommandStateEnd)
+		return nil;
+	NSMutableData *data = [self dataFromString:action.name encoding:NSUTF8StringEncoding];
+	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:action.topic encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:action.content encoding:NSUTF8StringEncoding]];
+	unsigned char buffer[1];
+	buffer[0] = action.retainFlag;
+	[data appendBytes:buffer length:1];
+	[self writeCommand:CMD_UPD_ACTION seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+- (RawCmd *)deleteActionRequest:(int)seqNo name:(NSString *)name {
+	if (self.state == CommandStateEnd)
+		return nil;
+	unsigned char buffer[2];
+	buffer[0] = 0;
+	buffer[1] = 1;
+	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:2];
+	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
+	[self writeCommand:CMD_DEL_ACTIONS seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
 	return self.rawCmd;

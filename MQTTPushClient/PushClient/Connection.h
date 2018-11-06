@@ -19,5 +19,7 @@
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name;
 - (void)getActionsForAccount:(Account *)account;
 - (void)publishMessageForAccount:(Account *)account action:(Action *)action;
+- (void)addActionForAccount:(Account *)account action:(Action *)action;
+- (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name;
 
 @end
