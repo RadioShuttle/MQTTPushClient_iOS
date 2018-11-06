@@ -114,7 +114,7 @@ enum StateCommand {
 		_protocolMajor = PROTOCOL_MAJOR;
 		_protocolMinor = PROTOCOL_MINOR;
 		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
-		if ([self.socket connectToHost:host onPort:port withTimeout:0.4 error:&error])
+		if ([self.socket connectToHost:host onPort:port withTimeout:_timeout error:&error])
 			_rawCmd = [[RawCmd alloc] init];
 		else
 			return nil;
