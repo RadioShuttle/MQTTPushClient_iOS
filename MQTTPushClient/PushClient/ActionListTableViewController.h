@@ -9,5 +9,6 @@
 @interface ActionListTableViewController : UITableViewController
 
 @property Account *account;
+@property UIViewController *messageList;
 
 @end

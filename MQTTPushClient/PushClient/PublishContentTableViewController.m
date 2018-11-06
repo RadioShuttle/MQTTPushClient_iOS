@@ -11,24 +11,24 @@
 
 @interface PublishContentTableViewController ()
 
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *topicLabel;
 @property (weak, nonatomic) IBOutlet UILabel *contentLabel;
 @property (weak, nonatomic) IBOutlet UISwitch *retainSwitch;
-
-
 
 @end
 
 @implementation PublishContentTableViewController
 
-- (IBAction)publishAction:(UIButton *)sender {
+- (IBAction)publishAction:(UIBarButtonItem *)sender {
 	Connection *connection = [[Connection alloc] init];
 	[connection publishMessageForAccount:self.account action:self.action];
-	[self.navigationController popViewControllerAnimated:YES];
+	[self.navigationController popToViewController:self.messageList animated:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	self.nameLabel.text = self.action.name;
 	self.topicLabel.text = self.action.topic;
 	self.contentLabel.text = self.action.content;
 	self.retainSwitch.on = self.action.retainFlag;

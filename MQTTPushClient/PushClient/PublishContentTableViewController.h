@@ -10,5 +10,6 @@
 
 @property Account *account;
 @property Action *action;
+@property UIViewController *messageList;
 
 @end

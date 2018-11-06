@@ -52,6 +52,7 @@
 	controller.account = self.account;
 	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
 	controller.action = self.account.actionList[indexPath.row];
+	controller.messageList = self.messageList;
 }
 
 @end

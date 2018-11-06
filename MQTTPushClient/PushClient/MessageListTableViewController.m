@@ -213,6 +213,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	ActionListTableViewController *controller = segue.destinationViewController;
 	controller.account = self.account;
+	controller.messageList = self;
 }
 
 @end
