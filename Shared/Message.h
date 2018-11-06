@@ -13,9 +13,11 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Message : NSObject
 
 @property NSDate *timestamp;
-@property NSNumber *messageID;
+@property int32_t messageID;
 @property NSString *topic;
 @property NSString *content;
+
+-(BOOL) isNewerThan:(Message *)other;
 
 @end
 

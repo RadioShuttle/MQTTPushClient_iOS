@@ -66,7 +66,7 @@
 				
 				Message *msg = [[Message alloc] init];
 				msg.timestamp = date;
-				msg.messageID = messageID;
+				msg.messageID = messageID.intValue;
 				msg.topic = topic;
 				msg.content = content;
 				[messageList addObject:msg];

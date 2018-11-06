@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<CDMessage *> *)fetchRequest;
 
-@property (nullable, nonatomic, copy) NSNumber *messageID;
+@property (nonatomic) int32_t messageID;
 @property (nullable, nonatomic, copy) NSString *topic;
 @property (nullable, nonatomic, copy) NSString *content;
 @property (nullable, nonatomic, copy) NSDate *timestamp;

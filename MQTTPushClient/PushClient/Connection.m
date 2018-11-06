@@ -136,10 +136,9 @@ enum ConnectionState {
 }
 
 - (void)getMessagesAsync:(Account *)account {
-	NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
-	NSDate *date = [gregorian startOfDayForDate:[NSDate date]];
 	Cmd *command = [self login:account];
-	[command getMessagesRequest:0 date:date id:0];
+	[command getMessagesRequest:(account.cdaccount.lastMessageID + 1)
+						   date:account.cdaccount.lastTimestamp id:0];
 	if (!command.rawCmd.error) {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
@@ -159,7 +158,7 @@ enum ConnectionState {
 			message.content = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
 			int msgID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
-			message.messageID = [NSNumber numberWithInt:msgID];
+			message.messageID = msgID;
 			p += 4;
 			[messageList addObject:message];
 		}

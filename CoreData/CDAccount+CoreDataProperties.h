@@ -13,7 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSFetchRequest<CDAccount *> *)fetchRequest;
 
-@property (nullable, nonatomic, copy) NSDate *last_update;
+@property (nullable, nonatomic, copy) NSDate *lastUpdate;
+@property (nullable, nonatomic, copy) NSDate *lastTimestamp;
+@property (nonatomic) int32_t lastMessageID;
 @property (nullable, nonatomic, retain) NSSet<CDMessage *> *messages;
 
 @end

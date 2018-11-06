@@ -12,7 +12,9 @@
 	return [NSFetchRequest fetchRequestWithEntityName:@"CDAccount"];
 }
 
-@dynamic last_update;
+@dynamic lastUpdate;
+@dynamic lastTimestamp;
+@dynamic lastMessageID;
 @dynamic messages;
 
 @end
