@@ -391,6 +391,26 @@
                                     <segue destination="rPo-q8-nZt" kind="show" id="CIM-DF-N7R"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDAddActionCell" rowHeight="44" id="pkk-u8-kIp">
+                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pkk-u8-kIp" id="lUz-3r-w23">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new action" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="64D-AN-uDf">
+                                            <rect key="frame" x="16" y="11" width="126" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="64D-AN-uDf" firstAttribute="leading" secondItem="lUz-3r-w23" secondAttribute="leading" constant="16" id="HAV-Lq-Hjh"/>
+                                        <constraint firstItem="64D-AN-uDf" firstAttribute="top" secondItem="lUz-3r-w23" secondAttribute="top" constant="11" id="YuQ-2q-co9"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="1v6-nD-m48" id="lDM-6k-Mt7"/>
@@ -400,7 +420,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XhY-ht-vq1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="238" y="1270"/>
+            <point key="canvasLocation" x="237.59999999999999" y="1269.7151424287856"/>
         </scene>
         <!--Title-->
         <scene sceneID="0NT-M2-LJl">
