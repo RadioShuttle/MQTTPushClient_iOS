@@ -21,6 +21,7 @@
 @implementation PublishContentTableViewController
 
 - (IBAction)publishAction:(UIBarButtonItem *)sender {
+	self.action.retainFlag = self.retainSwitch.on;
 	Connection *connection = [[Connection alloc] init];
 	[connection publishMessageForAccount:self.account action:self.action];
 	[self.navigationController popToViewController:self.messageList animated:YES];
