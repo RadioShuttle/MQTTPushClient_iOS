@@ -366,6 +366,20 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSString *)content retainFlag:(BOOL)retainFlag {
+	if (self.state == CommandStateEnd)
+		return nil;
+	NSMutableData *data = [self dataFromString:topic encoding:NSUTF8StringEncoding];
+	[data appendData:[self dataFromString:content encoding:NSUTF8StringEncoding]];
+	unsigned char buffer[1];
+	buffer[0] = retainFlag;
+	[data appendBytes:buffer length:1];
+	[self writeCommand:CMD_MQTT_PUBLISH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
 # pragma - socket delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {

@@ -7,6 +7,7 @@
 #import "Action.h"
 #import "Account.h"
 #import "Connection.h"
+#import "PublishContentTableViewController.h"
 #import "ActionListTableViewController.h"
 
 @interface ActionListTableViewController ()
@@ -42,6 +43,15 @@
 	Action *action = self.account.actionList[indexPath.row];
 	cell.textLabel.text = action.name;
 	return cell;
+}
+
+#pragma mark - navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	PublishContentTableViewController *controller = segue.destinationViewController;
+	controller.account = self.account;
+	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+	controller.action = self.account.actionList[indexPath.row];
 }
 
 @end

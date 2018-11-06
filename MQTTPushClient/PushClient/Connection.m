@@ -145,25 +145,21 @@ enum ConnectionState {
 		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		p += 2;
 		while (numRecords--) {
+			Message *message = [[Message alloc] init];
 			NSTimeInterval seconds = ((uint64_t)p[0] << 56) + ((uint64_t)p[1] << 48) + ((uint64_t)p[2] << 40) + ((uint64_t)p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
-			date = [NSDate dateWithTimeIntervalSince1970:seconds];
+			message.timestamp = [NSDate dateWithTimeIntervalSince1970:seconds];
 			p += 8;
 			int count = (p[0] << 8) + p[1];
 			p += 2;
-			NSString *topic = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			message.topic = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
 			count = (p[0] << 8) + p[1];
 			p += 2;
-			NSString *content = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			message.content = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
 			int msgID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
-			p += 4;
-			NSLog(@"[%d] %@: %@ (%@)", msgID, date, topic, content);
-			Message *message = [[Message alloc] init];
-			message.timestamp = date;
 			message.messageID = [NSNumber numberWithInt:msgID];
-			message.topic = topic;
-			message.content = content;
+			p += 4;
 			[messageList addObject:message];
 		}
 		[account addMessageList:messageList];
@@ -219,6 +215,12 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
+- (void)publishMessageAsync:(Account *)account action:(Action *)action {
+	Cmd *command = [self login:account];
+	[command mqttPublishRequest:0 topic:action.topic content:action.content retainFlag:action.retainFlag];
+	[self disconnect:account withCommand:command];
+}
+
 #pragma public methods
 
 - (void)getFcmDataForAccount:(Account *)account {
@@ -248,6 +250,10 @@ enum ConnectionState {
 
 - (void)getActionsForAccount:(Account *)account {
 	dispatch_async(self.serialQueue, ^{[self getActionsAsync:account];});
+}
+
+- (void)publishMessageForAccount:(Account *)account action:(Action *)action {
+	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account action:action];});
 }
 
 @end

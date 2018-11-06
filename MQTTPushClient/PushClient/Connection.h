@@ -5,6 +5,7 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "Action.h"
 #import "Cmd.h"
 
 @interface Connection : NSObject
@@ -17,5 +18,6 @@
 - (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type;
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name;
 - (void)getActionsForAccount:(Account *)account;
+- (void)publishMessageForAccount:(Account *)account action:(Action *)action;
 
 @end
