@@ -31,13 +31,31 @@
 
 - (IBAction)saveAction:(UIBarButtonItem *)sender {
 	Connection *connection = [[Connection alloc] init];
-	[connection addActionForAccount:self.account action:self.action];
+	if (self.action) {
+		[connection updateActionForAccount:self.account action:self.action name:self.nameTextField.text];
+	} else {
+		Action *action = [[Action alloc] init];
+		action.name = self.nameTextField.text;
+		action.topic = self.topicTextField.text;
+		action.content = self.contentTextField.text;
+		action.retainFlag = self.retainSwitch.on;
+		[connection addActionForAccount:self.account action:action];
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
 	self.saveBarButtonItem.enabled = NO;
+	if (self.action) {
+		self.nameTextField.text = self.action.name;
+		self.topicTextField.text = self.action.topic;
+		self.contentTextField.text = self.action.content;
+		self.retainSwitch.on = self.action.retainFlag;
+		self.topicTextField.enabled = NO;
+		self.contentTextField.enabled = NO;
+		self.retainSwitch.enabled = NO;
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
