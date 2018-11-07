@@ -21,7 +21,6 @@
 		2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */; };
 		2ADBE465213D7516000664D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE464213D7516000664D3 /* main.m */; };
 		2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
-		2AE04586219197720010C027 /* PublishContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE04585219197720010C027 /* PublishContentTableViewController.m */; };
 		2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE045882191EC920010C027 /* AddActionTableViewController.m */; };
 		2AE57BC221906A3900012A04 /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC121906A3900012A04 /* Action.m */; };
 		2AE57BC52190826600012A04 /* ActionListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC42190826600012A04 /* ActionListTableViewController.m */; };
@@ -111,8 +110,6 @@
 		2ADBE464213D7516000664D3 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		2ADFE5662166286600FB19E4 /* MessageDataHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageDataHandler.h; sourceTree = "<group>"; };
 		2ADFE5672166286600FB19E4 /* MessageDataHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDataHandler.m; sourceTree = "<group>"; };
-		2AE04584219197720010C027 /* PublishContentTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublishContentTableViewController.h; sourceTree = "<group>"; };
-		2AE04585219197720010C027 /* PublishContentTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublishContentTableViewController.m; sourceTree = "<group>"; };
 		2AE045872191EC920010C027 /* AddActionTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddActionTableViewController.h; sourceTree = "<group>"; };
 		2AE045882191EC920010C027 /* AddActionTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddActionTableViewController.m; sourceTree = "<group>"; };
 		2AE57BC021906A3900012A04 /* Action.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
@@ -205,8 +202,6 @@
 				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
 				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
 				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
-				2AE04584219197720010C027 /* PublishContentTableViewController.h */,
-				2AE04585219197720010C027 /* PublishContentTableViewController.m */,
 				2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */,
 				2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */,
 				2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */,
@@ -487,7 +482,6 @@
 				84095D0721903E8300CFC1DB /* Message.m in Sources */,
 				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
-				2AE04586219197720010C027 /* PublishContentTableViewController.m in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
