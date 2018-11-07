@@ -22,6 +22,7 @@
 		2ADBE465213D7516000664D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE464213D7516000664D3 /* main.m */; };
 		2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
 		2AE04586219197720010C027 /* PublishContentTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE04585219197720010C027 /* PublishContentTableViewController.m */; };
+		2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE045882191EC920010C027 /* AddActionTableViewController.m */; };
 		2AE57BC221906A3900012A04 /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC121906A3900012A04 /* Action.m */; };
 		2AE57BC52190826600012A04 /* ActionListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC42190826600012A04 /* ActionListTableViewController.m */; };
 		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
@@ -112,6 +113,8 @@
 		2ADFE5672166286600FB19E4 /* MessageDataHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDataHandler.m; sourceTree = "<group>"; };
 		2AE04584219197720010C027 /* PublishContentTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PublishContentTableViewController.h; sourceTree = "<group>"; };
 		2AE04585219197720010C027 /* PublishContentTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PublishContentTableViewController.m; sourceTree = "<group>"; };
+		2AE045872191EC920010C027 /* AddActionTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddActionTableViewController.h; sourceTree = "<group>"; };
+		2AE045882191EC920010C027 /* AddActionTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddActionTableViewController.m; sourceTree = "<group>"; };
 		2AE57BC021906A3900012A04 /* Action.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
 		2AE57BC121906A3900012A04 /* Action.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
 		2AE57BC32190826600012A04 /* ActionListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActionListTableViewController.h; sourceTree = "<group>"; };
@@ -184,6 +187,8 @@
 				2AE57BC121906A3900012A04 /* Action.m */,
 				2AE57BC32190826600012A04 /* ActionListTableViewController.h */,
 				2AE57BC42190826600012A04 /* ActionListTableViewController.m */,
+				2AE045872191EC920010C027 /* AddActionTableViewController.h */,
+				2AE045882191EC920010C027 /* AddActionTableViewController.m */,
 				2A0E8DF1218332780080DF12 /* AddTopicTableViewController.h */,
 				2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */,
 				2ADBE455213D7515000664D3 /* AppDelegate.h */,
@@ -466,6 +471,7 @@
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
+				2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */,
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
 				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
 				847874F2217865700059881B /* SharedConstants.m in Sources */,
