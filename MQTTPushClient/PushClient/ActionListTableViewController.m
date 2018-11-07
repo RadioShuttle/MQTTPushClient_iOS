@@ -12,12 +12,17 @@
 
 @interface ActionListTableViewController ()
 
+@property Action *action;
+
 @end
 
 @implementation ActionListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-	[self.tableView reloadData];
+	if (self.action)
+		[self.navigationController popToViewController:self.messageList animated:YES];
+	else
+		[self.tableView reloadData];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -78,10 +83,17 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (!self.tableView.editing) {
-		Action *action = self.account.actionList[indexPath.row];
-		Connection *connection = [[Connection alloc] init];
-		[connection publishMessageForAccount:self.account action:action];
-		[self.navigationController popToViewController:self.messageList animated:YES];
+		[tableView deselectRowAtIndexPath:indexPath animated:YES];
+		self.action = self.account.actionList[indexPath.row];
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"MQTT Action" message:self.action.name preferredStyle:UIAlertControllerStyleAlert];
+		UIAlertAction *sendAction = [UIAlertAction actionWithTitle:@"Send" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+			Connection *connection = [[Connection alloc] init];
+			[connection publishMessageForAccount:self.account action:self.action];
+		}];
+		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+		[alert addAction:sendAction];
+		[alert addAction:cancelAction];
+		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
 
