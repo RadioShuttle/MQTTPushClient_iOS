@@ -77,14 +77,13 @@
 	return UITableViewCellEditingStyleDelete;
 }
 
-#pragma mark - navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	PublishContentTableViewController *controller = segue.destinationViewController;
-	controller.account = self.account;
-	NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-	controller.action = self.account.actionList[indexPath.row];
-	controller.messageList = self.messageList;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (!self.tableView.editing) {
+		Action *action = self.account.actionList[indexPath.row];
+		Connection *connection = [[Connection alloc] init];
+		[connection publishMessageForAccount:self.account action:action];
+		[self.navigationController popToViewController:self.messageList animated:YES];
+	}
 }
 
 @end
