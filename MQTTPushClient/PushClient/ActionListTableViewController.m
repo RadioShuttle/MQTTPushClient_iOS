@@ -19,9 +19,15 @@
 @implementation ActionListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-	if (self.action)
-		[self.navigationController popToViewController:self.messageList animated:YES];
-	else
+	if (self.action) {
+		if (self.account.error) {
+			UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:self.account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+			UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+			[alert addAction:cancelAction];
+			[self presentViewController:alert animated:YES completion:nil];
+		} else
+			[self.navigationController popToViewController:self.messageList animated:YES];
+	} else
 		[self.tableView reloadData];
 }
 
