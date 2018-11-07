@@ -7,7 +7,6 @@
 #import "Action.h"
 #import "Account.h"
 #import "Connection.h"
-#import "PublishContentTableViewController.h"
 #import "AddActionTableViewController.h"
 #import "ActionListTableViewController.h"
 

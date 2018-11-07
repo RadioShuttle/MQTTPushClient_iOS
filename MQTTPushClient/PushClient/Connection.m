@@ -137,8 +137,7 @@ enum ConnectionState {
 
 - (void)getMessagesAsync:(Account *)account {
 	Cmd *command = [self login:account];
-	// NSLog(@"getMessages after %d(%d)", (int)account.cdaccount.lastTimestamp.timeIntervalSince1970,
-		  account.cdaccount.lastMessageID);
+	// NSLog(@"getMessages after %d(%d)", (int)account.cdaccount.lastTimestamp.timeIntervalSince1970, account.cdaccount.lastMessageID);
 	[command getMessagesRequest:0
 						   date:account.cdaccount.lastTimestamp
 							 id:account.cdaccount.lastMessageID];
