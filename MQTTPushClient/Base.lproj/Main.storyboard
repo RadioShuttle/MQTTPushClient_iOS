@@ -454,6 +454,7 @@
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                     <connections>
                                                         <action selector="validateFields:" destination="b2n-1s-j05" eventType="editingChanged" id="QzA-7T-fjA"/>
+                                                        <outlet property="delegate" destination="b2n-1s-j05" id="YEK-96-7RY"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -486,6 +487,7 @@
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                     <connections>
                                                         <action selector="validateFields:" destination="b2n-1s-j05" eventType="editingChanged" id="P9s-3h-Vvc"/>
+                                                        <outlet property="delegate" destination="b2n-1s-j05" id="yYm-KT-nVv"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
@@ -518,6 +520,7 @@
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                     <connections>
                                                         <action selector="validateFields:" destination="b2n-1s-j05" eventType="editingChanged" id="EM3-Oe-wL6"/>
+                                                        <outlet property="delegate" destination="b2n-1s-j05" id="sA6-NZ-KKR"/>
                                                     </connections>
                                                 </textField>
                                             </subviews>
