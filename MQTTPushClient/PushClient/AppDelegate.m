@@ -82,6 +82,14 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// Print full message.
 	NSLog(@"didReceiveRemoteNotification: %@", userInfo);
 	
+	NSString *pushServerID = userInfo[@"pushserverid"];
+	for (Account *account in [AccountList sharedAccountList]) {
+		if ([pushServerID isEqualToString:account.pushServerID]) {
+			[MessageDataHandler handleRemoteMessage:userInfo forAccount:account];
+			break;
+		}
+	}
+
 	completionHandler(UIBackgroundFetchResultNewData);
 
 }
