@@ -89,7 +89,15 @@
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (!self.tableView.editing) {
+	if (self.editing) {
+		if (indexPath.row == 0) {
+			[self performSegueWithIdentifier:@"IDAddAction" sender:nil];
+		} else {
+			NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
+			Action *action = self.account.actionList[row];
+			[self performSegueWithIdentifier:@"IDShowAction" sender:action];
+		}
+	} else {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		self.action = self.account.actionList[indexPath.row];
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"MQTT Action" message:self.action.name preferredStyle:UIAlertControllerStyleAlert];
@@ -102,6 +110,14 @@
 		[alert addAction:cancelAction];
 		[self presentViewController:alert animated:YES completion:nil];
 	}
+}
+
+#pragma mark - navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	AddActionTableViewController *controller = segue.destinationViewController;
+	controller.account = self.account;
+	controller.action = sender;
 }
 
 @end

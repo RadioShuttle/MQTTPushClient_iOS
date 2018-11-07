@@ -8,4 +8,7 @@
 
 @interface AddActionTableViewController : UITableViewController
 
+@property Account *account;
+@property Action *action;
+
 @end
