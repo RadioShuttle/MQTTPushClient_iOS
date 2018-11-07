@@ -73,7 +73,8 @@
 		cell = [tableView dequeueReusableCellWithIdentifier:@"IDAddActionCell" forIndexPath:indexPath];
 	} else {
 		cell = [tableView dequeueReusableCellWithIdentifier:@"IDActionCell" forIndexPath:indexPath];
-		Action *action = self.account.actionList[indexPath.row];
+		NSUInteger row = self.editing ? indexPath.row - 1 : indexPath.row; // because of entry "add new item" in the UI
+		Action *action = self.account.actionList[row];
 		cell.textLabel.text = action.name;
 	}
 	return cell;
