@@ -21,5 +21,6 @@
 - (void)publishMessageForAccount:(Account *)account action:(Action *)action;
 - (void)addActionForAccount:(Account *)account action:(Action *)action;
 - (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name;
+- (void)deleteActionForAccount:(Account *)account name:(NSString *)name;
 
 @end

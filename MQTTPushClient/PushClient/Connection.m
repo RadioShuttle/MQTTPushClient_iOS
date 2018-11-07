@@ -237,6 +237,12 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
+- (void)deleteActionAsync:(Account *)account name:(NSString *)name {
+	Cmd *command = [self login:account];
+	[command deleteActionRequest:0 name:name];
+	[self disconnect:account withCommand:command];
+}
+
 #pragma public methods
 
 - (void)getFcmDataForAccount:(Account *)account {
@@ -278,6 +284,10 @@ enum ConnectionState {
 
 - (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name {
 	dispatch_async(self.serialQueue, ^{[self addActionAsync:account action:action];});
+}
+
+- (void)deleteActionForAccount:(Account *)account name:(NSString *)name {
+	dispatch_async(self.serialQueue, ^{[self deleteActionAsync:account name:name];});
 }
 
 @end
