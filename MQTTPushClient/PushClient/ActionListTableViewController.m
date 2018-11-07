@@ -112,6 +112,16 @@
 	}
 }
 
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		Connection *connection = [[Connection alloc] init];
+		NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
+		Action *action = self.account.actionList[row];
+		[connection deleteActionForAccount:self.account name:action.name];
+		[connection getActionsForAccount:self.account];
+	}
+}
+
 #pragma mark - navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
