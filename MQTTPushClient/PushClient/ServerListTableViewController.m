@@ -52,9 +52,9 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	self.navigationController.toolbarHidden = NO;
 	[self.tableView reloadData];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
-	self.navigationController.toolbarHidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

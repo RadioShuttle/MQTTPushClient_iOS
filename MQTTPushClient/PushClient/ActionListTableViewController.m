@@ -49,6 +49,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	self.navigationController.toolbarHidden = YES;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 	Connection *connection = [[Connection alloc] init];
 	[connection getActionsForAccount:self.account];

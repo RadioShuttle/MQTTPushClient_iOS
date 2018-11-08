@@ -68,6 +68,11 @@
                             <outlet property="delegate" destination="wZS-kH-jwG" id="aCl-kI-99j"/>
                         </connections>
                     </tableView>
+                    <toolbarItems>
+                        <barButtonItem systemItem="flexibleSpace" id="aod-iF-PBW"/>
+                        <barButtonItem title="About" id="9e8-pi-phg"/>
+                        <barButtonItem systemItem="flexibleSpace" id="7oR-mC-fFz"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="MQTT Push Client" id="KJ4-tA-xOp">
                         <barButtonItem key="leftBarButtonItem" systemItem="add" id="w5H-wV-XAG">
                             <connections>
@@ -75,6 +80,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="addServerBarButtonItem" destination="w5H-wV-XAG" id="2gZ-c2-JZT"/>
                         <segue destination="fn0-VH-MxS" kind="show" identifier="IDShowTopics" id="gYo-nf-hfO"/>
