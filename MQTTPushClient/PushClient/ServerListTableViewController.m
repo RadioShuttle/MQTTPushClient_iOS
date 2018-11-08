@@ -83,9 +83,9 @@
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-//		Account *account = self.accountList[indexPath.row];
-//		Connection *connection = [[Connection alloc] init];
-//		[connection removeTokenForAccount:account token:self.token];
+		Account *account = self.accountList[indexPath.row];
+		Connection *connection = [[Connection alloc] init];
+		[connection removeTokenForAccount:account];
 		[self.accountList[indexPath.row] clearCache];
 		[self.accountList removeAccountAtIndex:[indexPath row]];
 		[self.accountList save];

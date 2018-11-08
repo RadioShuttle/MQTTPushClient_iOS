@@ -256,8 +256,8 @@ enum ConnectionState {
 	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
 }
 
-- (void)removeTokenForAccount:(Account *)account token:(NSString *)token {
-	dispatch_async(self.serialQueue, ^{[self removeTokenAsync:account token:token];});
+- (void)removeTokenForAccount:(Account *)account {
+	dispatch_async(self.serialQueue, ^{[self removeTokenAsync:account token:self.fcmToken];});
 }
 
 - (void)getMessagesForAccount:(Account *)account {
