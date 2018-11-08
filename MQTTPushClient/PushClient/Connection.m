@@ -233,7 +233,7 @@ enum ConnectionState {
 
 - (void)updateActionAsync:(Account *)account action:(Action *)action name:(NSString *)name {
 	Cmd *command = [self login:account];
-	[command addActionRequest:0 action:action];
+	[command updateActionRequest:0 action:action name:name];
 	[self disconnect:account withCommand:command];
 }
 
@@ -283,7 +283,7 @@ enum ConnectionState {
 }
 
 - (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name {
-	dispatch_async(self.serialQueue, ^{[self addActionAsync:account action:action];});
+	dispatch_async(self.serialQueue, ^{[self updateActionAsync:account action:action name:name];});
 }
 
 - (void)deleteActionForAccount:(Account *)account name:(NSString *)name {
