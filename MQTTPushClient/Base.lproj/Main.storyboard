@@ -207,6 +207,7 @@
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="C39-c2-fvT">
                                                     <rect key="frame" x="16" y="141" width="343" height="29"/>
                                                     <segments>
+                                                        <segment title="" image="NotificationDisabled"/>
                                                         <segment title="" image="NotificationNone"/>
                                                         <segment title="" image="Banner"/>
                                                         <segment title="" image="BannerSound"/>
@@ -816,6 +817,7 @@
     <resources>
         <image name="Banner" width="18" height="18"/>
         <image name="BannerSound" width="18" height="18"/>
+        <image name="NotificationDisabled" width="18" height="18"/>
         <image name="NotificationNone" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>

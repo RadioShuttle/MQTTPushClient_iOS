@@ -79,8 +79,11 @@
 			case NotificationBanner:
 				topicCell.topicTypeImageView.image = [UIImage imageNamed:@"Banner"];
 				break;
-			default:
+			case NotificationNone:
 				topicCell.topicTypeImageView.image = [UIImage imageNamed:@"NotificationNone"];
+				break;
+			default:
+				topicCell.topicTypeImageView.image = [UIImage imageNamed:@"NotificationDisabled"];
 				break;
 		}
 		cell = topicCell;

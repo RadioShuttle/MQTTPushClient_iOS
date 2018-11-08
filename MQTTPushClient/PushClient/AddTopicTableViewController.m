@@ -33,14 +33,17 @@
 		Connection *connection = [[Connection alloc] init];
 		enum NotificationType type = NotificationDisabled;
 		switch (self.notificationTypeSegmentedControl.selectedSegmentIndex) {
-			case 2:
+			case 3:
 				type = NotificationBannerSound;
 				break;
-			case 1:
+			case 2:
 				type = NotificationBanner;
 				break;
-			default:
+			case 1:
 				type = NotificationNone;
+				break;
+			default:
+				type = NotificationDisabled;
 				break;
 		}
 		if (self.topic)
@@ -59,9 +62,12 @@
 		self.topicTextField.enabled = NO;
 		switch (self.topic.type) {
 			case NotificationBannerSound:
-				self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
+				self.notificationTypeSegmentedControl.selectedSegmentIndex = 3;
 				break;
 			case NotificationBanner:
+				self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
+				break;
+			case NotificationNone:
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 1;
 				break;
 			default:
