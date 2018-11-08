@@ -12,13 +12,14 @@
 
 - (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password;
 - (void)getFcmDataForAccount:(Account *)account;
+- (void)removeTokenForAccount:(Account *)account token:(NSString *)token;
 - (void)getMessagesForAccount:(Account *)account;
+- (void)publishMessageForAccount:(Account *)account action:(Action *)action;
 - (void)getTopicsForAccount:(Account *)account;
 - (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type;
 - (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type;
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name;
 - (void)getActionsForAccount:(Account *)account;
-- (void)publishMessageForAccount:(Account *)account action:(Action *)action;
 - (void)addActionForAccount:(Account *)account action:(Action *)action;
 - (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name;
 - (void)deleteActionForAccount:(Account *)account name:(NSString *)name;

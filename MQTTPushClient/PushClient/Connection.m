@@ -115,6 +115,12 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
+- (void)removeTokenAsync:(Account *)account token:(NSString *)token {
+	Cmd *command = [self login:account];
+	[command removeTokenRequest:0 token:token];
+	[self disconnect:account withCommand:command];
+}
+
 - (void)getTopicsAsync:(Account *)account {
 	Cmd *command = [self login:account];
 	[command getTopicsRequest:0];
@@ -250,8 +256,16 @@ enum ConnectionState {
 	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
 }
 
+- (void)removeTokenForAccount:(Account *)account token:(NSString *)token {
+	dispatch_async(self.serialQueue, ^{[self removeTokenAsync:account token:token];});
+}
+
 - (void)getMessagesForAccount:(Account *)account {
 	dispatch_async(self.serialQueue, ^{[self getMessagesAsync:account];});
+}
+
+- (void)publishMessageForAccount:(Account *)account action:(Action *)action {
+	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account action:action];});
 }
 
 - (void)getTopicsForAccount:(Account *)account {
@@ -272,10 +286,6 @@ enum ConnectionState {
 
 - (void)getActionsForAccount:(Account *)account {
 	dispatch_async(self.serialQueue, ^{[self getActionsAsync:account];});
-}
-
-- (void)publishMessageForAccount:(Account *)account action:(Action *)action {
-	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account action:action];});
 }
 
 - (void)addActionForAccount:(Account *)account action:(Action *)action {
