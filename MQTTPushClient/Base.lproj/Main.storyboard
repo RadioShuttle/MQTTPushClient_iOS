@@ -174,7 +174,7 @@
         <scene sceneID="8xw-1e-fzu">
             <objects>
                 <tableViewController title="Topic" id="8cN-Oa-f6G" customClass="AddTopicTableViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="go7-Sp-xfq">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="go7-Sp-xfq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -185,15 +185,9 @@
                                         <rect key="frame" x="0.0" y="0.0" width="375" height="414"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="L0K-co-nzU" id="ncR-mI-a7n">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="413.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="414"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subscribe to topic" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kvy-dR-dIi">
-                                                    <rect key="frame" x="16" y="11" width="343" height="21"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="GNs-ak-LHO">
                                                     <rect key="frame" x="16" y="40" width="343" height="30"/>
                                                     <nil key="textColor"/>
@@ -223,15 +217,12 @@
                                                 <constraint firstItem="GNs-ak-LHO" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="40" id="APC-AH-PbL"/>
                                                 <constraint firstItem="C39-c2-fvT" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="141" id="Ajl-pH-7Sa"/>
                                                 <constraint firstItem="C39-c2-fvT" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="KQ6-pm-Tmq"/>
-                                                <constraint firstAttribute="trailing" secondItem="Kvy-dR-dIi" secondAttribute="trailing" constant="16" id="Mtc-Ui-8UP"/>
                                                 <constraint firstAttribute="trailing" secondItem="C39-c2-fvT" secondAttribute="trailing" constant="16" id="d7w-fH-Thj"/>
                                                 <constraint firstItem="Rpj-dg-Tmq" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="dO6-ho-bxs"/>
                                                 <constraint firstItem="Rpj-dg-Tmq" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="112" id="hqA-eW-WTa"/>
-                                                <constraint firstItem="Kvy-dR-dIi" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="jyb-id-o8S"/>
                                                 <constraint firstItem="GNs-ak-LHO" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="kMt-ga-bDA"/>
                                                 <constraint firstAttribute="trailing" secondItem="Rpj-dg-Tmq" secondAttribute="trailing" constant="16" id="qGk-q0-pCB"/>
                                                 <constraint firstAttribute="trailing" secondItem="GNs-ak-LHO" secondAttribute="trailing" constant="16" id="uUw-lD-gHl"/>
-                                                <constraint firstItem="Kvy-dR-dIi" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="11" id="wb0-Dt-7qW"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -244,7 +235,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Topic" id="dof-Ws-Zlt">
-                        <barButtonItem key="rightBarButtonItem" title="Subscribe" id="hrg-PE-ymE">
+                        <barButtonItem key="rightBarButtonItem" title="Save" id="hrg-PE-ymE">
                             <connections>
                                 <action selector="subscribeAction:" destination="8cN-Oa-f6G" id="P9C-i5-aIx"/>
                             </connections>
