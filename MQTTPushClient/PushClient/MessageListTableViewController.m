@@ -39,17 +39,27 @@
 }
 
 - (IBAction)trashAction:(UIBarButtonItem *)sender {
-	NSManagedObjectContext *bgContext =self.account.backgroundContext;
-	[bgContext performBlock:^{
-		CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
-											 existingObjectWithID:self.account.cdaccount.objectID
-											 error:NULL];
-		if (cdaccount == nil) {
-			return;
-		}
-		cdaccount.messages = nil;
-		[bgContext save:NULL];
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Messages" message:@"You can delete all messages or the ones older than one day." preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"All Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		NSManagedObjectContext *bgContext =self.account.backgroundContext;
+		[bgContext performBlock:^{
+			CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
+												 existingObjectWithID:self.account.cdaccount.objectID
+												 error:NULL];
+			if (cdaccount == nil) {
+				return;
+			}
+			cdaccount.messages = nil;
+			[bgContext save:NULL];
+		}];
 	}];
+	UIAlertAction *olderAction = [UIAlertAction actionWithTitle:@"Older Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+	}];
+	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+	[alert addAction:allAction];
+	[alert addAction:olderAction];
+	[alert addAction:cancelAction];
+	[self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)viewDidLoad {
