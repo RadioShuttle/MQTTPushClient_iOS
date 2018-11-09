@@ -10,6 +10,6 @@
 
 @property (strong, nonatomic) UIWindow *window;
 @property NSString *fcmToken;
-
+-(void)startMessaging;
 @end
 

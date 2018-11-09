@@ -26,6 +26,14 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	
 	self.fcmToken = nil;
 	[[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:NO];
+	for (Account *account in [AccountList sharedAccountList]) {
+		Connection *connection = [[Connection alloc] init];
+		[connection getFcmDataForAccount:account];
+	}
+	return YES;
+}
+
+-(void)startMessaging {
 	[FIRMessaging messaging].delegate = self;
 	if ([UNUserNotificationCenter class] != nil) {
 		// iOS 10 or later
@@ -39,12 +47,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 			 // ...
 		 }];
 	}
-	[application registerForRemoteNotifications];
-	for (Account *account in [AccountList sharedAccountList]) {
-		Connection *connection = [[Connection alloc] init];
-		[connection getFcmDataForAccount:account];
-	}
-	return YES;
+	[[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
