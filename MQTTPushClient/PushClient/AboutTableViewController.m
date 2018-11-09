@@ -4,6 +4,7 @@
  * 30827 Garbsen, Germany
  */
 
+#import "WebViewController.h"
 #import "AboutTableViewController.h"
 
 @interface AboutTableViewController ()
@@ -22,5 +23,21 @@
 	NSString *text = [NSString stringWithFormat:@"Version: %@", version];
 	self.versionLabel.text = text;
 }
+
+#pragma mark - navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	NSString *identifier = segue.identifier;
+	if ([identifier isEqualToString:@"IDWebSite"]) {
+		WebViewController *controller = segue.destinationViewController;
+		NSURL *url = [NSURL URLWithString:@"www.radioshuttle.de"];
+		controller.request = [NSMutableURLRequest requestWithURL:url];
+	} else if ([identifier isEqualToString:@"IDHelp"]) {
+		WebViewController *controller = segue.destinationViewController;
+		NSURL *url = [NSURL URLWithString:@"helios.de"];
+		controller.request = [NSMutableURLRequest requestWithURL:url];
+	}
+}
+
 
 @end
