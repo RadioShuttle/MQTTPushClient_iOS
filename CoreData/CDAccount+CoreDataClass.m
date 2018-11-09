@@ -30,14 +30,13 @@
 			for (CDMessage *msg in result) {
 				[context deleteObject:msg];
 			}
-		} else {
-			CDMessage *cdmsg = [[CDMessage alloc] initWithContext:context];
-			cdmsg.topic = msg.topic;
-			cdmsg.content = msg.content;
-			cdmsg.timestamp = msg.timestamp;
-			cdmsg.messageID = msg.messageID;
-			cdmsg.account = self;
 		}
+		CDMessage *cdmsg = [[CDMessage alloc] initWithContext:context];
+		cdmsg.topic = msg.topic;
+		cdmsg.content = msg.content;
+		cdmsg.timestamp = msg.timestamp;
+		cdmsg.messageID = msg.messageID;
+		cdmsg.account = self;
 		if ([msg isNewerThan:latestMessage]) {
 			latestMessage = msg;
 		}
