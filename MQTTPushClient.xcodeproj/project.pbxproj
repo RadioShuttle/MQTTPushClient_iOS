@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */; };
 		2A0E8DF3218332780080DF12 /* AddTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */; };
+		2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */; };
 		2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */; };
 		2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859D02142CC7000CFA5DC /* Cmd.m */; };
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
@@ -22,6 +23,7 @@
 		2ADBE465213D7516000664D3 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE464213D7516000664D3 /* main.m */; };
 		2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
 		2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE045882191EC920010C027 /* AddActionTableViewController.m */; };
+		2AE5697B219481D30037FE30 /* AboutTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE5697A219481D30037FE30 /* AboutTableViewController.m */; };
 		2AE57BC221906A3900012A04 /* Action.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC121906A3900012A04 /* Action.m */; };
 		2AE57BC52190826600012A04 /* ActionListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE57BC42190826600012A04 /* ActionListTableViewController.m */; };
 		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
@@ -88,6 +90,8 @@
 		2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewCell.m; sourceTree = "<group>"; };
 		2A0E8DF1218332780080DF12 /* AddTopicTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddTopicTableViewController.h; sourceTree = "<group>"; };
 		2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddTopicTableViewController.m; sourceTree = "<group>"; };
+		2A197D812195810300CDF015 /* PrivacyPolicyTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrivacyPolicyTableViewController.h; sourceTree = "<group>"; };
+		2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PrivacyPolicyTableViewController.m; sourceTree = "<group>"; };
 		2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		2A2859CF2142CC7000CFA5DC /* Cmd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cmd.h; sourceTree = "<group>"; };
@@ -112,6 +116,8 @@
 		2ADFE5672166286600FB19E4 /* MessageDataHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageDataHandler.m; sourceTree = "<group>"; };
 		2AE045872191EC920010C027 /* AddActionTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddActionTableViewController.h; sourceTree = "<group>"; };
 		2AE045882191EC920010C027 /* AddActionTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddActionTableViewController.m; sourceTree = "<group>"; };
+		2AE56979219481D30037FE30 /* AboutTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AboutTableViewController.h; sourceTree = "<group>"; };
+		2AE5697A219481D30037FE30 /* AboutTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AboutTableViewController.m; sourceTree = "<group>"; };
 		2AE57BC021906A3900012A04 /* Action.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Action.h; sourceTree = "<group>"; };
 		2AE57BC121906A3900012A04 /* Action.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Action.m; sourceTree = "<group>"; };
 		2AE57BC32190826600012A04 /* ActionListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ActionListTableViewController.h; sourceTree = "<group>"; };
@@ -180,6 +186,8 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
+				2AE56979219481D30037FE30 /* AboutTableViewController.h */,
+				2AE5697A219481D30037FE30 /* AboutTableViewController.m */,
 				2AE57BC021906A3900012A04 /* Action.h */,
 				2AE57BC121906A3900012A04 /* Action.m */,
 				2AE57BC32190826600012A04 /* ActionListTableViewController.h */,
@@ -202,6 +210,8 @@
 				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
 				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
 				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
+				2A197D812195810300CDF015 /* PrivacyPolicyTableViewController.h */,
+				2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */,
 				2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */,
 				2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */,
 				2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */,
@@ -483,8 +493,10 @@
 				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
+				2AE5697B219481D30037FE30 /* AboutTableViewController.m in Sources */,
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
+				2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
 				84B49952217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
 				2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */,
