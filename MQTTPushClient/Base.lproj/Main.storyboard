@@ -100,7 +100,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdj-Pz-i0y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="144.80000000000001" y="116.49175412293854"/>
+            <point key="canvasLocation" x="447" y="116"/>
         </scene>
         <!--Topics-->
         <scene sceneID="trx-LG-a9u">
@@ -184,7 +184,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </objects>
-            <point key="canvasLocation" x="612" y="898"/>
+            <point key="canvasLocation" x="2247" y="1423"/>
         </scene>
         <!--Topic-->
         <scene sceneID="8xw-1e-fzu">
@@ -266,7 +266,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zui-pz-vXq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1511" y="1072"/>
+            <point key="canvasLocation" x="3132" y="1325"/>
         </scene>
         <!--Privacy Policy Table View Controller-->
         <scene sceneID="iM4-HD-Qj7">
@@ -332,7 +332,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ov2-97-f0n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2328.8000000000002" y="715.59220389805103"/>
+            <point key="canvasLocation" x="3049" y="528"/>
         </scene>
         <!--Message List-->
         <scene sceneID="12f-PV-aIe">
@@ -443,7 +443,7 @@
                     <nil key="highlightedColor"/>
                 </label>
             </objects>
-            <point key="canvasLocation" x="-911" y="1005"/>
+            <point key="canvasLocation" x="-212" y="956"/>
         </scene>
         <!--MQTT Actions-->
         <scene sceneID="Kg5-pW-ot8">
@@ -495,7 +495,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XhY-ht-vq1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-122" y="1322"/>
+            <point key="canvasLocation" x="586" y="1220"/>
         </scene>
         <!--MQTT Action-->
         <scene sceneID="FM8-IB-0zl">
@@ -657,7 +657,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nL7-HY-eou" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="750" y="1616"/>
+            <point key="canvasLocation" x="1442" y="1485"/>
         </scene>
         <!--Server Setup-->
         <scene sceneID="gHD-ja-Nag">
@@ -873,7 +873,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uQn-yL-hjG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1290" y="-348"/>
+            <point key="canvasLocation" x="1660" y="-331"/>
         </scene>
         <!--About Table View Controller-->
         <scene sceneID="CkX-ID-Ld9">
@@ -976,10 +976,13 @@
                             <outlet property="delegate" destination="y5l-Jk-2Zt" id="heO-Id-sjc"/>
                         </connections>
                     </tableView>
+                    <connections>
+                        <outlet property="versionLabel" destination="mxU-6e-nFb" id="OE6-h5-cg7"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D81-RB-BbW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2280.8000000000002" y="-64.31784107946028"/>
+            <point key="canvasLocation" x="2396" y="72"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="0xY-V1-Frj">
