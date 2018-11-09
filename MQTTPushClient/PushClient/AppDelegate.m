@@ -14,6 +14,8 @@
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate>
 
+@property(nullable) NSData *deviceToken;
+
 @end
 
 @implementation AppDelegate
@@ -24,15 +26,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	
 	application.applicationIconBadgeNumber = 0;
 	self.fcmToken = nil;
-	for (Account *account in [AccountList sharedAccountList]) {
-		Connection *connection = [[Connection alloc] init];
-		[connection getFcmDataForAccount:account];
-	}
-	return YES;
-}
-
-- (void)startMessaging {
-	[FIRMessaging messaging].delegate = self;
+	self.deviceToken = nil;
 	
 	[UNUserNotificationCenter currentNotificationCenter].delegate = self;
 	UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
@@ -41,7 +35,14 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	 completionHandler:^(BOOL granted, NSError * _Nullable error) {
 		 // ...
 	 }];
-	[[UIApplication sharedApplication] registerForRemoteNotifications];
+	[application registerForRemoteNotifications];
+
+	return YES;
+}
+
+- (void)startMessaging {
+	[FIRMessaging messaging].delegate = self;
+	[FIRMessaging messaging].APNSToken = self.deviceToken;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -88,29 +89,24 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	}
 
 	completionHandler(UIBackgroundFetchResultNewData);
-
 }
 
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
 	NSLog(@"Unable to register for remote notifications: %@", error);
-
 }
 
-// This function is added here only for debugging purposes, and can be removed if swizzling is enabled.
-// If swizzling is disabled then this function must be implemented so that the APNs device token can be paired to
-// the FCM registration token.
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	NSLog(@"APNs device token retrieved: %@", deviceToken);
 	
-	// With swizzling disabled you must set the APNs device token here.
-	[FIRMessaging messaging].APNSToken = deviceToken;
+	self.deviceToken = deviceToken;
+	for (Account *account in [AccountList sharedAccountList]) {
+		Connection *connection = [[Connection alloc] init];
+		[connection getFcmDataForAccount:account];
+	}
 }
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
 	NSLog(@"FCM registration token: %@", fcmToken);
-	
-	// TODO: If necessary send token to application server.
-	// Note: This callback is fired at each app startup and whenever a new token is generated.
 	self.fcmToken = fcmToken;
 }
 
