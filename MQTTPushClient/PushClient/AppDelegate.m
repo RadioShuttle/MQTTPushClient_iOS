@@ -31,20 +31,16 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	return YES;
 }
 
--(void)startMessaging {
+- (void)startMessaging {
 	[FIRMessaging messaging].delegate = self;
-	if ([UNUserNotificationCenter class] != nil) {
-		// iOS 10 or later
-		// For iOS 10 display notification (sent via APNS)
-		[UNUserNotificationCenter currentNotificationCenter].delegate = self;
-		UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert |
-		UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
-		[[UNUserNotificationCenter currentNotificationCenter]
-		 requestAuthorizationWithOptions:authOptions
-		 completionHandler:^(BOOL granted, NSError * _Nullable error) {
-			 // ...
-		 }];
-	}
+	
+	[UNUserNotificationCenter currentNotificationCenter].delegate = self;
+	UNAuthorizationOptions authOptions = UNAuthorizationOptionAlert | UNAuthorizationOptionSound | UNAuthorizationOptionBadge;
+	[[UNUserNotificationCenter currentNotificationCenter]
+	 requestAuthorizationWithOptions:authOptions
+	 completionHandler:^(BOOL granted, NSError * _Nullable error) {
+		 // ...
+	 }];
 	[[UIApplication sharedApplication] registerForRemoteNotifications];
 }
 
