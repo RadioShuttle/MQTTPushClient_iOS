@@ -10,6 +10,7 @@
 		2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */; };
 		2A0E8DF3218332780080DF12 /* AddTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */; };
 		2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */; };
+		2A197D862195C46B00CDF015 /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A197D852195C46B00CDF015 /* WebViewController.m */; };
 		2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */; };
 		2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A2859D02142CC7000CFA5DC /* Cmd.m */; };
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
@@ -92,6 +93,8 @@
 		2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AddTopicTableViewController.m; sourceTree = "<group>"; };
 		2A197D812195810300CDF015 /* PrivacyPolicyTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrivacyPolicyTableViewController.h; sourceTree = "<group>"; };
 		2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PrivacyPolicyTableViewController.m; sourceTree = "<group>"; };
+		2A197D842195C46B00CDF015 /* WebViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		2A197D852195C46B00CDF015 /* WebViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GCDAsyncSocket.m; sourceTree = "<group>"; };
 		2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GCDAsyncSocket.h; sourceTree = "<group>"; };
 		2A2859CF2142CC7000CFA5DC /* Cmd.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Cmd.h; sourceTree = "<group>"; };
@@ -224,6 +227,8 @@
 				2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */,
 				2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */,
 				2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */,
+				2A197D842195C46B00CDF015 /* WebViewController.h */,
+				2A197D852195C46B00CDF015 /* WebViewController.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -483,6 +488,7 @@
 				2AE57BC221906A3900012A04 /* Action.m in Sources */,
 				847874E6217762B10059881B /* AccountList.m in Sources */,
 				84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
+				2A197D862195C46B00CDF015 /* WebViewController.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
 				847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
@@ -674,6 +680,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36U648SHJ6;
 				INFOPLIST_FILE = MQTTPushClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -693,6 +700,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36U648SHJ6;
 				INFOPLIST_FILE = MQTTPushClient/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
