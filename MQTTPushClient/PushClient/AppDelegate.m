@@ -23,9 +23,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
 	application.applicationIconBadgeNumber = 0;
-	
 	self.fcmToken = nil;
-	[[FIRAnalyticsConfiguration sharedInstance] setAnalyticsCollectionEnabled:NO];
 	for (Account *account in [AccountList sharedAccountList]) {
 		Connection *connection = [[Connection alloc] init];
 		[connection getFcmDataForAccount:account];
@@ -80,7 +78,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// TODO: Handle data of notification
 	
 	// With swizzling disabled you must let Messaging know about the message, for Analytics
-	// [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
+	[[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 	
 	// Print full message.
 	NSLog(@"didReceiveRemoteNotification: %@", userInfo);
@@ -109,7 +107,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	NSLog(@"APNs device token retrieved: %@", deviceToken);
 	
 	// With swizzling disabled you must set the APNs device token here.
-	// [FIRMessaging messaging].APNSToken = deviceToken;
+	[FIRMessaging messaging].APNSToken = deviceToken;
 }
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
@@ -127,7 +125,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	NSDictionary *userInfo = notification.request.content.userInfo;
 	
 	// With swizzling disabled you must let Messaging know about the message, for Analytics
-	// [[FIRMessaging messaging] appDidReceiveMessage:userInfo];
+	[[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 	
 	// Print message ID.
 	if (userInfo[kGCMMessageIDKey]) {
