@@ -51,4 +51,29 @@
 	}
 }
 
+- (void)deleteMessagesBefore:(NSDate *)before {
+	if (self.isDeleted || self.managedObjectContext == nil) {
+		return;
+	}
+	NSManagedObjectContext *context = self.managedObjectContext;
+	if (before == nil) {
+		self.messages = nil;
+	} else {
+		NSFetchRequest *fetchRequest = CDMessage.fetchRequest;
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp < %@",
+								  self, before];
+		fetchRequest.predicate = predicate;
+		NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
+		if (result.count > 0) {
+			for (CDMessage *msg in result) {
+				[context deleteObject:msg];
+			}
+		}
+	}
+	NSError *error = nil;
+	if (![context save:&error]) {
+		NSLog(@"Could not save background context: %@", error.localizedDescription);
+	}
+}
+
 @end

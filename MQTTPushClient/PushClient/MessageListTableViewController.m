@@ -41,43 +41,14 @@
 - (IBAction)trashAction:(UIBarButtonItem *)sender {
 	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Messages" message:nil preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"All" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-		NSManagedObjectContext *bgContext = self.account.backgroundContext;
-		[bgContext performBlock:^{
-			CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
-												 existingObjectWithID:self.account.cdaccount.objectID
-												 error:NULL];
-			if (cdaccount == nil && cdaccount.managedObjectContext == nil) {
-				return;
-			}
-			cdaccount.messages = nil;
-			[bgContext save:NULL];
-		}];
+		[self.account deleteMessagesBefore:nil];
 	}];
 	UIAlertAction *olderAction = [UIAlertAction actionWithTitle:@"Older than one day" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-		NSManagedObjectContext *bgContext = self.account.backgroundContext;
-		[bgContext performBlock:^{
-			CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
-												 existingObjectWithID:self.account.cdaccount.objectID
-												 error:NULL];
-			if (cdaccount == nil && cdaccount.managedObjectContext == nil) {
-				return;
-			}
-			NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
-																	value:-1
-																   toDate:[NSDate date]
-																  options:0];
-			NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
-			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp < %@",
-									  cdaccount, date];
-			fetchRequest.predicate = predicate;
-			NSArray *result = [bgContext executeFetchRequest:fetchRequest error:NULL];
-			if (result.count > 0) {
-				for (CDMessage *msg in result) {
-					[bgContext deleteObject:msg];
-				}
-			}
-			[bgContext save:NULL];
-		}];
+		NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
+																value:-1
+															   toDate:[NSDate date]
+															  options:0];
+		[self.account deleteMessagesBefore:date];
 	}];
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
 	[alert addAction:allAction];

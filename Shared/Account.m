@@ -137,6 +137,16 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	}];
 }
 
+- (void)deleteMessagesBefore:(NSDate *)before {
+	NSManagedObjectContext *bgContext = self.backgroundContext;
+	[bgContext performBlock:^{
+		CDAccount *cdaccount = (CDAccount *)[self.backgroundContext
+											 existingObjectWithID:self.cdaccount.objectID
+											 error:NULL];
+		[cdaccount deleteMessagesBefore:before];
+	}];
+}
+
 #pragma mark - Accessor methods
 
 - (NSString *)mqttPassword {
