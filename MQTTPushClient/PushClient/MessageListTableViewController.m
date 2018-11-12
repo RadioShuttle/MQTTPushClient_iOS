@@ -39,21 +39,45 @@
 }
 
 - (IBAction)trashAction:(UIBarButtonItem *)sender {
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Messages" message:@"You can delete all messages or the ones older than one day." preferredStyle:UIAlertControllerStyleAlert];
-	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"All Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-		NSManagedObjectContext *bgContext =self.account.backgroundContext;
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Messages" message:nil preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"All" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		NSManagedObjectContext *bgContext = self.account.backgroundContext;
 		[bgContext performBlock:^{
 			CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
 												 existingObjectWithID:self.account.cdaccount.objectID
 												 error:NULL];
-			if (cdaccount == nil) {
+			if (cdaccount == nil && cdaccount.managedObjectContext == nil) {
 				return;
 			}
 			cdaccount.messages = nil;
 			[bgContext save:NULL];
 		}];
 	}];
-	UIAlertAction *olderAction = [UIAlertAction actionWithTitle:@"Older Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+	UIAlertAction *olderAction = [UIAlertAction actionWithTitle:@"Older than one day" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		NSManagedObjectContext *bgContext = self.account.backgroundContext;
+		[bgContext performBlock:^{
+			CDAccount *cdaccount = (CDAccount *)[self.account.backgroundContext
+												 existingObjectWithID:self.account.cdaccount.objectID
+												 error:NULL];
+			if (cdaccount == nil && cdaccount.managedObjectContext == nil) {
+				return;
+			}
+			NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
+																	value:-1
+																   toDate:[NSDate date]
+																  options:0];
+			NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
+			NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp < %@",
+									  cdaccount, date];
+			fetchRequest.predicate = predicate;
+			NSArray *result = [bgContext executeFetchRequest:fetchRequest error:NULL];
+			if (result.count > 0) {
+				for (CDMessage *msg in result) {
+					[bgContext deleteObject:msg];
+				}
+			}
+			[bgContext save:NULL];
+		}];
 	}];
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
 	[alert addAction:allAction];
