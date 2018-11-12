@@ -30,14 +30,13 @@
 	NSString *identifier = segue.identifier;
 	if ([identifier isEqualToString:@"IDWebSite"]) {
 		WebViewController *controller = segue.destinationViewController;
-		NSURL *url = [NSURL URLWithString:@"www.radioshuttle.de"];
+		NSURL *url = [NSURL URLWithString:@"https://www.radioshuttle.de"];
 		controller.request = [NSMutableURLRequest requestWithURL:url];
 	} else if ([identifier isEqualToString:@"IDHelp"]) {
 		WebViewController *controller = segue.destinationViewController;
-		NSURL *url = [NSURL URLWithString:@"helios.de"];
+		NSURL *url = [NSURL URLWithString:@"https://www.radioshuttle.de/mqtt-push-client-hilfe/"];
 		controller.request = [NSMutableURLRequest requestWithURL:url];
 	}
 }
-
 
 @end
