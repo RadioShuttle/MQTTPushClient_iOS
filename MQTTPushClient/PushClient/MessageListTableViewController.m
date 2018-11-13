@@ -83,6 +83,13 @@
 	[self.navigationController setToolbarHidden:NO animated:YES];
 	[self updateAccountStatus:nil];
 	[self updateAccount];
+	
+	// Delete messages older than 30 days:
+	NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
+															value:-30
+														   toDate:[NSDate date]
+														  options:0];
+	[self.account deleteMessagesBefore:date];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
