@@ -13,13 +13,14 @@
 @interface ActionListTableViewController ()
 
 @property Action *action;
-
+@property UIAlertController *mqttActionController;
 @end
 
 @implementation ActionListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
 	if (self.action) {
+		[self.mqttActionController dismissViewControllerAnimated:YES completion:nil];
 		if (self.account.error) {
 			UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:self.account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 			UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
@@ -101,15 +102,11 @@
 	} else {
 		[tableView deselectRowAtIndexPath:indexPath animated:YES];
 		self.action = self.account.actionList[indexPath.row];
-		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"MQTT Action" message:self.action.name preferredStyle:UIAlertControllerStyleAlert];
-		UIAlertAction *sendAction = [UIAlertAction actionWithTitle:@"Send" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		self.mqttActionController = [UIAlertController alertControllerWithTitle:@"MQTT Action" message:self.action.name preferredStyle:UIAlertControllerStyleAlert];
+		[self presentViewController:self.mqttActionController animated:YES completion:^{
 			Connection *connection = [[Connection alloc] init];
 			[connection publishMessageForAccount:self.account action:self.action];
 		}];
-		UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
-		[alert addAction:sendAction];
-		[alert addAction:cancelAction];
-		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
 
