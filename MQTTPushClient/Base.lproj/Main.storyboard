@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -314,7 +313,7 @@
                                                     <rect key="frame" x="16" y="7" width="343" height="30"/>
                                                     <state key="normal" title="Click here for complete privacy statements"/>
                                                     <connections>
-                                                        <segue destination="poK-ma-Dc3" kind="show" id="yrS-8K-Zlh"/>
+                                                        <action selector="privacyPolicyAction:" destination="ws2-L5-ftH" eventType="touchUpInside" id="enf-xW-5k0"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -337,21 +336,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ov2-97-f0n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3049" y="528"/>
-        </scene>
-        <!--Web View Controller-->
-        <scene sceneID="5fy-yQ-NKg">
-            <objects>
-                <viewController id="poK-ma-Dc3" customClass="WebViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="KvV-N8-McH">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <viewLayoutGuide key="safeArea" id="JTv-gh-pYW"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="04d-Z4-8Hu" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="4037.5999999999999" y="115.59220389805098"/>
         </scene>
         <!--Message List-->
         <scene sceneID="12f-PV-aIe">
@@ -960,7 +944,7 @@
                                                     <rect key="frame" x="16" y="6" width="343" height="30"/>
                                                     <state key="normal" title="www.radioshuttle.de"/>
                                                     <connections>
-                                                        <segue destination="poK-ma-Dc3" kind="show" identifier="IDWebSite" id="b6x-A9-IZW"/>
+                                                        <action selector="radioshuttleAction:" destination="y5l-Jk-2Zt" eventType="touchUpInside" id="QaT-yj-TfU"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -982,7 +966,7 @@
                                                     <rect key="frame" x="16" y="6" width="343" height="30"/>
                                                     <state key="normal" title="Online Help"/>
                                                     <connections>
-                                                        <segue destination="poK-ma-Dc3" kind="show" identifier="IDHelp" id="X30-U6-rcl"/>
+                                                        <action selector="helpAction:" destination="y5l-Jk-2Zt" eventType="touchUpInside" id="cUk-E1-R42"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -1039,7 +1023,6 @@
     <inferredMetricsTieBreakers>
         <segue reference="ZQo-Xl-dGb"/>
         <segue reference="f8M-ja-CCs"/>
-        <segue reference="X30-U6-rcl"/>
         <segue reference="3zb-GV-1CN"/>
     </inferredMetricsTieBreakers>
 </document>

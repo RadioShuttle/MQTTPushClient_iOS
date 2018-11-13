@@ -4,7 +4,7 @@
  * 30827 Garbsen, Germany
  */
 
-#import "WebViewController.h"
+@import SafariServices;
 #import "PrivacyPolicyTableViewController.h"
 
 @interface PrivacyPolicyTableViewController ()
@@ -13,17 +13,15 @@
 
 @implementation PrivacyPolicyTableViewController
 
+- (IBAction)privacyPolicyAction:(UIButton *)sender {
+	NSURL *url = [NSURL URLWithString:@"http://www.helios.de/web/privacy.html"];
+	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+	[self presentViewController:safariViewController animated:YES completion:^{}];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.toolbarHidden = YES;
-}
-
-#pragma mark - navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	WebViewController *controller = segue.destinationViewController;
-	NSURL *url = [NSURL URLWithString:@"helios.de"];
-	controller.request = [NSMutableURLRequest requestWithURL:url];
 }
 
 @end

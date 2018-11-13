@@ -4,7 +4,7 @@
  * 30827 Garbsen, Germany
  */
 
-#import "WebViewController.h"
+@import SafariServices;
 #import "AboutTableViewController.h"
 
 @interface AboutTableViewController ()
@@ -15,6 +15,18 @@
 
 @implementation AboutTableViewController
 
+- (IBAction)radioshuttleAction:(UIButton *)sender {
+	NSURL *url = [NSURL URLWithString:@"https://www.radioshuttle.de"];
+	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+	[self presentViewController:safariViewController animated:YES completion:^{}];
+}
+
+- (IBAction)helpAction:(UIButton *)sender {
+	NSURL *url = [NSURL URLWithString:@"https://www.radioshuttle.de/mqtt-push-client-hilfe/"];
+	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+	[self presentViewController:safariViewController animated:YES completion:^{}];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.toolbarHidden = YES;
@@ -22,21 +34,6 @@
 	NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
 	NSString *text = [NSString stringWithFormat:@"Version: %@", version];
 	self.versionLabel.text = text;
-}
-
-#pragma mark - navigation
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	NSString *identifier = segue.identifier;
-	if ([identifier isEqualToString:@"IDWebSite"]) {
-		WebViewController *controller = segue.destinationViewController;
-		NSURL *url = [NSURL URLWithString:@"https://www.radioshuttle.de"];
-		controller.request = [NSMutableURLRequest requestWithURL:url];
-	} else if ([identifier isEqualToString:@"IDHelp"]) {
-		WebViewController *controller = segue.destinationViewController;
-		NSURL *url = [NSURL URLWithString:@"https://www.radioshuttle.de/mqtt-push-client-hilfe/"];
-		controller.request = [NSMutableURLRequest requestWithURL:url];
-	}
 }
 
 @end
