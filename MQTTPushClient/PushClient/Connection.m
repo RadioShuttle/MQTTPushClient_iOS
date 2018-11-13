@@ -14,6 +14,7 @@
 #import "Topic.h"
 #import "Action.h"
 #import "Connection.h"
+#import "AccountList.h"
 
 enum ConnectionState {
 	StateBusy,
@@ -65,6 +66,8 @@ enum ConnectionState {
 	account.pushServerID = fcmData.pushserverid;
 	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.sender_id];
 	dispatch_async(dispatch_get_main_queue(), ^{
+		// pushServerID must be saved to user defaults, so that extension finds account.
+		[[AccountList sharedAccountList] save];
 		if ([FIRApp defaultApp] == nil) {
 			[FIRApp configureWithOptions:firOptions];
 			UIApplication *app = [UIApplication sharedApplication];
