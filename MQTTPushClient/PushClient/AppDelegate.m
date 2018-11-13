@@ -70,10 +70,6 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 // Firebase Cloud Messaging
 - (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
-	// If you are receiving a notification message while your app is in the background,
-	// this callback will not be fired till the user taps on the notification launching the application.
-	// TODO: Handle data of notification
-	
 	// With swizzling disabled you must let Messaging know about the message, for Analytics
 	[[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 	
@@ -109,44 +105,6 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
 	NSLog(@"FCM registration token: %@", fcmToken);
 	self.fcmToken = fcmToken;
-}
-
-// Handle incoming notification messages while app is in the foreground.
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-	   willPresentNotification:(UNNotification *)notification
-		 withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
-	NSDictionary *userInfo = notification.request.content.userInfo;
-	
-	// With swizzling disabled you must let Messaging know about the message, for Analytics
-	[[FIRMessaging messaging] appDidReceiveMessage:userInfo];
-	
-#ifdef DEBUG
-	NSLog(@"willPresentNotification: message ID=%@", userInfo[kGCMMessageIDKey]);
-#endif
-	
-	// Change this to your preferred presentation option
-	completionHandler(UNNotificationPresentationOptionNone);
-
-	NSString *pushServerID = userInfo[@"pushserverid"];
-	for (Account *account in [AccountList sharedAccountList]) {
-		if ([pushServerID isEqualToString:account.pushServerID]) {
-			[MessageDataHandler handleRemoteMessage:userInfo forAccount:account];
-			break;
-		}
-	}
-}
-
-// Handle notification messages after display notification is tapped by the user.
-- (void)userNotificationCenter:(UNUserNotificationCenter *)center
-didReceiveNotificationResponse:(UNNotificationResponse *)response
-		 withCompletionHandler:(void(^)(void))completionHandler {
-	NSDictionary *userInfo = response.notification.request.content.userInfo;
-
-#ifdef DEBUG
-	NSLog(@"didReceiveNotificationResponse: message ID=%@", userInfo[kGCMMessageIDKey]);
-#endif
-
-	completionHandler();
 }
 
 @end
