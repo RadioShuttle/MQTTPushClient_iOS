@@ -27,6 +27,9 @@
 		fetchRequest.predicate = predicate;
 		NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
 		if (result.count > 0) {
+#ifdef DEBUG
+			NSLog(@"Delete %d duplicate message(s)", (int)result.count);
+#endif
 			for (CDMessage *msg in result) {
 				[context deleteObject:msg];
 			}
@@ -65,6 +68,9 @@
 		fetchRequest.predicate = predicate;
 		NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
 		if (result.count > 0) {
+#ifdef DEBUG
+			NSLog(@"Delete %d old message(s)", (int)result.count);
+#endif
 			for (CDMessage *msg in result) {
 				[context deleteObject:msg];
 			}

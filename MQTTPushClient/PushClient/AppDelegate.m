@@ -77,9 +77,10 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// With swizzling disabled you must let Messaging know about the message, for Analytics
 	[[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 	
-	// Print full message.
-	NSLog(@"didReceiveRemoteNotification: %@", userInfo);
-	
+#ifdef DEBUG
+	NSLog(@"didReceiveRemoteNotification: message ID=%@", userInfo[kGCMMessageIDKey]);
+#endif
+
 	NSString *pushServerID = userInfo[@"pushserverid"];
 	for (Account *account in [AccountList sharedAccountList]) {
 		if ([pushServerID isEqualToString:account.pushServerID]) {
@@ -119,13 +120,9 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// With swizzling disabled you must let Messaging know about the message, for Analytics
 	[[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 	
-	// Print message ID.
-	if (userInfo[kGCMMessageIDKey]) {
-		NSLog(@"Message ID: %@", userInfo[kGCMMessageIDKey]);
-	}
-	
-	// Print full message.
-	NSLog(@"willPresentNotification: %@", userInfo);
+#ifdef DEBUG
+	NSLog(@"willPresentNotification: message ID=%@", userInfo[kGCMMessageIDKey]);
+#endif
 	
 	// Change this to your preferred presentation option
 	completionHandler(UNNotificationPresentationOptionNone);
@@ -144,13 +141,11 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 didReceiveNotificationResponse:(UNNotificationResponse *)response
 		 withCompletionHandler:(void(^)(void))completionHandler {
 	NSDictionary *userInfo = response.notification.request.content.userInfo;
-	if (userInfo[kGCMMessageIDKey]) {
-		NSLog(@"Message ID: %@", userInfo[kGCMMessageIDKey]);
-	}
-	
-	// Print full message.
-	NSLog(@"didReceiveNotificationResponse: %@", userInfo);
-	
+
+#ifdef DEBUG
+	NSLog(@"didReceiveNotificationResponse: message ID=%@", userInfo[kGCMMessageIDKey]);
+#endif
+
 	completionHandler();
 }
 

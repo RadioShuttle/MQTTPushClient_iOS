@@ -16,7 +16,9 @@
 		NSLog(@"Unexpected JSON data (array expected)");
 		return;
 	}
-	
+#ifdef DEBUG
+	NSLog(@"Got %d message(s)", (int)messages.count);
+#endif
 	NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:messages.count];
 	for (NSDictionary *dictionary in messages) {
 		if (![dictionary isKindOfClass:[NSDictionary class]]) {
