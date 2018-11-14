@@ -91,6 +91,9 @@ enum ConnectionState {
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
 	[command helloRequest:0 secureTransport:YES];
 	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
+	account.error = command.rawCmd.error;
+	if (account.error)
+		[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
 	return command;
 }
 
