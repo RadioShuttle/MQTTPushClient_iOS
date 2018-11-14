@@ -33,7 +33,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ErG-hj-kmy">
-                                            <rect key="frame" x="39" y="11" width="252" height="20.5"/>
+                                            <rect key="frame" x="39" y="11" width="219" height="21"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -44,14 +44,23 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+500" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-I8-myk">
+                                            <rect key="frame" x="270" y="39" width="29" height="14"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                            <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstAttribute="bottom" secondItem="Koz-Q1-yNH" secondAttribute="bottom" constant="7.5" id="1nI-Ly-kaa"/>
                                         <constraint firstItem="W4Q-s2-Rqo" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="14" id="3Ab-IG-Ehp"/>
                                         <constraint firstItem="W4Q-s2-Rqo" firstAttribute="leading" secondItem="dNO-GN-ZFf" secondAttribute="leading" constant="16" id="GAj-ve-ORl"/>
-                                        <constraint firstAttribute="trailing" secondItem="ErG-hj-kmy" secondAttribute="trailing" constant="16" id="Vcl-2l-DKc"/>
+                                        <constraint firstItem="NEj-I8-myk" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="39" id="HZ2-g7-bE7"/>
+                                        <constraint firstAttribute="trailing" secondItem="ErG-hj-kmy" secondAttribute="trailing" constant="49" id="Vcl-2l-DKc"/>
                                         <constraint firstItem="Koz-Q1-yNH" firstAttribute="leading" secondItem="dNO-GN-ZFf" secondAttribute="leading" constant="16" id="ZZ2-J6-Lyh"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="11" id="fFN-bz-84b"/>
+                                        <constraint firstAttribute="trailing" secondItem="NEj-I8-myk" secondAttribute="trailing" constant="8" id="i9H-JQ-PT8"/>
+                                        <constraint firstAttribute="bottom" secondItem="NEj-I8-myk" secondAttribute="bottom" constant="7.5" id="nNO-AO-Xf1"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="leading" secondItem="W4Q-s2-Rqo" secondAttribute="trailing" constant="8" id="u92-mL-rXP"/>
                                         <constraint firstItem="Koz-Q1-yNH" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="39" id="yNg-7h-IBy"/>
                                     </constraints>
@@ -60,6 +69,7 @@
                                     <outlet property="errorMessageLabel" destination="Koz-Q1-yNH" id="l1s-FN-u4i"/>
                                     <outlet property="serverNameLabel" destination="ErG-hj-kmy" id="3Mi-oX-b6I"/>
                                     <outlet property="statusImageView" destination="W4Q-s2-Rqo" id="f4C-wi-HTb"/>
+                                    <outlet property="unreadMessagesLabel" destination="NEj-I8-myk" id="z46-ee-Dl2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -100,7 +110,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdj-Pz-i0y" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="447" y="116"/>
+            <point key="canvasLocation" x="445.60000000000002" y="115.59220389805098"/>
         </scene>
         <!--Topics-->
         <scene sceneID="trx-LG-a9u">

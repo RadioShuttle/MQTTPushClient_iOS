@@ -78,6 +78,7 @@
 		cell.statusImageView.image = [UIImage imageNamed:@"Error"];
 	cell.serverNameLabel.text = text;
 	cell.errorMessageLabel.text = [account.error localizedDescription];
+	cell.unreadMessagesLabel.text = @"";
 	return cell;
 }
 
