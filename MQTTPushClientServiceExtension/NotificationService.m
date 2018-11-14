@@ -29,12 +29,13 @@
 		[account addMessageList:messageList];
 		newContent.badge = @(messageList.count);
 		if (messageList.count == 0) {
+			// No message:
 			newContent.body = @"";
 		} else if (messageList.count == 1) {
 			Message *msg = messageList[0];
+			// Single message:
 			newContent.body = [NSString stringWithFormat:@"%@: %@", msg.topic, msg.content];
 		} else {
-			// Do all messages have the same topic?
 			Message *msg = messageList[0];
 			BOOL sameTopics = YES;
 			for (NSInteger i = 1; i < messageList.count ; i++) {
@@ -44,8 +45,10 @@
 				}
 			}
 			if (sameTopics) {
+				// Multiple messages with same topic:
 				newContent.body = [NSString stringWithFormat:@"%@: %d new messages", msg.topic, (int)messageList.count];
 			} else {
+				// Multiple messages with different topics:
 				newContent.body = [NSString stringWithFormat:@"%d new messages", (int)messageList.count];
 			}
 		}
