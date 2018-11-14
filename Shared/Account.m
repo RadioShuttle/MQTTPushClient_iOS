@@ -150,6 +150,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 - (void)restoreMessages {
 	self.cdaccount.lastTimestamp = nil;
 	self.cdaccount.lastMessageID = 0;
+	[self.context save:NULL];
 }
 
 #pragma mark - Accessor methods
