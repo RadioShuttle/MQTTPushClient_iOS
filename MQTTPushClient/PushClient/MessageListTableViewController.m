@@ -52,6 +52,7 @@
 	}];
 	UIAlertAction *restoreAction = [UIAlertAction actionWithTitle:@"Restore Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 		[self.account restoreMessages];
+		[self updateAccount];
 	}];
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
 	[alert addAction:allAction];
