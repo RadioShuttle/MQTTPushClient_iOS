@@ -80,7 +80,10 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	NSString *pushServerID = userInfo[@"pushserverid"];
 	for (Account *account in [AccountList sharedAccountList]) {
 		if ([pushServerID isEqualToString:account.pushServerID]) {
-			[MessageDataHandler handleRemoteMessage:userInfo forAccount:account];
+			NSArray<Message *>*messageList = [MessageDataHandler
+											  messageListFromRemoteMessage:userInfo
+											  forAccount:account];
+			[account addMessageList:messageList];
 			break;
 		}
 	}

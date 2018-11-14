@@ -9,6 +9,5 @@
 
 @interface MessageDataHandler : NSObject
 
-+ (void)handleRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account;
-
++ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account;
 @end

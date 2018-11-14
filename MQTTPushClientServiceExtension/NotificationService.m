@@ -27,7 +27,10 @@
 	
 	Account *account = [AccountList loadAccount:pushServerID];
 	if (account != nil) {
-		[MessageDataHandler handleRemoteMessage:userInfo forAccount:account];
+		NSArray<Message *>*messageList = [MessageDataHandler
+										  messageListFromRemoteMessage:userInfo
+										  forAccount:account];
+		[account addMessageList:messageList];
 	}
 
     // Modify the notification content here...

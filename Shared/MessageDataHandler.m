@@ -9,12 +9,12 @@
 
 @implementation MessageDataHandler
 
-+ (void)handleRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account {
++ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account {
 	NSData *json = [remoteMessage[@"messages"] dataUsingEncoding:NSUTF8StringEncoding];
 	NSArray *messages = [NSJSONSerialization JSONObjectWithData:json options:0 error:nil];
 	if (![messages isKindOfClass:[NSArray class]]) {
 		NSLog(@"Unexpected JSON data (array expected)");
-		return;
+		return @[];
 	}
 #ifdef DEBUG
 	NSLog(@"Got %d message(s)", (int)messages.count);
@@ -75,8 +75,7 @@
 			};
 		}];
 	}
-	
-	[account addMessageList:messageList];
+	return messageList;
 }
 
 @end
