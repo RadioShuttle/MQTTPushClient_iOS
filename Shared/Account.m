@@ -147,6 +147,14 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	}];
 }
 
+- (void)restoreMessages {
+	CDAccount *cdaccount = (CDAccount *)[self.backgroundContext
+										 existingObjectWithID:self.cdaccount.objectID
+										 error:NULL];
+	cdaccount.lastTimestamp = nil;
+	cdaccount.lastMessageID = 0;
+}
+
 #pragma mark - Accessor methods
 
 - (NSString *)mqttPassword {

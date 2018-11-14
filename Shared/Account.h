@@ -50,6 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)clearCache;
 - (void)addMessageList:(NSArray<Message *>*)messageList;
 - (void)deleteMessagesBefore:(nullable NSDate *)before; // Pass `nil` to delete all messages
+- (void)restoreMessages;
 
 // Reading from and writing to user defaults:
 + (nullable instancetype)accountFromUserDefaultsDict:(NSDictionary *)dict;

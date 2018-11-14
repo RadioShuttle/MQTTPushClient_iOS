@@ -50,9 +50,13 @@
 															  options:0];
 		[self.account deleteMessagesBefore:date];
 	}];
+	UIAlertAction *restoreAction = [UIAlertAction actionWithTitle:@"Restore Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		[self.account restoreMessages];
+	}];
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
 	[alert addAction:allAction];
 	[alert addAction:olderAction];
+	[alert addAction:restoreAction];
 	[alert addAction:cancelAction];
 	[self presentViewController:alert animated:YES completion:nil];
 }
