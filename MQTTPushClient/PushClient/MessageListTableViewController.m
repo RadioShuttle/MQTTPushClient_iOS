@@ -168,9 +168,7 @@
 													 cacheName:nil];
 	aFrc.delegate = self;
 	[aFrc performFetch:NULL];
-	
-	self.trashBarButtonItem.enabled = aFrc.fetchedObjects.count > 0;
-	
+
 	_frc = aFrc;
 	return _frc;
 }
@@ -222,7 +220,6 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
-	self.trashBarButtonItem.enabled = controller.fetchedObjects.count > 0;
 }
 
 #pragma mark - navigation
