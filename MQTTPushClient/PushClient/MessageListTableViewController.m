@@ -39,18 +39,18 @@
 }
 
 - (IBAction)trashAction:(UIBarButtonItem *)sender {
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete Messages" message:nil preferredStyle:UIAlertControllerStyleAlert];
-	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"All" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"Delete all messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 		[self.account deleteMessagesBefore:nil];
 	}];
-	UIAlertAction *olderAction = [UIAlertAction actionWithTitle:@"Older than one day" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+	UIAlertAction *olderAction = [UIAlertAction actionWithTitle:@"Delete messages older than one day" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 		NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
 																value:-1
 															   toDate:[NSDate date]
 															  options:0];
 		[self.account deleteMessagesBefore:date];
 	}];
-	UIAlertAction *restoreAction = [UIAlertAction actionWithTitle:@"Restore Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+	UIAlertAction *restoreAction = [UIAlertAction actionWithTitle:@"Restore messages from server" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 		[self.account restoreMessages];
 		[self updateAccount];
 	}];
