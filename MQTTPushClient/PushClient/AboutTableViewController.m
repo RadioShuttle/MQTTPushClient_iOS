@@ -30,9 +30,10 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.toolbarHidden = YES;
-	NSDictionary* infoDict = [[NSBundle mainBundle] infoDictionary];
-	NSString* version = [infoDict objectForKey:@"CFBundleShortVersionString"];
-	NSString *text = [NSString stringWithFormat:@"Version: %@", version];
+	NSDictionary *infoDict = [[NSBundle mainBundle] infoDictionary];
+	NSString *version = [infoDict objectForKey:@"CFBundleShortVersionString"];
+	NSString *build = [infoDict objectForKey:@"CFBundleVersion"];
+	NSString *text = [NSString stringWithFormat:@"Version: %@ (%@)", version, build];
 	self.versionLabel.text = text;
 }
 
