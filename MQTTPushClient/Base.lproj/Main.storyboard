@@ -72,6 +72,26 @@
                                     <outlet property="unreadMessagesLabel" destination="NEj-I8-myk" id="z46-ee-Dl2"/>
                                 </connections>
                             </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDAddServerCell" id="vVE-SJ-HLX">
+                                <rect key="frame" x="0.0" y="89" width="375" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vVE-SJ-HLX" id="T8V-Jd-bcC">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new server" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ieh-10-yXS">
+                                            <rect key="frame" x="16" y="11" width="128" height="21"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Ieh-10-yXS" firstAttribute="top" secondItem="T8V-Jd-bcC" secondAttribute="top" constant="11" id="Iet-Nc-gjn"/>
+                                        <constraint firstItem="Ieh-10-yXS" firstAttribute="leading" secondItem="T8V-Jd-bcC" secondAttribute="leading" constant="16" id="tJL-Sr-4eu"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                            </tableViewCell>
                         </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="wZS-kH-jwG" id="Ybh-sU-0Sf"/>
@@ -93,19 +113,13 @@
                         </barButtonItem>
                         <barButtonItem systemItem="flexibleSpace" id="FDY-d2-QiG"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="MQTT Push Client" id="KJ4-tA-xOp">
-                        <barButtonItem key="leftBarButtonItem" systemItem="add" id="w5H-wV-XAG">
-                            <connections>
-                                <segue destination="pqg-gq-pYt" kind="show" identifier="IDAddServer" id="Rh5-pQ-I86"/>
-                            </connections>
-                        </barButtonItem>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="MQTT Push Client" id="KJ4-tA-xOp"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="addServerBarButtonItem" destination="w5H-wV-XAG" id="2gZ-c2-JZT"/>
                         <segue destination="fn0-VH-MxS" kind="show" identifier="IDShowTopics" id="gYo-nf-hfO"/>
                         <segue destination="k5Q-cm-GtU" kind="show" identifier="IDShowMessageList" id="4i9-k9-uYe"/>
                         <segue destination="pqg-gq-pYt" kind="show" identifier="IDShowSettings" id="ZQo-Xl-dGb"/>
+                        <segue destination="pqg-gq-pYt" kind="show" identifier="IDAddServer" id="QQs-B3-hzJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdj-Pz-i0y" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1031,8 +1045,8 @@
         <image name="NotificationNone" width="18" height="18"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ZQo-Xl-dGb"/>
-        <segue reference="f8M-ja-CCs"/>
+        <segue reference="QQs-B3-hzJ"/>
+        <segue reference="TUs-2K-5Q0"/>
         <segue reference="3zb-GV-1CN"/>
     </inferredMetricsTieBreakers>
 </document>

@@ -15,7 +15,6 @@
 
 @interface ServerListTableViewController ()
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *addServerBarButtonItem;
 @property AccountList *accountList;
 @property NSIndexPath *indexPathSelected;
 
@@ -37,7 +36,13 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
 	[super setEditing:editing animated:animated];
-	self.addServerBarButtonItem.enabled = editing;
+	if (editing) {
+		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationAutomatic];
+	} else {
+		[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]
+							  withRowAnimation:UITableViewRowAnimationAutomatic];
+	}
 }
 
 - (void)viewDidLoad {
@@ -46,7 +51,6 @@
 	self.tableView.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Updating Server List" attributes:nil];
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccounts) forControlEvents:UIControlEventValueChanged];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	self.addServerBarButtonItem.enabled = self.editing;
 	self.accountList = [AccountList sharedAccountList];
 }
 
@@ -65,37 +69,55 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	if (self.editing)
+		return 1 + self.accountList.count; // because of entry "add new item" in the UI
     return self.accountList.count;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-	Account *account = self.accountList[indexPath.row];
-	ServerListTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
-	NSString *text = [NSString stringWithFormat:@"%@@%@", account.mqttUser, account.mqttHost];
-	if (account.error == nil)
-		cell.statusImageView.image = [UIImage imageNamed:@"Success"];
-	else
-		cell.statusImageView.image = [UIImage imageNamed:@"Error"];
-	cell.serverNameLabel.text = text;
-	cell.errorMessageLabel.text = [account.error localizedDescription];
-	cell.unreadMessagesLabel.text = @"";
+	UITableViewCell *cell;
+	if (self.editing && indexPath.row == 0) {
+		cell = [tableView dequeueReusableCellWithIdentifier:@"IDAddServerCell" forIndexPath:indexPath];
+	} else {
+		NSUInteger row = self.editing ? indexPath.row - 1 : indexPath.row; // because of entry "add new item" in the UI
+		Account *account = self.accountList[row];
+		ServerListTableViewCell *serverListTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
+		NSString *text = [NSString stringWithFormat:@"%@@%@", account.mqttUser, account.mqttHost];
+		if (account.error == nil)
+			serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Success"];
+		else
+			serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Error"];
+		serverListTableViewCell.serverNameLabel.text = text;
+		serverListTableViewCell.errorMessageLabel.text = [account.error localizedDescription];
+		serverListTableViewCell.unreadMessagesLabel.text = @"";
+		cell = serverListTableViewCell;
+	}
 	return cell;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
-		Account *account = self.accountList[indexPath.row];
+		NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
+		Account *account = self.accountList[row];
 		Connection *connection = [[Connection alloc] init];
 		[connection removeTokenForAccount:account];
-		[self.accountList[indexPath.row] clearCache];
-		[self.accountList removeAccountAtIndex:[indexPath row]];
+		[self.accountList[row] clearCache];
+		[self.accountList removeAccountAtIndex:row];
 		[self.accountList save];
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.editing && indexPath.row == 0)
+		return NO;
+	return YES;
+}
+
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-	[self.accountList moveAccountAtIndex:sourceIndexPath.row toIndex:destinationIndexPath.row];
+	NSUInteger sourceRow = sourceIndexPath.row - 1; // because of entry "add new item" in the UI
+	NSUInteger destinationRow = destinationIndexPath.row - 1; // because of entry "add new item" in the UI
+	[self.accountList moveAccountAtIndex:sourceRow toIndex:destinationRow];
 	[self.accountList save];
 }
 #pragma mark - delegate
@@ -104,14 +126,27 @@
 	[self performSegueWithIdentifier:@"IDShowTopics" sender:indexPath];
 }
 
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (indexPath.row == 0)
+		return UITableViewCellEditingStyleInsert;
+	return UITableViewCellEditingStyleDelete;
+}
+
 #pragma mark - navigation
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-	self.indexPathSelected = indexPath;
-	if (self.tableView.editing)
-		[self performSegueWithIdentifier:@"IDShowSettings" sender:nil];
-	else
+	if (self.editing) {
+		if (indexPath.row == 0) {
+			[self performSegueWithIdentifier:@"IDAddServer" sender:nil];
+		} else {
+			NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
+			self.indexPathSelected = [NSIndexPath indexPathForRow:row inSection:0];
+			[self performSegueWithIdentifier:@"IDShowSettings" sender:nil];
+		}
+	} else {
+		self.indexPathSelected = indexPath;
 		[self performSegueWithIdentifier:@"IDShowMessageList" sender:nil];
+	}
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -123,7 +158,7 @@
 	} else if ([identifier isEqualToString:@"IDShowSettings"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
 		controller.accountList = self.accountList;
-		controller.indexPath = [self.tableView indexPathForSelectedRow];
+		controller.indexPath = self.indexPathSelected;
 	} else if ([identifier isEqualToString:@"IDShowTopics"]) {
 		TopicsListTableViewController *controller = segue.destinationViewController;
 		NSIndexPath *indexPath = sender;
