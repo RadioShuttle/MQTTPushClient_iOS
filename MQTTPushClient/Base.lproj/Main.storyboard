@@ -378,16 +378,7 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99:88" lineBreakMode="headTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZX3-7T-ZaH">
-                                            <rect key="frame" x="16" y="11" width="38" height="16"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="38" id="7iz-R3-Gwq"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L0h-ep-FLr">
-                                            <rect key="frame" x="58" y="11" width="7" height="16"/>
+                                            <rect key="frame" x="16" y="11" width="37" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -398,22 +389,12 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Topic" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dKc-4E-Hgd">
-                                            <rect key="frame" x="70" y="11" width="33" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstItem="dKc-4E-Hgd" firstAttribute="leading" secondItem="L0h-ep-FLr" secondAttribute="trailing" constant="5" id="9Kv-DD-lJa"/>
                                         <constraint firstAttribute="trailing" secondItem="cdY-wD-6R2" secondAttribute="trailing" constant="16" id="9Wa-tj-dhI"/>
                                         <constraint firstItem="cdY-wD-6R2" firstAttribute="leading" secondItem="eNp-sV-DWC" secondAttribute="leading" constant="16" id="KGB-Zs-ZM1"/>
-                                        <constraint firstItem="L0h-ep-FLr" firstAttribute="top" secondItem="eNp-sV-DWC" secondAttribute="top" constant="11" id="NcX-L9-xdt"/>
                                         <constraint firstItem="cdY-wD-6R2" firstAttribute="top" secondItem="eNp-sV-DWC" secondAttribute="top" constant="35" id="Pvq-Xm-U7r"/>
-                                        <constraint firstItem="dKc-4E-Hgd" firstAttribute="top" secondItem="eNp-sV-DWC" secondAttribute="top" constant="11" id="efW-Mf-bsz"/>
                                         <constraint firstItem="ZX3-7T-ZaH" firstAttribute="top" secondItem="eNp-sV-DWC" secondAttribute="top" constant="11" id="lto-yY-eIc"/>
-                                        <constraint firstItem="L0h-ep-FLr" firstAttribute="leading" secondItem="ZX3-7T-ZaH" secondAttribute="trailing" constant="4" id="sN5-FC-pSX"/>
                                         <constraint firstAttribute="bottom" secondItem="cdY-wD-6R2" secondAttribute="bottom" constant="10.5" id="sgV-IG-YuG"/>
                                         <constraint firstItem="ZX3-7T-ZaH" firstAttribute="leading" secondItem="eNp-sV-DWC" secondAttribute="leading" constant="16" id="vki-Hk-8CX"/>
                                     </constraints>
@@ -421,7 +402,6 @@
                                 <connections>
                                     <outlet property="dateLabel" destination="ZX3-7T-ZaH" id="ARw-gl-jWo"/>
                                     <outlet property="messageLabel" destination="cdY-wD-6R2" id="Wc4-jT-x8b"/>
-                                    <outlet property="topicLabel" destination="dKc-4E-Hgd" id="Al3-uJ-06l"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

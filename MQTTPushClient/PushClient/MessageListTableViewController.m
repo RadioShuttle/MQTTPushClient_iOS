@@ -121,8 +121,10 @@
 }
 
 - (void)configureCell:(MessageTableViewCell *)cell withObject:(CDMessage *)cdmessage {
-	cell.dateLabel.text = [self.dateFormatter stringFromDate:cdmessage.timestamp];
-	cell.topicLabel.text = cdmessage.topic;
+	NSString *date = [self.dateFormatter stringFromDate:cdmessage.timestamp];
+	NSString *topic = [cdmessage.topic stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topic];
+	cell.dateLabel.text = text;
 	cell.messageLabel.text = cdmessage.content;
 }
 
