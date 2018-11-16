@@ -4,9 +4,6 @@ Server list:
 - Leave edit mode after server has been saved/modified
 
 Message list:
-- Show new messages with yellow background (how long?)
-- Jump to top when new message arrives
-- Long messages do not break into multiple lines
 - Account name left aligned
 
 Add/edit topics:
@@ -28,6 +25,3 @@ iPad version:
 Other:
 - Set badge count to total # of new messages
 - Handle multiple IP addresses in DNS lookup
-
-- Result from fcmDataRequest command must be checked, server status updated if it failed
-- Deleting a server must stop all requests (including "waiting for FCM token...")
