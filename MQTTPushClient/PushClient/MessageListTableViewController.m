@@ -20,6 +20,11 @@
 @property NSDateFormatter *sectionDateFormatter;
 @property (strong, nonatomic) NSFetchedResultsController<CDMessage *> *frc;
 
+// These two properties are used to detect new messages and display them with
+// a yellow background, until the user scrolls or leaves the view.
+@property NSDate *lastViewed;
+@property BOOL newMessages;
+
 @end
 
 @implementation MessageListTableViewController
@@ -69,7 +74,8 @@
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccount) forControlEvents:UIControlEventValueChanged];
 	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqttUser, self.account.mqttHost, self.account.mqttPort];
 	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
-	
+	self.lastViewed = [NSDate date];
+
 	// Formatter for the section headers (one section per day).
 	self.sectionDateFormatter = [[NSDateFormatter alloc] init];
 	self.sectionDateFormatter.dateStyle = NSDateFormatterLongStyle;
@@ -126,6 +132,22 @@
 	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topic];
 	cell.dateLabel.text = text;
 	cell.messageLabel.text = [cdmessage.content stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+	if ([cdmessage.timestamp compare:self.lastViewed] == NSOrderedDescending) {
+		cell.backgroundColor = [UIColor yellowColor];
+	} else {
+		cell.backgroundColor = [UIColor clearColor];
+	}
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+	if (scrollView == self.tableView
+		&& scrollView.panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+		// User initiated scroll.
+		self.lastViewed = [NSDate date];
+		for (UITableView *cell in self.tableView.visibleCells) {
+			cell.backgroundColor = [UIColor clearColor];
+		}
+	}
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
@@ -177,6 +199,7 @@
 
 - (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView beginUpdates];
+	self.newMessages = NO;
 }
 
 - (void)controller:(NSFetchedResultsController *)controller didChangeSection:(id <NSFetchedResultsSectionInfo>)sectionInfo
@@ -203,6 +226,7 @@
 	switch(type) {
 		case NSFetchedResultsChangeInsert:
 			[tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationFade];
+			self.newMessages = YES;
 			break;
 			
 		case NSFetchedResultsChangeDelete:
@@ -222,6 +246,9 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
+	if (self.newMessages) {
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+	}
 }
 
 #pragma mark - navigation
