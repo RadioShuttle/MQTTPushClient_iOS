@@ -12,11 +12,13 @@
 @interface ServerSetupTableViewController () {
     BOOL hostValid;
     BOOL mqttHostValid;
+	BOOL mqttPortValid;
     BOOL mqttUserValid;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *addressTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mqttAddressTextField;
+@property (weak, nonatomic) IBOutlet UITextField *mqttPortTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *mqttSecuritySwitch;
 @property (weak, nonatomic) IBOutlet UITextField *mqttUserTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mqttPasswordTextField;
@@ -36,6 +38,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	BOOL newAccount = self.indexPath == nil;
 	self.addressTextField.enabled = newAccount;
 	self.mqttAddressTextField.enabled = newAccount;
+	self.mqttPortTextField.enabled = newAccount;
 	self.mqttSecuritySwitch.enabled = newAccount;
 	self.mqttUserTextField.enabled = newAccount;
 
@@ -73,7 +76,9 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	[textField resignFirstResponder];
     if (textField == self.addressTextField) {
         [self.mqttAddressTextField becomeFirstResponder];
-    } else if (textField == self.mqttAddressTextField) {
+	} else if (textField == self.mqttAddressTextField) {
+		[self.mqttPortTextField becomeFirstResponder];
+    } else if (textField == self.mqttPortTextField) {
             [self.mqttUserTextField becomeFirstResponder];
     } else if (textField == self.mqttUserTextField) {
         [self.mqttPasswordTextField becomeFirstResponder];
@@ -88,12 +93,15 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	if (sender == nil || sender == self.mqttAddressTextField) {
 		self->mqttHostValid = self.mqttAddressTextField.text.length > 0;
 	}
+	if (sender == nil || sender == self.mqttPortTextField) {
+		self->mqttPortValid = self.mqttPortTextField.text.length > 0;
+	}
 	if (sender == nil || sender == self.mqttUserTextField) {
 		self->mqttUserValid = self.mqttUserTextField.text.length > 0;
 	}
 	if (sender != nil) {
 		self.saveButton.enabled = (self->hostValid && self->mqttHostValid &&
-								   self->mqttUserValid);
+								   self->mqttPortValid && self->mqttUserValid);
 	}
 }
 
