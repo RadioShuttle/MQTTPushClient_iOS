@@ -1,0 +1,32 @@
+Add new server:
+- Presets for Host/MQTT Server, port
+- Separate port field
+
+Server list:
+- Show # of new messages
+- Show "Server online" when status OK
+- Server name field too short
+
+Message list:
+- Show new messages with yellow background (how long?)
+- Jump to top when new message arrives
+- Long messages do not break into multiple lines
+- Account name left aligned
+- Date without seconds
+- "HH:MM - Topic" left aligned
+
+Add/edit topics:
+- Move to server settings
+- Label "Subscribe to Topic" or "Update Topic"
+- Label "Notifications: None/Disabled/ ..."
+
+About dialog:
+- Add icon
+- ... ?
+
+iPad version:
+- Present as popovers: MQTT Actions, ... ? 
+
+Other:
+- Set badge count to total # of new messages
+- Handle multiple IP addresses in DNS lookup
