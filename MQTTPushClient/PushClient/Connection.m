@@ -114,12 +114,13 @@ enum ConnectionState {
 
 - (void)getFcmDataAsync:(Account *)account {
 	Cmd *command = [self login:account];
-	if ([command fcmDataRequest:0]) {
-		[self applyFcmData:command.rawCmd.data forAccount:account];
-	}
+	[command fcmDataRequest:0];
 	account.error = command.rawCmd.error;
-	if (account.error)
+	if (account.error) {
+		[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
 		return;
+	}
+	[self applyFcmData:command.rawCmd.data forAccount:account];
 	for (;;) {
 		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
 		if (self.fcmToken)
