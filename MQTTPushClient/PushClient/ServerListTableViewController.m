@@ -88,7 +88,10 @@
 		else
 			serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Error"];
 		serverListTableViewCell.serverNameLabel.text = text;
-		serverListTableViewCell.errorMessageLabel.text = [account.error localizedDescription];
+		if (account.error)
+			serverListTableViewCell.errorMessageLabel.text = [account.error localizedDescription];
+		else
+			serverListTableViewCell.errorMessageLabel.text = @"Server online";
 		serverListTableViewCell.unreadMessagesLabel.text = @"";
 		cell = serverListTableViewCell;
 	}
