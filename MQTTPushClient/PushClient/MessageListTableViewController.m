@@ -125,7 +125,7 @@
 	NSString *topic = [cdmessage.topic stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topic];
 	cell.dateLabel.text = text;
-	cell.messageLabel.text = cdmessage.content;
+	cell.messageLabel.text = [cdmessage.content stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
