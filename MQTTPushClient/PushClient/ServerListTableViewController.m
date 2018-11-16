@@ -82,7 +82,8 @@
 		NSUInteger row = self.editing ? indexPath.row - 1 : indexPath.row; // because of entry "add new item" in the UI
 		Account *account = self.accountList[row];
 		ServerListTableViewCell *serverListTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
-		NSString *text = [NSString stringWithFormat:@"%@@%@", account.mqttUser, account.mqttHost];
+		NSString *text = [NSString stringWithFormat:@"%@@%@:%d", account.mqttUser,
+						  account.mqttHost, account.mqttPort];
 		if (account.error == nil)
 			serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Success"];
 		else

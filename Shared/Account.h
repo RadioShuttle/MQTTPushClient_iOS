@@ -9,15 +9,14 @@
 #import "CDAccount+CoreDataProperties.h"
 
 #define SERVER_DEFAULT_PORT 2033
-#define MQTT_DEFAULT_PORT 1883
-#define MQTT_SECURE_PORT 8883
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface Account : NSObject
 
-@property(readonly) NSString *host;		// Push server (host:port)
-@property(readonly) NSString *mqttHost; // MQTT Server (host:port)
+@property(readonly) NSString *host;		// host:port
+@property(readonly) NSString *mqttHost;
+@property(readonly) int mqttPort;
 @property(readonly) NSString *mqttUser;
 @property(readonly) BOOL mqttSecureTransport;
 @property(readonly) NSString *uuid;
@@ -41,10 +40,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 + (instancetype)accountWithHost:(NSString *)host
-								mqttHost:(NSString *)mqttHost
-					 mqttSecureTransport:(BOOL)mqttSecureTransport
-								mqttUser:(NSString *)mqttUser
-									uuid:(nullable NSString *)uuid;
+					   mqttHost:(NSString *)mqttHost
+					   mqttPort:(int)mqttPort
+			mqttSecureTransport:(BOOL)mqttSecureTransport
+					   mqttUser:(NSString *)mqttUser
+						   uuid:(nullable NSString *)uuid;
 
 - (BOOL)configure;
 - (void)clearCache;

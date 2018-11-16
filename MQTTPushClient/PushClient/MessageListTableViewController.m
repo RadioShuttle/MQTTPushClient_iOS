@@ -67,7 +67,7 @@
 	self.tableView.refreshControl = [[UIRefreshControl alloc] init];
 	self.tableView.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Updating Message List" attributes:nil];
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccount) forControlEvents:UIControlEventValueChanged];
-	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@", self.account.mqttUser, self.account.mqttHost];
+	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqttUser, self.account.mqttHost, self.account.mqttPort];
 	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
 	
 	// Formatter for the section headers (one section per day).

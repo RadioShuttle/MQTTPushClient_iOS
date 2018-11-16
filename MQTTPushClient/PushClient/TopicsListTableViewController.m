@@ -37,7 +37,7 @@
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
-	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@", self.account.mqttUser, self.account.mqttHost];
+	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqttUser, self.account.mqttHost, self.account.mqttPort];
 	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
 }
 

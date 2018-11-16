@@ -43,9 +43,10 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	self.mqttUserTextField.enabled = newAccount;
 	
 	if (newAccount) {
-		self.navigationItem.title = @"New Account";
-		self.addressTextField.text = @"";
-		self.mqttAddressTextField.text = @"";
+		self.navigationItem.title = @"New Server";
+		self.addressTextField.text = @"push.radioshuttle.de";
+		self.mqttAddressTextField.text = @"mqtt.arduino-hannover.de";
+		self.mqttPortTextField.text = @"1883";
 		self.mqttSecuritySwitch.on = NO;
 		self.mqttUserTextField.text = @"";
 		self.mqttPasswordTextField.text = @"";
@@ -54,6 +55,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		self.navigationItem.title = account.mqttHost;
 		self.addressTextField.text = account.host;
 		self.mqttAddressTextField.text = account.mqttHost;
+		self.mqttPortTextField.text = @(account.mqttPort).stringValue;
 		self.mqttSecuritySwitch.on = account.mqttSecureTransport;
 		self.mqttUserTextField.text = account.mqttUser;
 		self.mqttPasswordTextField.text = (account.mqttPassword == nil) ? @"" : kUnchangedPasswd;
@@ -116,6 +118,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	if (self.indexPath == nil) {
 		account = [Account accountWithHost:self.addressTextField.text
 								  mqttHost:self.mqttAddressTextField.text
+								  mqttPort:self.mqttPortTextField.text.intValue
 					   mqttSecureTransport:self.mqttSecuritySwitch.on
 								  mqttUser:self.mqttUserTextField.text
 									  uuid:nil];

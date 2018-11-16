@@ -13,6 +13,7 @@
 
 static NSString *kPrefkeyHost = @"pushserver.host";
 static NSString *kPrefkeyMqttHost = @"mqtt.host";
+static NSString *kPrefkeyMqttPort = @"mqtt.port";
 static NSString *kPrefkeyMqttSecureTransport = @"mqtt.securetransport";
 static NSString *kPrefkeyMqttUser = @"mqtt.user";
 static NSString *kPrefkeyUuid = @"uuid";
@@ -23,6 +24,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 // Public read-only property are internally read-write:
 @property(readwrite, copy) NSString *host;
 @property(readwrite, copy) NSString *mqttHost;
+@property(readwrite) int mqttPort;
 @property(readwrite) BOOL mqttSecureTransport;
 @property(readwrite, copy) NSString *mqttUser;
 @property(readwrite, copy) NSString *uuid;
@@ -37,6 +39,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 
 + (instancetype)accountWithHost:(NSString *)host
 					   mqttHost:(NSString *)mqttHost
+					   mqttPort:(int)mqttPort
 			mqttSecureTransport:(BOOL)mqttSecureTransport
 					   mqttUser:(NSString *)mqttUser
 						   uuid:(nullable NSString *)uuid {
@@ -44,6 +47,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	Account *account = [[Account alloc] init];
 	account.host = host;
 	account.mqttHost = mqttHost;
+	account.mqttPort = mqttPort;
 	account.mqttSecureTransport = mqttSecureTransport;
 	account.mqttUser = mqttUser;
 	account.uuid = uuid;
@@ -56,12 +60,14 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 + (nullable instancetype)accountFromUserDefaultsDict:(NSDictionary *)dict {
 	NSString *host = [dict helStringForKey:kPrefkeyHost];
 	NSString *mqttHost = [dict helStringForKey:kPrefkeyMqttHost];
+	NSNumber *mqttPort = [dict helNumberForKey:kPrefkeyMqttPort];
 	NSNumber *mqttSecureTransport = [dict helNumberForKey:kPrefkeyMqttSecureTransport];
 	NSString *mqttUser = [dict helStringForKey:kPrefkeyMqttUser];
 	NSString *uuid = [dict helStringForKey:kPrefkeyUuid];
 	if (uuid.length > 0 && host.length > 0 && mqttHost.length > 0 && mqttUser.length > 0) {
 		Account *account = [Account accountWithHost:host
 										   mqttHost:mqttHost
+										   mqttPort:mqttPort.intValue
 								mqttSecureTransport:mqttSecureTransport.boolValue
 										   mqttUser:mqttUser
 											   uuid:uuid];
@@ -77,6 +83,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithObjectsAndKeys:
 								 self.host, kPrefkeyHost,
 								 self.mqttHost, kPrefkeyMqttHost,
+								 @(self.mqttPort), kPrefkeyMqttPort,
 								 @(self.mqttSecureTransport), kPrefkeyMqttSecureTransport,
 								 self.mqttUser, kPrefkeyMqttUser,
 								 self.uuid, kPrefkeyUuid,
@@ -164,15 +171,9 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 }
 
 - (NSString *)mqttURI {
-	NSMutableString *uri = [NSMutableString string];
-	[uri appendString:self.mqttSecureTransport ? @"ssl://" : @"tcp://"];
-	NSRange range = [self.mqttHost rangeOfString:@":" options:NSBackwardsSearch];
-	if (range.location == NSNotFound) {
-		[uri appendFormat:@"%@:%d", self.mqttHost, MQTT_DEFAULT_PORT];
-	} else {
-		[uri appendString:self.mqttHost];
-	}
-	return uri;
+	return [NSString stringWithFormat:@"%@://%@:%d",
+			self.mqttSecureTransport ? @"ssl" : @"tcp",
+			self.mqttHost, self.mqttPort];
 }
 
 #pragma mark - Local helper methods
