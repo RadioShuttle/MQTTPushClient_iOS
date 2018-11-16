@@ -117,6 +117,9 @@ enum ConnectionState {
 	if ([command fcmDataRequest:0]) {
 		[self applyFcmData:command.rawCmd.data forAccount:account];
 	}
+	account.error = command.rawCmd.error;
+	if (account.error)
+		return;
 	for (;;) {
 		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
 		if (self.fcmToken)
