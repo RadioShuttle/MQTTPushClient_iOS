@@ -13,6 +13,7 @@
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *subscribeBarButtonItem;
 @property (weak, nonatomic) IBOutlet UITextField *topicTextField;
+@property (weak, nonatomic) IBOutlet UILabel *notificationTypeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *notificationTypeSegmentedControl;
 
 @end
@@ -21,6 +22,23 @@
 
 - (void)getResult:(NSNotification *)sender {
 	[self.navigationController popViewControllerAnimated:YES];
+}
+
+- (IBAction)notificationChangedAction:(UISegmentedControl *)sender {
+	switch (sender.selectedSegmentIndex) {
+		case 3:
+			self.notificationTypeLabel.text = @"Banner and sound";
+			break;
+		case 2:
+			self.notificationTypeLabel.text = @"Banner";
+			break;
+		case 1:
+			self.notificationTypeLabel.text = @"No notification";
+			break;
+		default:
+			self.notificationTypeLabel.text = @"Notification disabled";
+			break;
+	}
 }
 
 - (IBAction)validateFields:(id)sender {
@@ -62,15 +80,19 @@
 		self.topicTextField.enabled = NO;
 		switch (self.topic.type) {
 			case NotificationBannerSound:
+				self.notificationTypeLabel.text = @"Banner and sound";
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 3;
 				break;
 			case NotificationBanner:
+				self.notificationTypeLabel.text = @"Banner";
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
 				break;
 			case NotificationNone:
+				self.notificationTypeLabel.text = @"No notification";
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 1;
 				break;
 			default:
+				self.notificationTypeLabel.text = @"Notification disabled";
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 0;
 				break;
 		}
