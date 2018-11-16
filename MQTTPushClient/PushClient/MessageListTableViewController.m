@@ -133,7 +133,7 @@
 	cell.dateLabel.text = text;
 	cell.messageLabel.text = [cdmessage.content stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 	if ([cdmessage.timestamp compare:self.lastViewed] == NSOrderedDescending) {
-		cell.backgroundColor = [UIColor yellowColor];
+		cell.backgroundColor = [UIColor colorWithRed:1.0 green:0.95 blue:0.0 alpha:1.0]; // Yellow
 	} else {
 		cell.backgroundColor = [UIColor clearColor];
 	}
