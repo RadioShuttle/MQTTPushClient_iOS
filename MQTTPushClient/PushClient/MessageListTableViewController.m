@@ -78,8 +78,8 @@
 
 	// Formatter for the time field in the message cells.
 	self.dateFormatter = [[NSDateFormatter alloc] init];
-	self.dateFormatter.dateStyle = NSDateFormatterNoStyle;
-	self.dateFormatter.timeStyle = NSDateFormatterMediumStyle;
+	self.dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
+	[self.dateFormatter setLocalizedDateFormatFromTemplate:@"HH:mm"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
