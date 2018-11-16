@@ -69,10 +69,14 @@ enum ConnectionState {
 		// pushServerID must be saved to user defaults, so that extension finds account.
 		[[AccountList sharedAccountList] save];
 		if ([FIRApp defaultApp] == nil) {
-			[FIRApp configureWithOptions:firOptions];
-			UIApplication *app = [UIApplication sharedApplication];
-			AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-			[appDelegate startMessaging];
+			@try {
+				[FIRApp configureWithOptions:firOptions];
+				UIApplication *app = [UIApplication sharedApplication];
+				AppDelegate *appDelegate = (AppDelegate *)app.delegate;
+				[appDelegate startMessaging];
+			} @catch (NSException *exception) {
+				NSLog(@"Could not configure FIRApp: %@", exception.reason);
+			}
 		}
 	});
 }
