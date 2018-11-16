@@ -29,4 +29,5 @@ Other:
 - Set badge count to total # of new messages
 - Handle multiple IP addresses in DNS lookup
 
+- Result from fcmDataRequest command must be checked, server status updated if it failed
 - Deleting a server must stop all requests (including "waiting for FCM token...")
