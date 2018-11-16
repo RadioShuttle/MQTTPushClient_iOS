@@ -10,10 +10,10 @@
 #import "Connection.h"
 
 @interface ServerSetupTableViewController () {
-    BOOL hostValid;
-    BOOL mqttHostValid;
+	BOOL hostValid;
+	BOOL mqttHostValid;
 	BOOL mqttPortValid;
-    BOOL mqttUserValid;
+	BOOL mqttUserValid;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *addressTextField;
@@ -41,7 +41,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	self.mqttPortTextField.enabled = newAccount;
 	self.mqttSecuritySwitch.enabled = newAccount;
 	self.mqttUserTextField.enabled = newAccount;
-
+	
 	if (newAccount) {
 		self.navigationItem.title = @"New Account";
 		self.addressTextField.text = @"";
@@ -58,31 +58,31 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		self.mqttUserTextField.text = account.mqttUser;
 		self.mqttPasswordTextField.text = (account.mqttPassword == nil) ? @"" : kUnchangedPasswd;
 	}
-    
-    [self validateFields:nil]; // Initial validation
-    self.saveButton.enabled = NO; // Enabled on first change, if all fields are valid.
+	
+	[self validateFields:nil]; // Initial validation
+	self.saveButton.enabled = NO; // Enabled on first change, if all fields are valid.
 }
 
 - (IBAction)saveAction:(UIButton *)sender {
-    self.saveButton.enabled = NO;
-    self.tableView.userInteractionEnabled = NO;
-    [self resignFirstResponder];
-    [self saveSettings];
+	self.saveButton.enabled = NO;
+	self.tableView.userInteractionEnabled = NO;
+	[self resignFirstResponder];
+	[self saveSettings];
 }
 
 #pragma mark - UITextFieldDelegate
 
 - (BOOL)textFieldShouldReturn:(UITextField *)textField {
 	[textField resignFirstResponder];
-    if (textField == self.addressTextField) {
-        [self.mqttAddressTextField becomeFirstResponder];
+	if (textField == self.addressTextField) {
+		[self.mqttAddressTextField becomeFirstResponder];
 	} else if (textField == self.mqttAddressTextField) {
 		[self.mqttPortTextField becomeFirstResponder];
-    } else if (textField == self.mqttPortTextField) {
-            [self.mqttUserTextField becomeFirstResponder];
-    } else if (textField == self.mqttUserTextField) {
-        [self.mqttPasswordTextField becomeFirstResponder];
-    }
+	} else if (textField == self.mqttPortTextField) {
+		[self.mqttUserTextField becomeFirstResponder];
+	} else if (textField == self.mqttUserTextField) {
+		[self.mqttPasswordTextField becomeFirstResponder];
+	}
 	return YES;
 }
 
@@ -115,10 +115,10 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	}
 	if (self.indexPath == nil) {
 		account = [Account accountWithHost:self.addressTextField.text
-									   mqttHost:self.mqttAddressTextField.text
-							mqttSecureTransport:self.mqttSecuritySwitch.on
-									   mqttUser:self.mqttUserTextField.text
-										   uuid:nil];
+								  mqttHost:self.mqttAddressTextField.text
+					   mqttSecureTransport:self.mqttSecuritySwitch.on
+								  mqttUser:self.mqttUserTextField.text
+									  uuid:nil];
 	} else {
 		if ([mqttPassword isEqualToString:kUnchangedPasswd]) {
 			[self saveSuccess];
