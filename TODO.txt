@@ -6,6 +6,7 @@ Server list:
 - Show # of new messages
 - Show "Server online" when status OK
 - Server name field too short
+- Leave edit mode after server has been saved/modified
 
 Message list:
 - Show new messages with yellow background (how long?)
@@ -19,6 +20,10 @@ Add/edit topics:
 - Move to server settings
 - Label "Subscribe to Topic" or "Update Topic"
 - Label "Notifications: None/Disabled/ ..."
+- Leave edit mode after topic has been saved/modified
+
+Add/edit actions:
+- Leave edit mode after action has been saved/modified
 
 About dialog:
 - Add icon
