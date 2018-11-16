@@ -1,11 +1,6 @@
-Add new server:
-- Presets for Host/MQTT Server, port
-- Separate port field
 
 Server list:
 - Show # of new messages
-- Show "Server online" when status OK
-- Server name field too short
 - Leave edit mode after server has been saved/modified
 
 Message list:
@@ -13,8 +8,6 @@ Message list:
 - Jump to top when new message arrives
 - Long messages do not break into multiple lines
 - Account name left aligned
-- Date without seconds
-- "HH:MM - Topic" left aligned
 
 Add/edit topics:
 - Move to server settings
@@ -35,3 +28,5 @@ iPad version:
 Other:
 - Set badge count to total # of new messages
 - Handle multiple IP addresses in DNS lookup
+
+- Deleting a server must stop all requests (including "waiting for FCM token...")
