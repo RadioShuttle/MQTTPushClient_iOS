@@ -116,7 +116,6 @@
                     <navigationItem key="navigationItem" title="MQTT Push Client" id="KJ4-tA-xOp"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <segue destination="fn0-VH-MxS" kind="show" identifier="IDShowTopics" id="gYo-nf-hfO"/>
                         <segue destination="k5Q-cm-GtU" kind="show" identifier="IDShowMessageList" id="4i9-k9-uYe"/>
                         <segue destination="pqg-gq-pYt" kind="show" identifier="IDShowSettings" id="ZQo-Xl-dGb"/>
                         <segue destination="pqg-gq-pYt" kind="show" identifier="IDAddServer" id="QQs-B3-hzJ"/>
@@ -1159,6 +1158,5 @@
         <segue reference="TUs-2K-5Q0"/>
         <segue reference="Fz2-xI-hHO"/>
         <segue reference="3zb-GV-1CN"/>
-        <segue reference="gYo-nf-hfO"/>
     </inferredMetricsTieBreakers>
 </document>
