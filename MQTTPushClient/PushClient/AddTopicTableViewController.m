@@ -12,6 +12,7 @@
 @interface AddTopicTableViewController ()
 
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *subscribeBarButtonItem;
+@property (weak, nonatomic) IBOutlet UILabel *topicTitleLabel;
 @property (weak, nonatomic) IBOutlet UITextField *topicTextField;
 @property (weak, nonatomic) IBOutlet UILabel *notificationTypeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *notificationTypeSegmentedControl;
@@ -24,21 +25,27 @@
 	[self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)notificationChangedAction:(UISegmentedControl *)sender {
-	switch (sender.selectedSegmentIndex) {
+- (NSString *)textForNotificationIndex:(NSUInteger)index {
+	NSString *text;
+	switch (index) {
 		case 3:
-			self.notificationTypeLabel.text = @"Banner and sound";
+			text = @"Banner and sound";
 			break;
 		case 2:
-			self.notificationTypeLabel.text = @"Banner";
+			text = @"Banner";
 			break;
 		case 1:
-			self.notificationTypeLabel.text = @"No notification";
+			text = @"None";
 			break;
 		default:
-			self.notificationTypeLabel.text = @"Notification disabled";
+			text = @"Disabled";
 			break;
 	}
+	return text;
+}
+
+- (IBAction)notificationChangedAction:(UISegmentedControl *)sender {
+	self.notificationTypeLabel.text = [self textForNotificationIndex:sender.selectedSegmentIndex];
 }
 
 - (IBAction)validateFields:(id)sender {
@@ -76,29 +83,32 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
 	if (self.topic) {
 		self.subscribeBarButtonItem.enabled = YES;
+		self.topicTitleLabel.text = @"Topic:";
 		self.topicTextField.text = self.topic.name;
 		self.topicTextField.enabled = NO;
 		switch (self.topic.type) {
 			case NotificationBannerSound:
-				self.notificationTypeLabel.text = @"Banner and sound";
+				self.notificationTypeLabel.text = [self textForNotificationIndex:3];
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 3;
 				break;
 			case NotificationBanner:
-				self.notificationTypeLabel.text = @"Banner";
+				self.notificationTypeLabel.text = [self textForNotificationIndex:2];
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
 				break;
 			case NotificationNone:
-				self.notificationTypeLabel.text = @"No notification";
+				self.notificationTypeLabel.text = [self textForNotificationIndex:1];
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 1;
 				break;
 			default:
-				self.notificationTypeLabel.text = @"Notification disabled";
+				self.notificationTypeLabel.text = [self textForNotificationIndex:0];
 				self.notificationTypeSegmentedControl.selectedSegmentIndex = 0;
 				break;
 		}
 	} else {
 		self.subscribeBarButtonItem.enabled = NO;
+		self.topicTitleLabel.text = @"Subscribe to topic:";
 		self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
+		self.notificationTypeLabel.text = @"Banner";
 	}
 }
 

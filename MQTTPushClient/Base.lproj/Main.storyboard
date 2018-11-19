@@ -305,6 +305,7 @@
                         <outlet property="notificationTypeSegmentedControl" destination="C39-c2-fvT" id="jd0-W3-50a"/>
                         <outlet property="subscribeBarButtonItem" destination="hrg-PE-ymE" id="9Ks-ww-7bM"/>
                         <outlet property="topicTextField" destination="GNs-ak-LHO" id="IL7-pz-gzQ"/>
+                        <outlet property="topicTitleLabel" destination="pl8-Ve-Xhz" id="qfi-QL-lhB"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zui-pz-vXq" userLabel="First Responder" sceneMemberID="firstResponder"/>

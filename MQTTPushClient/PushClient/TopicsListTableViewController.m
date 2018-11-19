@@ -126,6 +126,10 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	AddTopicTableViewController *controller = segue.destinationViewController;
+	if (sender)
+		controller.title = @"Update Topic";
+	else
+		controller.title = @"Add Topic";
 	controller.account = self.account;
 	controller.topic = sender;
 }
