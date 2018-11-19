@@ -65,6 +65,11 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	self.saveButton.enabled = NO; // Enabled on first change, if all fields are valid.
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	self.navigationController.toolbarHidden = YES;
+}
+
 - (IBAction)saveAction:(UIButton *)sender {
 	self.saveButton.enabled = NO;
 	self.tableView.userInteractionEnabled = NO;
