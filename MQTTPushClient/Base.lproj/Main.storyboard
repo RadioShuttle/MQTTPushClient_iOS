@@ -948,6 +948,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3f-oh-ka2">
                                                     <rect key="frame" x="16" y="7" width="343" height="30"/>
                                                     <state key="normal" title="MQTT Actions"/>
+                                                    <connections>
+                                                        <segue destination="1v6-nD-m48" kind="show" id="Fz2-xI-hHO"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -1154,6 +1157,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="QQs-B3-hzJ"/>
         <segue reference="TUs-2K-5Q0"/>
+        <segue reference="Fz2-xI-hHO"/>
         <segue reference="3zb-GV-1CN"/>
         <segue reference="70F-ND-NQY"/>
     </inferredMetricsTieBreakers>

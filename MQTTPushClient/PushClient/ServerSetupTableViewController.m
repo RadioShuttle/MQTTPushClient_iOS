@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 #import "Connection.h"
 #import "TopicsListTableViewController.h"
+#import "ActionListTableViewController.h"
 #import "ServerSetupTableViewController.h"
 
 @interface ServerSetupTableViewController () {
@@ -243,6 +244,11 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		TopicsListTableViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPath.row];
 		controller.account = account;
+	} else {
+		ActionListTableViewController *controller = segue.destinationViewController;
+		Account *account = self.accountList[self.indexPath.row];
+		controller.account = account;
+		controller.messageList = nil;
 	}
 }
 
