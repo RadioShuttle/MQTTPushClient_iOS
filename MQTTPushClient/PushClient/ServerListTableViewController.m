@@ -10,7 +10,6 @@
 #import "ServerSetupTableViewController.h"
 #import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
-#import "TopicsListTableViewController.h"
 #import "AccountList.h"
 
 @interface ServerListTableViewController ()
@@ -126,10 +125,6 @@
 }
 #pragma mark - delegate
 
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath {
-	[self performSegueWithIdentifier:@"IDShowTopics" sender:indexPath];
-}
-
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (indexPath.row == 0)
 		return UITableViewCellEditingStyleInsert;
@@ -163,11 +158,6 @@
 		ServerSetupTableViewController *controller = segue.destinationViewController;
 		controller.accountList = self.accountList;
 		controller.indexPath = self.indexPathSelected;
-	} else if ([identifier isEqualToString:@"IDShowTopics"]) {
-		TopicsListTableViewController *controller = segue.destinationViewController;
-		NSIndexPath *indexPath = sender;
-		Account *account = self.accountList[indexPath.row];
-		controller.account = account;
 	} else if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];
