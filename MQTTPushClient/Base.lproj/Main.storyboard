@@ -44,8 +44,8 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="+500" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-I8-myk">
-                                            <rect key="frame" x="215" y="40" width="29" height="14"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="+500" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NEj-I8-myk">
+                                            <rect key="frame" x="330" y="39" width="29" height="14"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                             <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <nil key="highlightedColor"/>
@@ -59,7 +59,7 @@
                                         <constraint firstAttribute="trailing" secondItem="ErG-hj-kmy" secondAttribute="trailing" id="Vcl-2l-DKc"/>
                                         <constraint firstItem="Koz-Q1-yNH" firstAttribute="leading" secondItem="dNO-GN-ZFf" secondAttribute="leading" constant="16" id="ZZ2-J6-Lyh"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="11" id="fFN-bz-84b"/>
-                                        <constraint firstAttribute="trailing" secondItem="NEj-I8-myk" secondAttribute="trailing" constant="8" id="i9H-JQ-PT8"/>
+                                        <constraint firstAttribute="trailing" secondItem="NEj-I8-myk" secondAttribute="trailing" constant="16" id="i9H-JQ-PT8"/>
                                         <constraint firstAttribute="bottom" secondItem="NEj-I8-myk" secondAttribute="bottom" constant="7.5" id="nNO-AO-Xf1"/>
                                         <constraint firstItem="ErG-hj-kmy" firstAttribute="leading" secondItem="W4Q-s2-Rqo" secondAttribute="trailing" constant="8" id="u92-mL-rXP"/>
                                         <constraint firstItem="Koz-Q1-yNH" firstAttribute="top" secondItem="dNO-GN-ZFf" secondAttribute="top" constant="39" id="yNg-7h-IBy"/>
