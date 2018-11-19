@@ -1,7 +1,9 @@
 
 Server list:
 - Show # of new messages
-- Leave edit mode after server has been saved/modified
+
+Edit server:
+- Manage topics/actions
 
 Message list:
 - Account name left aligned
@@ -10,10 +12,9 @@ Add/edit topics:
 - Move to server settings
 - Label "Subscribe to Topic" or "Update Topic"
 - Label "Notifications: None/Disabled/ ..."
-- Leave edit mode after topic has been saved/modified
 
 Add/edit actions:
-- Leave edit mode after action has been saved/modified
+- Move to server settings
 
 About dialog:
 - Add icon
@@ -21,6 +22,10 @@ About dialog:
 
 iPad version:
 - Present as popovers: MQTT Actions, ... ? 
+
+General:
+- Allow "copy" of non-editable settings (server, topic, ...)
+- Server status not always up-to-date (switch flight mode on/off)
 
 Other:
 - Set badge count to total # of new messages
