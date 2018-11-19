@@ -914,6 +914,48 @@
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
+                            <tableViewSection id="NVf-bI-klT">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="OGK-GH-CGR">
+                                        <rect key="frame" x="0.0" y="367.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OGK-GH-CGR" id="OBX-xC-0kk">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZbJ-n1-Ka9">
+                                                    <rect key="frame" x="16" y="7" width="343" height="30"/>
+                                                    <state key="normal" title="MQTT Topics"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="ZbJ-n1-Ka9" secondAttribute="trailing" constant="16" id="Mby-wp-Ixn"/>
+                                                <constraint firstItem="ZbJ-n1-Ka9" firstAttribute="top" secondItem="OBX-xC-0kk" secondAttribute="top" constant="7" id="d9y-sl-C2g"/>
+                                                <constraint firstItem="ZbJ-n1-Ka9" firstAttribute="leading" secondItem="OBX-xC-0kk" secondAttribute="leading" constant="16" id="vxF-sD-Ete"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="KVH-VI-8Za">
+                                        <rect key="frame" x="0.0" y="411.5" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KVH-VI-8Za" id="gGZ-ic-0z2">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q3f-oh-ka2">
+                                                    <rect key="frame" x="16" y="7" width="343" height="30"/>
+                                                    <state key="normal" title="MQTT Actions"/>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="q3f-oh-ka2" secondAttribute="trailing" constant="16" id="DVd-B0-9qo"/>
+                                                <constraint firstItem="q3f-oh-ka2" firstAttribute="leading" secondItem="gGZ-ic-0z2" secondAttribute="leading" constant="16" id="cHU-vB-kYe"/>
+                                                <constraint firstItem="q3f-oh-ka2" firstAttribute="top" secondItem="gGZ-ic-0z2" secondAttribute="top" constant="7" id="wOp-be-YJh"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
                         </sections>
                         <connections>
                             <outlet property="dataSource" destination="pqg-gq-pYt" id="7iW-uM-UhT"/>
