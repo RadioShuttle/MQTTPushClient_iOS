@@ -6,8 +6,9 @@
 
 #import "Account.h"
 #import "AppDelegate.h"
-#import "ServerSetupTableViewController.h"
 #import "Connection.h"
+#import "TopicsListTableViewController.h"
+#import "ServerSetupTableViewController.h"
 
 @interface ServerSetupTableViewController () {
 	BOOL hostValid;
@@ -232,6 +233,17 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	self.progress = nil;
 	self.saveButton.enabled = YES;
 	self.tableView.userInteractionEnabled = YES;
+}
+
+#pragma mark - navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	NSString *identifier = segue.identifier;
+	if ([identifier isEqualToString:@"IDShowTopics"]) {
+		TopicsListTableViewController *controller = segue.destinationViewController;
+		Account *account = self.accountList[self.indexPath.row];
+		controller.account = account;
+	}
 }
 
 @end

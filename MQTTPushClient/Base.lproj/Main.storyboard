@@ -926,6 +926,9 @@
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZbJ-n1-Ka9">
                                                     <rect key="frame" x="16" y="7" width="343" height="30"/>
                                                     <state key="normal" title="MQTT Topics"/>
+                                                    <connections>
+                                                        <segue destination="fn0-VH-MxS" kind="show" identifier="IDShowTopics" id="70F-ND-NQY"/>
+                                                    </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
@@ -1152,5 +1155,6 @@
         <segue reference="QQs-B3-hzJ"/>
         <segue reference="TUs-2K-5Q0"/>
         <segue reference="3zb-GV-1CN"/>
+        <segue reference="70F-ND-NQY"/>
     </inferredMetricsTieBreakers>
 </document>
