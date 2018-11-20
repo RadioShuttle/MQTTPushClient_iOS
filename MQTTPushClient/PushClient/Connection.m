@@ -101,10 +101,6 @@ enum ConnectionState {
 	return command;
 }
 
-- (Cmd *)login:(Account *)account {
-	return [self login:account withMqttPassword:account.mqttPassword];
-}
-
 - (void)disconnect:(Account *)account withCommand:(Cmd *)command {
 	account.error = command.rawCmd.error;
 	[command bye:0];
@@ -266,7 +262,11 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
-#pragma public methods
+#pragma mark - public methods
+
+- (Cmd *)login:(Account *)account {
+	return [self login:account withMqttPassword:account.mqttPassword];
+}
 
 - (void)getFcmDataForAccount:(Account *)account {
 	account.error = nil;
