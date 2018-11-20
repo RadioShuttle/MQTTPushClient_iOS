@@ -30,7 +30,7 @@
 			[self.navigationController popViewControllerAnimated:YES];
 	} else {
 		[self.tableView reloadData];
-		if (self.editAllowed)
+		if (self.editAllowed && !self.editing)
 			self.editing = YES;
 	}
 }

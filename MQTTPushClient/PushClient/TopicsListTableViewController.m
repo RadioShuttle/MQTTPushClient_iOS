@@ -21,7 +21,8 @@
 
 - (void)updateList:(NSNotification *)sender {
 	[self.tableView reloadData];
-	self.editing = YES;
+	if (!self.editing)
+		self.editing = YES;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
