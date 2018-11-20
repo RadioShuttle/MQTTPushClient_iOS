@@ -27,9 +27,12 @@
 			[alert addAction:cancelAction];
 			[self presentViewController:alert animated:YES completion:nil];
 		} else
-			[self.navigationController popToViewController:self.messageList animated:YES];
-	} else
+			[self.navigationController popViewControllerAnimated:YES];
+	} else {
 		[self.tableView reloadData];
+		if (self.editAllowed)
+			self.editing = YES;
+	}
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -45,7 +48,8 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.navigationItem.rightBarButtonItem = self.editButtonItem;
+	if (self.editAllowed)
+		self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -64,9 +68,10 @@
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	NSInteger n = self.account.actionList.count;
 	if (self.editing)
-		return 1 + self.account.actionList.count; // because of entry "add new item" in the UI
-	return self.account.actionList.count;
+		return 1 + n; // because of entry "add new item" in the UI
+	return n;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {

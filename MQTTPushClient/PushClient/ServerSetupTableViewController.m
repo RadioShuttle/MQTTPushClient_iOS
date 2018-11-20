@@ -248,7 +248,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		ActionListTableViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPath.row];
 		controller.account = account;
-		controller.messageList = nil;
+		controller.editAllowed = YES;
 	}
 }
 

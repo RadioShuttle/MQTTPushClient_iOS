@@ -9,6 +9,6 @@
 @interface ActionListTableViewController : UITableViewController
 
 @property Account *account;
-@property UIViewController *messageList;
+@property BOOL editAllowed;
 
 @end
