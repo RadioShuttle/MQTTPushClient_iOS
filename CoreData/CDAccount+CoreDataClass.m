@@ -21,6 +21,7 @@
 	
 	for (Message *msg in messageList) {
 		
+#if 0
 		NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp = %@ AND messageID = %d",
 								  self, msg.timestamp, msg.messageID];
@@ -30,10 +31,17 @@
 #ifdef DEBUG
 			NSLog(@"Delete %d duplicate message(s)", (int)result.count);
 #endif
-			for (CDMessage *msg in result) {
-				[context deleteObject:msg];
+			for (CDMessage *cdmsg in result) {
+				[context deleteObject:cdmsg];
 			}
 		}
+#else
+		for (CDMessage *cdmsg in [self.messages copy]) {
+			if (cdmsg.timestamp == msg.timestamp && cdmsg.messageID == msg.messageID) {
+				[self removeMessagesObject:cdmsg];
+			}
+		}
+#endif
 		CDMessage *cdmsg = [[CDMessage alloc] initWithContext:context];
 		cdmsg.topic = msg.topic;
 		cdmsg.content = msg.content;
