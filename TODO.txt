@@ -2,9 +2,6 @@
 Server list:
 - Show # of new messages
 
-Add server:
-- Disable topics/actions, enable when saved
-
 Message list:
 - Account name left aligned
 
