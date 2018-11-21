@@ -25,6 +25,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *mqttUserTextField;
 @property (weak, nonatomic) IBOutlet UITextField *mqttPasswordTextField;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
+@property (weak, nonatomic) IBOutlet UIButton *editTopicsButton;
+@property (weak, nonatomic) IBOutlet UIButton *editActionsButton;
 
 @property (strong, nonatomic) UIAlertController *progress;
 
@@ -37,7 +39,11 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	BOOL newAccount = self.indexPath == nil;
+	[self setupFields];
+}
+
+- (void)setupFields {
+	BOOL newAccount = self.editIndex < 0;
 	self.addressTextField.enabled = newAccount;
 	self.mqttAddressTextField.enabled = newAccount;
 	self.mqttPortTextField.enabled = newAccount;
@@ -53,7 +59,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		self.mqttUserTextField.text = @"";
 		self.mqttPasswordTextField.text = @"";
 	} else {
-		Account *account = self.accountList[self.indexPath.row];
+		Account *account = self.accountList[self.editIndex];
 		self.navigationItem.title = account.mqttHost;
 		self.addressTextField.text = account.host;
 		self.mqttAddressTextField.text = account.mqttHost;
@@ -62,6 +68,8 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		self.mqttUserTextField.text = account.mqttUser;
 		self.mqttPasswordTextField.text = (account.mqttPassword == nil) ? @"" : kUnchangedPasswd;
 	}
+    self.editTopicsButton.enabled = !newAccount;
+    self.editActionsButton.enabled = !newAccount;
 	
 	[self validateFields:nil]; // Initial validation
 	self.saveButton.enabled = NO; // Enabled on first change, if all fields are valid.
@@ -122,7 +130,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	if (mqttPassword == nil) {
 		mqttPassword = @"";
 	}
-	if (self.indexPath == nil) {
+	if (self.editIndex < 0) {
 		account = [Account accountWithHost:self.addressTextField.text
 								  mqttHost:self.mqttAddressTextField.text
 								  mqttPort:self.mqttPortTextField.text.intValue
@@ -134,7 +142,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 			[self saveSuccess];
 			return;
 		}
-		account = self.accountList[self.indexPath.row];
+		account = self.accountList[self.editIndex];
 	}
 	
 	self.progress = [UIAlertController alertControllerWithTitle:account.host
@@ -161,11 +169,12 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 				[self saveFailed:@"Login failed" message:@"Wrong user name or password"];
 			} else if (cmd.rawCmd.rc != RC_OK) {
 				[self saveFailed:@"Login failed" message:nil];
-			} else if (self.indexPath == nil) {
+			} else if (self.editIndex < 0) {
 				// New account
 				if (![account configure]) {
 					[self saveFailed:NULL message:@"Could not create account"];
 				} else {
+					self.editIndex = self.accountList.count;
 					[self.accountList addAccount:account];
 					[self.accountList save];
 					account.mqttPassword = mqttPassword;
@@ -190,11 +199,15 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 	if (self.progress) {
 		[self.progress dismissViewControllerAnimated:YES completion: ^{
-			[self.navigationController popViewControllerAnimated:YES];
+			//[self.navigationController popViewControllerAnimated:YES];
+            self.tableView.userInteractionEnabled = YES;
+			[self setupFields];
 		}];
 		self.progress = nil;
 	} else {
-		[self.navigationController popViewControllerAnimated:YES];
+		// [self.navigationController popViewControllerAnimated:YES];
+        self.tableView.userInteractionEnabled = YES;
+		[self setupFields];
 	}
 }
 
@@ -242,11 +255,11 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	NSString *identifier = segue.identifier;
 	if ([identifier isEqualToString:@"IDShowTopics"]) {
 		TopicsListTableViewController *controller = segue.destinationViewController;
-		Account *account = self.accountList[self.indexPath.row];
+		Account *account = self.accountList[self.editIndex];
 		controller.account = account;
 	} else {
 		ActionListTableViewController *controller = segue.destinationViewController;
-		Account *account = self.accountList[self.indexPath.row];
+		Account *account = self.accountList[self.editIndex];
 		controller.account = account;
 		controller.editAllowed = YES;
 	}

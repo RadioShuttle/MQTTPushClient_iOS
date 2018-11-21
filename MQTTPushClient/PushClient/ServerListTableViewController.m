@@ -153,11 +153,11 @@
 	if ([identifier isEqualToString:@"IDAddServer"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
 		controller.accountList = self.accountList;
-		controller.indexPath = nil;
+		controller.editIndex = -1;
 	} else if ([identifier isEqualToString:@"IDShowSettings"]) {
 		ServerSetupTableViewController *controller = segue.destinationViewController;
 		controller.accountList = self.accountList;
-		controller.indexPath = self.indexPathSelected;
+		controller.editIndex = self.indexPathSelected.row;
 	} else if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];

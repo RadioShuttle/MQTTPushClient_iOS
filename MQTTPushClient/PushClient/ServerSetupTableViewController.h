@@ -10,6 +10,6 @@
 @interface ServerSetupTableViewController : UITableViewController
 
 @property AccountList *accountList;
-@property NSIndexPath *indexPath;
+@property NSInteger editIndex;
 
 @end

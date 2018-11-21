@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -977,6 +977,8 @@
                     </navigationItem>
                     <connections>
                         <outlet property="addressTextField" destination="riD-K5-Cy5" id="Z1I-Yy-a3S"/>
+                        <outlet property="editActionsButton" destination="q3f-oh-ka2" id="6zT-a7-cAy"/>
+                        <outlet property="editTopicsButton" destination="ZbJ-n1-Ka9" id="Zfe-gc-DYX"/>
                         <outlet property="mqttAddressTextField" destination="6ja-PS-9WU" id="3C7-BP-ni8"/>
                         <outlet property="mqttPasswordTextField" destination="pzF-92-GlO" id="ynu-Jc-nQy"/>
                         <outlet property="mqttPortTextField" destination="vap-t1-5rH" id="ohU-Fp-OfY"/>
