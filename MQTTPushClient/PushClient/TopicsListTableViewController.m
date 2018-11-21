@@ -20,9 +20,9 @@
 @implementation TopicsListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-	[self.tableView reloadData];
 	if (!self.editing)
 		self.editing = YES;
+	[self.tableView reloadData];
 }
 
 - (void)viewDidLoad {
