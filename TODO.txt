@@ -2,22 +2,13 @@
 Server list:
 - Show # of new messages
 
-Edit server:
-- Manage topics/actions
+Add server:
+- Disable topics/actions, enable when saved
 
 Message list:
 - Account name left aligned
 
-Add/edit topics:
-- Move to server settings
-- Label "Subscribe to Topic" or "Update Topic"
-- Label "Notifications: None/Disabled/ ..."
-
-Add/edit actions:
-- Move to server settings
-
 About dialog:
-- Add icon
 - ... ?
 
 iPad version:
