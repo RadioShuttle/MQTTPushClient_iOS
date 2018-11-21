@@ -25,20 +25,8 @@
 		self.editing = YES;
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-	[super setEditing:editing animated:animated];
-	if (editing) {
-		[self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]
-							  withRowAnimation:UITableViewRowAnimationAutomatic];
-	} else {
-		[self.tableView deleteRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:0 inSection:0]]
-							  withRowAnimation:UITableViewRowAnimationAutomatic];
-	}
-}
-
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqttUser, self.account.mqttHost, self.account.mqttPort];
 	self.tableView.tableHeaderView = self.tableViewHeaderLabel;
 }
