@@ -511,9 +511,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="lyW-tc-x9d">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="25"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Push Server" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SOs-h8-hBS">
+                                    <rect key="frame" x="17" y="4" width="74" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="SOs-h8-hBS" firstAttribute="top" secondItem="lyW-tc-x9d" secondAttribute="top" constant="4" id="Ksp-uj-88t"/>
+                                <constraint firstItem="SOs-h8-hBS" firstAttribute="leading" secondItem="lyW-tc-x9d" secondAttribute="leading" constant="17" id="hm5-le-5Sw"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDActionCell" id="B0G-St-wUJ">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="53" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="B0G-St-wUJ" id="sJm-kn-ZHd">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -521,7 +538,7 @@
                                 </tableViewCellContentView>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDAddActionCell" rowHeight="44" id="pkk-u8-kIp">
-                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="97" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pkk-u8-kIp" id="lUz-3r-w23">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -547,13 +564,14 @@
                         </connections>
                     </tableView>
                     <connections>
+                        <outlet property="tableViewHeaderLabel" destination="SOs-h8-hBS" id="Mkg-l5-Yz2"/>
                         <segue destination="b2n-1s-j05" kind="show" identifier="IDAddAction" id="TUs-2K-5Q0"/>
                         <segue destination="b2n-1s-j05" kind="show" identifier="IDShowAction" id="f8M-ja-CCs"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XhY-ht-vq1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="586" y="1220"/>
+            <point key="canvasLocation" x="584.79999999999995" y="1219.3403298350825"/>
         </scene>
         <!--MQTT Action-->
         <scene sceneID="FM8-IB-0zl">
