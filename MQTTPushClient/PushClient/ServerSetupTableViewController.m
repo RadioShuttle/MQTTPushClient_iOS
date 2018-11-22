@@ -42,6 +42,11 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	[self setupFields];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	self.navigationController.toolbarHidden = YES;
+}
+
 - (void)setupFields {
 	BOOL newAccount = self.editIndex < 0;
 	self.addressTextField.enabled = newAccount;
@@ -49,7 +54,9 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	self.mqttPortTextField.enabled = newAccount;
 	self.mqttSecuritySwitch.enabled = newAccount;
 	self.mqttUserTextField.enabled = newAccount;
-	
+	self.editTopicsButton.enabled = !newAccount;
+	self.editActionsButton.enabled = !newAccount;
+
 	if (newAccount) {
 		self.navigationItem.title = @"New Server";
 		self.addressTextField.text = @"push.radioshuttle.de";
@@ -68,16 +75,9 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		self.mqttUserTextField.text = account.mqttUser;
 		self.mqttPasswordTextField.text = (account.mqttPassword == nil) ? @"" : kUnchangedPasswd;
 	}
-    self.editTopicsButton.enabled = !newAccount;
-    self.editActionsButton.enabled = !newAccount;
 	
 	[self validateFields:nil]; // Initial validation
 	self.saveButton.enabled = NO; // Enabled on first change, if all fields are valid.
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-	[super viewWillAppear:animated];
-	self.navigationController.toolbarHidden = YES;
 }
 
 - (IBAction)saveAction:(UIButton *)sender {
@@ -174,7 +174,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 				if (![account configure]) {
 					[self saveFailed:NULL message:@"Could not create account"];
 				} else {
-					self.editIndex = self.accountList.count;
+					self.editIndex = self.accountList.count; // Index of new account in accountList
 					[self.accountList addAccount:account];
 					[self.accountList save];
 					account.mqttPassword = mqttPassword;
@@ -193,19 +193,17 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 
 /*
  * Account data successfully updated. Dismiss all modal dialogs
- * and leave this dialog (return to account list).
+ * and reset dialog elements.
  */
 - (void)saveSuccess {
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 	if (self.progress) {
 		[self.progress dismissViewControllerAnimated:YES completion: ^{
-			//[self.navigationController popViewControllerAnimated:YES];
             self.tableView.userInteractionEnabled = YES;
 			[self setupFields];
 		}];
 		self.progress = nil;
 	} else {
-		// [self.navigationController popViewControllerAnimated:YES];
         self.tableView.userInteractionEnabled = YES;
 		[self setupFields];
 	}
