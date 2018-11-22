@@ -2,9 +2,6 @@
 Server list:
 - Show # of new messages
 
-Message list:
-- Account name left aligned
-
 About dialog:
 - ... ?
 
