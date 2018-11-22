@@ -246,7 +246,7 @@
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
 	if (self.newMessages) {
-		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
 	}
 }
 
