@@ -133,9 +133,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <view key="tableHeaderView" contentMode="scaleToFill" id="BBk-KI-EXz">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="27"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Push Server" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DS2-sG-zv1">
+                                    <rect key="frame" x="18" y="5" width="74" height="16"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="DS2-sG-zv1" firstAttribute="leading" secondItem="BBk-KI-EXz" secondAttribute="leading" constant="18" id="BMB-u6-HgN"/>
+                                <constraint firstItem="DS2-sG-zv1" firstAttribute="top" secondItem="BBk-KI-EXz" secondAttribute="top" constant="5" id="u35-4j-CVs"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="IDTopicCell" rowHeight="44" id="ELe-SC-dsg" customClass="TopicsListTableViewCell">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="55" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ELe-SC-dsg" id="UK5-Ya-DEJ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
@@ -168,7 +185,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="IDAddTopicCell" id="VfL-hG-nJy">
-                                <rect key="frame" x="0.0" y="72" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="99" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="VfL-hG-nJy" id="5tm-b3-yKv">
                                     <rect key="frame" x="0.0" y="0.0" width="341" height="43.5"/>
@@ -193,21 +210,14 @@
                     <toolbarItems/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="tableViewHeaderLabel" destination="oUF-im-Luw" id="IiK-CS-mTl"/>
+                        <outlet property="tableViewHeaderLabel" destination="DS2-sG-zv1" id="p40-I2-IpZ"/>
                         <segue destination="8cN-Oa-f6G" kind="show" identifier="IDAddTopic" id="3zb-GV-1CN"/>
                         <segue destination="8cN-Oa-f6G" kind="show" identifier="IDShowTopic" id="vfE-Bn-KJx"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ttz-K4-OGB" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oUF-im-Luw">
-                    <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
             </objects>
-            <point key="canvasLocation" x="2247" y="1423"/>
+            <point key="canvasLocation" x="2245.5999999999999" y="1422.6386806596702"/>
         </scene>
         <!--Topic-->
         <scene sceneID="8xw-1e-fzu">
