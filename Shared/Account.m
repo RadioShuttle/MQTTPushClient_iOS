@@ -4,6 +4,8 @@
  * 30827 Garbsen, Germany
  */
 
+@import UIKit;
+
 #import "Account.h"
 #import "KeychainUtils.h"
 #import "SharedConstants.h"
@@ -109,11 +111,8 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 		return NO;
 	
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(backgroundContextDidSave:)
-												 name:NSManagedObjectContextDidSaveNotification
-											   object:self.backgroundContext];
-	
-	
+											 selector:@selector(didEnterBackground:)
+												 name:UIApplicationDidEnterBackgroundNotification object:nil];
 	return YES;
 }
 
@@ -270,13 +269,12 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 	
 	// Create managed object context for background tasks:
 	self.backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-	self.backgroundContext.persistentStoreCoordinator = coord;
+	self.backgroundContext.parentContext = self.context;
 	self.backgroundContext.undoManager = nil;
 	self.backgroundContext.mergePolicy = NSOverwriteMergePolicy;
 	
 	return YES;
 }
-
 
 - (BOOL) createCDAccount
 {
@@ -297,11 +295,11 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 	return YES;
 }
 
-- (void)backgroundContextDidSave:(NSNotification *)notification
+- (void)didEnterBackground:(NSNotification*)aNotification
 {
-	[self.context performBlock:^{
-		[self.context mergeChangesFromContextDidSaveNotification:notification];
-	}];
+	if (self.context.hasChanges) {
+		[self.context save:nil];
+	}
 }
 
 @end
