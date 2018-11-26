@@ -176,6 +176,14 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 			self.mqttHost, self.mqttPort];
 }
 
+- (NSString *)accountID {
+	if (self.mqttUser.length > 0) {
+		return [NSString stringWithFormat:@"%@@%@:%d", self.mqttUser, self.mqttHost, self.mqttPort];
+	} else {
+		return [NSString stringWithFormat:@"@%@:%d", self.mqttHost, self.mqttPort];
+	}
+}
+
 - (NSString *)accountDescription {
 	if (self.mqttUser.length > 0) {
 		return [NSString stringWithFormat:@"%@@%@:%d", self.mqttUser, self.mqttHost, self.mqttPort];

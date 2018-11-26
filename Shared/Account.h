@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nullable) NSString *mqttPassword;
 
 @property(readonly) NSString *mqttURI;
+@property(readonly) NSString *accountID;
 @property(readonly) NSString *accountDescription;
 
 // Runtime properties which are stored in memory only:

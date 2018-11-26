@@ -19,8 +19,9 @@
 	
 	NSDictionary *userInfo = request.content.userInfo;
 	NSString *pushServerID = [userInfo helStringForKey:@"pushserverid"];
-	
-	Account *account = [AccountList loadAccount:pushServerID];
+	NSString *accountID = [userInfo helStringForKey:@"account"];
+
+	Account *account = [AccountList loadAccount:pushServerID accountID:accountID];
 	if (account != nil) {
 		NSArray<Message *>*messageList = [MessageDataHandler
 										  messageListFromRemoteMessage:userInfo

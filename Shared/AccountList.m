@@ -87,13 +87,14 @@
 	}
 }
 
-+ (nullable Account *)loadAccount:(NSString *)pushServerID {
++ (nullable Account *)loadAccount:(NSString *)pushServerID accountID:(NSString *)accountID {
 	NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroup];
 	NSArray *accountsPref = [sharedDefaults arrayForKey:@"Accounts"];
 	if (accountsPref != nil) {
 		for (NSDictionary *dict in accountsPref) {
 			Account *account = [Account accountFromUserDefaultsDict:dict];
-			if (account != nil && [account.pushServerID isEqualToString:pushServerID]) {
+			if (account != nil && [account.pushServerID isEqualToString:pushServerID]
+				&& [account.accountID isEqualToString:accountID]) {
 				if ([account configure]) {
 					return account;
 				}
