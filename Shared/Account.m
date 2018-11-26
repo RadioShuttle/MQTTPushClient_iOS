@@ -33,6 +33,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 @property(readwrite, copy) NSURL *cacheURL;
 @property(readwrite) NSManagedObjectContext *context;
 @property(readwrite) NSManagedObjectContext *backgroundContext;
+@property(readwrite) NSPersistentContainer *cdcontainer;
 @property(readwrite) CDAccount *cdaccount;
 
 @end
@@ -117,7 +118,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 }
 
 - (void)clearCache {
-	NSPersistentStoreCoordinator *coord = self.context.persistentStoreCoordinator;
+	NSPersistentStoreCoordinator *coord = self.cdcontainer.persistentStoreCoordinator;
 	self.context = nil;
 	self.backgroundContext = nil;
 	self.cdaccount = nil;
@@ -136,7 +137,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 - (void)addMessageList:(NSArray<Message *>*)messageList {
 	NSManagedObjectContext *bgContext = self.backgroundContext;
 	[bgContext performBlock:^{
-		CDAccount *cdaccount = (CDAccount *)[self.backgroundContext
+		CDAccount *cdaccount = (CDAccount *)[bgContext
 											 existingObjectWithID:self.cdaccount.objectID
 											 error:NULL];
 		[cdaccount addMessageList:messageList];
@@ -146,7 +147,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 - (void)deleteMessagesBefore:(NSDate *)before {
 	NSManagedObjectContext *bgContext = self.backgroundContext;
 	[bgContext performBlock:^{
-		CDAccount *cdaccount = (CDAccount *)[self.backgroundContext
+		CDAccount *cdaccount = (CDAccount *)[bgContext
 											 existingObjectWithID:self.cdaccount.objectID
 											 error:NULL];
 		[cdaccount deleteMessagesBefore:before];
@@ -227,52 +228,51 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 	return YES;
 }
 
-- (BOOL) setupCoreData
-{
-	NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"MQTT" withExtension:@"momd"];
-	NSManagedObjectModel *model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+- (BOOL)setupCoreData {
 	
-	// Create persistent store:
-	NSError *error;
 	NSURL *storeURL = [self.cacheURL URLByAppendingPathComponent:@"messages.sqlite"];
-	NSPersistentStoreCoordinator *coord = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+	NSPersistentStoreDescription *desc = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:storeURL];
+	desc.shouldInferMappingModelAutomatically = YES;
+	desc.shouldMigrateStoreAutomatically = YES;
+	desc.shouldAddStoreAsynchronously = NO;
+
+	self.cdcontainer = [NSPersistentContainer persistentContainerWithName:@"MQTT"];
+	self.cdcontainer.persistentStoreDescriptions = @[desc];
+	[self.cdcontainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *desc,
+																  NSError *error) {
+		if (error != nil) {
+			NSLog(@"Cannot load %@: %@", desc.URL, error.localizedDescription);
+		}
+	}];
 	
-	// Automatic migration from previous version, using the given mapping model:
-	NSDictionary *options = @{NSMigratePersistentStoresAutomaticallyOption: @YES,
-							  NSInferMappingModelAutomaticallyOption: @NO};
-	
-	NSPersistentStore *store = [coord addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:options error:&error];
-	if (store == nil) {
-		NSLog(@"Could not open store (first attempt). URL=%@, error=%@", storeURL, error.userInfo);
+	if (self.cdcontainer.persistentStoreCoordinator.persistentStores.count == 0) {
 		/*
 		 * The most likely reason that the store could not be opened is that
 		 * the Core Data model has been changed in the App and is now incompatible
 		 * with the model that was used to create the store.
 		 *
 		 * The only thing we can do here is to delete the store and recreate it.
-		 * We delete the entire cache directory, because all downloaded files
-		 * are not accessible anymore if the store is recreated.
 		 */
 		[self clearCache];
-		[[NSFileManager defaultManager] createDirectoryAtURL:self.cacheURL withIntermediateDirectories:NO attributes:nil error:NULL];
-		store = [coord addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error];
-		if (store == nil) {
-			NSLog(@"Could not open store (second attempt). URL=%@, error=%@", storeURL, error.userInfo);
+		[[NSFileManager defaultManager] createDirectoryAtURL:self.cacheURL
+								 withIntermediateDirectories:NO attributes:nil error:NULL];
+		[self.cdcontainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *desc,
+																	  NSError *error) {
+			if (error != nil) {
+				NSLog(@"Cannot load %@ (second attempt): %@", desc.URL, error.localizedDescription);
+			}
+		}];
+		if (self.cdcontainer.persistentStoreCoordinator.persistentStores.count == 0) {
 			return NO;
 		}
 	}
-	
-	// Create main managed object context:
-	self.context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-	self.context.persistentStoreCoordinator = coord;
-	self.context.undoManager = nil;
-	
-	// Create managed object context for background tasks:
-	self.backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
-	self.backgroundContext.parentContext = self.context;
-	self.backgroundContext.undoManager = nil;
+
+	self.context = self.cdcontainer.viewContext;
+	self.context.automaticallyMergesChangesFromParent = YES;
+
+	self.backgroundContext = [self.cdcontainer newBackgroundContext];
 	self.backgroundContext.mergePolicy = NSOverwriteMergePolicy;
-	
+
 	return YES;
 }
 
