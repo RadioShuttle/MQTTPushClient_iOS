@@ -238,13 +238,23 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 
 - (BOOL)setupCoreData {
 	
+	// The managed object model must be loaded only once, otherwise
+	//  "Multiple NSEntityDescriptions claim the NSManagedObject subclass ..."
+	// errors can occur.
+	static NSManagedObjectModel *model = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"MQTT" withExtension:@"momd"];
+		model = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+	});
+	
 	NSURL *storeURL = [self.cacheURL URLByAppendingPathComponent:@"messages.sqlite"];
 	NSPersistentStoreDescription *desc = [NSPersistentStoreDescription persistentStoreDescriptionWithURL:storeURL];
 	desc.shouldInferMappingModelAutomatically = YES;
 	desc.shouldMigrateStoreAutomatically = YES;
 	desc.shouldAddStoreAsynchronously = NO;
 
-	self.cdcontainer = [NSPersistentContainer persistentContainerWithName:@"MQTT"];
+	self.cdcontainer = [NSPersistentContainer persistentContainerWithName:@"MQTT" managedObjectModel:model];
 	self.cdcontainer.persistentStoreDescriptions = @[desc];
 	[self.cdcontainer loadPersistentStoresWithCompletionHandler:^(NSPersistentStoreDescription *desc,
 																  NSError *error) {
