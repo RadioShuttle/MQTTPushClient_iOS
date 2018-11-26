@@ -40,7 +40,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.toolbarHidden = YES;
-	self.tableViewHeaderLabel.text = [NSString stringWithFormat:@"%@@%@:%d", self.account.mqttUser, self.account.mqttHost, self.account.mqttPort];
+	self.tableViewHeaderLabel.text = self.account.accountDescription;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 	Connection *connection = [[Connection alloc] init];
 	[connection getActionsForAccount:self.account];

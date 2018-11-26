@@ -26,6 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nullable) NSString *mqttPassword;
 
 @property(readonly) NSString *mqttURI;
+@property(readonly) NSString *accountDescription;
 
 // Runtime properties which are stored in memory only:
 @property (readonly) NSURL *cacheURL; // Cache directory for this account
@@ -43,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 					   mqttHost:(NSString *)mqttHost
 					   mqttPort:(int)mqttPort
 			mqttSecureTransport:(BOOL)mqttSecureTransport
-					   mqttUser:(NSString *)mqttUser
+					   mqttUser:(nullable NSString *)mqttUser
 						   uuid:(nullable NSString *)uuid;
 
 - (BOOL)configure;

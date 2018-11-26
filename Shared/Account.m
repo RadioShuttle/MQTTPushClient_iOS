@@ -52,7 +52,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	account.mqttHost = mqttHost;
 	account.mqttPort = mqttPort;
 	account.mqttSecureTransport = mqttSecureTransport;
-	account.mqttUser = mqttUser;
+	account.mqttUser = mqttUser ? mqttUser : @"";
 	account.uuid = uuid;
 	
 	account.topicList = [NSMutableArray array];
@@ -67,7 +67,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	NSNumber *mqttSecureTransport = [dict helNumberForKey:kPrefkeyMqttSecureTransport];
 	NSString *mqttUser = [dict helStringForKey:kPrefkeyMqttUser];
 	NSString *uuid = [dict helStringForKey:kPrefkeyUuid];
-	if (uuid.length > 0 && host.length > 0 && mqttHost.length > 0 && mqttUser.length > 0) {
+	if (uuid.length > 0 && host.length > 0 && mqttHost.length > 0) {
 		Account *account = [Account accountWithHost:host
 										   mqttHost:mqttHost
 										   mqttPort:mqttPort.intValue
@@ -174,6 +174,14 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	return [NSString stringWithFormat:@"%@://%@:%d",
 			self.mqttSecureTransport ? @"ssl" : @"tcp",
 			self.mqttHost, self.mqttPort];
+}
+
+- (NSString *)accountDescription {
+	if (self.mqttUser.length > 0) {
+		return [NSString stringWithFormat:@"%@@%@:%d", self.mqttUser, self.mqttHost, self.mqttPort];
+	} else {
+		return [NSString stringWithFormat:@"%@:%d", self.mqttHost, self.mqttPort];
+	}
 }
 
 #pragma mark - Local helper methods

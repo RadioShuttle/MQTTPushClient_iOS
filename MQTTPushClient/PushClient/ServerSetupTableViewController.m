@@ -15,7 +15,6 @@
 	BOOL hostValid;
 	BOOL mqttHostValid;
 	BOOL mqttPortValid;
-	BOOL mqttUserValid;
 }
 
 @property (weak, nonatomic) IBOutlet UITextField *addressTextField;
@@ -73,17 +72,20 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		self.mqttPortTextField.text = @(account.mqttPort).stringValue;
 		self.mqttSecuritySwitch.on = account.mqttSecureTransport;
 		self.mqttUserTextField.text = account.mqttUser;
-		self.mqttPasswordTextField.text = (account.mqttPassword == nil) ? @"" : kUnchangedPasswd;
+		self.mqttPasswordTextField.text = (account.mqttPassword.length == 0) ? @"" : kUnchangedPasswd;
 	}
 	
 	[self validateFields:nil]; // Initial validation
-	self.saveButton.enabled = NO; // Enabled on first change, if all fields are valid.
 }
 
 - (IBAction)saveAction:(UIButton *)sender {
 	self.saveButton.enabled = NO;
 	self.tableView.userInteractionEnabled = NO;
-	[self resignFirstResponder];
+	[self.addressTextField resignFirstResponder];
+	[self.mqttAddressTextField resignFirstResponder];
+	[self.mqttPortTextField resignFirstResponder];
+	[self.mqttUserTextField resignFirstResponder];
+	[self.mqttPasswordTextField resignFirstResponder];
 	[self saveSettings];
 }
 
@@ -113,12 +115,9 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	if (sender == nil || sender == self.mqttPortTextField) {
 		self->mqttPortValid = self.mqttPortTextField.text.length > 0;
 	}
-	if (sender == nil || sender == self.mqttUserTextField) {
-		self->mqttUserValid = self.mqttUserTextField.text.length > 0;
-	}
 	if (sender != nil) {
 		self.saveButton.enabled = (self->hostValid && self->mqttHostValid &&
-								   self->mqttPortValid && self->mqttUserValid);
+								   self->mqttPortValid);
 	}
 }
 
