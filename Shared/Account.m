@@ -293,10 +293,15 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 		}
 	}
 
+	// Main managed object context:
 	self.context = self.cdcontainer.viewContext;
+	self.context.undoManager = nil;
 	self.context.automaticallyMergesChangesFromParent = YES;
-
-	self.backgroundContext = [self.cdcontainer newBackgroundContext];
+	
+	// Create managed object context for background tasks:
+	self.backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+	self.backgroundContext.parentContext = self.context;
+	self.backgroundContext.undoManager = nil;
 	self.backgroundContext.mergePolicy = NSOverwriteMergePolicy;
 
 	return YES;
