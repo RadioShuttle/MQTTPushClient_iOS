@@ -161,13 +161,17 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	dispatch_async(dispatch_queue_create("de.helios.verifyaccount", DISPATCH_QUEUE_SERIAL), ^{
 		Connection *connection = [[Connection alloc] init];
 		Cmd *cmd = [connection login:account withMqttPassword:mqttPassword];
+		NSError *error = cmd.rawCmd.error;
+		int rc = cmd.rawCmd.rc;
+		[cmd bye:0];
+		[cmd exit];
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
-			if (cmd.rawCmd.error != nil) {
-				[self saveFailed:@"Login failed" message:cmd.rawCmd.error.localizedDescription];
-			} else if (cmd.rawCmd.rc == RC_NOT_AUTHORIZED) {
+			if (error != nil) {
+				[self saveFailed:@"Login failed" message:error.localizedDescription];
+			} else if (rc == RC_NOT_AUTHORIZED) {
 				[self saveFailed:@"Login failed" message:@"Wrong user name or password"];
-			} else if (cmd.rawCmd.rc != RC_OK) {
+			} else if (rc != RC_OK) {
 				[self saveFailed:@"Login failed" message:nil];
 			} else if (self.editIndex < 0) {
 				// New account
