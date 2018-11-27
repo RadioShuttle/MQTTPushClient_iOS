@@ -260,7 +260,7 @@
 
 - (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style {
 	UIViewController *presentedViewController = controller.presentedViewController;
-	if (style == UIModalPresentationFullScreen) {
+	if (style == UIModalPresentationFullScreen || style == UIModalPresentationFormSheet) {
 		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:presentedViewController];
 		UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(dismiss)];
 		presentedViewController.navigationItem.rightBarButtonItem = done;
