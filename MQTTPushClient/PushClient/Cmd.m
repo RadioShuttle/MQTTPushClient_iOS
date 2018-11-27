@@ -345,13 +345,23 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken extra:(NSString *)extra {
+- (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken locale:(NSLocale *)locale millisecondsFromGMT:(NSInteger)millisecondsFromGMT extra:(NSString *)extra {
 	if (self.state == CommandStateEnd)
 		return nil;
+	NSString *country = locale.countryCode;
+	NSString *language = locale.languageCode;
+	unsigned char buffer[4];
+	buffer[3] = millisecondsFromGMT & 0xff;;
+	buffer[2] = millisecondsFromGMT >> 8;
+	buffer[1] = millisecondsFromGMT >> 16;
+	buffer[0] = millisecondsFromGMT >> 24;
 	NSMutableData *data = [self dataFromString:clientOS encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:osver encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:device encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:fcmToken encoding:NSUTF8StringEncoding]];
+//	[data appendData:[self dataFromString:country encoding:NSUTF8StringEncoding]];
+//	[data appendData:[self dataFromString:language encoding:NSUTF8StringEncoding]];
+//	[data appendBytes:buffer length:4];
 	[data appendData:[self dataFromString:extra encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];

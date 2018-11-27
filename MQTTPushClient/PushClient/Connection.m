@@ -124,7 +124,10 @@ enum ConnectionState {
 		NSLog(@"waiting for FCM token...");
 		sleep(1);
 	}
-	[command setDeviceInfo:0 clientOS:@"iOS" osver:@"11.4" device:@"iPhone" fcmToken:self.fcmToken extra:@""];
+	NSString *iOSVersion = [[UIDevice currentDevice] systemVersion];
+	NSLocale *locale = [NSLocale currentLocale];
+	NSInteger millisecondsFromGMT = 1000 * [[NSTimeZone localTimeZone] secondsFromGMT];
+	[command setDeviceInfo:0 clientOS:@"iOS" osver:iOSVersion device:@"iPhone" fcmToken:self.fcmToken locale:locale millisecondsFromGMT:millisecondsFromGMT extra:@""];
 	[self disconnect:account withCommand:command];
 }
 
