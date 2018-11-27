@@ -44,7 +44,9 @@
 }
 
 - (IBAction)trashAction:(UIBarButtonItem *)sender {
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	alert.popoverPresentationController.barButtonItem = sender;
+
 	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"Delete all messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 		[self.account deleteMessagesBefore:nil];
 	}];
