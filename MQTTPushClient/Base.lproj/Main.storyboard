@@ -489,7 +489,9 @@
                     <navigationItem key="navigationItem" title="Messages" id="sRy-hS-iYz">
                         <barButtonItem key="rightBarButtonItem" title="MQTT Actions" id="EF9-ur-0wd">
                             <connections>
-                                <segue destination="1v6-nD-m48" kind="show" id="bZW-at-Lp0"/>
+                                <segue destination="1v6-nD-m48" kind="popoverPresentation" popoverAnchorBarButtonItem="EF9-ur-0wd" id="bZW-at-Lp0">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

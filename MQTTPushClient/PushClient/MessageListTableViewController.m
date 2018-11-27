@@ -11,7 +11,7 @@
 #import "ActionListTableViewController.h"
 #import "MessageListTableViewController.h"
 
-@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate>
+@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
@@ -250,12 +250,30 @@
 	}
 }
 
+#pragma mark - UIAdaptivePresentationControllerDelegate
+
+- (void)dismiss {
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style {
+	UIViewController *presentedViewController = controller.presentedViewController;
+	if (style == UIModalPresentationFullScreen) {
+		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:presentedViewController];
+		UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(dismiss)];
+		presentedViewController.navigationItem.rightBarButtonItem = done;
+		return navigationController;
+	}
+	return presentedViewController;
+}
+
 #pragma mark - navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	ActionListTableViewController *controller = segue.destinationViewController;
 	controller.account = self.account;
 	controller.editAllowed = NO;
+	controller.popoverPresentationController.delegate = self;
 }
 
 @end

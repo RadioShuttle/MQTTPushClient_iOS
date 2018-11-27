@@ -29,7 +29,7 @@
 			[alert addAction:cancelAction];
 			[self presentViewController:alert animated:YES completion:nil];
 		} else
-			[self.navigationController popViewControllerAnimated:YES];
+			[self dismissViewControllerAnimated:NO completion:nil];
 	} else {
 		if (self.editAllowed && !self.editing)
 			self.editing = YES;
