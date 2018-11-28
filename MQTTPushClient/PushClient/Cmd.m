@@ -446,7 +446,11 @@ enum StateCommand {
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
 	NSLog(@"disconnected: %@", error ? error : @"normally");
-	self.rawCmd.error = error;
+	if ([error.domain isEqualToString:@"kCFStreamErrorDomainNetDB"] && error.code == 8) {
+		NSString *description = @"Airplane mode might be active.";
+		self.rawCmd.error = [[NSError alloc] initWithDomain:@"User Option" code:8 userInfo:@{NSLocalizedDescriptionKey:description}];
+	} else
+		self.rawCmd.error = error;
 	self.state = CommandStateEnd;
 }
 
