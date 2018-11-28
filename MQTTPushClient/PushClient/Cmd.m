@@ -200,8 +200,8 @@ enum StateCommand {
 	if (self.state == CommandStateEnd)
 		return nil;
 	unsigned char protocol[2];
-	protocol[0] = self.protocolMajor;
-	protocol[1] = self.protocolMinor;
+	protocol[0] = PROTOCOL_MAJOR;
+	protocol[1] = PROTOCOL_MINOR;
 	NSData *data = [NSData dataWithBytes:protocol length:2];
 	enum TransmissionFlag flag = FLAG_REQUEST;
 	if (secureTransport) {
@@ -212,9 +212,9 @@ enum StateCommand {
 	[self waitForCommand];
 	if (self.rawCmd.rc == RC_INVALID_PROTOCOL && self.rawCmd.data.length == 2) {
 		unsigned char *p = (unsigned char *)self.rawCmd.data.bytes;
-		self.protocolMajor = p[0];
-		self.protocolMinor = p[1];
-		NSString *description = [NSString stringWithFormat:@"Server: %d.%d - Client: %d.%d (protocol mismatch)", self.protocolMajor, self.protocolMinor, PROTOCOL_MAJOR, PROTOCOL_MINOR];
+		int protocolMajor = p[0];
+		int protocolMinor = p[1];
+		NSString *description = [NSString stringWithFormat:@"Server: %d.%d - Client: %d.%d (protocol mismatch)", protocolMajor, protocolMinor, PROTOCOL_MAJOR, PROTOCOL_MINOR];
 		self.rawCmd.error = [[NSError alloc] initWithDomain:@"MQTT Protocol" code:RC_INVALID_PROTOCOL userInfo:@{NSLocalizedDescriptionKey:description}];
 		return nil;
 	}
@@ -240,10 +240,7 @@ enum StateCommand {
 		return nil;
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
-	if (self.protocolMajor == 1 && self.protocolMinor < 2)
-		[data appendData:[self dataFromString:password encoding:NSUTF16BigEndianStringEncoding]];
-	else
-		[data appendData:[self dataFromString:password encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:password encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
