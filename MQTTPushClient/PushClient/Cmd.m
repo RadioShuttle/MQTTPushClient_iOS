@@ -214,6 +214,8 @@ enum StateCommand {
 		unsigned char *p = (unsigned char *)self.rawCmd.data.bytes;
 		self.protocolMajor = p[0];
 		self.protocolMinor = p[1];
+		NSString *description = [NSString stringWithFormat:@"Server: %d.%d - Client: %d.%d (protocol mismatch)", self.protocolMajor, self.protocolMinor, PROTOCOL_MAJOR, PROTOCOL_MINOR];
+		self.rawCmd.error = [[NSError alloc] initWithDomain:@"MQTT Protocol" code:RC_INVALID_PROTOCOL userInfo:@{NSLocalizedDescriptionKey:description}];
 		return nil;
 	}
 	flag = self.rawCmd.flags;
@@ -359,9 +361,9 @@ enum StateCommand {
 	[data appendData:[self dataFromString:osver encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:device encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:fcmToken encoding:NSUTF8StringEncoding]];
-//	[data appendData:[self dataFromString:country encoding:NSUTF8StringEncoding]];
-//	[data appendData:[self dataFromString:language encoding:NSUTF8StringEncoding]];
-//	[data appendBytes:buffer length:4];
+	[data appendData:[self dataFromString:country encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:language encoding:NSUTF8StringEncoding]];
+	[data appendBytes:buffer length:4];
 	[data appendData:[self dataFromString:extra encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_SET_DEVICE_INFO seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
