@@ -11,7 +11,7 @@
 
 #define MAGIC "MQTP"
 #define PROTOCOL_MAJOR 1
-#define PROTOCOL_MINOR 3
+#define PROTOCOL_MINOR 4
 #define MAGIC_SIZE 4
 #define HEADER_SIZE 12
 
