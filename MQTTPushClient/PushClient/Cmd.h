@@ -24,6 +24,7 @@ enum ReturnCode {
 @property int rc;
 @property NSMutableData *header;
 @property NSMutableData *data;
+@property int numberOfBytesReceived;
 @property NSError *error;
 
 @end

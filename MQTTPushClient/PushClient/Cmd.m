@@ -71,6 +71,7 @@ enum StateCommand {
 		_seqNo = 9200;
 		_header = [[NSMutableData alloc] initWithLength:MAGIC_SIZE + HEADER_SIZE];
 		_data = [[NSMutableData alloc] initWithLength:4000];
+		_numberOfBytesReceived = 0;
 	}
 	return self;
 }
@@ -210,7 +211,7 @@ enum StateCommand {
 	[self writeCommand:CMD_HELLO seqNo:seqNo flags:flag rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
-	if (self.rawCmd.rc == RC_INVALID_PROTOCOL && self.rawCmd.data.length == 2) {
+	if (self.rawCmd.rc == RC_INVALID_PROTOCOL && self.rawCmd.numberOfBytesReceived == 2) {
 		unsigned char *p = (unsigned char *)self.rawCmd.data.bytes;
 		int protocolMajor = p[0];
 		int protocolMinor = p[1];
@@ -443,11 +444,13 @@ enum StateCommand {
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
 	NSLog(@"disconnected: %@", error ? error : @"normally");
-	if ([error.domain isEqualToString:@"kCFStreamErrorDomainNetDB"] && error.code == 8) {
-		NSString *description = @"Airplane mode might be active.";
-		self.rawCmd.error = [[NSError alloc] initWithDomain:@"User Option" code:error.code userInfo:@{NSLocalizedDescriptionKey:description}];
-	} else
-		self.rawCmd.error = error;
+	if (!self.rawCmd.error) {
+		if ([error.domain isEqualToString:@"kCFStreamErrorDomainNetDB"] && error.code == 8) {
+			NSString *description = @"Airplane mode might be active.";
+			self.rawCmd.error = [[NSError alloc] initWithDomain:@"User Option" code:error.code userInfo:@{NSLocalizedDescriptionKey:description}];
+		} else
+			self.rawCmd.error = error;
+	}
 	self.state = CommandStateEnd;
 }
 
@@ -471,11 +474,11 @@ enum StateCommand {
 			self.rawCmd.seqNo = (hp[2] << 8) + (hp[3] & 0xff);
 			self.rawCmd.flags = (hp[4] << 8) + (hp[5] & 0xff);
 			self.rawCmd.rc = (hp[6] << 8) + (hp[7] & 0xff);
-			int dataLength = (hp[8] << 24) + (hp[9] << 16) + (hp[10] << 8) + (hp[11] & 0xff);
+			self.rawCmd.numberOfBytesReceived = (hp[8] << 24) + (hp[9] << 16) + (hp[10] << 8) + (hp[11] & 0xff);
 			NSLog(@"header: cmd=%d seqNo=%d flags=%d rc=%d", self.rawCmd.command, self.rawCmd.seqNo, self.rawCmd.flags, self.rawCmd.rc);
-			NSLog(@"data length: %d", dataLength);
-			if (dataLength)
-				[self.socket readDataToLength:dataLength withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateDataReceived];
+			NSLog(@"data length: %d", self.rawCmd.numberOfBytesReceived);
+			if (self.rawCmd.numberOfBytesReceived)
+				[self.socket readDataToLength:self.rawCmd.numberOfBytesReceived withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateDataReceived];
 			else
 				self.state = CommandStateDone;
 			break;
