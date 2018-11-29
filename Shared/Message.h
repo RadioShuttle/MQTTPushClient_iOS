@@ -1,10 +1,8 @@
-//
-//  Message.h
-//  MQTTPushClient
-//
-//  Created by admin on 11/5/18.
-//  Copyright © 2018 Helios. All rights reserved.
-//
+/*
+ * $Id$
+ * This is an unpublished work copyright (c) 2018 HELIOS Software GmbH
+ * 30827 Garbsen, Germany
+ */
 
 #import <Foundation/Foundation.h>
 
