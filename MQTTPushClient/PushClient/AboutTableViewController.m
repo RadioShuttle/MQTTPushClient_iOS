@@ -22,7 +22,7 @@
 }
 
 - (IBAction)helpAction:(UIButton *)sender {
-	NSURL *url = [NSURL URLWithString:@"https://www.radioshuttle.de/mqtt-push-client-hilfe/"];
+	NSURL *url = [NSURL URLWithString:@"https://help.radioshuttle.de/mqttapp/1.0/"];
 	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
 	[self presentViewController:safariViewController animated:YES completion:^{}];
 }
