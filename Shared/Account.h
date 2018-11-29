@@ -26,8 +26,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nullable) NSString *mqttPassword;
 
 @property(readonly) NSString *mqttURI;
-@property(readonly) NSString *accountID;
-@property(readonly) NSString *accountDescription;
+@property(readonly) NSString *accountID; // As sent by the server
+@property(readonly) NSString *accountDescription; // For presentation, e.g. in table headers
 
 // Runtime properties which are stored in memory only:
 @property (readonly) NSURL *cacheURL; // Cache directory for this account
