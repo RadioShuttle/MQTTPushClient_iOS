@@ -159,12 +159,12 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
-- (void)getMessagesAsync:(Account *)account {
+- (void)getMessagesAsync:(Account *)account lastTimestamp:(NSDate *)lastTimestamp
+		   lastMessageID:(int32_t)lastMessageID {
 	Cmd *command = [self login:account];
-	// NSLog(@"getMessages after %d(%d)", (int)account.cdaccount.lastTimestamp.timeIntervalSince1970, account.cdaccount.lastMessageID);
 	[command getMessagesRequest:0
-						   date:account.cdaccount.lastTimestamp
-							 id:account.cdaccount.lastMessageID];
+						   date:lastTimestamp
+							 id:lastMessageID];
 	if (!command.rawCmd.error) {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
@@ -283,7 +283,11 @@ enum ConnectionState {
 }
 
 - (void)getMessagesForAccount:(Account *)account {
-	dispatch_async(self.serialQueue, ^{[self getMessagesAsync:account];});
+	NSDate *lastTimestamp = account.cdaccount.lastTimestamp;
+	int32_t lastMessageID = account.cdaccount.lastMessageID;
+	dispatch_async(self.serialQueue, ^{
+		[self getMessagesAsync:account lastTimestamp:lastTimestamp lastMessageID:lastMessageID];
+	});
 }
 
 - (void)publishMessageForAccount:(Account *)account action:(Action *)action {
