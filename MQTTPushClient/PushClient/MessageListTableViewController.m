@@ -87,6 +87,12 @@
 	self.dateFormatter = [[NSDateFormatter alloc] init];
 	self.dateFormatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US"];
 	[self.dateFormatter setLocalizedDateFormatFromTemplate:@"HH:mm"];
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(significantTimeChange:)
+												 name:UIApplicationSignificantTimeChangeNotification
+											   object:nil];
+
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -276,6 +282,18 @@
 	controller.account = self.account;
 	controller.editAllowed = NO;
 	controller.popoverPresentationController.delegate = self;
+}
+
+#pragma mark - Notifications
+
+/*
+ * This is fired if a new day has started, or the time zone has been changed.
+ * We have to reload the table view because section header titles ("Today",
+ * "Yesterday", ...) and the localized time stamps in the cells are no longer
+ * valid.
+ */
+- (void)significantTimeChange:(NSNotification *)aNotification {
+	[self.tableView reloadData];
 }
 
 @end
