@@ -288,11 +288,11 @@
 
 /*
  * This is fired if a new day has started, or the time zone has been changed.
- * We have to reload the table view because section header titles ("Today",
- * "Yesterday", ...) and the localized time stamps in the cells are no longer
- * valid.
+ * We have to reload re-create the fetched results controller (because sections
+ * must be recomputed) and reload the table view.
  */
 - (void)significantTimeChange:(NSNotification *)aNotification {
+	_frc = nil;
 	[self.tableView reloadData];
 }
 
