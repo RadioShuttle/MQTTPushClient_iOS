@@ -13,6 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface CDMessage : NSManagedObject
 
+@property (readonly) NSString *sectionIdentifier;
+
 @end
 
 NS_ASSUME_NONNULL_END

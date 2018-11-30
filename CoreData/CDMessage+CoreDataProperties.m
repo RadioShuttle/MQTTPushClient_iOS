@@ -17,6 +17,5 @@
 @dynamic content;
 @dynamic timestamp;
 @dynamic account;
-@dynamic sectionIdentifier;
 
 @end
