@@ -20,41 +20,30 @@
 	Message *latestMessage = nil;
 	
 	for (Message *msg in messageList) {
-		
-#if 0
 		NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
 		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp = %@ AND messageID = %d",
 								  self, msg.timestamp, msg.messageID];
 		fetchRequest.predicate = predicate;
 		NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
 		if (result.count > 0) {
-#ifdef DEBUG
-			NSLog(@"Delete %d duplicate message(s)", (int)result.count);
-#endif
-			for (CDMessage *cdmsg in result) {
-				[context deleteObject:cdmsg];
-			}
+			NSLog(@"*** %d duplicate message(s)", (int)result.count);
+		} else {
+			CDMessage *cdmsg = [[CDMessage alloc] initWithContext:context];
+			cdmsg.topic = msg.topic;
+			cdmsg.content = msg.content;
+			cdmsg.timestamp = msg.timestamp;
+			cdmsg.messageID = msg.messageID;
+			cdmsg.account = self;
 		}
-#else
-		for (CDMessage *cdmsg in [self.messages copy]) {
-			if (cdmsg.timestamp == msg.timestamp && cdmsg.messageID == msg.messageID) {
-				[self removeMessagesObject:cdmsg];
-			}
-		}
-#endif
-		CDMessage *cdmsg = [[CDMessage alloc] initWithContext:context];
-		cdmsg.topic = msg.topic;
-		cdmsg.content = msg.content;
-		cdmsg.timestamp = msg.timestamp;
-		cdmsg.messageID = msg.messageID;
-		cdmsg.account = self;
 		if ([msg isNewerThan:latestMessage]) {
 			latestMessage = msg;
 		}
 	}
 	self.lastUpdate = [NSDate date];
-	self.lastTimestamp = latestMessage.timestamp;
-	self.lastMessageID = latestMessage.messageID;
+	if (latestMessage != nil) {
+		self.lastTimestamp = latestMessage.timestamp;
+		self.lastMessageID = latestMessage.messageID;
+	}
 	
 	NSError *error = nil;
 	if (![context save:&error]) {
