@@ -8,6 +8,7 @@
 #import "AccountList.h"
 #import "MessageDataHandler.h"
 #import "NSDictionary+HelSafeAccessors.h"
+#import "NotificationQueue.h"
 
 @interface NotificationService ()
 @end
@@ -27,7 +28,6 @@
 										  messageListFromRemoteMessage:userInfo
 										  forAccount:account];
 		
-		[account addMessageList:messageList];
 		newContent.badge = @(messageList.count);
 		if (messageList.count == 0) {
 			// No message:
@@ -53,6 +53,7 @@
 				newContent.body = [NSString stringWithFormat:@"%d new messages", (int)messageList.count];
 			}
 		}
+		[[NotificationQueue new] addNotification:userInfo];
 	}
 
     contentHandler(newContent);

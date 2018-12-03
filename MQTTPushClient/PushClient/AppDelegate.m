@@ -11,10 +11,12 @@
 #import "MessageDataHandler.h"
 #import "AppDelegate.h"
 #import "AccountList.h"
+#import "NotificationQueue.h"
 
-@interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate>
+@interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate, NotificationQueueDelegate>
 
 @property(nullable) NSData *deviceToken;
+@property NotificationQueue *notificationQueue;
 
 @end
 
@@ -35,6 +37,9 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 		 // ...
 	 }];
 	[application registerForRemoteNotifications];
+	
+	self.notificationQueue = [NotificationQueue new];
+	[self.notificationQueue startWatchingWithDelegate:self];
 
 	return YES;
 }
@@ -63,6 +68,8 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	
 	application.applicationIconBadgeNumber = 0;
 	[[UNUserNotificationCenter currentNotificationCenter] removeAllDeliveredNotifications];
+	
+	[self directoryDidChange:nil];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -113,6 +120,28 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
 	NSLog(@"FCM registration token: %@", fcmToken);
 	self.fcmToken = fcmToken;
+}
+
+#pragma mark - NotificationQueueDelegate
+
+- (void)directoryDidChange:(NotificationQueue *)notificationQueue {
+	NSArray *notifications = [self.notificationQueue notifications];
+	NSLog(@"%@: %d queued notifications", notificationQueue, (int)notifications.count);
+	for (NSDictionary *notification in notifications) {
+		NSString *pushServerID = notification[@"pushserverid"];
+		NSString *accountID = notification[@"account"];
+		
+		for (Account *account in [AccountList sharedAccountList]) {
+			if ([pushServerID isEqualToString:account.pushServerID]
+				&& [accountID isEqualToString:account.accountID]) {
+				NSArray<Message *>*messageList = [MessageDataHandler
+												  messageListFromRemoteMessage:notification
+												  forAccount:account];
+				[account addMessageList:messageList];
+				break;
+			}
+		}
+	}
 }
 
 @end
