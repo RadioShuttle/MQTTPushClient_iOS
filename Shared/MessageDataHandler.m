@@ -9,7 +9,7 @@
 
 @implementation MessageDataHandler
 
-+ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account {
++ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage {
 	NSData *json = [remoteMessage[@"messages"] dataUsingEncoding:NSUTF8StringEncoding];
 	NSArray *messages = [NSJSONSerialization JSONObjectWithData:json options:0 error:nil];
 	if (![messages isKindOfClass:[NSArray class]]) {

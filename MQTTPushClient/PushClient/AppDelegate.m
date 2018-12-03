@@ -92,9 +92,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	for (Account *account in [AccountList sharedAccountList]) {
 		if ([pushServerID isEqualToString:account.pushServerID]
 			&& [accountID isEqualToString:account.accountID]) {
-			NSArray<Message *>*messageList = [MessageDataHandler
-											  messageListFromRemoteMessage:userInfo
-											  forAccount:account];
+			NSArray<Message *>*messageList = [MessageDataHandler messageListFromRemoteMessage:userInfo];
 			[account addMessageList:messageList];
 			break;
 		}
@@ -134,9 +132,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 		for (Account *account in [AccountList sharedAccountList]) {
 			if ([pushServerID isEqualToString:account.pushServerID]
 				&& [accountID isEqualToString:account.accountID]) {
-				NSArray<Message *>*messageList = [MessageDataHandler
-												  messageListFromRemoteMessage:notification
-												  forAccount:account];
+				NSArray<Message *>*messageList = [MessageDataHandler messageListFromRemoteMessage:notification];
 				[account addMessageList:messageList];
 				break;
 			}

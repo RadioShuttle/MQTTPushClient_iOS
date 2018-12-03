@@ -24,9 +24,7 @@
 
 	Account *account = [AccountList loadAccount:pushServerID accountID:accountID];
 	if (account != nil) {
-		NSArray<Message *>*messageList = [MessageDataHandler
-										  messageListFromRemoteMessage:userInfo
-										  forAccount:account];
+		NSArray<Message *>*messageList = [MessageDataHandler messageListFromRemoteMessage:userInfo];
 		
 		newContent.badge = @(messageList.count);
 		if (messageList.count == 0) {

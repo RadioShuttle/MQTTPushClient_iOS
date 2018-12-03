@@ -5,9 +5,9 @@
  */
 
 @import Foundation;
-#import "Account.h"
+#import "Message.h"
 
 @interface MessageDataHandler : NSObject
 
-+ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage forAccount:(Account *)account;
++ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage;
 @end
