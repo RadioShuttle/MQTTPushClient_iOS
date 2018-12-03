@@ -37,26 +37,18 @@
 		8412B3A821B030410070846D /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
 		843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
 		847874E2217760F00059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
-		847874E3217761040059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
 		847874E6217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
-		847874E7217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
 		847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */; };
 		847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */; };
 		847874EE2177777B0059881B /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EB2177777B0059881B /* KeychainUtils.m */; };
-		847874EF2177777B0059881B /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EB2177777B0059881B /* KeychainUtils.m */; };
 		847874F2217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
 		847874F3217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
 		84B045602181DB8100C261F8 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
 		84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */; };
-		84B49947217F5A6D0016F9CB /* MQTT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */; };
 		84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */; };
-		84B49951217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */; };
 		84B49952217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994A217F5B720016F9CB /* CDAccount+CoreDataClass.m */; };
-		84B49953217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994A217F5B720016F9CB /* CDAccount+CoreDataClass.m */; };
 		84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994B217F5B720016F9CB /* CDMessage+CoreDataProperties.m */; };
-		84B49955217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994B217F5B720016F9CB /* CDMessage+CoreDataProperties.m */; };
 		84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994D217F5B720016F9CB /* CDAccount+CoreDataProperties.m */; };
-		84B49957217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994D217F5B720016F9CB /* CDAccount+CoreDataProperties.m */; };
 		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
 		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */; };
@@ -190,6 +182,12 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
+				847874E92177777B0059881B /* KeychainUtils.h */,
+				847874EB2177777B0059881B /* KeychainUtils.m */,
+				847874E0217760F00059881B /* Account.h */,
+				847874E1217760F00059881B /* Account.m */,
+				847874E4217762B00059881B /* AccountList.h */,
+				847874E5217762B00059881B /* AccountList.m */,
 				2AE56979219481D30037FE30 /* AboutTableViewController.h */,
 				2AE5697A219481D30037FE30 /* AboutTableViewController.m */,
 				2AE57BC021906A3900012A04 /* Action.h */,
@@ -282,14 +280,8 @@
 		847874DF217760620059881B /* Shared */ = {
 			isa = PBXGroup;
 			children = (
-				847874E92177777B0059881B /* KeychainUtils.h */,
-				847874EB2177777B0059881B /* KeychainUtils.m */,
 				847874E82177777B0059881B /* NSDictionary+HelSafeAccessors.h */,
 				847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */,
-				847874E0217760F00059881B /* Account.h */,
-				847874E1217760F00059881B /* Account.m */,
-				847874E4217762B00059881B /* AccountList.h */,
-				847874E5217762B00059881B /* AccountList.m */,
 				847874F42178658F0059881B /* SharedConstants.h */,
 				847874F1217865700059881B /* SharedConstants.m */,
 				2ADFE5662166286600FB19E4 /* MessageDataHandler.h */,
@@ -516,20 +508,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				84B49957217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */,
-				84B49947217F5A6D0016F9CB /* MQTT.xcdatamodeld in Sources */,
-				84B49953217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
 				84B045602181DB8100C261F8 /* MessageDataHandler.m in Sources */,
-				847874EF2177777B0059881B /* KeychainUtils.m in Sources */,
 				847874F3217865700059881B /* SharedConstants.m in Sources */,
-				84B49951217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
-				84B49955217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
-				847874E3217761040059881B /* Account.m in Sources */,
 				847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
 				84095D0821903E8E00CFC1DB /* Message.m in Sources */,
 				8412B3A821B030410070846D /* NotificationQueue.m in Sources */,
-				847874E7217762B10059881B /* AccountList.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -203,16 +203,16 @@ static NSString *kCacheDirSuffix = @".mqttcache";
  */
 - (BOOL)createUuidAndCacheURL {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSURL *container = [fm containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroup];
+	NSURL *cachesDirectory = [fm URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask].lastObject;
 	NSString *uuid = [NSString stringWithFormat:@"%08x", arc4random()];
-	NSURL *cacheURL = [container
+	NSURL *cacheURL = [cachesDirectory
 					   URLByAppendingPathComponent:[uuid stringByAppendingString:kCacheDirSuffix]
 					   isDirectory:YES];
 	
 	int result;
 	while ((result = mkdir(cacheURL.path.fileSystemRepresentation, 0777)) == -1 && errno == EEXIST) {
 		uuid = [NSString stringWithFormat:@"%08x", arc4random()];
-		cacheURL = [container
+		cacheURL = [cachesDirectory
 					URLByAppendingPathComponent:[uuid stringByAppendingString:kCacheDirSuffix]
 					isDirectory:YES];
 	}
@@ -232,8 +232,8 @@ static NSString *kCacheDirSuffix = @".mqttcache";
  */
 - (BOOL)createCacheURL {
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSURL *container = [fm containerURLForSecurityApplicationGroupIdentifier:kSharedAppGroup];
-	NSURL *cacheURL = [container
+	NSURL *cachesDirectory = [fm URLsForDirectory:NSCachesDirectory inDomains:NSUserDomainMask].lastObject;
+	NSURL *cacheURL = [cachesDirectory
 					   URLByAppendingPathComponent:[self.uuid stringByAppendingString:kCacheDirSuffix]
 					   isDirectory:YES];
 	if (mkdir(cacheURL.path.fileSystemRepresentation, 0777) == -1 && errno != EEXIST) {
