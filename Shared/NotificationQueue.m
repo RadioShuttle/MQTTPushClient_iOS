@@ -28,7 +28,6 @@ static NSString *kFilePrefix = @"n."; // Prefix for each notification file.
 }
 
 - (void)dealloc {
-	NSLog(@"*** dealloc NotificationQueue");
 	if (_dirWatcher != nil) {
 		dispatch_source_cancel(_dirWatcher);
 	}
@@ -42,6 +41,10 @@ static NSString *kFilePrefix = @"n."; // Prefix for each notification file.
 	}
 	self.dirWatcher = dispatch_source_create(DISPATCH_SOURCE_TYPE_VNODE, dirfd,
 											 DISPATCH_VNODE_WRITE, dispatch_get_main_queue());
+	if (self.dirWatcher == nil) {
+		NSLog(@"Cannot create dispatch source");
+		return NO;
+	}
 	dispatch_source_set_event_handler(self.dirWatcher,  ^{
 		[self.delegate directoryDidChange:self];
 	});
@@ -49,7 +52,6 @@ static NSString *kFilePrefix = @"n."; // Prefix for each notification file.
 		close(dirfd);
 	});
 	dispatch_resume(self.dirWatcher);
-	NSLog(@"*** start watching %@", [self queueDirectory].path);
 	return YES;
 }
 
