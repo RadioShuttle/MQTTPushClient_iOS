@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -253,14 +253,14 @@
                                                         <outlet property="delegate" destination="8cN-Oa-f6G" id="2EQ-dz-Zaq"/>
                                                     </connections>
                                                 </textField>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notification:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpj-dg-Tmq">
-                                                    <rect key="frame" x="16" y="112" width="93" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notifications:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Rpj-dg-Tmq">
+                                                    <rect key="frame" x="16" y="112" width="101.5" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Banner and Sound" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4cU-FZ-RUo">
-                                                    <rect key="frame" x="118" y="112" width="141" height="21"/>
+                                                    <rect key="frame" x="127.5" y="112" width="141" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -281,8 +281,10 @@
                                             <constraints>
                                                 <constraint firstItem="GNs-ak-LHO" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="64" id="APC-AH-PbL"/>
                                                 <constraint firstItem="C39-c2-fvT" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="141" id="Ajl-pH-7Sa"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="pl8-Ve-Xhz" secondAttribute="trailing" constant="20" symbolic="YES" id="BO1-dz-tSr"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="4cU-FZ-RUo" secondAttribute="trailing" constant="20" symbolic="YES" id="Jnw-IW-G5u"/>
                                                 <constraint firstItem="C39-c2-fvT" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="KQ6-pm-Tmq"/>
-                                                <constraint firstItem="4cU-FZ-RUo" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="118" id="cR0-gj-NW4"/>
+                                                <constraint firstItem="4cU-FZ-RUo" firstAttribute="leading" secondItem="Rpj-dg-Tmq" secondAttribute="trailing" constant="10" id="Rfw-NF-gYo"/>
                                                 <constraint firstAttribute="trailing" secondItem="C39-c2-fvT" secondAttribute="trailing" constant="16" id="d7w-fH-Thj"/>
                                                 <constraint firstItem="Rpj-dg-Tmq" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leading" constant="16" id="dO6-ho-bxs"/>
                                                 <constraint firstItem="4cU-FZ-RUo" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="112" id="fi2-VP-kEG"/>
