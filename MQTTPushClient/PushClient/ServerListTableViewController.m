@@ -56,6 +56,13 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.toolbarHidden = NO;
+	/*
+	 * When in editing mode, a new server may be added to the list
+	 * with a delay. To avoid an inconsistent table view state during
+	 * this delay, we update the table view now.
+	 */
+	if (self.editing)
+		[self.tableView reloadData];
 	[self updateAccounts];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 }
