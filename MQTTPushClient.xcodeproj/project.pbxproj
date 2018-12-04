@@ -182,14 +182,12 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
-				847874E92177777B0059881B /* KeychainUtils.h */,
-				847874EB2177777B0059881B /* KeychainUtils.m */,
+				2AE56979219481D30037FE30 /* AboutTableViewController.h */,
+				2AE5697A219481D30037FE30 /* AboutTableViewController.m */,
 				847874E0217760F00059881B /* Account.h */,
 				847874E1217760F00059881B /* Account.m */,
 				847874E4217762B00059881B /* AccountList.h */,
 				847874E5217762B00059881B /* AccountList.m */,
-				2AE56979219481D30037FE30 /* AboutTableViewController.h */,
-				2AE5697A219481D30037FE30 /* AboutTableViewController.m */,
 				2AE57BC021906A3900012A04 /* Action.h */,
 				2AE57BC121906A3900012A04 /* Action.m */,
 				2AE57BC32190826600012A04 /* ActionListTableViewController.h */,
@@ -208,6 +206,8 @@
 				2AE87DBD214AA9AB0057935D /* FCMData.m */,
 				2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */,
 				2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */,
+				847874E92177777B0059881B /* KeychainUtils.h */,
+				847874EB2177777B0059881B /* KeychainUtils.m */,
 				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
 				2AEC5FCB214011890097D99A /* MessageListTableViewController.m */,
 				2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */,
