@@ -446,7 +446,7 @@ enum StateCommand {
 	NSLog(@"disconnected: %@", error ? error : @"normally");
 	if (!self.rawCmd.error) {
 		if ([error.domain isEqualToString:@"kCFStreamErrorDomainNetDB"] && error.code == 8) {
-			NSString *description = @"Airplane mode might be active.";
+			NSString *description = [NSString stringWithFormat:@"%@ or Airplane mode might be active.", error.localizedDescription];
 			self.rawCmd.error = [[NSError alloc] initWithDomain:@"User Option" code:error.code userInfo:@{NSLocalizedDescriptionKey:description}];
 		} else
 			self.rawCmd.error = error;
