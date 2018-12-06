@@ -36,6 +36,7 @@
 		84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = 84095D092190827300CFC1DB /* ca-certificate.der */; };
 		8412B3A821B030410070846D /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
 		843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
+		843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 843E778621B9634A0071A6E8 /* UIAlertController+Window.m */; };
 		847874E2217760F00059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
 		847874E6217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
 		847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */; };
@@ -132,6 +133,8 @@
 		84095D092190827300CFC1DB /* ca-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ca-certificate.der"; sourceTree = "<group>"; };
 		843578EC21AFF11F00F5B2F2 /* NotificationQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationQueue.h; sourceTree = "<group>"; };
 		843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationQueue.m; sourceTree = "<group>"; };
+		843E778521B9634A0071A6E8 /* UIAlertController+Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Window.h"; sourceTree = "<group>"; };
+		843E778621B9634A0071A6E8 /* UIAlertController+Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Window.m"; sourceTree = "<group>"; };
 		847874E0217760F00059881B /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
 		847874E1217760F00059881B /* Account.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Account.m; sourceTree = "<group>"; };
 		847874E4217762B00059881B /* AccountList.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AccountList.h; sourceTree = "<group>"; };
@@ -182,6 +185,8 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
+				843E778521B9634A0071A6E8 /* UIAlertController+Window.h */,
+				843E778621B9634A0071A6E8 /* UIAlertController+Window.m */,
 				2AE56979219481D30037FE30 /* AboutTableViewController.h */,
 				2AE5697A219481D30037FE30 /* AboutTableViewController.m */,
 				847874E0217760F00059881B /* Account.h */,
@@ -474,6 +479,7 @@
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
+				843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */,
 				2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */,
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
 				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
@@ -598,7 +604,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -650,7 +656,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -666,7 +672,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36U648SHJ6;
 				INFOPLIST_FILE = MQTTPushClient/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -686,7 +691,6 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 36U648SHJ6;
 				INFOPLIST_FILE = MQTTPushClient/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
