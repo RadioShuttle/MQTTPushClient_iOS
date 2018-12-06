@@ -5,8 +5,12 @@ Server list:
 About dialog:
 - ... ?
 
-iPad version:
-- Present as popovers: MQTT Actions, ... ? 
+Message List:
+- Safe area layout for table headers (iPhone XS Max in Landscape)
+- Show message if no topics are configured and no messages present.
+
+Action Menu:
+- Show message if no actions are configured.
 
 General:
 - Allow "copy" of non-editable settings (server, topic, ...)
