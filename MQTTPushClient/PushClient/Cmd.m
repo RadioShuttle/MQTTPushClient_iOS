@@ -8,6 +8,7 @@
 #import "FCMData.h"
 #import "Action.h"
 #import "Cmd.h"
+#import "UIAlertController+Window.h"
 
 #define MAGIC "MQTP"
 #define PROTOCOL_MAJOR 1
@@ -527,17 +528,31 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler {
 		if (trusted) {
 			completionHandler(YES);
 		} else {
-			
-			/*
-			 TODO: Present warning for invalid certificate, and
-			 allow user to accept or reject.
-			 
-			 Resources:
-			 https://developer.apple.com/library/archive/technotes/tn2232/_index.html
-			 https://github.com/robbiehanson/CocoaAsyncSocket/blob/master/Examples/GCD/SimpleHTTPClient/Mobile/SimpleHTTPClient/SimpleHTTPClientAppDelegate.m
-			 */
-			
-			completionHandler(YES);
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+				NSString *title = @"Invalid Server Certificate";
+				NSString *msg = [NSString stringWithFormat:@"You might be connecting to a server that is pretending"
+								 " to be “%@”. Would you like to continue anyway?",
+								 self.socket.connectedHost];
+				
+				UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
+																			   message:msg
+																		preferredStyle:UIAlertControllerStyleAlert];
+				UIAlertAction *continueAction = [UIAlertAction actionWithTitle:@"Continue"
+																		  style:UIAlertActionStyleDestructive
+																		handler:^(UIAlertAction *action) {
+					completionHandler(YES);
+				}];
+				[alert addAction:continueAction];
+				// "Cancel" is the recommended action, therefore is should be the right (second) button.
+				UIAlertAction *cancelAction = [ UIAlertAction actionWithTitle:@"Cancel"
+																		style:UIAlertActionStyleDefault
+																	  handler:^(UIAlertAction *action) {
+					completionHandler(NO);
+				}];
+				[alert addAction:cancelAction];
+				[alert helShow];
+			});
+
 		}
 	});
 }
