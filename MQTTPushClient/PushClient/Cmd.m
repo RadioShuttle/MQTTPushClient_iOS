@@ -224,6 +224,7 @@ enum StateCommand {
 	if (flag & FLAG_SSL) {
 		NSDictionary *tlsSettings = @{
 									  GCDAsyncSocketManuallyEvaluateTrust : @(YES),
+									  (__bridge NSString *)kCFStreamSSLPeerName: self.socket.connectedHost,
 									  };
 		[self.socket startTLS:tlsSettings];
 	}
