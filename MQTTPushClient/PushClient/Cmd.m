@@ -81,6 +81,7 @@ enum StateCommand {
 
 @interface Cmd() <GCDAsyncSocketDelegate>
 
+@property(copy) NSString *host;
 @property NSLock *lock;
 @property GCDAsyncSocket *socket;
 @property NSTimeInterval timeout;
@@ -115,6 +116,7 @@ enum StateCommand {
 		_timeout = 10;
 		_protocolMajor = PROTOCOL_MAJOR;
 		_protocolMinor = PROTOCOL_MINOR;
+		_host = [host copy];
 		_socket = [[GCDAsyncSocket alloc] initWithDelegate:self delegateQueue:dispatch_get_main_queue()];
 		if ([self.socket connectToHost:host onPort:port withTimeout:_timeout error:&error])
 			_rawCmd = [[RawCmd alloc] init];
@@ -224,7 +226,7 @@ enum StateCommand {
 	if (flag & FLAG_SSL) {
 		NSDictionary *tlsSettings = @{
 									  GCDAsyncSocketManuallyEvaluateTrust : @(YES),
-									  (__bridge NSString *)kCFStreamSSLPeerName: self.socket.connectedHost,
+									  (__bridge NSString *)kCFStreamSSLPeerName: self.host,
 									  };
 		[self.socket startTLS:tlsSettings];
 	}
