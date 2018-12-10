@@ -253,8 +253,11 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
-	if (self.newMessages) {
-		[self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:NO];
+	if (self.newMessages && self.tableView.contentOffset.y + self.topLayoutGuide.length > 0) {
+		NSIndexPath *topIndex = [NSIndexPath indexPathForRow:0 inSection:0];
+		[self.tableView scrollToRowAtIndexPath:topIndex
+							  atScrollPosition:UITableViewScrollPositionBottom
+									  animated:YES];
 	}
 }
 
