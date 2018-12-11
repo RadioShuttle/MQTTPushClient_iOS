@@ -110,10 +110,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 		return NO;
 	if (![self createCDAccount])
 		return NO;
-	
-	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(didEnterBackground:)
-												 name:UIApplicationDidEnterBackgroundNotification object:nil];
+
 	return YES;
 }
 
@@ -296,10 +293,10 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 	// Main managed object context:
 	self.context = self.cdcontainer.viewContext;
 	self.context.undoManager = nil;
-	self.context.automaticallyMergesChangesFromParent = YES;
 	
 	// Create managed object context for background tasks:
 	self.backgroundContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSPrivateQueueConcurrencyType];
+	self.backgroundContext.automaticallyMergesChangesFromParent = YES;
 	self.backgroundContext.parentContext = self.context;
 	self.backgroundContext.undoManager = nil;
 	self.backgroundContext.mergePolicy = NSOverwriteMergePolicy;
@@ -324,13 +321,6 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 		[self.context save:&error];
 	}
 	return YES;
-}
-
-- (void)didEnterBackground:(NSNotification*)aNotification
-{
-	if (self.context.hasChanges) {
-		[self.context save:nil];
-	}
 }
 
 @end

@@ -7,6 +7,17 @@
 #import "CDAccount+CoreDataClass.h"
 #import "CDMessage+CoreDataClass.h"
 
+static void saveRecursively(NSManagedObjectContext *context) {
+	if (context.hasChanges) {
+		NSError *error = nil;
+		if (![context save:&error]) {
+			NSLog(@"Could not save context: %@", error.localizedDescription);
+		} else if (context.parentContext != nil) {
+			saveRecursively(context.parentContext);
+		}
+	}
+}
+
 @implementation CDAccount
 
 -(void)addMessageList:(NSArray<Message *>*)messageList {
@@ -45,10 +56,7 @@
 		self.lastMessageID = latestMessage.messageID;
 	}
 	
-	NSError *error = nil;
-	if (![context save:&error]) {
-		NSLog(@"Could not save background context: %@", error.localizedDescription);
-	}
+	saveRecursively(context);
 }
 
 - (void)deleteMessagesBefore:(NSDate *)before {
@@ -73,10 +81,8 @@
 			}
 		}
 	}
-	NSError *error = nil;
-	if (![context save:&error]) {
-		NSLog(@"Could not save background context: %@", error.localizedDescription);
-	}
+	
+	saveRecursively(context);
 }
 
 @end
