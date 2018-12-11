@@ -148,7 +148,7 @@
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
 	if (scrollView == self.tableView
-		&& scrollView.panGestureRecognizer.state == UIGestureRecognizerStateBegan) {
+		&& scrollView.panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
 		// User initiated scroll.
 		self.lastViewed = [NSDate date];
 		for (UITableView *cell in self.tableView.visibleCells) {
