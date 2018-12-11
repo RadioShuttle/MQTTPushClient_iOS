@@ -24,6 +24,7 @@
 // a yellow background, until the user scrolls or leaves the view.
 @property NSDate *lastViewed;
 @property BOOL newMessages;
+@property BOOL isAtTop;
 
 @end
 
@@ -76,6 +77,7 @@
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccount) forControlEvents:UIControlEventValueChanged];
 	self.tableViewHeaderLabel.text = self.account.accountDescription;
 	self.lastViewed = [NSDate date];
+	self.isAtTop = YES;
 
 	// Formatter for the section headers (one section per day).
 	self.sectionDateFormatter = [[NSDateFormatter alloc] init];
@@ -151,6 +153,7 @@
 		&& scrollView.panGestureRecognizer.state == UIGestureRecognizerStateChanged) {
 		// User initiated scroll.
 		self.lastViewed = [NSDate date];
+		self.isAtTop = NO;
 		for (UITableView *cell in self.tableView.visibleCells) {
 			cell.backgroundColor = [UIColor clearColor];
 		}
@@ -253,7 +256,8 @@
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
 	[self.tableView endUpdates];
-	if (self.newMessages && self.tableView.contentOffset.y + self.topLayoutGuide.length > 0) {
+	if (self.newMessages && !self.isAtTop) {
+		self.isAtTop = YES;
 		NSIndexPath *topIndex = [NSIndexPath indexPathForRow:0 inSection:0];
 		[self.tableView scrollToRowAtIndexPath:topIndex
 							  atScrollPosition:UITableViewScrollPositionBottom
