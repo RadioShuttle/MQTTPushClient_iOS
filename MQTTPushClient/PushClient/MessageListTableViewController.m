@@ -49,9 +49,11 @@
 	alert.popoverPresentationController.barButtonItem = sender;
 
 	UIAlertAction *allAction = [UIAlertAction actionWithTitle:@"Delete all messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		self.lastViewed = [NSDate date];
 		[self.account deleteMessagesBefore:nil];
 	}];
 	UIAlertAction *olderAction = [UIAlertAction actionWithTitle:@"Delete messages older than one day" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		self.lastViewed = [NSDate date];
 		NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
 																value:-1
 															   toDate:[NSDate date]
