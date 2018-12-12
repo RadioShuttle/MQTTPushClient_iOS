@@ -74,8 +74,8 @@ static NSString *kFilePrefix = @"n."; // Prefix for each notification file.
 	}
 
 	// Use milliseconds timestamp for unique file creation. 14 digits are enough until the year 5138.
-	NSString *filename = [NSString stringWithFormat:@"%@%014d", kFilePrefix,
-					  (int)([NSDate date].timeIntervalSince1970 * 1000)];
+	NSString *filename = [NSString stringWithFormat:@"%@%014.0f", kFilePrefix,
+					  [NSDate date].timeIntervalSince1970 * 1000];
 	NSURL *path = [dir URLByAppendingPathComponent:filename];
 	
 	NSError *error = nil;
