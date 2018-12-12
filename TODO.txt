@@ -6,7 +6,6 @@ About dialog:
 - ... ?
 
 Message List:
-- Safe area layout for table headers (iPhone XS Max in Landscape)
 - Show message if no topics are configured and no messages present.
 
 Action Menu:
