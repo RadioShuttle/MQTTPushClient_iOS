@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)configure;
 - (void)clearCache;
-- (void)addMessageList:(NSArray<Message *>*)messageList;
+- (void)addMessageList:(NSArray<Message *>*)messageList updateSyncDate:(BOOL)updateSyncDate;
 - (void)deleteMessagesBefore:(nullable NSDate *)before; // Pass `nil` to delete all messages
 - (void)restoreMessages;
 

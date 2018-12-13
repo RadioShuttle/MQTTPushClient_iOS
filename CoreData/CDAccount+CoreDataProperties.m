@@ -13,8 +13,8 @@
 }
 
 @dynamic lastUpdate;
-@dynamic lastTimestamp;
-@dynamic lastMessageID;
+@dynamic syncTimestamp;
+@dynamic syncMessageID;
 @dynamic messages;
 
 @end

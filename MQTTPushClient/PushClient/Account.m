@@ -131,13 +131,13 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	[[NSFileManager defaultManager] removeItemAtURL:self.cacheURL error:nil];
 }
 
-- (void)addMessageList:(NSArray<Message *>*)messageList {
+- (void)addMessageList:(NSArray<Message *>*)messageList updateSyncDate:(BOOL)updateSyncDate {
 	NSManagedObjectContext *bgContext = self.backgroundContext;
 	[bgContext performBlock:^{
 		CDAccount *cdaccount = (CDAccount *)[bgContext
 											 existingObjectWithID:self.cdaccount.objectID
 											 error:NULL];
-		[cdaccount addMessageList:messageList];
+		[cdaccount addMessageList:messageList updateSyncDate:updateSyncDate];
 	}];
 }
 
@@ -152,8 +152,8 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 }
 
 - (void)restoreMessages {
-	self.cdaccount.lastTimestamp = nil;
-	self.cdaccount.lastMessageID = 0;
+	self.cdaccount.syncTimestamp = nil;
+	self.cdaccount.syncMessageID = 0;
 	[self.context save:NULL];
 }
 

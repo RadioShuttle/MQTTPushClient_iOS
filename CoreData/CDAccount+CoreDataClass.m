@@ -20,7 +20,7 @@ static void saveRecursively(NSManagedObjectContext *context) {
 
 @implementation CDAccount
 
--(void)addMessageList:(NSArray<Message *>*)messageList {
+-(void)addMessageList:(NSArray<Message *>*)messageList updateSyncDate:(BOOL)updateSyncDate {
 	if (messageList.count == 0) {
 		return;
 	}
@@ -46,14 +46,16 @@ static void saveRecursively(NSManagedObjectContext *context) {
 			cdmsg.messageID = msg.messageID;
 			cdmsg.account = self;
 		}
-		if ([msg isNewerThan:latestMessage]) {
+		if (updateSyncDate && [msg isNewerThan:latestMessage]) {
 			latestMessage = msg;
 		}
 	}
 	self.lastUpdate = [NSDate date];
-	if (latestMessage != nil) {
-		self.lastTimestamp = latestMessage.timestamp;
-		self.lastMessageID = latestMessage.messageID;
+	
+	// Message list is from a server sync: Update syncTimestamp.
+	if (updateSyncDate && latestMessage != nil) {
+		self.syncTimestamp = latestMessage.timestamp;
+		self.syncMessageID = latestMessage.messageID;
 	}
 	
 	saveRecursively(context);
@@ -64,21 +66,37 @@ static void saveRecursively(NSManagedObjectContext *context) {
 		return;
 	}
 	NSManagedObjectContext *context = self.managedObjectContext;
+	NSFetchRequest *fetchRequest = CDMessage.fetchRequest;
 	if (before == nil) {
-		self.messages = nil;
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"account = %@", self];
 	} else {
-		NSFetchRequest *fetchRequest = CDMessage.fetchRequest;
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp < %@",
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp < %@",
 								  self, before];
-		fetchRequest.predicate = predicate;
-		NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
-		if (result.count > 0) {
-#ifdef DEBUG
-			NSLog(@"Delete %d old message(s)", (int)result.count);
-#endif
-			for (CDMessage *msg in result) {
-				[context deleteObject:msg];
-			}
+	}
+	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+	NSSortDescriptor *sort2 = [[NSSortDescriptor alloc] initWithKey:@"messageID" ascending:NO];
+	fetchRequest.sortDescriptors = @[sort1, sort2];
+
+	NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
+
+	if (result.count > 0) {
+		/*
+		 * Replace syncTimestamp with timestamp of newest deleted
+		 * message (but only if newer than current syncTimestamp):
+		 */
+		CDMessage *newest = result.firstObject;
+		if (newest.timestamp != nil) {
+			if (self.syncTimestamp == nil
+				|| [newest.timestamp compare:self.syncTimestamp] == NSOrderedDescending
+				|| ([newest.timestamp compare:self.syncTimestamp] == NSOrderedSame
+					&& newest.messageID > self.syncMessageID)) {
+					self.syncTimestamp = newest.timestamp;
+					self.syncMessageID = newest.messageID;
+				}
+		}
+		
+		for (CDMessage *msg in result) {
+			[context deleteObject:msg];
 		}
 	}
 	

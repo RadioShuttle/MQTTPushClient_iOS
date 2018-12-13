@@ -159,12 +159,12 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
-- (void)getMessagesAsync:(Account *)account lastTimestamp:(NSDate *)lastTimestamp
-		   lastMessageID:(int32_t)lastMessageID {
+- (void)getMessagesAsync:(Account *)account syncTimestamp:(NSDate *)syncTimestamp
+		   syncMessageID:(int32_t)syncMessageID {
 	Cmd *command = [self login:account];
 	[command getMessagesRequest:0
-						   date:lastTimestamp
-							 id:lastMessageID];
+						   date:syncTimestamp
+							 id:syncMessageID];
 	if (!command.rawCmd.error) {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
@@ -188,9 +188,8 @@ enum ConnectionState {
 			message.messageID = msgID;
 			p += 4;
 			[messageList addObject:message];
-			// NSLog(@"    msg: %d(%d)", (int)seconds, msgID);
 		}
-		[account addMessageList:messageList];
+		[account addMessageList:messageList updateSyncDate:YES];
 	}
 	[self disconnect:account withCommand:command];
 }
@@ -283,10 +282,10 @@ enum ConnectionState {
 }
 
 - (void)getMessagesForAccount:(Account *)account {
-	NSDate *lastTimestamp = account.cdaccount.lastTimestamp;
-	int32_t lastMessageID = account.cdaccount.lastMessageID;
+	NSDate *syncTimestamp = account.cdaccount.syncTimestamp;
+	int32_t syncMessageID = account.cdaccount.syncMessageID;
 	dispatch_async(self.serialQueue, ^{
-		[self getMessagesAsync:account lastTimestamp:lastTimestamp lastMessageID:lastMessageID];
+		[self getMessagesAsync:account syncTimestamp:syncTimestamp syncMessageID:syncMessageID];
 	});
 }
 

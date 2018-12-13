@@ -93,7 +93,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 		if ([pushServerID isEqualToString:account.pushServerID]
 			&& [accountID isEqualToString:account.accountID]) {
 			NSArray<Message *>*messageList = [MessageDataHandler messageListFromRemoteMessage:userInfo];
-			[account addMessageList:messageList];
+			[account addMessageList:messageList updateSyncDate:NO];
 			break;
 		}
 	}
@@ -133,7 +133,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 			if ([pushServerID isEqualToString:account.pushServerID]
 				&& [accountID isEqualToString:account.accountID]) {
 				NSArray<Message *>*messageList = [MessageDataHandler messageListFromRemoteMessage:notification];
-				[account addMessageList:messageList];
+				[account addMessageList:messageList updateSyncDate:NO];
 				break;
 			}
 		}
