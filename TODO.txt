@@ -19,3 +19,4 @@ Other:
 - Set badge count to total # of new messages
 - Handle multiple IP addresses in DNS lookup
 - Server certificate checks: show error, ask user, ...
+- Call "setDeviceInfo" in every request
