@@ -52,6 +52,7 @@
 		84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B4994D217F5B720016F9CB /* CDAccount+CoreDataProperties.m */; };
 		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
 		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */; };
 		A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */; };
 /* End PBXBuildFile section */
 
@@ -159,6 +160,8 @@
 		84B9EDC82175E0A1001A9D7D /* NotificationService.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationService.m; sourceTree = "<group>"; };
 		84B9EDCA2175E0A1001A9D7D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		84B9EDD22175E120001A9D7D /* MQTTPushClientServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClientServiceExtension.entitlements; sourceTree = "<group>"; };
+		84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrustHandler.h; sourceTree = "<group>"; };
+		84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrustHandler.m; sourceTree = "<group>"; };
 		C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.debug.xcconfig"; sourceTree = "<group>"; };
 		E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -231,6 +234,8 @@
 				2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */,
 				2A8D67682178A1F300A3B3AF /* TopicsListTableViewController.h */,
 				2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */,
+				84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */,
+				84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -480,6 +485,7 @@
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
 				843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */,
+				84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */,
 				2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */,
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
 				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
