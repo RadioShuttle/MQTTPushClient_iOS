@@ -8,7 +8,7 @@
 #import "FCMData.h"
 #import "Action.h"
 #import "Cmd.h"
-#import "UIAlertController+Window.h"
+#import "TrustHandler.h"
 
 #define MAGIC "MQTP"
 #define PROTOCOL_MAJOR 1
@@ -502,62 +502,7 @@ enum StateCommand {
 - (void)socket:(GCDAsyncSocket *)sock didReceiveTrust:(SecTrustRef)trust
 completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler {
 	NSLog(@"socket:didReceiveTrust:");
-	
-	// Load "ca-certificate.der":
-	static CFArrayRef trustedAnchors = NULL;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		NSURL *certUrl = [[NSBundle mainBundle] URLForResource:@"ca-certificate" withExtension:@"der"];
-		NSData *certData = [NSData dataWithContentsOfURL:certUrl];
-		SecCertificateRef cert = SecCertificateCreateWithData(NULL, (__bridge CFDataRef) certData);
-		if (cert != NULL) {
-			trustedAnchors = CFArrayCreate(NULL, (void *)&cert, 1, &kCFTypeArrayCallBacks);
-			CFRelease(cert);
-		}
-	});
-	
-	dispatch_queue_t bgQueue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-	dispatch_async(bgQueue, ^{
-		if (trustedAnchors != NULL) {
-			SecTrustSetAnchorCertificates(trust, trustedAnchors);
-			SecTrustSetAnchorCertificatesOnly(trust, false);
-		}
-		
-		SecTrustResultType result = kSecTrustResultDeny;
-		OSStatus status = SecTrustEvaluate(trust, &result);
-		BOOL trusted = (status == noErr) && ((result == kSecTrustResultProceed || result == kSecTrustResultUnspecified));
-		
-		NSLog(@"socket:didReceiveTrust: trusted=%@, result=%d", @(trusted), result);
-		if (trusted) {
-			completionHandler(YES);
-		} else {
-			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-				NSString *title = @"Invalid Server Certificate";
-				NSString *msg = [NSString stringWithFormat:@"You might be connecting to a server that is pretending"
-								 " to be “%@”. Would you like to continue anyway?",
-								 self.socket.connectedHost];
-				
-				UIAlertController *alert = [UIAlertController alertControllerWithTitle:title
-																			   message:msg
-																		preferredStyle:UIAlertControllerStyleAlert];
-				UIAlertAction *continueAction = [UIAlertAction actionWithTitle:@"Continue"
-																		  style:UIAlertActionStyleDestructive
-																		handler:^(UIAlertAction *action) {
-					completionHandler(YES);
-				}];
-				[alert addAction:continueAction];
-				// "Cancel" is the recommended action, therefore is should be the right (second) button.
-				UIAlertAction *cancelAction = [ UIAlertAction actionWithTitle:@"Cancel"
-																		style:UIAlertActionStyleDefault
-																	  handler:^(UIAlertAction *action) {
-					completionHandler(NO);
-				}];
-				[alert addAction:cancelAction];
-				[alert helShow];
-			});
-
-		}
-	});
+	[[TrustHandler shared] evaluateTrust:trust forHost:self.host completionHandler:completionHandler];
 }
 
 - (void)socketDidSecure:(GCDAsyncSocket *)sock {
