@@ -166,7 +166,7 @@ static NSString *kPrefkeyExpires = @"ExpireDate";
 		}
 	});
 
-	if (NO && trustedAnchors != NULL) {
+	if (trustedAnchors != NULL) {
 		SecTrustSetAnchorCertificates(trust, trustedAnchors);
 		SecTrustSetAnchorCertificatesOnly(trust, false);
 	}
