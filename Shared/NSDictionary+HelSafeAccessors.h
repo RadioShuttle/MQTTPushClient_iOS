@@ -12,5 +12,7 @@
 - (NSNumber *)helNumberForKey:(id)aKey;
 - (NSArray *)helArrayForKey:(id)aKey;
 - (NSDictionary *)helDictForKey:(id)aKey;
+- (NSData *)helDataForKey:(id)aKey;
+- (NSDate *)helDateForKey:(id)aKey;
 
 @end

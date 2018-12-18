@@ -28,4 +28,14 @@
 	return [value isKindOfClass:[NSString class]] ? value : nil;
 }
 
+- (NSData *)helDataForKey:(id)aKey {
+	id value = self[aKey];
+	return [value isKindOfClass:[NSData class]] ? value : nil;
+}
+
+- (NSDate *)helDateForKey:(id)aKey {
+	id value = self[aKey];
+	return [value isKindOfClass:[NSDate class]] ? value : nil;
+}
+
 @end
