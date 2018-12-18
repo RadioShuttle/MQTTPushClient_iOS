@@ -19,3 +19,6 @@ Other:
 - Set badge count to total # of new messages
 - Handle multiple IP addresses in DNS lookup
 - Call "setDeviceInfo" in every request
+- Display warning if connection to push server is not encrypted.
+- Handle system messages?
+- Handle license error
