@@ -229,6 +229,11 @@ enum StateCommand {
 									  (__bridge NSString *)kCFStreamSSLPeerName: self.host,
 									  };
 		[self.socket startTLS:tlsSettings];
+	} else if (secureTransport) {
+		/*
+		 * TODO: SSL connection is requested, but push server doesn't use SSL.
+		 * An alert must be presented to the user, with the options to continue or to abort.
+		 */
 	}
 	return self.rawCmd;
 }
