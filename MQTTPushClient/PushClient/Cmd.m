@@ -254,6 +254,18 @@ enum StateCommand {
 	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
+	if (self.rawCmd.rc > 0 && self.rawCmd.numberOfBytesReceived > 0) {
+		unsigned char *p = (unsigned char *)self.rawCmd.data.bytes;
+		int mqttErrorCode = (p[0] << 8) + p[1];
+		p += 2;
+		NSUInteger len = (p[0] << 8) + p[1];
+		NSString *description;
+		if (len == 0 || (self.rawCmd.rc == RC_NOT_AUTHORIZED && mqttErrorCode == 0))
+			description = [NSString stringWithFormat:@"License error: this account is not activated/permitted by %@. Contact sales.", self.host];
+		else
+			description = [[NSString alloc] initWithBytes:p + 2 length:len encoding:NSUTF8StringEncoding];
+		self.rawCmd.error = [[NSError alloc] initWithDomain:@"MQTT Error" code:mqttErrorCode userInfo:@{NSLocalizedDescriptionKey:description}];
+	}
 	return self.rawCmd;
 }
 
