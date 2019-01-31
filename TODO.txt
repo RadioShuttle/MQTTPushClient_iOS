@@ -2,9 +2,6 @@
 Server list:
 - Show # of new messages
 
-Message List:
-- Show message if no topics are configured and no messages present.
-
 General:
 - Allow "copy" of non-editable settings (server, topic, ...)
 - Server status not always up-to-date (switch flight mode on/off)
