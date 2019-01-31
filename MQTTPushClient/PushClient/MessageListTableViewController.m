@@ -284,15 +284,13 @@
 }
 
 - (void)dismissActionList {
-	[self dismissActionList:NO];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)dismissActionList:(BOOL)actionSent {
-	[self dismissViewControllerAnimated:YES completion:^{
-		if (actionSent) {
-			[self updateAccount];
-		}
-	}];
+#pragma mark - ActionListDelegate
+
+- (void)actionSent {
+	[self updateAccount];
 }
 
 #pragma mark - Notifications

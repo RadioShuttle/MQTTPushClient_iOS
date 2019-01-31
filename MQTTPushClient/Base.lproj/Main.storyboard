@@ -543,6 +543,33 @@
                                 <constraint firstItem="SOs-h8-hBS" firstAttribute="leading" secondItem="lyW-tc-x9d" secondAttribute="leadingMargin" constant="12" id="hsO-rG-ae1"/>
                             </constraints>
                         </view>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="zrt-C6-Ops">
+                            <rect key="frame" x="0.0" y="141" width="414" height="243"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No actions defined" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GQy-k1-x9B">
+                                    <rect key="frame" x="8" y="52" width="398" height="24"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To define actions, navigate into the server account edit mode and tap on MQTT Actions." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Gh-H3-WRE">
+                                    <rect key="frame" x="28" y="92" width="358" height="40.666666666666657"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="GQy-k1-x9B" firstAttribute="top" secondItem="zrt-C6-Ops" secondAttribute="topMargin" id="4eH-k2-lMx"/>
+                                <constraint firstItem="4Gh-H3-WRE" firstAttribute="leading" secondItem="zrt-C6-Ops" secondAttribute="leadingMargin" constant="20" id="5ZU-U8-bzX"/>
+                                <constraint firstItem="GQy-k1-x9B" firstAttribute="trailing" secondItem="zrt-C6-Ops" secondAttribute="trailingMargin" id="72Q-xH-vOP"/>
+                                <constraint firstItem="4Gh-H3-WRE" firstAttribute="top" secondItem="GQy-k1-x9B" secondAttribute="bottom" constant="16" id="8Mu-Uc-tQk"/>
+                                <constraint firstItem="GQy-k1-x9B" firstAttribute="leading" secondItem="zrt-C6-Ops" secondAttribute="leadingMargin" id="P7N-nK-lg4"/>
+                                <constraint firstItem="4Gh-H3-WRE" firstAttribute="trailing" secondItem="zrt-C6-Ops" secondAttribute="trailingMargin" constant="-20" id="jRW-zn-NYU"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDActionCell" id="B0G-St-wUJ">
                                 <rect key="frame" x="0.0" y="53" width="414" height="44"/>

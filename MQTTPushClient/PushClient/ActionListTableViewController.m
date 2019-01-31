@@ -28,17 +28,16 @@
 			UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
 			[alert addAction:cancelAction];
 			[self presentViewController:alert animated:YES completion:nil];
-		} else
-			[self.delegate dismissActionList:YES];
+		} else {
+			[self.delegate actionSent];
+			[self dismissViewControllerAnimated:YES completion:nil];
+		}
 	} else {
 		if (self.editAllowed && !self.editing)
 			self.editing = YES;
+		self.tableView.tableFooterView.hidden = self.editAllowed || self.account.actionList.count > 0;
 		[self.tableView reloadData];
 	}
-}
-
-- (void)viewDidLoad {
-	[super viewDidLoad];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -48,6 +47,7 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 	Connection *connection = [[Connection alloc] init];
 	[connection getActionsForAccount:self.account];
+	self.tableView.tableFooterView.hidden = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -116,10 +116,6 @@
 }
 
 #pragma mark - navigation
-
-- (void)dismiss {
-	[self.delegate dismissActionList:NO];
-}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	AddActionTableViewController *controller = segue.destinationViewController;

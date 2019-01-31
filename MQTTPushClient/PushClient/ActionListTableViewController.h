@@ -7,7 +7,7 @@
 #import <UIKit/UIKit.h>
 
 @protocol ActionListDelegate <NSObject>
-- (void)dismissActionList:(BOOL)actionSent;
+- (void)actionSent;
 @end
 
 @interface ActionListTableViewController : UITableViewController
