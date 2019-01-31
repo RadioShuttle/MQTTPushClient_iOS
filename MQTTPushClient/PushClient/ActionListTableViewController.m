@@ -39,11 +39,6 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	if (!self.editAllowed) {
-		UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-																target:self action:@selector(dismiss)];
-		self.navigationItem.rightBarButtonItem = done;
-	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {

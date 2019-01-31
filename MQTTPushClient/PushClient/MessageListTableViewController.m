@@ -277,6 +277,14 @@
 	controller.account = self.account;
 	controller.editAllowed = NO;
 	controller.delegate = self;
+	
+	UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+															target:self action:@selector(dismissActionList)];
+	controller.navigationItem.rightBarButtonItem = done;
+}
+
+- (void)dismissActionList {
+	[self dismissActionList:NO];
 }
 
 - (void)dismissActionList:(BOOL)actionSent {
