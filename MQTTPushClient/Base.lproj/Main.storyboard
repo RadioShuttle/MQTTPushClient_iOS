@@ -427,6 +427,33 @@
                                 <constraint firstItem="wSS-Sk-0Dn" firstAttribute="leading" secondItem="Ckg-iI-QGx" secondAttribute="leadingMargin" constant="12" id="VfB-Cw-IHx"/>
                             </constraints>
                         </view>
+                        <view key="tableFooterView" contentMode="scaleToFill" id="Vzs-Lj-jCj">
+                            <rect key="frame" x="0.0" y="179" width="414" height="151"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No topics defined" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fWH-6Q-myf">
+                                    <rect key="frame" x="8" y="8" width="398" height="23"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="19"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To receive notifications, at least one topic must be added. Navigate into the server account edit mode and tap on MQTT Topics." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kl3-AX-Ont">
+                                    <rect key="frame" x="28" y="47" width="358" height="61"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <nil key="textColor"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="Kl3-AX-Ont" firstAttribute="leading" secondItem="Vzs-Lj-jCj" secondAttribute="leadingMargin" constant="20" id="48y-B7-Ze4"/>
+                                <constraint firstItem="fWH-6Q-myf" firstAttribute="leading" secondItem="Vzs-Lj-jCj" secondAttribute="leading" constant="8" id="PLT-9c-pYC"/>
+                                <constraint firstItem="fWH-6Q-myf" firstAttribute="top" secondItem="Vzs-Lj-jCj" secondAttribute="top" constant="8" id="biY-NS-nbF"/>
+                                <constraint firstItem="Kl3-AX-Ont" firstAttribute="top" secondItem="fWH-6Q-myf" secondAttribute="bottom" constant="16" id="fJ5-OK-L1b"/>
+                                <constraint firstItem="Kl3-AX-Ont" firstAttribute="trailing" secondItem="Vzs-Lj-jCj" secondAttribute="trailingMargin" constant="-20" id="h2d-UL-A8w"/>
+                                <constraint firstItem="fWH-6Q-myf" firstAttribute="trailing" secondItem="Vzs-Lj-jCj" secondAttribute="trailingMargin" id="i5c-hC-XgB"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDMessageCell" rowHeight="125" id="4W3-yX-nE2" customClass="MessageTableViewCell">
                                 <rect key="frame" x="0.0" y="54" width="414" height="125"/>
@@ -515,7 +542,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D3X-ps-hNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-213.59999999999999" y="954.87256371814101"/>
+            <point key="canvasLocation" x="-214.49275362318843" y="954.24107142857133"/>
         </scene>
         <!--MQTT Actions-->
         <scene sceneID="Kg5-pW-ot8">

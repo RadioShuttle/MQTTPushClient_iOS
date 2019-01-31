@@ -36,6 +36,7 @@
 	} else {
 		self.statusLabel.text = @"";
 	}
+	self.tableView.tableFooterView.hidden = self.account.topicList.count > 0 || self.frc.fetchedObjects.count > 0;
 }
 
 - (void)updateAccount {
@@ -79,6 +80,7 @@
 	self.tableViewHeaderLabel.text = self.account.accountDescription;
 	self.lastViewed = [NSDate date];
 	self.isAtTop = YES;
+	self.tableView.tableFooterView.hidden = YES;
 
 	// Formatter for the section headers (one section per day).
 	self.sectionDateFormatter = [[NSDateFormatter alloc] init];
@@ -121,6 +123,9 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	if (self.frc.sections.count > 0) {
+		self.tableView.tableFooterView.hidden = YES;
+	}
 	return self.frc.sections.count;
 }
 
