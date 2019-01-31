@@ -11,7 +11,7 @@
 #import "ActionListTableViewController.h"
 #import "MessageListTableViewController.h"
 
-@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate, ActionListDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
@@ -95,7 +95,8 @@
 											 selector:@selector(significantTimeChange:)
 												 name:UIApplicationSignificantTimeChangeNotification
 											   object:nil];
-
+	
+	[self updateAccount];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -103,7 +104,6 @@
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateAccountStatus:) name:@"ServerUpdateNotification" object:nil];
 	[self.navigationController setToolbarHidden:NO animated:YES];
 	[self updateAccountStatus:nil];
-	[self updateAccount];
 	
 	// Delete messages older than 30 days:
 	NSDate *date = [[NSCalendar currentCalendar] dateByAddingUnit:NSCalendarUnitDay
@@ -276,6 +276,15 @@
 	ActionListTableViewController *controller = (ActionListTableViewController *)nc.topViewController;
 	controller.account = self.account;
 	controller.editAllowed = NO;
+	controller.delegate = self;
+}
+
+- (void)dismissActionList:(BOOL)actionSent {
+	[self dismissViewControllerAnimated:YES completion:^{
+		if (actionSent) {
+			[self updateAccount];
+		}
+	}];
 }
 
 #pragma mark - Notifications

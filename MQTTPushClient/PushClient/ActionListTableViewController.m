@@ -29,7 +29,7 @@
 			[alert addAction:cancelAction];
 			[self presentViewController:alert animated:YES completion:nil];
 		} else
-			[self dismissViewControllerAnimated:NO completion:nil];
+			[self.delegate dismissActionList:YES];
 	} else {
 		if (self.editAllowed && !self.editing)
 			self.editing = YES;
@@ -123,7 +123,7 @@
 #pragma mark - navigation
 
 - (void)dismiss {
-	[self dismissViewControllerAnimated:YES completion:nil];
+	[self.delegate dismissActionList:NO];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
