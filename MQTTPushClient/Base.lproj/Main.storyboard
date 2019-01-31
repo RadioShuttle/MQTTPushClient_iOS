@@ -226,7 +226,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ttz-K4-OGB" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2244.927536231884" y="1422.3214285714284"/>
+            <point key="canvasLocation" x="3153.6231884057975" y="1422.3214285714284"/>
         </scene>
         <!--Topic-->
         <scene sceneID="8xw-1e-fzu">
@@ -330,7 +330,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Zui-pz-vXq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3132" y="1324.5877061469266"/>
+            <point key="canvasLocation" x="4042.0289855072465" y="1324.5535714285713"/>
         </scene>
         <!--Privacy Policy Table View Controller-->
         <scene sceneID="iM4-HD-Qj7">
@@ -501,7 +501,7 @@
                     <navigationItem key="navigationItem" title="Messages" id="sRy-hS-iYz">
                         <barButtonItem key="rightBarButtonItem" title="MQTT Actions" id="EF9-ur-0wd">
                             <connections>
-                                <segue destination="1v6-nD-m48" kind="popoverPresentation" popoverAnchorBarButtonItem="EF9-ur-0wd" id="bZW-at-Lp0">
+                                <segue destination="lL1-on-hWC" kind="popoverPresentation" popoverAnchorBarButtonItem="EF9-ur-0wd" id="Ia3-jN-VAq">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
@@ -580,6 +580,7 @@
                             <outlet property="delegate" destination="1v6-nD-m48" id="bVc-eA-t2O"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" id="lNz-77-NMm"/>
                     <connections>
                         <outlet property="tableViewHeaderLabel" destination="SOs-h8-hBS" id="Mkg-l5-Yz2"/>
                         <segue destination="b2n-1s-j05" kind="show" identifier="IDAddAction" id="TUs-2K-5Q0"/>
@@ -588,7 +589,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XhY-ht-vq1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="584.79999999999995" y="1219.3403298350825"/>
+            <point key="canvasLocation" x="1494.2028985507247" y="1218.75"/>
         </scene>
         <!--MQTT Action-->
         <scene sceneID="FM8-IB-0zl">
@@ -754,7 +755,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nL7-HY-eou" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1442" y="1485"/>
+            <point key="canvasLocation" x="2350.7246376811595" y="1484.5982142857142"/>
         </scene>
         <!--Server Setup-->
         <scene sceneID="gHD-ja-Nag">
@@ -1007,7 +1008,7 @@
                                                     <rect key="frame" x="16" y="7" width="382" height="30"/>
                                                     <state key="normal" title="MQTT Actions"/>
                                                     <connections>
-                                                        <segue destination="1v6-nD-m48" kind="show" id="Fz2-xI-hHO"/>
+                                                        <segue destination="1v6-nD-m48" kind="show" id="RAn-RK-BL9"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
@@ -1206,6 +1207,27 @@
             </objects>
             <point key="canvasLocation" x="-807" y="117"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="Ps7-KB-P1l">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="lL1-on-hWC" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Nbz-fK-heM">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="eHr-ke-yWp">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="1v6-nD-m48" kind="relationship" relationship="rootViewController" id="EpA-KK-trf"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="64k-qe-VG3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="584.05797101449275" y="1218.75"/>
+        </scene>
     </scenes>
     <resources>
         <image name="AboutImage" width="83" height="83"/>
@@ -1217,7 +1239,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="QQs-B3-hzJ"/>
         <segue reference="f8M-ja-CCs"/>
-        <segue reference="bZW-at-Lp0"/>
+        <segue reference="RAn-RK-BL9"/>
         <segue reference="vfE-Bn-KJx"/>
     </inferredMetricsTieBreakers>
 </document>

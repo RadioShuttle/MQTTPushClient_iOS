@@ -266,30 +266,16 @@
 	}
 }
 
-#pragma mark - UIAdaptivePresentationControllerDelegate
-
-- (void)dismiss {
-	[self dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (UIViewController *)presentationController:(UIPresentationController *)controller viewControllerForAdaptivePresentationStyle:(UIModalPresentationStyle)style {
-	UIViewController *presentedViewController = controller.presentedViewController;
-	if (style == UIModalPresentationFullScreen || style == UIModalPresentationFormSheet) {
-		UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:presentedViewController];
-		UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(dismiss)];
-		presentedViewController.navigationItem.rightBarButtonItem = done;
-		return navigationController;
-	}
-	return presentedViewController;
-}
-
 #pragma mark - navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	ActionListTableViewController *controller = segue.destinationViewController;
+	UIPopoverPresentationController *popOver = segue.destinationViewController.popoverPresentationController;
+	popOver.delegate = self;
+	
+	UINavigationController *nc = segue.destinationViewController;
+	ActionListTableViewController *controller = (ActionListTableViewController *)nc.topViewController;
 	controller.account = self.account;
 	controller.editAllowed = NO;
-	controller.popoverPresentationController.delegate = self;
 }
 
 #pragma mark - Notifications

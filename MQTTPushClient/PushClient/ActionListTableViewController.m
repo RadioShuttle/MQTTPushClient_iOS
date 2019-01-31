@@ -37,6 +37,15 @@
 	}
 }
 
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	if (!self.editAllowed) {
+		UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+																target:self action:@selector(dismiss)];
+		self.navigationItem.rightBarButtonItem = done;
+	}
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.toolbarHidden = YES;
@@ -112,6 +121,10 @@
 }
 
 #pragma mark - navigation
+
+- (void)dismiss {
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	AddActionTableViewController *controller = segue.destinationViewController;
