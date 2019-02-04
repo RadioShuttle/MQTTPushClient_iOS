@@ -15,7 +15,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSString *topic;
 @property NSData *content;
 
--(BOOL) isNewerThan:(nullable Message *)other;
+- (BOOL)isNewerThan:(nullable Message *)other;
+
++ (NSString *)msgFromData:(NSData *)data;
 
 @end
 

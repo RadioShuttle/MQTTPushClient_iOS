@@ -22,4 +22,21 @@
 	}
 }
 
++ (NSString *)msgFromData:(NSData *)data {
+	NSString *msg;
+
+	// Try auto-detection (with preference to UTF-8):
+	NSDictionary *opts = @{NSStringEncodingDetectionSuggestedEncodingsKey :
+							   @[@(NSUTF8StringEncoding)]};
+	NSStringEncoding enc = [NSString stringEncodingForData:data
+										   encodingOptions:opts convertedString:&msg usedLossyConversion:NULL];
+	if (enc != 0) {
+		return msg;
+	}
+	
+	// Fallback:
+	return [NSString stringWithFormat:@"%*.*s",
+			(int)data.length, (int)data.length, data.bytes];
+}
+
 @end

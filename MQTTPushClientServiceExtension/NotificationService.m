@@ -29,7 +29,8 @@
 	} else if (messageList.count == 1) {
 		Message *msg = messageList[0];
 		// Single message:
-		newContent.body = [NSString stringWithFormat:@"%@: %@", msg.topic, msg.content];
+		NSString *stringMessage = [Message msgFromData:msg.content];
+		newContent.body = [NSString stringWithFormat:@"%@: %@", msg.topic, stringMessage];
 	} else {
 		Message *msg = messageList[0];
 		BOOL sameTopics = YES;
