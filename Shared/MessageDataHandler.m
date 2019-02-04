@@ -50,14 +50,9 @@
 					continue;
 				}
 				NSDate *date = [NSDate dateWithTimeIntervalSince1970:timeStamp];
-				NSData *data = [[NSData alloc] initWithBase64EncodedString:array[1] options:0];
-				if (data == nil) {
-					NSLog(@"Unexpected JSON data (invalid Base64 data)");
-					continue;
-				}
-				NSString *content = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+				NSData *content = [[NSData alloc] initWithBase64EncodedString:array[1] options:0];
 				if (content == nil) {
-					NSLog(@"Unexpected JSON data (invalid Base64 text)");
+					NSLog(@"Unexpected JSON data (invalid Base64 data)");
 					continue;
 				}
 				NSNumber *messageID = array[2];

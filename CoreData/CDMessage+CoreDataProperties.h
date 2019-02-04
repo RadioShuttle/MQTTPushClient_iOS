@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic) int32_t messageID;
 @property (nullable, nonatomic, copy) NSString *topic;
-@property (nullable, nonatomic, copy) NSString *content;
+@property (nullable, nonatomic, copy) NSData *content;
 @property (nullable, nonatomic, copy) NSDate *timestamp;
 @property (nullable, nonatomic, retain) CDAccount *account;
 

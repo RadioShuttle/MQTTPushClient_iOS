@@ -146,7 +146,10 @@
 	NSString *topic = [cdmessage.topic stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topic];
 	cell.dateLabel.text = text;
-	cell.messageLabel.text = [cdmessage.content stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+	
+	// XXX TODO: Format or filter (possibly binary) messages.
+	NSString *msg = [[NSString alloc] initWithData:cdmessage.content encoding:NSUTF8StringEncoding];
+	cell.messageLabel.text = [msg stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 	if ([cdmessage.timestamp compare:self.lastViewed] == NSOrderedDescending) {
 		cell.backgroundColor = [UIColor colorWithRed:1.0 green:0.95 blue:0.0 alpha:1.0]; // Yellow
 	} else {

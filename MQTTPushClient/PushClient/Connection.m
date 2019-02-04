@@ -183,7 +183,7 @@ enum ConnectionState {
 			p += count;
 			count = (p[0] << 8) + p[1];
 			p += 2;
-			message.content = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			message.content = [NSData dataWithBytes:p length:count];
 			p += count;
 			int msgID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
 			message.messageID = msgID;

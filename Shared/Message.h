@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSDate *timestamp;
 @property int32_t messageID;
 @property NSString *topic;
-@property NSString *content;
+@property NSData *content;
 
 -(BOOL) isNewerThan:(nullable Message *)other;
 
