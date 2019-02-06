@@ -139,6 +139,7 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 											 error:NULL];
 		[cdaccount addMessageList:messageList updateSyncDate:updateSyncDate];
 	}];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
 }
 
 - (void)deleteMessagesBefore:(NSDate *)before {
@@ -155,6 +156,19 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	self.cdaccount.syncTimestamp = nil;
 	self.cdaccount.syncMessageID = 0;
 	[self.context save:NULL];
+}
+
+- (NSInteger)numUnreadMessages {
+	return self.cdaccount.numUnreadMessages;
+}
+
+- (NSDate *)lastRead {
+	return self.cdaccount.lastRead;
+}
+
+- (void)setLastRead:(NSDate *)lastRead {
+	self.cdaccount.lastRead = lastRead;
+	[self.cdaccount.managedObjectContext save:NULL];
 }
 
 #pragma mark - Accessor methods
