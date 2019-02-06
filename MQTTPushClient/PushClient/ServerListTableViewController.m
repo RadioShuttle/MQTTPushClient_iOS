@@ -97,7 +97,8 @@
 			serverListTableViewCell.errorMessageLabel.text = [account.error localizedDescription];
 		else
 			serverListTableViewCell.errorMessageLabel.text = @"Server online";
-		serverListTableViewCell.unreadMessagesLabel.text = @"";
+		NSInteger numUnread = account.numUnreadMessages;
+		serverListTableViewCell.unreadMessagesLabel.text = numUnread > 0 ? @(numUnread).stringValue : @"";
 		cell = serverListTableViewCell;
 	}
 	return cell;
