@@ -103,4 +103,15 @@ static void saveRecursively(NSManagedObjectContext *context) {
 	saveRecursively(context);
 }
 
+- (NSInteger)numUnreadMessages {
+	NSManagedObjectContext *context = self.managedObjectContext;
+	NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
+	if (self.lastRead != 0) {
+		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp > %@",
+							  self, self.lastRead];
+		fetchRequest.predicate = predicate;
+	}
+	NSInteger cnt = [context countForFetchRequest:fetchRequest error:NULL];
+	return cnt == NSNotFound ? 0 : (NSInteger)cnt;
+}
 @end
