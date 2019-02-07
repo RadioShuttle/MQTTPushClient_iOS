@@ -34,6 +34,10 @@
 				NSLog(@"Unexpected JSON data (dictionary value expected)");
 				return;
 			}
+			NSNumber *prio = value[@"prio"];
+			if (![prio isKindOfClass:[NSNumber class]]) {
+				prio = nil;
+			}
 			NSArray *mdata = value[@"mdata"];
 			if (![mdata isKindOfClass:[NSArray class]]) {
 				NSLog(@"Unexpected JSON data (array mdata expected)");
@@ -66,6 +70,7 @@
 				msg.messageID = messageID.intValue;
 				msg.topic = topic;
 				msg.content = content;
+				msg.priority = prio.intValue;
 				[messageList addObject:msg];
 			};
 		}];

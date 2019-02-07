@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property int32_t messageID;
 @property NSString *topic;
 @property NSData *content;
+@property int priority;
 
 - (BOOL)isNewerThan:(nullable Message *)other;
 
