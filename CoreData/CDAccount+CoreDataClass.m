@@ -106,12 +106,36 @@ static void saveRecursively(NSManagedObjectContext *context) {
 - (NSInteger)numUnreadMessages {
 	NSManagedObjectContext *context = self.managedObjectContext;
 	NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
-	if (self.lastRead != 0) {
-		NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp > %@",
-							  self, self.lastRead];
-		fetchRequest.predicate = predicate;
+	if (self.lastRead == nil) {
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"account = %@", self];
+	} else {
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp > %@",
+								  self, self.lastRead];
 	}
 	NSInteger cnt = [context countForFetchRequest:fetchRequest error:NULL];
 	return cnt == NSNotFound ? 0 : (NSInteger)cnt;
 }
+
+- (void)markMessagesRead {
+	NSManagedObjectContext *context = self.managedObjectContext;
+	NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
+	if (self.lastRead == nil) {
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"account = %@", self];
+	} else {
+		fetchRequest.predicate = [NSPredicate predicateWithFormat:@"account = %@ AND timestamp > %@",
+								  self, self.lastRead];
+	}
+	fetchRequest.fetchLimit = 1;
+	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+	NSSortDescriptor *sort2 = [[NSSortDescriptor alloc] initWithKey:@"messageID" ascending:NO];
+	fetchRequest.sortDescriptors = @[sort1, sort2];
+	
+	NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
+	if (result.count > 0) {
+		CDMessage *newest = result.firstObject;
+		self.lastRead = newest.timestamp;
+		[context save:NULL];
+	}
+}
+
 @end

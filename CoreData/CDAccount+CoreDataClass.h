@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)addMessageList:(NSArray<Message *>*)messageList updateSyncDate:(BOOL)updateSyncDate;
 - (void)deleteMessagesBefore:(nullable NSDate *)before; // Pass `nil` to delete all messages
 - (NSInteger)numUnreadMessages;
+- (void)markMessagesRead;
 
 @end
 

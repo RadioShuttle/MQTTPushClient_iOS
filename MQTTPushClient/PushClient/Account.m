@@ -161,19 +161,6 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	[self.context save:NULL];
 }
 
-- (NSInteger)numUnreadMessages {
-	return self.cdaccount.numUnreadMessages;
-}
-
-- (NSDate *)lastRead {
-	return self.cdaccount.lastRead;
-}
-
-- (void)setLastRead:(NSDate *)lastRead {
-	self.cdaccount.lastRead = lastRead;
-	[self.cdaccount.managedObjectContext save:NULL];
-}
-
 #pragma mark - Accessor methods
 
 - (NSString *)mqttPassword {

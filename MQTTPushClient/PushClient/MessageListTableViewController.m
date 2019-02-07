@@ -117,10 +117,7 @@
 
 - (void)viewWillDisappear:(BOOL)animated {
 	[super viewWillDisappear:animated];
-	NSDate *lastRead = [_frc.fetchedObjects.firstObject timestamp];
-	if (lastRead != nil) {
-		self.account.lastRead = lastRead;
-	}
+	[self.account.cdaccount markMessagesRead];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
