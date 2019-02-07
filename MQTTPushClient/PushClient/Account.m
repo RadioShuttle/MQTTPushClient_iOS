@@ -139,7 +139,8 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 											 error:NULL];
 		[cdaccount addMessageList:messageList updateSyncDate:updateSyncDate];
 		dispatch_async(dispatch_get_main_queue(), ^{
-			[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
+			NSDictionary *userInfo = @{@"UpdatedServerKey" : self };
+			[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self userInfo:userInfo];
 		});
 	}];
 }
