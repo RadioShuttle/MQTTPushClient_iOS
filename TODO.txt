@@ -1,11 +1,4 @@
 
-Server list:
-- Show # of new messages
-
-General:
-- Allow "copy" of non-editable settings (server, topic, ...)
-- Server status not always up-to-date (switch flight mode on/off)
-
 Other:
 - Set badge count to total # of new messages
 - Handle multiple IP addresses in DNS lookup
