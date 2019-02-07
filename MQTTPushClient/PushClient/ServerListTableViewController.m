@@ -22,7 +22,22 @@
 @implementation ServerListTableViewController
 
 - (void)updateList:(NSNotification *)sender {
-	[self.tableView reloadData];
+	Account *account = sender.userInfo[@"UpdatedServerKey"];
+	if (account != nil) {
+		for (NSIndexPath *ip in self.tableView.indexPathsForVisibleRows) {
+			if (self.editing && ip.row == 0) {
+				continue;
+			}
+			NSUInteger row = self.editing ? ip.row - 1 : ip.row;
+			if (self.accountList[row] == account) {
+				[self.tableView reloadRowsAtIndexPaths:@[ip]
+									  withRowAnimation:UITableViewRowAnimationAutomatic];
+				break;
+			}
+		}
+	} else {
+		[self.tableView reloadData];
+	}
 }
 
 - (void)updateAccounts {
