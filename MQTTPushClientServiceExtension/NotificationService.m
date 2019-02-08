@@ -20,9 +20,13 @@
 	NSDictionary *userInfo = request.content.userInfo;
 	[[NotificationQueue new] addNotification:userInfo];
 	
-	NSArray<Message *>*messageList = [MessageDataHandler messageListFromRemoteMessage:userInfo];
+	NSInteger maxPrio = 0;
+	NSArray<Message *>*messageList = [MessageDataHandler messageListFromRemoteMessage:userInfo
+									  maxPrioPtr:&maxPrio];
 	
-	newContent.badge = @(messageList.count);
+	// Set badge count if there is at least one alarm message:
+	newContent.badge = maxPrio >= 2 ? @(1) : nil;
+	
 	if (messageList.count == 0) {
 		// No message:
 		newContent.body = @"";

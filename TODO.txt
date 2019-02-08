@@ -1,6 +1,5 @@
 
 Other:
-- Set badge count to total # of new messages
 - Handle multiple IP addresses in DNS lookup
 - Display warning if connection to push server is not encrypted.
 - Handle system messages?

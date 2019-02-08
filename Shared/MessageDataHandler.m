@@ -9,7 +9,12 @@
 
 @implementation MessageDataHandler
 
-+ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage {
++ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage
+											maxPrioPtr:(NSInteger *)maxPrioPtr {
+	if (maxPrioPtr) {
+		*maxPrioPtr = 0;
+	}
+	
 	NSData *json = [remoteMessage[@"messages"] dataUsingEncoding:NSUTF8StringEncoding];
 	NSArray *messages = [NSJSONSerialization JSONObjectWithData:json options:0 error:nil];
 	if (![messages isKindOfClass:[NSArray class]]) {
@@ -72,6 +77,10 @@
 				msg.content = content;
 				msg.priority = prio.intValue;
 				[messageList addObject:msg];
+				
+				if (maxPrioPtr && msg.priority > *maxPrioPtr) {
+					*maxPrioPtr = msg.priority;
+				}
 			};
 		}];
 	}

@@ -9,5 +9,6 @@
 
 @interface MessageDataHandler : NSObject
 
-+ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage;
++ (NSArray<Message *>*)messageListFromRemoteMessage:(NSDictionary *)remoteMessage
+											maxPrioPtr:(NSInteger *)maxPrioPtr ;
 @end
