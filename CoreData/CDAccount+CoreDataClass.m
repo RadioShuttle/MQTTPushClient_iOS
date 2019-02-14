@@ -36,9 +36,7 @@ static void saveRecursively(NSManagedObjectContext *context) {
 								  self, msg.timestamp, msg.messageID];
 		fetchRequest.predicate = predicate;
 		NSArray *result = [context executeFetchRequest:fetchRequest error:NULL];
-		if (result.count > 0) {
-			NSLog(@"*** %d duplicate message(s)", (int)result.count);
-		} else {
+		if (result.count == 0) {
 			CDMessage *cdmsg = [[CDMessage alloc] initWithContext:context];
 			cdmsg.topic = msg.topic;
 			cdmsg.content = msg.content;

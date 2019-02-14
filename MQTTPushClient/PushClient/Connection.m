@@ -15,6 +15,7 @@
 #import "Action.h"
 #import "Connection.h"
 #import "AccountList.h"
+#import "Trace.h"
 
 enum ConnectionState {
 	StateBusy,
@@ -128,7 +129,7 @@ enum ConnectionState {
 		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
 		if (self.fcmToken)
 			break;
-		NSLog(@"waiting for FCM token...");
+		TRACE(@"waiting for FCM token...");
 		sleep(1);
 	}
 	NSString *iOSVersion = UIDevice.currentDevice.systemVersion;
@@ -175,7 +176,6 @@ enum ConnectionState {
 	if (!command.rawCmd.error) {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
-		// NSLog(@"getMessages: %d records", numRecords);
 		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		p += 2;
 		while (numRecords--) {

@@ -9,6 +9,7 @@
 #import "Action.h"
 #import "Cmd.h"
 #import "TrustHandler.h"
+#include "Trace.h"
 
 #define MAGIC "MQTP"
 #define PROTOCOL_MAJOR 1
@@ -123,13 +124,13 @@ enum StateCommand {
 		else
 			return nil;
 	}
-	NSLog(@"socket opened");
+	TRACE(@"socket opened");
 	return self;
 }
 
 - (void)exit {
 	[self.socket disconnectAfterReadingAndWriting];
-	NSLog(@"socket closed");
+	TRACE(@"socket closed");
 }
 
 - (void)writeHeader:(int)cmd seqNo:(int)seqNo flags:(int)flags rc:(int)rc contentSize:(NSUInteger)contentSize {
@@ -201,6 +202,7 @@ enum StateCommand {
 }
 
 - (RawCmd *)helloRequest:(int)seqNo secureTransport:(BOOL)secureTransport {
+	TRACE(@"HELLO request");
 	if (self.state == CommandStateEnd)
 		return nil;
 	unsigned char protocol[2];
@@ -248,6 +250,7 @@ enum StateCommand {
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"LOGIN request");
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:password encoding:NSUTF8StringEncoding]];
@@ -272,6 +275,7 @@ enum StateCommand {
 - (RawCmd *)removeTokenRequest:(int)seqNo token:(NSString *)token {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"REMOVE TOKEN request");
 	NSMutableData *data = [self dataFromString:token encoding:NSUTF8StringEncoding];
 	[self writeCommand:CMD_REMOVE_TOKEN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
@@ -282,6 +286,7 @@ enum StateCommand {
 - (RawCmd *)fcmDataRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"GET FCM DATA request");
 	[self request:CMD_GET_FCM_DATA_IOS seqNo:seqNo];
 	[self waitForCommand];
 	return self.rawCmd;
@@ -290,6 +295,7 @@ enum StateCommand {
 - (RawCmd *)getMessagesRequest:(int)seqNo date:(NSDate *)date id:(NSUInteger)messageID {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"GET MESSAGES request");
 	NSInteger seconds = [date timeIntervalSince1970];
 	unsigned char buffer[8];
 	buffer[7] = seconds & 0xff;;
@@ -315,6 +321,7 @@ enum StateCommand {
 - (RawCmd *)getTopicsRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"GET TOPICS request");
 	[self request:CMD_GET_TOPICS seqNo:seqNo];
 	[self waitForCommand];
 	return self.rawCmd;
@@ -323,6 +330,7 @@ enum StateCommand {
 - (RawCmd *)addTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"ADD TOPICS request");
 	unsigned char buffer[2];
 	buffer[0] = 0;
 	buffer[1] = 1;
@@ -339,6 +347,7 @@ enum StateCommand {
 - (RawCmd *)deleteTopicRequest:(int)seqNo name:(NSString *)name {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"DELETE TOPICS request");
 	unsigned char buffer[2];
 	buffer[0] = 0;
 	buffer[1] = 1;
@@ -353,6 +362,7 @@ enum StateCommand {
 - (RawCmd *)updateTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"UPDATE TOPICS request");
 	unsigned char buffer[2];
 	buffer[0] = 0;
 	buffer[1] = 1;
@@ -369,6 +379,7 @@ enum StateCommand {
 - (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken locale:(NSLocale *)locale millisecondsFromGMT:(NSInteger)millisecondsFromGMT extra:(NSString *)extra {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"SET DEVICE INFO request");
 	NSString *country = locale.countryCode;
 	NSString *language = locale.languageCode;
 	unsigned char buffer[4];
@@ -393,6 +404,7 @@ enum StateCommand {
 - (RawCmd *)getActionsRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"GET ACTIONS request");
 	[self request:CMD_GET_ACTIONS seqNo:seqNo];
 	[self waitForCommand];
 	return self.rawCmd;
@@ -401,6 +413,7 @@ enum StateCommand {
 - (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSString *)content retainFlag:(BOOL)retainFlag {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"MQTT PUBLISH request");
 	NSMutableData *data = [self dataFromString:topic encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:content encoding:NSUTF8StringEncoding]];
 	unsigned char buffer[1];
@@ -415,6 +428,7 @@ enum StateCommand {
 - (RawCmd *)addActionRequest:(int)seqNo action:(Action *)action {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"ADD ACTION request");
 	NSMutableData *data = [self dataFromString:action.name encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:action.topic encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:action.content encoding:NSUTF8StringEncoding]];
@@ -430,6 +444,7 @@ enum StateCommand {
 - (RawCmd *)updateActionRequest:(int)seqNo action:(Action *)action name:(NSString *)name {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"UPDATE ACTIONS request");
 	NSMutableData *data = [self dataFromString:action.name encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:action.topic encoding:NSUTF8StringEncoding]];
@@ -446,6 +461,7 @@ enum StateCommand {
 - (RawCmd *)deleteActionRequest:(int)seqNo name:(NSString *)name {
 	if (self.state == CommandStateEnd)
 		return nil;
+	TRACE(@"DELETE ACTIONS request");
 	unsigned char buffer[2];
 	buffer[0] = 0;
 	buffer[1] = 1;
@@ -460,11 +476,11 @@ enum StateCommand {
 # pragma - socket delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {
-	NSLog(@"connected to: %@ port: %d", host, port);
+	TRACE(@"connected to: %@ port: %d", host, port);
 }
 
 - (void)socketDidDisconnect:(GCDAsyncSocket *)sock withError:(NSError *)error {
-	NSLog(@"disconnected: %@", error ? error : @"normally");
+	TRACE(@"disconnected: %@", error ? error : @"normally");
 	if (!self.rawCmd.error) {
 		if ([error.domain isEqualToString:@"kCFStreamErrorDomainNetDB"] && error.code == 8) {
 			NSString *description = [NSString stringWithFormat:@"%@ or Airplane mode might be active.", error.localizedDescription];
@@ -476,7 +492,7 @@ enum StateCommand {
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didReadData:(NSData *)data withTag:(long)tag {
-	NSLog(@"data received (tag:%ld)", tag);
+	//TRACE(@"data received (tag:%ld)", tag);
 	char *text;
 	unsigned char *hp;
 	enum StateProtocol protocol = (enum StateProtocol)tag;
@@ -496,8 +512,8 @@ enum StateCommand {
 			self.rawCmd.flags = (hp[4] << 8) + (hp[5] & 0xff);
 			self.rawCmd.rc = (hp[6] << 8) + (hp[7] & 0xff);
 			self.rawCmd.numberOfBytesReceived = (hp[8] << 24) + (hp[9] << 16) + (hp[10] << 8) + (hp[11] & 0xff);
-			NSLog(@"header: cmd=%d seqNo=%d flags=%d rc=%d", self.rawCmd.command, self.rawCmd.seqNo, self.rawCmd.flags, self.rawCmd.rc);
-			NSLog(@"data length: %d", self.rawCmd.numberOfBytesReceived);
+			//TRACE(@"header: cmd=%d seqNo=%d flags=%d rc=%d", self.rawCmd.command, self.rawCmd.seqNo, self.rawCmd.flags, self.rawCmd.rc);
+			//TRACE(@"data length: %d", self.rawCmd.numberOfBytesReceived);
 			if (self.rawCmd.numberOfBytesReceived)
 				[self.socket readDataToLength:self.rawCmd.numberOfBytesReceived withTimeout:self.timeout buffer:self.rawCmd.data bufferOffset:0 tag:ProtocolStateDataReceived];
 			else
@@ -513,17 +529,17 @@ enum StateCommand {
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didWriteDataWithTag:(long)tag {
-	NSLog(@"data written (tag:%ld)", tag);
+	// TRACE(@"data written (tag:%ld)", tag);
 }
 
 - (void)socket:(GCDAsyncSocket *)sock didReceiveTrust:(SecTrustRef)trust
 completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler {
-	NSLog(@"socket:didReceiveTrust:");
+	// TRACE(@"socket:didReceiveTrust:");
 	[[TrustHandler shared] evaluateTrust:trust forHost:self.host completionHandler:completionHandler];
 }
 
 - (void)socketDidSecure:(GCDAsyncSocket *)sock {
-	NSLog(@"socketDidSecure:");
+	// TRACE(@"socketDidSecure:");
 }
 
 @end

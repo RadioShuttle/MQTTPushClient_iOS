@@ -12,6 +12,7 @@
 #import "AppDelegate.h"
 #import "AccountList.h"
 #import "NotificationQueue.h"
+#include "Trace.h"
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate, NotificationQueueDelegate>
 
@@ -82,9 +83,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 	// With swizzling disabled you must let Messaging know about the message, for Analytics
 	[[FIRMessaging messaging] appDidReceiveMessage:userInfo];
 	
-#ifdef DEBUG
-	NSLog(@"didReceiveRemoteNotification: message ID=%@", userInfo[kGCMMessageIDKey]);
-#endif
+	TRACE(@"didReceiveRemoteNotification: message ID=%@", userInfo[kGCMMessageIDKey]);
 
 	NSString *pushServerID = userInfo[@"pushserverid"];
 	NSString *accountID = userInfo[@"account"];
@@ -111,8 +110,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-	NSLog(@"APNs device token retrieved: %@", deviceToken);
-	
+	TRACE(@"APNs device token retrieved: %@", deviceToken);
 	self.deviceToken = deviceToken;
 	for (Account *account in [AccountList sharedAccountList]) {
 		Connection *connection = [[Connection alloc] init];
@@ -121,7 +119,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 }
 
 - (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
-	NSLog(@"FCM registration token: %@", fcmToken);
+	TRACE(@"FCM registration token: %@", fcmToken);
 	self.fcmToken = fcmToken;
 }
 
@@ -129,7 +127,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 
 - (void)directoryDidChange:(NotificationQueue *)notificationQueue {
 	NSArray *notifications = [self.notificationQueue notifications];
-	NSLog(@"%@: %d queued notifications", notificationQueue, (int)notifications.count);
+	// TRACE(@"%@: %d queued notifications", notificationQueue, (int)notifications.count);
 	for (NSDictionary *notification in notifications) {
 		NSString *pushServerID = notification[@"pushserverid"];
 		NSString *accountID = notification[@"account"];
