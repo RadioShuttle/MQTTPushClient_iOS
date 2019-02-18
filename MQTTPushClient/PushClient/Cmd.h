@@ -7,6 +7,8 @@
 #import <Foundation/Foundation.h>
 #import "Topic.h"
 
+#define SecureTransportError 1550
+
 enum ReturnCode {
 	RC_OK = 0,
 	RC_INVALID_ARGS = 400,

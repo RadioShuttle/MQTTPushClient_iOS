@@ -232,10 +232,7 @@ enum StateCommand {
 									  };
 		[self.socket startTLS:tlsSettings];
 	} else if (secureTransport) {
-		/*
-		 * TODO: SSL connection is requested, but push server doesn't use SSL.
-		 * An alert must be presented to the user, with the options to continue or to abort.
-		 */
+		self.rawCmd.error = [[NSError alloc] initWithDomain:@"MQTT Protocol" code:SecureTransportError userInfo:@{NSLocalizedDescriptionKey:@"Transport is not secure!"}];
 	}
 	return self.rawCmd;
 }
@@ -250,6 +247,8 @@ enum StateCommand {
 - (RawCmd *)loginRequest:(int)seqNo uri:(NSString *)uri user:(NSString *)user password:(NSString *)password {
 	if (self.state == CommandStateEnd)
 		return nil;
+	if (self.rawCmd.error)
+		return self.rawCmd;
 	TRACE(@"LOGIN request");
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
