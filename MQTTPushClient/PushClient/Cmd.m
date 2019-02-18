@@ -296,9 +296,9 @@ enum StateCommand {
 	if (self.state == CommandStateEnd)
 		return nil;
 	TRACE(@"GET MESSAGES request");
-	NSInteger seconds = [date timeIntervalSince1970];
+	uint64_t seconds = [date timeIntervalSince1970];
 	unsigned char buffer[8];
-	buffer[7] = seconds & 0xff;;
+	buffer[7] = seconds & 0xff;
 	buffer[6] = seconds >> 8;
 	buffer[5] = seconds >> 16;
 	buffer[4] = seconds >> 24;
