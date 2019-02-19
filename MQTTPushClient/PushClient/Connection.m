@@ -94,7 +94,7 @@ enum ConnectionState {
 		port = portString.intValue;
 	}
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
-	[command helloRequest:0 secureTransport:account.mqttSecureTransport];
+	[command helloRequest:0 secureTransport:self.secureTransport];
 	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
 	account.error = command.rawCmd.error;
 	if (!account.error && self.fcmToken) {

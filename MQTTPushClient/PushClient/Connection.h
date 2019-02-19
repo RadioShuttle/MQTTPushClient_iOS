@@ -10,6 +10,8 @@
 
 @interface Connection : NSObject
 
+@property BOOL secureTransport;
+
 - (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password;
 - (void)getFcmDataForAccount:(Account *)account;
 - (void)removeTokenForAccount:(Account *)account;
