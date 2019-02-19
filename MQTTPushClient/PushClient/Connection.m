@@ -97,13 +97,17 @@ enum ConnectionState {
 	[command helloRequest:0 secureTransport:self.secureTransport];
 	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
 	account.error = command.rawCmd.error;
-	if (!account.error && self.fcmToken) {
-		NSString *iOSVersion = UIDevice.currentDevice.systemVersion;
-		NSString *model = UIDevice.currentDevice.model;
-		NSString *system = UIDevice.currentDevice.systemName;
-		NSLocale *locale = [NSLocale currentLocale];
-		NSInteger millisecondsFromGMT = 1000 * [[NSTimeZone localTimeZone] secondsFromGMT];
-		[command setDeviceInfo:0 clientOS:system osver:iOSVersion device:model fcmToken:self.fcmToken locale:locale millisecondsFromGMT:millisecondsFromGMT extra:@""];
+	if (!account.error) {
+		if (self.fcmToken) {
+			NSString *iOSVersion = UIDevice.currentDevice.systemVersion;
+			NSString *model = UIDevice.currentDevice.model;
+			NSString *system = UIDevice.currentDevice.systemName;
+			NSLocale *locale = [NSLocale currentLocale];
+			NSInteger millisecondsFromGMT = 1000 * [[NSTimeZone localTimeZone] secondsFromGMT];
+			[command setDeviceInfo:0 clientOS:system osver:iOSVersion device:model
+						  fcmToken:self.fcmToken locale:locale
+			   millisecondsFromGMT:millisecondsFromGMT extra:@""];
+		}
 	} else
 		[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
 	return command;
