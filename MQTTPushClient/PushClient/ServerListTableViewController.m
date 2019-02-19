@@ -16,6 +16,7 @@
 
 @property AccountList *accountList;
 @property NSIndexPath *indexPathSelected;
+@property BOOL secureTransportForConnection;
 
 @end
 
@@ -38,11 +39,29 @@
 	} else {
 		[self.tableView reloadData];
 	}
+	[NSTimer scheduledTimerWithTimeInterval:0.5 repeats:NO block:^(NSTimer *timer){
+		for (Account *account in self.accountList) {
+			if (account.error && account.error.code == SecureTransportError) {
+				UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+				UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+				UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow Connection" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+					self.secureTransportForConnection = NO;
+					[self updateAccounts];
+				}];
+				[alert addAction:cancelAction];
+				[alert addAction:allowAction];
+				[self presentViewController:alert animated:YES completion:nil];
+				alert = nil;
+				break;
+			}
+		}
+	}];
 }
 
 - (void)updateAccounts {
 	for (Account *account in self.accountList) {
 		Connection *connection = [[Connection alloc] init];
+		connection.secureTransport = self.secureTransportForConnection;
 		[connection getFcmDataForAccount:account];
 	}
 	[self.refreshControl endRefreshing];
@@ -78,6 +97,7 @@
 	 */
 	if (self.editing)
 		[self.tableView reloadData];
+	self.secureTransportForConnection = YES;
 	[self updateAccounts];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 }
