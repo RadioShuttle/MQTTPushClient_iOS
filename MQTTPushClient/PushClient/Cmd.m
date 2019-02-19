@@ -286,6 +286,8 @@ enum StateCommand {
 - (RawCmd *)fcmDataRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
+	if (self.rawCmd.error)
+		return self.rawCmd;
 	TRACE(@"GET FCM DATA request");
 	[self request:CMD_GET_FCM_DATA_IOS seqNo:seqNo];
 	[self waitForCommand];
