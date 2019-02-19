@@ -98,18 +98,20 @@ enum ConnectionState {
 	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
 	account.error = command.rawCmd.error;
 	if (!account.error) {
-		if (self.fcmToken) {
-			NSString *iOSVersion = UIDevice.currentDevice.systemVersion;
-			NSString *model = UIDevice.currentDevice.model;
-			NSString *system = UIDevice.currentDevice.systemName;
-			NSLocale *locale = [NSLocale currentLocale];
-			NSInteger millisecondsFromGMT = 1000 * [[NSTimeZone localTimeZone] secondsFromGMT];
-			[command setDeviceInfo:0 clientOS:system osver:iOSVersion device:model
-						  fcmToken:self.fcmToken locale:locale
-			   millisecondsFromGMT:millisecondsFromGMT extra:@""];
-		}
-	} else
-		[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
+		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
+		TRACE(@"SET DEVICE INFO: %@", self.fcmToken);
+		NSString *iOSVersion = UIDevice.currentDevice.systemVersion;
+		NSString *model = UIDevice.currentDevice.model;
+		NSString *system = UIDevice.currentDevice.systemName;
+		NSLocale *locale = [NSLocale currentLocale];
+		NSInteger millisecondsFromGMT = 1000 * [[NSTimeZone localTimeZone] secondsFromGMT];
+		[command setDeviceInfo:0 clientOS:system osver:iOSVersion device:model
+					  fcmToken:self.fcmToken locale:locale
+		   millisecondsFromGMT:millisecondsFromGMT extra:@""];
+	} else {
+		[self performSelectorOnMainThread:@selector(postServerUpdateNotification)
+							   withObject:nil waitUntilDone:YES];
+	}
 	return command;
 }
 
@@ -129,19 +131,6 @@ enum ConnectionState {
 		return;
 	}
 	[self applyFcmData:command.rawCmd.data forAccount:account];
-	for (;;) {
-		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
-		if (self.fcmToken)
-			break;
-		TRACE(@"waiting for FCM token...");
-		sleep(1);
-	}
-	NSString *iOSVersion = UIDevice.currentDevice.systemVersion;
-	NSString *model = UIDevice.currentDevice.model;
-	NSString *system = UIDevice.currentDevice.systemName;
-	NSLocale *locale = [NSLocale currentLocale];
-	NSInteger millisecondsFromGMT = 1000 * [[NSTimeZone localTimeZone] secondsFromGMT];
-	[command setDeviceInfo:0 clientOS:system osver:iOSVersion device:model fcmToken:self.fcmToken locale:locale millisecondsFromGMT:millisecondsFromGMT extra:@""];
 	[self disconnect:account withCommand:command];
 }
 
