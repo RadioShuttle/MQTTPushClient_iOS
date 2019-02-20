@@ -159,7 +159,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 	
 	dispatch_async(dispatch_queue_create("de.helios.verifyaccount", DISPATCH_QUEUE_SERIAL), ^{
 		Connection *connection = [[Connection alloc] init];
-		Cmd *cmd = [connection login:account withMqttPassword:mqttPassword];
+		Cmd *cmd = [connection login:account withMqttPassword:mqttPassword secureTransport:account.secureTransportToPushServer];
 		NSError *error = cmd.rawCmd.error;
 		int rc = cmd.rawCmd.rc;
 		[cmd bye:0];
