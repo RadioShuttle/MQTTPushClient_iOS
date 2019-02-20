@@ -82,7 +82,7 @@ enum ConnectionState {
 	});
 }
 
-- (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password {
+- (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password secureTransport:(BOOL)secureTransport {
 	while (self.state == StateBusy)
 		[NSThread sleepForTimeInterval:0.02f];
 	int port = SERVER_DEFAULT_PORT;
@@ -94,7 +94,7 @@ enum ConnectionState {
 		port = portString.intValue;
 	}
 	Cmd *command = [[Cmd alloc] initWithHost:host port:port];
-	[command helloRequest:0 secureTransport:self.secureTransport];
+	[command helloRequest:0 secureTransport:secureTransport];
 	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
 	account.error = command.rawCmd.error;
 	if (!account.error) {
@@ -269,7 +269,7 @@ enum ConnectionState {
 #pragma mark - public methods
 
 - (Cmd *)login:(Account *)account {
-	return [self login:account withMqttPassword:account.mqttPassword];
+	return [self login:account withMqttPassword:account.mqttPassword secureTransport:account.secureTransportToPushServer];
 }
 
 - (void)getFcmDataForAccount:(Account *)account {
