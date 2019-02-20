@@ -36,6 +36,7 @@
 		84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = 84095D092190827300CFC1DB /* ca-certificate.der */; };
 		8412B3A821B030410070846D /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
 		843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
+		843BE3C5221D4C370039EF7C /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 843BE3C4221D4C370039EF7C /* Utils.m */; };
 		843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 843E778621B9634A0071A6E8 /* UIAlertController+Window.m */; };
 		847874E2217760F00059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
 		847874E6217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
@@ -134,6 +135,8 @@
 		84095D092190827300CFC1DB /* ca-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ca-certificate.der"; sourceTree = "<group>"; };
 		843578EC21AFF11F00F5B2F2 /* NotificationQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationQueue.h; sourceTree = "<group>"; };
 		843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationQueue.m; sourceTree = "<group>"; };
+		843BE3C3221D4C370039EF7C /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
+		843BE3C4221D4C370039EF7C /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
 		843E778521B9634A0071A6E8 /* UIAlertController+Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Window.h"; sourceTree = "<group>"; };
 		843E778621B9634A0071A6E8 /* UIAlertController+Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Window.m"; sourceTree = "<group>"; };
 		847874E0217760F00059881B /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
@@ -237,6 +240,8 @@
 				2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */,
 				84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */,
 				84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */,
+				843BE3C3221D4C370039EF7C /* Utils.h */,
+				843BE3C4221D4C370039EF7C /* Utils.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -507,6 +512,7 @@
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
 				2AE5697B219481D30037FE30 /* AboutTableViewController.m in Sources */,
+				843BE3C5221D4C370039EF7C /* Utils.m in Sources */,
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
 				2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */,

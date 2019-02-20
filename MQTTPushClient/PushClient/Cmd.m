@@ -9,6 +9,7 @@
 #import "Action.h"
 #import "Cmd.h"
 #import "TrustHandler.h"
+#import "Utils.h"
 #include "Trace.h"
 
 #define MAGIC "MQTP"
@@ -254,6 +255,7 @@ enum StateCommand {
 	NSMutableData *data = [self dataFromString:uri encoding:NSUTF8StringEncoding];
 	[data appendData:[self dataFromString:user encoding:NSUTF8StringEncoding]];
 	[data appendData:[self dataFromString:password encoding:NSUTF8StringEncoding]];
+	[data appendData:[self dataFromString:[Utils deviceId] encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_LOGIN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
@@ -276,7 +278,7 @@ enum StateCommand {
 	if (self.state == CommandStateEnd)
 		return nil;
 	TRACE(@"REMOVE TOKEN request");
-	NSMutableData *data = [self dataFromString:token encoding:NSUTF8StringEncoding];
+	NSData *data = [[NSData alloc] init];
 	[self writeCommand:CMD_REMOVE_TOKEN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
