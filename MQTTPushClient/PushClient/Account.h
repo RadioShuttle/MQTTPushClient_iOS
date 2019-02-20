@@ -34,6 +34,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSMutableArray *topicList;
 @property NSMutableArray *actionList;
 @property(nullable) NSError *error;
+@property BOOL secureTransportToPushServer;
+@property NSDate *secureTransportToPushServerDateSet; // Date when the above property was set to NO
 
 // Core Data related properties:
 @property (readonly) NSManagedObjectContext *context;

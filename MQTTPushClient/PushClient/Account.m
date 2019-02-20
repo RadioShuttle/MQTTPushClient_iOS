@@ -54,7 +54,9 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	account.mqttSecureTransport = mqttSecureTransport;
 	account.mqttUser = mqttUser ? mqttUser : @"";
 	account.uuid = uuid;
-	
+	account.secureTransportToPushServer = YES;
+	account.secureTransportToPushServerDateSet = [NSDate date];
+
 	account.topicList = [NSMutableArray array];
 	account.actionList = [NSMutableArray array];
 	return account;
