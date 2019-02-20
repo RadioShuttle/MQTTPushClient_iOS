@@ -16,7 +16,6 @@
 
 @property AccountList *accountList;
 @property NSIndexPath *indexPathSelected;
-@property BOOL secureTransportForConnection;
 
 @end
 
@@ -45,7 +44,8 @@
 				UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 				UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
 				UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow Connection" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
-					self.secureTransportForConnection = NO;
+					account.secureTransportToPushServer = NO;
+					account.secureTransportToPushServerDateSet = [NSDate date];
 					[self updateAccounts];
 				}];
 				[alert addAction:cancelAction];
@@ -61,7 +61,14 @@
 - (void)updateAccounts {
 	for (Account *account in self.accountList) {
 		Connection *connection = [[Connection alloc] init];
-		connection.secureTransport = self.secureTransportForConnection;
+		if (account.secureTransportToPushServer == NO) {
+			NSTimeInterval time = [account.secureTransportToPushServerDateSet timeIntervalSinceNow];
+			NSTimeInterval threshold = -24 * 60 * 60;
+			if (time < threshold) {
+				account.secureTransportToPushServer = YES;
+				account.secureTransportToPushServerDateSet = [NSDate date];
+			}
+		}
 		[connection getFcmDataForAccount:account];
 	}
 	[self.refreshControl endRefreshing];
@@ -97,7 +104,6 @@
 	 */
 	if (self.editing)
 		[self.tableView reloadData];
-	self.secureTransportForConnection = YES;
 	[self updateAccounts];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
 }
