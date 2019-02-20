@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (void)setPassword:(nullable NSString *)password forAccount:(NSString *)accountUuid;
 + (nullable NSString *)passwordForAccount:(NSString *)accountUuid;
 
-+ (NSData *)deviceId;
-
 @end
 
 NS_ASSUME_NONNULL_END
