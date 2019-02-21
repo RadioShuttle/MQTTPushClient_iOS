@@ -4,13 +4,14 @@
  * 30827 Garbsen, Germany
  */
 
+#import "AppDelegate.h"
 #import "Account.h"
+#import "AccountList.h"
 #import "Connection.h"
 #import "MessageListTableViewController.h"
 #import "ServerSetupTableViewController.h"
 #import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
-#import "AccountList.h"
 
 @interface ServerListTableViewController ()
 
@@ -129,9 +130,14 @@
 		NSUInteger row = self.editing ? indexPath.row - 1 : indexPath.row; // because of entry "add new item" in the UI
 		Account *account = self.accountList[row];
 		ServerListTableViewCell *serverListTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
-		if (account.error == nil)
-			serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Success"];
-		else
+		if (account.error == nil) {
+			UIApplication *app = [UIApplication sharedApplication];
+			AppDelegate *appDelegate = (AppDelegate *)app.delegate;
+			if (appDelegate.fcmToken)
+				serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Success"];
+			else
+				serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Warning"];
+		} else
 			serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Error"];
 		serverListTableViewCell.serverNameLabel.text = account.accountDescription;
 		if (account.error)
