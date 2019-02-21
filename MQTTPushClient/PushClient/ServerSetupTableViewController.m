@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *editActionsButton;
 
 @property (strong, nonatomic) UIAlertController *progress;
+@property BOOL allowInsecureTransport;
 
 @end
 
@@ -44,6 +45,7 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.navigationController.toolbarHidden = YES;
+	self.allowInsecureTransport = NO;
 }
 
 - (void)setupFields {
@@ -143,6 +145,10 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		}
 		account = self.accountList[self.editIndex];
 	}
+	if (self.allowInsecureTransport) {
+		account.secureTransportToPushServer = NO;
+		account.secureTransportToPushServerDateSet = [NSDate date];
+	}
 	
 	self.progress = [UIAlertController alertControllerWithTitle:account.host
 														message:@"Verifying data ..."
@@ -167,7 +173,10 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		
 		dispatch_async(dispatch_get_main_queue(), ^{
 			if (error != nil) {
-				[self saveFailed:@"Login failed" message:error.localizedDescription];
+				if (error.code == SecureTransportError)
+					[self showInsecureTransportWarning:error.localizedDescription];
+				else
+					[self saveFailed:@"Login failed" message:error.localizedDescription];
 			} else if (rc == RC_NOT_AUTHORIZED) {
 				[self saveFailed:@"Login failed" message:@"Wrong user name or password"];
 			} else if (rc != RC_OK) {
@@ -238,6 +247,31 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
 		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
+
+/*
+ * Could not update account data (insecure transport).
+ * Dismiss progress window, show warning message, and continue editing.
+ */
+-(void)showInsecureTransportWarning:(NSString *)message {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Warning" message:message preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+	UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow Connection" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+		self.allowInsecureTransport = YES;
+	}];
+	[alert addAction:cancelAction];
+	[alert addAction:allowAction];
+	if (self.progress) {
+		[self.progress dismissViewControllerAnimated:YES completion: ^{
+			[self presentViewController:alert animated:YES completion:^{
+				self.saveButton.enabled = YES;
+				self.tableView.userInteractionEnabled = YES;
+			}];
+		}];
+		self.progress = nil;
+	} else {
+		[self presentViewController:alert animated:YES completion:nil];
+	}
+ }
 
 /*
  * User canceled the operation. Dismiss progess window, cancel server
