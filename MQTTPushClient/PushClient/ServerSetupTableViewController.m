@@ -254,15 +254,15 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
  */
 -(void)showInsecureTransportWarning:(NSString *)message {
 	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Security Warning" message:message preferredStyle:UIAlertControllerStyleAlert];
-	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
 		[self saveCanceled];
 	}];
 	UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
 		self.allowInsecureTransport = YES;
 		[self saveSettings];
 	}];
-	[alert addAction:cancelAction];
 	[alert addAction:allowAction];
+	[alert addAction:cancelAction];
 	if (self.progress) {
 		[self.progress dismissViewControllerAnimated:YES completion: ^{
 			[self presentViewController:alert animated:YES completion:nil];
