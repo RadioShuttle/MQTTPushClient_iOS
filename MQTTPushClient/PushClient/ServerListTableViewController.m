@@ -42,9 +42,9 @@
 	[NSTimer scheduledTimerWithTimeInterval:0.5 repeats:NO block:^(NSTimer *timer){
 		for (Account *account in self.accountList) {
 			if (account.error && account.error.code == SecureTransportError) {
-				UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+				UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Security Warning" message:account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
 				UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
-				UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow Connection" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+				UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
 					account.secureTransportToPushServer = NO;
 					account.secureTransportToPushServerDateSet = [NSDate date];
 					[self updateAccounts];

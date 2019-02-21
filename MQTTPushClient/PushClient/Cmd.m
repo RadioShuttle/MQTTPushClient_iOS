@@ -233,8 +233,10 @@ enum StateCommand {
 									  };
 		[self.socket startTLS:tlsSettings];
 	} else if (secureTransport) {
-		if (!self.rawCmd.error)
-			self.rawCmd.error = [[NSError alloc] initWithDomain:@"MQTT Protocol" code:SecureTransportError userInfo:@{NSLocalizedDescriptionKey:@"Transport is not secure!"}];
+		if (!self.rawCmd.error) {
+			NSString *message = [NSString stringWithFormat:@"Push server \"%@\" uses cleartext traffic.", self.host];
+			self.rawCmd.error = [[NSError alloc] initWithDomain:@"MQTT Protocol" code:SecureTransportError userInfo:@{NSLocalizedDescriptionKey:message}];
+		}
 	}
 	return self.rawCmd;
 }

@@ -253,11 +253,11 @@ static NSString *kUnchangedPasswd = @"¥µÿ®©¶";
  * Dismiss progress window, show warning message, and continue editing.
  */
 -(void)showInsecureTransportWarning:(NSString *)message {
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Warning" message:message preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Security Warning" message:message preferredStyle:UIAlertControllerStyleAlert];
 	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
 		[self saveCanceled];
 	}];
-	UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow Connection" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+	UIAlertAction *allowAction = [UIAlertAction actionWithTitle:@"Allow" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {
 		self.allowInsecureTransport = YES;
 		[self saveSettings];
 	}];
