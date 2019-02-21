@@ -234,7 +234,7 @@ enum StateCommand {
 		[self.socket startTLS:tlsSettings];
 	} else if (secureTransport) {
 		if (!self.rawCmd.error) {
-			NSString *message = [NSString stringWithFormat:@"Push server \"%@\" uses cleartext traffic.", self.host];
+			NSString *message = [NSString stringWithFormat:@"Push server “%@” uses cleartext traffic.", self.host];
 			self.rawCmd.error = [[NSError alloc] initWithDomain:@"MQTT Protocol" code:SecureTransportError userInfo:@{NSLocalizedDescriptionKey:message}];
 		}
 	}
@@ -545,7 +545,7 @@ completionHandler:(void (^)(BOOL shouldTrustPeer))completionHandler {
 }
 
 - (void)socketDidSecure:(GCDAsyncSocket *)sock {
-	// TRACE(@"socketDidSecure:");
+	TRACE(@"socketDidSecure:");
 }
 
 @end
