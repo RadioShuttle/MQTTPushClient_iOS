@@ -4,8 +4,8 @@
  * 30827 Garbsen, Germany
  */
 
-@import Firebase;
 @import UserNotifications;
+#import "FIRMessaging.h"
 #import "Account.h"
 #import "Connection.h"
 #import "MessageDataHandler.h"
@@ -27,7 +27,6 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
 	
-	self.fcmToken = nil;
 	self.deviceToken = nil;
 	
 	[UNUserNotificationCenter currentNotificationCenter].delegate = self;
@@ -43,11 +42,6 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	[self.notificationQueue startWatchingWithDelegate:self];
 
 	return YES;
-}
-
-- (void)startMessaging {
-	[FIRMessaging messaging].delegate = self;
-	[FIRMessaging messaging].APNSToken = self.deviceToken;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -112,15 +106,13 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
 	TRACE(@"APNs device token retrieved: %@", deviceToken);
 	self.deviceToken = deviceToken;
+	[FIRMessaging messaging].delegate = self;
+	[FIRMessaging messaging].APNSToken = self.deviceToken;
+
 	for (Account *account in [AccountList sharedAccountList]) {
 		Connection *connection = [[Connection alloc] init];
 		[connection getFcmDataForAccount:account];
 	}
-}
-
-- (void)messaging:(FIRMessaging *)messaging didReceiveRegistrationToken:(NSString *)fcmToken {
-	TRACE(@"FCM registration token: %@", fcmToken);
-	self.fcmToken = fcmToken;
 }
 
 #pragma mark - NotificationQueueDelegate

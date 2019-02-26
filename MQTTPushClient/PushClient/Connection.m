@@ -5,8 +5,7 @@
  */
 
 #import "AppDelegate.h"
-#import "FIRApp.h"
-#import "FIROptions.h"
+#import "FIRMessaging.h"
 #import "FCMData.h"
 #import "Account.h"
 #import "Action.h"
@@ -25,7 +24,6 @@ enum ConnectionState {
 @interface Connection()
 
 @property dispatch_queue_t serialQueue;
-@property NSString *fcmToken;
 @property enum ConnectionState state;
 
 @end
@@ -36,7 +34,6 @@ enum ConnectionState {
 	self = [super init];
 	if (self) {
 		_serialQueue = dispatch_queue_create("connection.serial.queue", NULL);
-		_fcmToken = nil;
 		_state = StateReady;
 	}
 	return self;
@@ -45,12 +42,6 @@ enum ConnectionState {
 - (void)postServerUpdateNotification {
 	self.state = StateReady;
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
-}
-
-- (void)getFcmToken {
-	UIApplication *app = [UIApplication sharedApplication];
-	AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-	self.fcmToken = appDelegate.fcmToken;
 }
 
 - (void)applyFcmData:(NSData *)data forAccount:(Account *)account {
@@ -65,20 +56,20 @@ enum ConnectionState {
 	count = (p[0] << 8) + p[1];
 	fcmData.pushserverid = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
 	account.pushServerID = fcmData.pushserverid;
-	FIROptions *firOptions = [[FIROptions alloc] initWithGoogleAppID:fcmData.app_id GCMSenderID:fcmData.sender_id];
+	TRACE(@"*** AppID: %@, SenderID: %@", fcmData.app_id, fcmData.sender_id);
 	dispatch_async(dispatch_get_main_queue(), ^{
 		// pushServerID must be saved to user defaults, so that extension finds account.
 		[[AccountList sharedAccountList] save];
-		if ([FIRApp defaultApp] == nil) {
-			@try {
-				[FIRApp configureWithOptions:firOptions];
-				UIApplication *app = [UIApplication sharedApplication];
-				AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-				[appDelegate startMessaging];
-			} @catch (NSException *exception) {
-				NSLog(@"Could not configure FIRApp: %@", exception.reason);
-			}
-		}
+		[[FIRMessaging messaging]
+		 retrieveFCMTokenForSenderID:fcmData.sender_id
+		 completion:^(NSString *FCMToken, NSError *error) {
+			 if (FCMToken != nil) {
+				 TRACE(@"FCM token: %@", FCMToken);
+				 account.fcmToken = FCMToken;
+			 } else {
+				 TRACE(@"FCM token error: %@", error);
+			 }
+		 }];
 	});
 }
 
@@ -98,15 +89,13 @@ enum ConnectionState {
 	[command loginRequest:0 uri:account.mqttURI user:account.mqttUser password:password];
 	account.error = command.rawCmd.error;
 	if (!account.error) {
-		[self performSelectorOnMainThread:@selector(getFcmToken) withObject:nil waitUntilDone:YES];
-		TRACE(@"SET DEVICE INFO: %@", self.fcmToken);
 		NSString *iOSVersion = UIDevice.currentDevice.systemVersion;
 		NSString *model = UIDevice.currentDevice.model;
 		NSString *system = UIDevice.currentDevice.systemName;
 		NSLocale *locale = [NSLocale currentLocale];
 		NSInteger millisecondsFromGMT = 1000 * [[NSTimeZone localTimeZone] secondsFromGMT];
 		[command setDeviceInfo:0 clientOS:system osver:iOSVersion device:model
-					  fcmToken:self.fcmToken locale:locale
+					  fcmToken:account.fcmToken locale:locale
 		   millisecondsFromGMT:millisecondsFromGMT extra:@""];
 	} else {
 		[self performSelectorOnMainThread:@selector(postServerUpdateNotification)
@@ -134,9 +123,9 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
-- (void)removeTokenAsync:(Account *)account token:(NSString *)token {
+- (void)removeDeviceAsync:(Account *)account {
 	Cmd *command = [self login:account];
-	[command removeTokenRequest:0 token:token];
+	[command removeDeviceRequest:0];
 	[self disconnect:account withCommand:command];
 }
 
@@ -277,8 +266,8 @@ enum ConnectionState {
 	dispatch_async(self.serialQueue, ^{[self getFcmDataAsync:account];});
 }
 
-- (void)removeTokenForAccount:(Account *)account {
-	dispatch_async(self.serialQueue, ^{[self removeTokenAsync:account token:self.fcmToken];});
+- (void)removeDeviceForAccount:(Account *)account {
+	dispatch_async(self.serialQueue, ^{[self removeDeviceAsync:account];});
 }
 
 - (void)getMessagesForAccount:(Account *)account {

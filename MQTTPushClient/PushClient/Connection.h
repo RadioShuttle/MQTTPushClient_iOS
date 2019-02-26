@@ -12,7 +12,7 @@
 
 - (Cmd *)login:(Account *)account withMqttPassword:(NSString *)password secureTransport:(BOOL)secureTransport;
 - (void)getFcmDataForAccount:(Account *)account;
-- (void)removeTokenForAccount:(Account *)account;
+- (void)removeDeviceForAccount:(Account *)account;
 - (void)getMessagesForAccount:(Account *)account;
 - (void)publishMessageForAccount:(Account *)account action:(Action *)action;
 - (void)getTopicsForAccount:(Account *)account;

@@ -131,9 +131,7 @@
 		Account *account = self.accountList[row];
 		ServerListTableViewCell *serverListTableViewCell = [tableView dequeueReusableCellWithIdentifier:@"IDServerCell" forIndexPath:indexPath];
 		if (account.error == nil) {
-			UIApplication *app = [UIApplication sharedApplication];
-			AppDelegate *appDelegate = (AppDelegate *)app.delegate;
-			if (appDelegate.fcmToken)
+			if (account.fcmToken)
 				serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Success"];
 			else
 				serverListTableViewCell.statusImageView.image = [UIImage imageNamed:@"Warning"];
@@ -156,7 +154,7 @@
 		NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
 		Account *account = self.accountList[row];
 		Connection *connection = [[Connection alloc] init];
-		[connection removeTokenForAccount:account];
+		[connection removeDeviceForAccount:account];
 		[self.accountList[row] clearCache];
 		[self.accountList removeAccountAtIndex:row];
 		[self.accountList save];

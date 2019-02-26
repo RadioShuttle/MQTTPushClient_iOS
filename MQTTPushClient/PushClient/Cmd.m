@@ -27,7 +27,7 @@ enum Command {
 	CMD_DEL_TOPICS = 6,
 	CMD_UPD_TOPICS = 7,
 	CMD_SET_DEVICE_INFO = 8,
-	CMD_REMOVE_TOKEN = 9,
+	CMD_REMOVE_DEVICE = 9,
 	CMD_GET_ACTIONS = 10,
 	CMD_ADD_ACTION = 11,
 	CMD_UPD_ACTION = 12,
@@ -276,12 +276,12 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)removeTokenRequest:(int)seqNo token:(NSString *)token {
+- (RawCmd *)removeDeviceRequest:(int)seqNo {
 	if (self.state == CommandStateEnd)
 		return nil;
 	TRACE(@"REMOVE TOKEN request");
 	NSData *data = [[NSData alloc] init];
-	[self writeCommand:CMD_REMOVE_TOKEN seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self writeCommand:CMD_REMOVE_DEVICE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
 	return self.rawCmd;

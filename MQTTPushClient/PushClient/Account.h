@@ -36,6 +36,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property(nullable) NSError *error;
 @property BOOL secureTransportToPushServer;
 @property NSDate *secureTransportToPushServerDateSet; // Date when the above property was set to NO
+@property(copy) NSString *fcmToken;
 
 // Core Data related properties:
 @property (readonly) NSManagedObjectContext *context;
