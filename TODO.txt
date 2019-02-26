@@ -1,5 +1,5 @@
 
 Other:
 - Handle multiple IP addresses in DNS lookup
-- Display warning if connection to push server is not encrypted.
 - Handle system messages?
+- Delete FCM token if all accounts using the sender ID have been deleted.
