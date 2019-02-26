@@ -11,7 +11,7 @@
 #import "ActionListTableViewController.h"
 #import "MessageListTableViewController.h"
 
-@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate, ActionListDelegate>
+@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate>
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
@@ -284,7 +284,6 @@
 	ActionListTableViewController *controller = (ActionListTableViewController *)nc.topViewController;
 	controller.account = self.account;
 	controller.editAllowed = NO;
-	controller.delegate = self;
 	
 	UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
 															target:self action:@selector(dismissActionList)];
@@ -293,12 +292,6 @@
 
 - (void)dismissActionList {
 	[self dismissViewControllerAnimated:YES completion:nil];
-}
-
-#pragma mark - ActionListDelegate
-
-- (void)actionSent {
-	[self updateAccount];
 }
 
 #pragma mark - Notifications

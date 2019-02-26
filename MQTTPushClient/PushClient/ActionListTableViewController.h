@@ -6,14 +6,9 @@
 
 #import <UIKit/UIKit.h>
 
-@protocol ActionListDelegate <NSObject>
-- (void)actionSent;
-@end
-
 @interface ActionListTableViewController : UITableViewController
 
 @property Account *account;
 @property BOOL editAllowed;
-@property id<ActionListDelegate> delegate;
 
 @end

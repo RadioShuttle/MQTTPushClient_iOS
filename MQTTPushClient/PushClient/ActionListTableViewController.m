@@ -22,16 +22,19 @@
 
 - (void)updateList:(NSNotification *)sender {
 	if (self.action) {
-		[self.mqttActionController dismissViewControllerAnimated:YES completion:nil];
-		if (self.account.error) {
-			UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:self.account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
-			UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
-			[alert addAction:cancelAction];
-			[self presentViewController:alert animated:YES completion:nil];
-		} else {
-			[self.delegate actionSent];
-			[self dismissViewControllerAnimated:YES completion:nil];
-		}
+		[self.mqttActionController dismissViewControllerAnimated:YES completion:^{
+			if (self.account.error) {
+				UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Error" message:self.account.error.localizedDescription preferredStyle:UIAlertControllerStyleAlert];
+				UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {}];
+				[alert addAction:cancelAction];
+				[self presentViewController:alert animated:YES completion:nil];
+			} else {
+				[self dismissViewControllerAnimated:YES completion:^{
+					Connection *connection = [[Connection alloc] init];
+					[connection getMessagesForAccount:self.account];
+				}];
+			}
+		}];
 	} else {
 		if (self.editAllowed && !self.editing)
 			self.editing = YES;
