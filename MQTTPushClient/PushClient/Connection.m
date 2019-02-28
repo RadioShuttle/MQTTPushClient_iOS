@@ -66,6 +66,11 @@ enum ConnectionState {
 			 if (FCMToken != nil) {
 				 TRACE(@"FCM token: %@", FCMToken);
 				 account.fcmToken = FCMToken;
+				 Connection *connection = [[Connection alloc] init];
+				 dispatch_async(connection.serialQueue, ^{
+					 Cmd *command = [self login: account];
+					 [self disconnect:account withCommand:command];
+				 });
 			 } else {
 				 TRACE(@"FCM token error: %@", error);
 			 }
