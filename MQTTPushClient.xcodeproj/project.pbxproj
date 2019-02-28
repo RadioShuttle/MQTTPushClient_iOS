@@ -37,6 +37,7 @@
 		8412B3A821B030410070846D /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
 		843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
 		843BE3C5221D4C370039EF7C /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 843BE3C4221D4C370039EF7C /* Utils.m */; };
+		843D35E62227EDBD00251D31 /* TokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 843D35E52227EDBD00251D31 /* TokenManager.m */; };
 		843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 843E778621B9634A0071A6E8 /* UIAlertController+Window.m */; };
 		847874E2217760F00059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
 		847874E6217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
@@ -137,6 +138,8 @@
 		843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationQueue.m; sourceTree = "<group>"; };
 		843BE3C3221D4C370039EF7C /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
 		843BE3C4221D4C370039EF7C /* Utils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Utils.m; sourceTree = "<group>"; };
+		843D35E42227EDBD00251D31 /* TokenManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TokenManager.h; sourceTree = "<group>"; };
+		843D35E52227EDBD00251D31 /* TokenManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TokenManager.m; sourceTree = "<group>"; };
 		843E778521B9634A0071A6E8 /* UIAlertController+Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIAlertController+Window.h"; sourceTree = "<group>"; };
 		843E778621B9634A0071A6E8 /* UIAlertController+Window.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIAlertController+Window.m"; sourceTree = "<group>"; };
 		847874E0217760F00059881B /* Account.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Account.h; sourceTree = "<group>"; };
@@ -242,6 +245,8 @@
 				84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */,
 				843BE3C3221D4C370039EF7C /* Utils.h */,
 				843BE3C4221D4C370039EF7C /* Utils.m */,
+				843D35E42227EDBD00251D31 /* TokenManager.h */,
+				843D35E52227EDBD00251D31 /* TokenManager.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -519,6 +524,7 @@
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
 				84B49952217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
 				2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */,
+				843D35E62227EDBD00251D31 /* TokenManager.m in Sources */,
 				2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */,
 				2A0E8DF3218332780080DF12 /* AddTopicTableViewController.m in Sources */,
 			);
