@@ -56,6 +56,7 @@ enum ConnectionState {
 	count = (p[0] << 8) + p[1];
 	fcmData.pushserverid = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
 	account.pushServerID = fcmData.pushserverid;
+	account.fcmSenderID = fcmData.sender_id;
 	TRACE(@"*** AppID: %@, SenderID: %@", fcmData.app_id, fcmData.sender_id);
 	dispatch_async(dispatch_get_main_queue(), ^{
 		// pushServerID must be saved to user defaults, so that extension finds account.
