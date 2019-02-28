@@ -385,7 +385,7 @@ enum StateCommand {
 - (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken locale:(NSLocale *)locale millisecondsFromGMT:(NSInteger)millisecondsFromGMT extra:(NSString *)extra {
 	if (self.state == CommandStateEnd)
 		return nil;
-	TRACE(@"SET DEVICE INFO request");
+	TRACE(@"SET DEVICE INFO request (fcmToken=%@)", fcmToken);
 	NSString *country = locale.countryCode;
 	NSString *language = locale.languageCode;
 	unsigned char buffer[4];
