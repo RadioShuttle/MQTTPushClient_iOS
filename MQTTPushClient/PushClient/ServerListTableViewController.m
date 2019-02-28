@@ -12,6 +12,7 @@
 #import "ServerSetupTableViewController.h"
 #import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
+#import "TokenManager.h"
 
 @interface ServerListTableViewController ()
 
@@ -153,11 +154,28 @@
 	if (editingStyle == UITableViewCellEditingStyleDelete) {
 		NSUInteger row = indexPath.row - 1; // because of entry "add new item" in the UI
 		Account *account = self.accountList[row];
+		NSString *fcmSenderID = account.fcmSenderID;
+
 		Connection *connection = [[Connection alloc] init];
 		[connection removeDeviceForAccount:account];
 		[self.accountList[row] clearCache];
 		[self.accountList removeAccountAtIndex:row];
 		[self.accountList save];
+		
+		// Delete FCM token if same sender ID is not used with any remaining account:
+		if (fcmSenderID != nil) {
+			BOOL deleteFcmToken = YES;
+			for (Account *otherAccount in self.accountList) {
+				if ([otherAccount.fcmSenderID isEqualToString:fcmSenderID]) {
+					deleteFcmToken = NO;
+					break;
+				}
+			}
+			if (deleteFcmToken) {
+				[[TokenManager sharedTokenManager] deleteTokenFor:fcmSenderID];
+			}
+		}
+		
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 	}
 }

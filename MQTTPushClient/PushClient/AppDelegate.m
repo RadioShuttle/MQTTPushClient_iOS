@@ -12,7 +12,9 @@
 #import "AppDelegate.h"
 #import "AccountList.h"
 #import "NotificationQueue.h"
+#import "TokenManager.h"
 #include "Trace.h"
+
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate, NotificationQueueDelegate>
 
@@ -40,6 +42,8 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	
 	self.notificationQueue = [NotificationQueue new];
 	[self.notificationQueue startWatchingWithDelegate:self];
+	
+	[[TokenManager sharedTokenManager] resume];
 
 	return YES;
 }
