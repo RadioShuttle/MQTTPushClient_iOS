@@ -65,8 +65,13 @@ static NSString *kPrefkeyPendingDeleteIDs = @"PendingDeleteIDs";
 }
 
 - (void)resume {
+#ifdef DEBUG
+	uint64_t interval = 10 * NSEC_PER_SEC;
+#else
+	uint64_t interval = 60 * NSEC_PER_SEC;
+#endif
 	self.timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
-	dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, 10 * NSEC_PER_SEC, 10 * NSEC_PER_SEC);
+	dispatch_source_set_timer(self.timer, DISPATCH_TIME_NOW, interval, interval);
 	dispatch_source_set_event_handler(self.timer, ^{
 		NSArray *pending = self.pendingDeleteIds;
 		self.pendingDeleteIds = [NSMutableArray array];
