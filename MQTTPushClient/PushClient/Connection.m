@@ -146,9 +146,15 @@ enum ConnectionState {
 		while (numRecords--) {
 			Topic *topic = [[Topic alloc] init];
 			int count = (p[0] << 8) + p[1];
-			topic.name = [[NSString alloc] initWithBytes:p + 2 length:count encoding:NSUTF8StringEncoding];
-			topic.type = p[2 + count];
-			p += 3 + count;
+			p += 2;
+			topic.name = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			p += count;
+			topic.type = *p++;
+			count = (p[0] << 8) + p[1];
+			p += 2;
+			topic.filterScript = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+			p += count;
+			TRACE(@"%ld, %@, %@", p - (unsigned char *)command.rawCmd.data.bytes, topic.name, topic.filterScript);
 			[account.topicList addObject:topic];
 		}
 	}
@@ -189,15 +195,17 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
-- (void)addTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
+- (void)addTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type
+		 filterScript:(NSString *)filterScript {
 	Cmd *command = [self login:account];
-	[command addTopicRequest:0 name:name type:type];
+	[command addTopicRequest:0 name:name type:type filterScript:filterScript];
 	[self disconnect:account withCommand:command];
 }
 
-- (void)updateTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
+- (void)updateTopicAsync:(Account *)account name:(NSString *)name type:(enum NotificationType)type
+			filterScript:(NSString *)filterScript {
 	Cmd *command = [self login:account];
-	[command updateTopicRequest:0 name:name type:type];
+	[command updateTopicRequest:0 name:name type:type filterScript:filterScript];
 	[self disconnect:account withCommand:command];
 }
 
@@ -292,12 +300,16 @@ enum ConnectionState {
 	dispatch_async(self.serialQueue, ^{[self getTopicsAsync:account];});
 }
 
-- (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
-	dispatch_async(self.serialQueue, ^{[self addTopicAsync:account name:name type:type];});
+- (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type
+			  filterScript:(NSString *)filterScript {
+	dispatch_async(self.serialQueue, ^{[self addTopicAsync:account name:name type:type
+											  filterScript:filterScript];});
 }
 
-- (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type {
-	dispatch_async(self.serialQueue, ^{[self updateTopicAsync:account name:name type:type];});
+- (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type
+				 filterScript:(NSString *)filterScript {
+	dispatch_async(self.serialQueue, ^{[self updateTopicAsync:account name:name type:type
+												 filterScript:filterScript];});
 }
 
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name {

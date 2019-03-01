@@ -46,9 +46,11 @@ enum ReturnCode {
 - (RawCmd *)fcmDataRequest:(int)seqNo;
 - (RawCmd *)getMessagesRequest:(int)seqNo date:(NSDate *)date id:(NSUInteger)messageID;
 - (RawCmd *)getTopicsRequest:(int)seqNo;
-- (RawCmd *)addTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type;
+- (RawCmd *)addTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type
+			   filterScript:(NSString *)filterScript ;
 - (RawCmd *)deleteTopicRequest:(int)seqNo name:(NSString *)name;
-- (RawCmd *)updateTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type;
+- (RawCmd *)updateTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type
+				  filterScript:(NSString *)filterScript;
 - (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken locale:(NSLocale *)locale millisecondsFromGMT:(NSInteger)millisecondsFromGMT extra:(NSString *)extra;
 - (RawCmd *)getActionsRequest:(int)seqNo;
 - (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSString *)content retainFlag:(BOOL)retainFlag;

@@ -14,7 +14,7 @@
 
 #define MAGIC "MQTP"
 #define PROTOCOL_MAJOR 1
-#define PROTOCOL_MINOR 4
+#define PROTOCOL_MINOR 5
 #define MAGIC_SIZE 4
 #define HEADER_SIZE 12
 
@@ -333,7 +333,8 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)addTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
+- (RawCmd *)addTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type
+			   filterScript:(NSString *)filterScript {
 	if (self.state == CommandStateEnd)
 		return nil;
 	TRACE(@"ADD TOPICS request");
@@ -344,6 +345,7 @@ enum StateCommand {
 	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
 	buffer[0] = type;
 	[data appendBytes:buffer length:1];
+	[data appendData:[self dataFromString:filterScript encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_ADD_TOPICS seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
@@ -365,7 +367,8 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)updateTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type {
+- (RawCmd *)updateTopicRequest:(int)seqNo name:(NSString *)name type:(enum NotificationType)type
+				  filterScript:(NSString *)filterScript {
 	if (self.state == CommandStateEnd)
 		return nil;
 	TRACE(@"UPDATE TOPICS request");
@@ -376,6 +379,7 @@ enum StateCommand {
 	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
 	buffer[0] = type;
 	[data appendBytes:buffer length:1];
+	[data appendData:[self dataFromString:filterScript encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_UPD_TOPICS seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];

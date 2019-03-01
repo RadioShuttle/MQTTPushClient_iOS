@@ -15,7 +15,8 @@ enum NotificationType {
 
 @interface Topic : NSObject
 
-@property NSString *name;
+@property(copy) NSString *name;
 @property enum NotificationType type;
+@property(copy) NSString *filterScript;
 
 @end

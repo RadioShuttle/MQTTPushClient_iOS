@@ -16,8 +16,10 @@
 - (void)getMessagesForAccount:(Account *)account;
 - (void)publishMessageForAccount:(Account *)account action:(Action *)action;
 - (void)getTopicsForAccount:(Account *)account;
-- (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type;
-- (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type;
+- (void)addTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type
+			  filterScript:(NSString *)filterScript;
+- (void)updateTopicForAccount:(Account *)account name:(NSString *)name type:(enum NotificationType)type
+				 filterScript:(NSString *)filterScript;
 - (void)deleteTopicForAccount:(Account *)account name:(NSString *)name;
 - (void)getActionsForAccount:(Account *)account;
 - (void)addActionForAccount:(Account *)account action:(Action *)action;

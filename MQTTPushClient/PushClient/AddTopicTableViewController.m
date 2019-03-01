@@ -72,9 +72,11 @@
 				break;
 		}
 		if (self.topic)
-			[connection updateTopicForAccount:self.account name:topicName type:type];
+			[connection updateTopicForAccount:self.account name:topicName type:type
+								 filterScript:self.topic.filterScript];
 		else
-			[connection addTopicForAccount:self.account name:topicName type:type];
+			[connection addTopicForAccount:self.account name:topicName type:type
+							  filterScript:@""];
 	}
 }
 
