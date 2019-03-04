@@ -143,6 +143,7 @@ enum ConnectionState {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
 		p += 2;
+		NSMutableArray *topicList = [NSMutableArray arrayWithCapacity:numRecords];
 		while (numRecords--) {
 			Topic *topic = [[Topic alloc] init];
 			int count = (p[0] << 8) + p[1];
@@ -155,8 +156,13 @@ enum ConnectionState {
 			topic.filterScript = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
 			TRACE(@"%ld, %@, %@", p - (unsigned char *)command.rawCmd.data.bytes, topic.name, topic.filterScript);
-			[account.topicList addObject:topic];
+			[topicList addObject:topic];
 		}
+		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name"
+															   ascending:YES
+																selector:@selector(caseInsensitiveCompare:)];
+		[topicList sortUsingDescriptors:@[sort]];
+		account.topicList = topicList;
 	}
 	[self disconnect:account withCommand:command];
 }
@@ -170,8 +176,8 @@ enum ConnectionState {
 	if (!command.rawCmd.error) {
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
-		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		p += 2;
+		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		while (numRecords--) {
 			Message *message = [[Message alloc] init];
 			NSTimeInterval seconds = ((uint64_t)p[0] << 56) + ((uint64_t)p[1] << 48) + ((uint64_t)p[2] << 40) + ((uint64_t)p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
@@ -219,9 +225,9 @@ enum ConnectionState {
 	Cmd *command = [self login:account];
 	[command getActionsRequest:0];
 	if (!command.rawCmd.error) {
-		[account.actionList removeAllObjects];
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
+		NSMutableArray *actionList = [NSMutableArray arrayWithCapacity:numRecords];
 		p += 2;
 		while (numRecords--) {
 			Action *action = [[Action alloc] init];
@@ -239,8 +245,13 @@ enum ConnectionState {
 			p += count;
 			action.retainFlag = p[0];
 			p++;
-			[account.actionList addObject:action];
+			[actionList addObject:action];
 		}
+		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name"
+															   ascending:YES
+																selector:@selector(caseInsensitiveCompare:)];
+		[actionList sortUsingDescriptors:@[sort]];
+		account.actionList = actionList;
 	}
 	[self disconnect:account withCommand:command];
 }
