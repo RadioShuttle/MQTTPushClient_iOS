@@ -177,6 +177,8 @@
 		}
 		
 		[tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
+	} else if (editingStyle == UITableViewCellEditingStyleInsert) {
+		[self performSegueWithIdentifier:@"IDAddServer" sender:nil];
 	}
 }
 
