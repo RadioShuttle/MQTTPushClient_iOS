@@ -180,10 +180,17 @@
 	}
 }
 
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath
+	   toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+	if (proposedDestinationIndexPath.row > 0) {
+		return proposedDestinationIndexPath;
+	} else {
+		return [NSIndexPath indexPathForRow:1 inSection:0];
+	}
+}
+
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-	if (self.editing && indexPath.row == 0)
-		return NO;
-	return YES;
+	return indexPath.row > 0;
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
