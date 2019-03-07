@@ -15,10 +15,6 @@
 
 @implementation ScriptViewController
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
-}
-
 - (void)viewWillAppear:(BOOL)animated {
 	self.scriptTextView.text = self.topic.filterScript;
 }

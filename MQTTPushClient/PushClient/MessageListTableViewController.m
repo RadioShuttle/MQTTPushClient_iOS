@@ -4,6 +4,7 @@
  * 30827 Garbsen, Germany
  */
 
+#import <JavaScriptCore/JavaScriptCore.h>
 #import "Account.h"
 #import "Connection.h"
 #import "CDMessage+CoreDataClass.h"
@@ -144,11 +145,30 @@
 
 - (void)configureCell:(MessageTableViewCell *)cell withObject:(CDMessage *)cdmessage {
 	NSString *date = [self.dateFormatter stringFromDate:cdmessage.timestamp];
-	NSString *topic = [cdmessage.topic stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
-	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topic];
+	NSString *topicName = [cdmessage.topic stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
+	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topicName];
 	cell.dateLabel.text = text;
-	
 	NSString *msg = [Message msgFromData:cdmessage.content];
+	for (Topic *topic in self.account.topicList) {
+		if ([topic.name isEqualToString:topicName]) {
+			if (topic.filterScript.length) {
+				char *bytes = (char *)[cdmessage.content bytes];
+				NSUInteger n = cdmessage.content.length;
+				NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
+				for (int i = 0; i < n; i++)
+					raw[i] = [NSNumber numberWithChar:bytes[i]];
+				NSDictionary *arg1 = @{@"raw": raw, @"text": msg, @"topic": topic.name, @"receivedDate": cdmessage.timestamp};
+				NSDictionary *arg2 = @{@"user": self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
+				NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\n%@\nreturn content;\n}\n", topic.filterScript];
+				JSContext *context = [[JSContext alloc] init];
+				[context evaluateScript:script];
+				JSValue *function = [context objectForKeyedSubscript:@"filter"];
+				JSValue *value = [function callWithArguments:@[arg1, arg2]];
+				msg = [value toString];
+			}
+			break;
+		}
+	}
 	cell.messageLabel.text = [msg stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
 	if ([cdmessage.timestamp compare:self.lastViewed] == NSOrderedDescending) {
 		cell.backgroundColor = [UIColor colorWithRed:1.0 green:0.95 blue:0.0 alpha:1.0]; // Yellow

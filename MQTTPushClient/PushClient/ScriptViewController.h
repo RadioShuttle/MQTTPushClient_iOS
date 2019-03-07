@@ -6,7 +6,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ScriptViewController : UIViewController
+@interface ScriptViewController : UITableViewController
 
 @property Topic *topic;
 

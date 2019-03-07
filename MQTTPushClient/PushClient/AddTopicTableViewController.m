@@ -7,6 +7,7 @@
 #import "Account.h"
 #import "Connection.h"
 #import "Topic.h"
+#import "ScriptViewController.h"
 #import "AddTopicTableViewController.h"
 
 @interface AddTopicTableViewController ()
@@ -16,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UITextField *topicTextField;
 @property (weak, nonatomic) IBOutlet UILabel *notificationTypeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *notificationTypeSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIButton *filterButton;
 
 @end
 
@@ -112,6 +114,10 @@
 		self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
 		self.notificationTypeLabel.text = @"Banner";
 	}
+	if (self.topic.filterScript.length)
+		[self.filterButton setTitle:@"Edit" forState:UIControlStateNormal];
+	else
+		[self.filterButton setTitle:@"Add" forState:UIControlStateNormal];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -125,5 +131,13 @@
 	[textField resignFirstResponder];
 	return YES;
 }
+
+#pragma mark - navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	ScriptViewController *controller = segue.destinationViewController;
+	controller.topic = self.topic;
+}
+
 
 @end

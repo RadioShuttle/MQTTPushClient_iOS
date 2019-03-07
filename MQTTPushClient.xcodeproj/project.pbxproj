@@ -15,6 +15,7 @@
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
 		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
+		2AD33526222ECB80004C9584 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */; };
 		2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAB1882181DE3200EBDC4D /* Topic.m */; };
 		2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE456213D7515000664D3 /* AppDelegate.m */; };
 		2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45B213D7515000664D3 /* Main.storyboard */; };
@@ -31,6 +32,7 @@
 		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
 		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
+		2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBCDC9222D29A50070C98C /* ScriptViewController.m */; };
 		84095D0721903E8300CFC1DB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 84095D0621903E8300CFC1DB /* Message.m */; };
 		84095D0821903E8E00CFC1DB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 84095D0621903E8300CFC1DB /* Message.m */; };
 		84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = 84095D092190827300CFC1DB /* ca-certificate.der */; };
@@ -100,6 +102,7 @@
 		2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewController.m; sourceTree = "<group>"; };
 		2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
 		2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
+		2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		2ADAB1872181DE3200EBDC4D /* Topic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Topic.h; sourceTree = "<group>"; };
 		2ADAB1882181DE3200EBDC4D /* Topic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Topic.m; sourceTree = "<group>"; };
 		2ADBE452213D7515000664D3 /* MQTTPushClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQTTPushClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -131,6 +134,8 @@
 		2AEC5FCB214011890097D99A /* MessageListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListTableViewController.m; sourceTree = "<group>"; };
 		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
 		2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerSetupTableViewController.m; sourceTree = "<group>"; };
+		2AFBCDC8222D29A50070C98C /* ScriptViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScriptViewController.h; sourceTree = "<group>"; };
+		2AFBCDC9222D29A50070C98C /* ScriptViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScriptViewController.m; sourceTree = "<group>"; };
 		84095D0521903E8300CFC1DB /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		84095D0621903E8300CFC1DB /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		84095D092190827300CFC1DB /* ca-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ca-certificate.der"; sourceTree = "<group>"; };
@@ -178,6 +183,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AD33526222ECB80004C9584 /* JavaScriptCore.framework in Frameworks */,
 				A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,8 +201,6 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
-				843E778521B9634A0071A6E8 /* UIAlertController+Window.h */,
-				843E778621B9634A0071A6E8 /* UIAlertController+Window.m */,
 				2AE56979219481D30037FE30 /* AboutTableViewController.h */,
 				2AE5697A219481D30037FE30 /* AboutTableViewController.m */,
 				847874E0217760F00059881B /* Account.h */,
@@ -229,12 +233,16 @@
 				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
 				2A197D812195810300CDF015 /* PrivacyPolicyTableViewController.h */,
 				2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */,
+				2AFBCDC8222D29A50070C98C /* ScriptViewController.h */,
+				2AFBCDC9222D29A50070C98C /* ScriptViewController.m */,
 				2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */,
 				2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */,
 				2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */,
 				2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */,
 				2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */,
 				2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */,
+				843D35E42227EDBD00251D31 /* TokenManager.h */,
+				843D35E52227EDBD00251D31 /* TokenManager.m */,
 				2ADAB1872181DE3200EBDC4D /* Topic.h */,
 				2ADAB1882181DE3200EBDC4D /* Topic.m */,
 				2A02D7FB218B4EFA005E6934 /* TopicsListTableViewCell.h */,
@@ -243,10 +251,10 @@
 				2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */,
 				84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */,
 				84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */,
+				843E778521B9634A0071A6E8 /* UIAlertController+Window.h */,
+				843E778621B9634A0071A6E8 /* UIAlertController+Window.m */,
 				843BE3C3221D4C370039EF7C /* Utils.h */,
 				843BE3C4221D4C370039EF7C /* Utils.m */,
-				843D35E42227EDBD00251D31 /* TokenManager.h */,
-				843D35E52227EDBD00251D31 /* TokenManager.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -346,6 +354,7 @@
 		E4A46935F60EFDA587278ECF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */,
 				E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */,
 			);
 			name = Frameworks;
@@ -491,6 +500,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
+				2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */,
 				847874E2217760F00059881B /* Account.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
