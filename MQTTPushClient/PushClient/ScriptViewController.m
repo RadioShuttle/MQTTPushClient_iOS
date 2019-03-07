@@ -7,7 +7,7 @@
 #import "Topic.h"
 #import "ScriptViewController.h"
 
-@interface ScriptViewController ()
+@interface ScriptViewController () <UITextViewDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *scriptTextView;
 
@@ -15,8 +15,18 @@
 
 @implementation ScriptViewController
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewDidLoad {
+	[super viewDidLoad];
 	self.scriptTextView.text = self.topic.filterScript;
+}
+
+- (void)textViewDidChange:(UITextView *)textView {
+	if (textView == self.scriptTextView) {
+		[UIView setAnimationsEnabled:NO];
+		[self.tableView beginUpdates];
+		[self.tableView endUpdates];
+		[UIView setAnimationsEnabled:YES];
+	}
 }
 
 @end
