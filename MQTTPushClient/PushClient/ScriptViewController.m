@@ -66,9 +66,16 @@
 			// Workaround from https://stackoverflow.com/a/26280994 :
 			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)),
 						   dispatch_get_main_queue(), ^{
-							   CGRect r1 = [textView caretRectForPosition:range.end];
-							   CGRect r2 = [textView convertRect:r1 toView:self.tableView];
-							   [self.tableView scrollRectToVisible:r2 animated:NO];
+							   UITextPosition *pos = range.end;
+							   UITextPosition *start = textView.beginningOfDocument;
+							   UITextPosition *end = textView.endOfDocument;
+							   if ([textView comparePosition:start toPosition: pos] != NSOrderedDescending
+								   && [textView comparePosition:pos toPosition: end] != NSOrderedDescending) {
+								   
+								   CGRect r1 = [textView caretRectForPosition:range.end];
+								   CGRect r2 = [textView convertRect:r1 toView:self.tableView];
+								   [self.tableView scrollRectToVisible:r2 animated:NO];
+							   }
 						   });
 		}
 	}
