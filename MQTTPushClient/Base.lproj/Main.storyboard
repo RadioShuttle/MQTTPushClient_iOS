@@ -394,7 +394,7 @@
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ksg-kc-PTe">
                                                     <rect key="frame" x="20" y="11.000000000000004" width="374" height="61.333333333333343"/>
-                                                    <color key="backgroundColor" white="0.91604275173611116" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Pcs-Pf-5Gb"/>
                                                     </constraints>
