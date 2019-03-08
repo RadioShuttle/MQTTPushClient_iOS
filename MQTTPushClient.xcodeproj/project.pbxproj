@@ -57,6 +57,11 @@
 		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
 		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */; };
+		84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B46E2232950F00197005 /* ExampleJSON.js */; };
+		84F4B4712232955F00197005 /* ExampleSplit.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4702232955F00197005 /* ExampleSplit.js */; };
+		84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4722232962700197005 /* ExampleRegularExpression.js */; };
+		84F4B4752232966100197005 /* ExampleBinary.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4742232966100197005 /* ExampleBinary.js */; };
+		84F4B477223296C900197005 /* ExampleHexdump.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B476223296C900197005 /* ExampleHexdump.js */; };
 		A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */; };
 /* End PBXBuildFile section */
 
@@ -174,6 +179,11 @@
 		84B9EDD22175E120001A9D7D /* MQTTPushClientServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClientServiceExtension.entitlements; sourceTree = "<group>"; };
 		84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrustHandler.h; sourceTree = "<group>"; };
 		84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrustHandler.m; sourceTree = "<group>"; };
+		84F4B46E2232950F00197005 /* ExampleJSON.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleJSON.js; sourceTree = "<group>"; };
+		84F4B4702232955F00197005 /* ExampleSplit.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleSplit.js; sourceTree = "<group>"; };
+		84F4B4722232962700197005 /* ExampleRegularExpression.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleRegularExpression.js; sourceTree = "<group>"; };
+		84F4B4742232966100197005 /* ExampleBinary.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleBinary.js; sourceTree = "<group>"; };
+		84F4B476223296C900197005 /* ExampleHexdump.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleHexdump.js; sourceTree = "<group>"; };
 		C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.debug.xcconfig"; sourceTree = "<group>"; };
 		E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -285,6 +295,7 @@
 		2ADBE454213D7515000664D3 /* MQTTPushClient */ = {
 			isa = PBXGroup;
 			children = (
+				84F4B46D223294C100197005 /* Scripts */,
 				84095D092190827300CFC1DB /* ca-certificate.der */,
 				2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */,
 				2ADBE45E213D7516000664D3 /* Assets.xcassets */,
@@ -349,6 +360,18 @@
 				84B9EDCA2175E0A1001A9D7D /* Info.plist */,
 			);
 			path = MQTTPushClientServiceExtension;
+			sourceTree = "<group>";
+		};
+		84F4B46D223294C100197005 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				84F4B46E2232950F00197005 /* ExampleJSON.js */,
+				84F4B4722232962700197005 /* ExampleRegularExpression.js */,
+				84F4B4702232955F00197005 /* ExampleSplit.js */,
+				84F4B4742232966100197005 /* ExampleBinary.js */,
+				84F4B476223296C900197005 /* ExampleHexdump.js */,
+			);
+			path = Scripts;
 			sourceTree = "<group>";
 		};
 		E4A46935F60EFDA587278ECF /* Frameworks */ = {
@@ -458,8 +481,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */,
+				84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
+				84F4B477223296C900197005 /* ExampleHexdump.js in Resources */,
+				84F4B4752232966100197005 /* ExampleBinary.js in Resources */,
+				84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */,
+				84F4B4712232955F00197005 /* ExampleSplit.js in Resources */,
 				84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
