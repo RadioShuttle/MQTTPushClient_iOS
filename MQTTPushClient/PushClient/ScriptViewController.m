@@ -60,15 +60,17 @@
 // Scroll table view – if necessary – to make the current insertion point
 // (caret) of the text field visible.
 - (void)scrollToInsertionPointOf:(UITextView *)textView {
-	UITextRange *range = textView.selectedTextRange;
-	if (range != nil) {
-		// Workaround from https://stackoverflow.com/a/26280994 :
-		dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)),
-					   dispatch_get_main_queue(), ^{
-						   CGRect r1 = [textView caretRectForPosition:range.end];
-						   CGRect r2 = [textView convertRect:r1 toView:self.tableView];
-						   [self.tableView scrollRectToVisible:r2 animated:NO];
-					   });
+	if (textView.isFirstResponder) {
+		UITextRange *range = textView.selectedTextRange;
+		if (range != nil) {
+			// Workaround from https://stackoverflow.com/a/26280994 :
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)),
+						   dispatch_get_main_queue(), ^{
+							   CGRect r1 = [textView caretRectForPosition:range.end];
+							   CGRect r2 = [textView convertRect:r1 toView:self.tableView];
+							   [self.tableView scrollRectToVisible:r2 animated:NO];
+						   });
+		}
 	}
 }
 
