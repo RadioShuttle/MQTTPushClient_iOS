@@ -370,8 +370,10 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="function filterMsg(msg, acc) {" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uam-I8-Clb">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uam-I8-Clb">
                                                     <rect key="frame" x="20" y="11" width="374" height="34"/>
+                                                    <string key="text">function filterMsg(msg, acc) {
+ var content = msg.text</string>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -392,15 +394,12 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ksg-kc-PTe">
-                                                    <rect key="frame" x="20" y="11.000000000000004" width="374" height="61.333333333333343"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Lorem ipsum" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ksg-kc-PTe">
+                                                    <rect key="frame" x="25" y="11" width="369" height="50"/>
                                                     <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Pcs-Pf-5Gb"/>
                                                     </constraints>
-                                                    <string key="text">Lorem ipsum
-Lorem ipsum
-Lorem ipsum</string>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                     <connections>
@@ -410,7 +409,7 @@ Lorem ipsum</string>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="trailingMargin" secondItem="Ksg-kc-PTe" secondAttribute="trailing" id="Bsj-bg-QRs"/>
-                                                <constraint firstItem="Ksg-kc-PTe" firstAttribute="leading" secondItem="ndt-Ez-POh" secondAttribute="leadingMargin" id="bFF-mx-9or"/>
+                                                <constraint firstItem="Ksg-kc-PTe" firstAttribute="leading" secondItem="ndt-Ez-POh" secondAttribute="leadingMargin" constant="5" id="bFF-mx-9or"/>
                                                 <constraint firstItem="Ksg-kc-PTe" firstAttribute="top" secondItem="ndt-Ez-POh" secondAttribute="topMargin" id="omd-SH-1JS"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="Ksg-kc-PTe" secondAttribute="bottom" id="qZc-PM-wCr"/>
                                             </constraints>
@@ -425,7 +424,7 @@ Lorem ipsum</string>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WOL-Uj-OB5">
                                                     <rect key="frame" x="20" y="1" width="374" height="32"/>
-                                                    <string key="text">  return content;
+                                                    <string key="text"> return content;
 }</string>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
                                                     <nil key="textColor"/>
