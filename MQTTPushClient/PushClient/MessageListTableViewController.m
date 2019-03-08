@@ -156,7 +156,7 @@
 				NSUInteger n = cdmessage.content.length;
 				NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
 				for (int i = 0; i < n; i++)
-					raw[i] = [NSNumber numberWithChar:bytes[i]];
+					raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
 				NSDictionary *arg1 = @{@"raw": raw, @"text": msg, @"topic": topic.name, @"receivedDate": cdmessage.timestamp};
 				NSDictionary *arg2 = @{@"user": self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 				NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\n%@\nreturn content;\n}\n", topic.filterScript];
