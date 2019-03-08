@@ -62,6 +62,8 @@
 		84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4722232962700197005 /* ExampleRegularExpression.js */; };
 		84F4B4752232966100197005 /* ExampleBinary.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4742232966100197005 /* ExampleBinary.js */; };
 		84F4B477223296C900197005 /* ExampleHexdump.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B476223296C900197005 /* ExampleHexdump.js */; };
+		84F4B47A2232AFB800197005 /* ScriptListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4B4792232AFB800197005 /* ScriptListTableViewController.m */; };
+		84F4B47E2232BC5D00197005 /* ExampleScripts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B47D2232BC5D00197005 /* ExampleScripts.plist */; };
 		A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */; };
 /* End PBXBuildFile section */
 
@@ -184,6 +186,9 @@
 		84F4B4722232962700197005 /* ExampleRegularExpression.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleRegularExpression.js; sourceTree = "<group>"; };
 		84F4B4742232966100197005 /* ExampleBinary.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleBinary.js; sourceTree = "<group>"; };
 		84F4B476223296C900197005 /* ExampleHexdump.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleHexdump.js; sourceTree = "<group>"; };
+		84F4B4782232AFB800197005 /* ScriptListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScriptListTableViewController.h; sourceTree = "<group>"; };
+		84F4B4792232AFB800197005 /* ScriptListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScriptListTableViewController.m; sourceTree = "<group>"; };
+		84F4B47D2232BC5D00197005 /* ExampleScripts.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ExampleScripts.plist; sourceTree = "<group>"; };
 		C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.debug.xcconfig"; sourceTree = "<group>"; };
 		E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -265,6 +270,8 @@
 				843E778621B9634A0071A6E8 /* UIAlertController+Window.m */,
 				843BE3C3221D4C370039EF7C /* Utils.h */,
 				843BE3C4221D4C370039EF7C /* Utils.m */,
+				84F4B4782232AFB800197005 /* ScriptListTableViewController.h */,
+				84F4B4792232AFB800197005 /* ScriptListTableViewController.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -370,6 +377,7 @@
 				84F4B4702232955F00197005 /* ExampleSplit.js */,
 				84F4B4742232966100197005 /* ExampleBinary.js */,
 				84F4B476223296C900197005 /* ExampleHexdump.js */,
+				84F4B47D2232BC5D00197005 /* ExampleScripts.plist */,
 			);
 			path = Scripts;
 			sourceTree = "<group>";
@@ -488,6 +496,7 @@
 				84F4B4752232966100197005 /* ExampleBinary.js in Resources */,
 				84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */,
 				84F4B4712232955F00197005 /* ExampleSplit.js in Resources */,
+				84F4B47E2232BC5D00197005 /* ExampleScripts.plist in Resources */,
 				84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -559,6 +568,7 @@
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
 				2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */,
+				84F4B47A2232AFB800197005 /* ScriptListTableViewController.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
 				84B49952217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
 				2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */,

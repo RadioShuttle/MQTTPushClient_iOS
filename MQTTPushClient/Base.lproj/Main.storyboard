@@ -352,7 +352,7 @@
             </objects>
             <point key="canvasLocation" x="4040.579710144928" y="1322.5446428571429"/>
         </scene>
-        <!--Script View Controller-->
+        <!--Edit JavaScript-->
         <scene sceneID="joN-J9-abf">
             <objects>
                 <tableViewController id="BfJ-6F-BiQ" customClass="ScriptViewController" sceneMemberID="viewController">
@@ -447,6 +447,15 @@
                             <outlet property="delegate" destination="BfJ-6F-BiQ" id="HnE-Oo-as9"/>
                         </connections>
                     </tableView>
+                    <navigationItem key="navigationItem" title="Edit JavaScript" id="heH-xM-VIf">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="njO-pc-ASR">
+                            <connections>
+                                <segue destination="0YR-EW-Ie9" kind="popoverPresentation" popoverAnchorBarButtonItem="njO-pc-ASR" id="rM4-qF-TSN">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="scriptTextView" destination="Ksg-kc-PTe" id="VsT-OE-Aks"/>
                     </connections>
@@ -454,6 +463,41 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BIp-cs-c9z" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4848.75" y="1320"/>
+        </scene>
+        <!--Script List Table View Controller-->
+        <scene sceneID="Fo6-2E-Phb">
+            <objects>
+                <tableViewController id="u2q-Yd-71Y" customClass="ScriptListTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="kcE-ai-CsK">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDScriptCell" id="5j0-aW-NRM">
+                                <rect key="frame" x="0.0" y="28" width="414" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5j0-aW-NRM" id="LAL-LQ-JUn">
+                                    <rect key="frame" x="0.0" y="0.0" width="414" height="43.666666666666664"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                </tableViewCellContentView>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="u2q-Yd-71Y" id="jFI-Yt-J5n"/>
+                            <outlet property="delegate" destination="u2q-Yd-71Y" id="7We-fH-4hU"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="Tqw-UO-AWu">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="1f1-oo-lWb">
+                            <connections>
+                                <action selector="doneAction:" destination="u2q-Yd-71Y" id="7VX-pZ-E0d"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="mnm-4e-jZj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="6660.8695652173919" y="1312.5"/>
         </scene>
         <!--Privacy Policy Table View Controller-->
         <scene sceneID="iM4-HD-Qj7">
@@ -1405,6 +1449,27 @@
             </objects>
             <point key="canvasLocation" x="584.05797101449275" y="1218.75"/>
         </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="uTh-fU-u8T">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0YR-EW-Ie9" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="sCV-X2-QC0">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="kKB-WI-t74">
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="u2q-Yd-71Y" kind="relationship" relationship="rootViewController" id="6PJ-yI-Tdp"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Isu-J7-nin" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="5750.7246376811599" y="1312.5"/>
+        </scene>
     </scenes>
     <resources>
         <image name="AboutImage" width="83" height="83"/>
@@ -1416,7 +1481,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="QQs-B3-hzJ"/>
         <segue reference="f8M-ja-CCs"/>
-        <segue reference="RAn-RK-BL9"/>
+        <segue reference="EpA-KK-trf"/>
         <segue reference="vfE-Bn-KJx"/>
     </inferredMetricsTieBreakers>
 </document>
