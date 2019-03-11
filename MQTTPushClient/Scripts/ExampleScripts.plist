@@ -18,7 +18,7 @@
 		<key>label</key>
 		<string>Regular Expression</string>
 		<key>script</key>
-		<string>ExampleRegularExpresssion.js</string>
+		<string>ExampleRegularExpression.js</string>
 	</dict>
 	<dict>
 		<key>label</key>
