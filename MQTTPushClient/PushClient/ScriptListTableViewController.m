@@ -95,10 +95,11 @@
 		}
 			break;
 	}
-
-	[self dismissViewControllerAnimated:YES completion:nil];
 }
+
+#pragma mark - ScriptListDelegate methods
+
 - (IBAction)doneAction:(UIBarButtonItem *)sender {
-    [self dismissViewControllerAnimated:YES completion:nil];
+	[self.delegate insertScript:nil];
 }
 @end

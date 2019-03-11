@@ -8,6 +8,7 @@
 #import "ScriptViewController.h"
 #import "ScriptListTableViewController.h"
 #import "Trace.h"
+@import SafariServices;
 
 @interface ScriptViewController () <UITextViewDelegate, ScriptListDelegate>
 
@@ -93,20 +94,29 @@
 - (void)clearScript {
 	self.scriptTextView.text = @"";
 	[self textViewDidChange:self.scriptTextView];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)insertScript:(NSString *)scriptText {
-	NSMutableString *text = [self.scriptTextView.text mutableCopy];
-	if (text.length > 0 && ![text hasSuffix:@"\n"]) {
-		[text appendString:@"\n"];
+	if (scriptText != nil) {
+		NSMutableString *text = [self.scriptTextView.text mutableCopy];
+		if (text.length > 0 && ![text hasSuffix:@"\n"]) {
+			[text appendString:@"\n"];
+		}
+		[text appendString:scriptText];
+		self.scriptTextView.text = text;
+		[self textViewDidChange:self.scriptTextView];
 	}
-	[text appendString:scriptText];
-	self.scriptTextView.text = text;
-	[self textViewDidChange:self.scriptTextView];
+	[self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)showScriptHelp {
-	// TODO ...
+	[self dismissViewControllerAnimated:YES completion:^{
+		// TODO: Present localized version.
+		NSURL *url = [NSURL URLWithString:@"https://help.radioshuttle.de/mqttapp/1.0/en/filter-scripts.html"];
+		SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+		[self presentViewController:safariViewController animated:YES completion:^{}];
+	}];
 }
 
 

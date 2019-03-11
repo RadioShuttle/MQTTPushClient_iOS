@@ -9,7 +9,7 @@
 @protocol ScriptListDelegate <NSObject>
 
 - (void)clearScript;
-- (void)insertScript:(NSString *)textViewDidChange;
+- (void)insertScript:(nullable NSString *)scriptText;
 - (void)showScriptHelp;
 
 @end
