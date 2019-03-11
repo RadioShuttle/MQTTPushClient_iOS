@@ -137,6 +137,7 @@
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	ScriptViewController *controller = segue.destinationViewController;
 	controller.topic = self.topic;
+	controller.account = self.account;
 }
 
 
