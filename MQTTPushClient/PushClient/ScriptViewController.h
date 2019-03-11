@@ -9,5 +9,6 @@
 @interface ScriptViewController : UITableViewController
 
 @property Topic *topic;
+@property Account *account;
 
 @end
