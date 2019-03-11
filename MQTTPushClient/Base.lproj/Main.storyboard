@@ -390,16 +390,13 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="fPq-0F-3IR">
                                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fPq-0F-3IR" id="ndt-Ez-POh">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fPq-0F-3IR" id="ndt-Ez-POh">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Lorem ipsum" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Ksg-kc-PTe">
-                                                    <rect key="frame" x="25" y="11" width="369" height="50"/>
+                                                    <rect key="frame" x="25" y="11" width="369" height="22"/>
                                                     <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="50" id="Pcs-Pf-5Gb"/>
-                                                    </constraints>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                     <connections>
@@ -450,7 +447,7 @@
                     <navigationItem key="navigationItem" title="Edit JavaScript" id="heH-xM-VIf">
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="njO-pc-ASR">
                             <connections>
-                                <segue destination="0YR-EW-Ie9" kind="popoverPresentation" popoverAnchorBarButtonItem="njO-pc-ASR" id="rM4-qF-TSN">
+                                <segue destination="0YR-EW-Ie9" kind="popoverPresentation" identifier="IDScriptList" popoverAnchorBarButtonItem="njO-pc-ASR" id="rM4-qF-TSN">
                                     <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                 </segue>
                             </connections>
@@ -490,7 +487,7 @@
                     <navigationItem key="navigationItem" id="Tqw-UO-AWu">
                         <barButtonItem key="rightBarButtonItem" systemItem="done" id="1f1-oo-lWb">
                             <connections>
-                                <action selector="doneAction:" destination="u2q-Yd-71Y" id="7VX-pZ-E0d"/>
+                                <action selector="doneAction:" destination="u2q-Yd-71Y" id="LHs-89-WW1"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

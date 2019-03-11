@@ -6,9 +6,19 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol ScriptListDelegate <NSObject>
+
+- (void)clearScript;
+- (void)insertScript:(NSString *)textViewDidChange;
+- (void)showScriptHelp;
+
+@end
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface ScriptListTableViewController : UITableViewController
+
+@property (weak) id<ScriptListDelegate> delegate;
 
 @end
 

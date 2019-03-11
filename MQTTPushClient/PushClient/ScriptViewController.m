@@ -6,9 +6,10 @@
 
 #import "Topic.h"
 #import "ScriptViewController.h"
+#import "ScriptListTableViewController.h"
 #import "Trace.h"
 
-@interface ScriptViewController () <UITextViewDelegate>
+@interface ScriptViewController () <UITextViewDelegate, ScriptListDelegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *scriptTextView;
 
@@ -80,5 +81,33 @@
 		}
 	}
 }
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	if ([segue.identifier isEqualToString:@"IDScriptList"]) {
+		UINavigationController *nv = segue.destinationViewController;
+		ScriptListTableViewController *sltv = (ScriptListTableViewController *)nv.topViewController;
+		sltv.delegate = self;
+	}
+}
+
+- (void)clearScript {
+	self.scriptTextView.text = @"";
+	[self textViewDidChange:self.scriptTextView];
+}
+
+- (void)insertScript:(NSString *)scriptText {
+	NSMutableString *text = [self.scriptTextView.text mutableCopy];
+	if (text.length > 0 && ![text hasSuffix:@"\n"]) {
+		[text appendString:@"\n"];
+	}
+	[text appendString:scriptText];
+	self.scriptTextView.text = text;
+	[self textViewDidChange:self.scriptTextView];
+}
+
+- (void)showScriptHelp {
+	// TODO ...
+}
+
 
 @end

@@ -63,13 +63,42 @@
     return cell;
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+	switch (section) {
+		case 1:
+			return @"Insert Example";
+		default:
+			return @"";
+	}
+}
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	switch (indexPath.section) {
+		case 0:
+			switch (indexPath.row) {
+				case 0:
+					[self.delegate clearScript];
+					break;
+				case 1:
+					[self.delegate showScriptHelp];
+					break;
+			}
+			break;
+		case 1: {
+			NSString *scriptName = self.scripts[indexPath.row][@"script"];
+			NSURL *scriptURL = [[NSBundle mainBundle] URLForResource:scriptName withExtension:nil];
+			NSString *scriptText = [NSString stringWithContentsOfURL:scriptURL
+															encoding:NSUTF8StringEncoding error:NULL];
+			if (scriptText.length > 0) {
+				[self.delegate insertScript:scriptText];
+			}
+		}
+			break;
+	}
 
-
-
-
+	[self dismissViewControllerAnimated:YES completion:nil];
+}
 - (IBAction)doneAction:(UIBarButtonItem *)sender {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-
 @end
