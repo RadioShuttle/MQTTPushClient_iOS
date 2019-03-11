@@ -155,7 +155,6 @@ enum ConnectionState {
 			p += 2;
 			topic.filterScript = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
-			TRACE(@"%ld, %@, %@", p - (unsigned char *)command.rawCmd.data.bytes, topic.name, topic.filterScript);
 			[topicList addObject:topic];
 		}
 		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name"
