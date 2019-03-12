@@ -68,7 +68,9 @@ static NSString *kPrefkeyPendingDeleteIDs = @"PendingDeleteIDs";
 		NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 		NSArray *pending = [defaults stringArrayForKey:kPrefkeyPendingDeleteIDs];
 		[defaults removeObjectForKey:kPrefkeyPendingDeleteIDs];
-		TRACE(@"%ld pending entries", pending.count);
+		if (pending.count > 0) {
+			TRACE(@"TokenManager: %lu pending entries", (unsigned long)pending.count);
+		}
 
 		for (NSString *senderID in pending) {
 			[self deleteTokenFor:senderID];
