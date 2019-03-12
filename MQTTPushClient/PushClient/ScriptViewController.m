@@ -32,7 +32,7 @@
 			raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
 		NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":self.topic.name, @"receivedDate":[NSDate date]};
 		NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-		NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\n%@\nreturn content;\n}\n", self.scriptTextView.text];
+		NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\nvar content = msg.text\n%@\nreturn content;\n}\n", self.scriptTextView.text];
 		dispatch_group_t group = dispatch_group_create();
 		dispatch_queue_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_group_async(group, background, ^{
@@ -56,7 +56,6 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	self.testMessageTextView.text = @"Hello";
-	self.resultLabel.text = @"";
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(keyboardNotification:)
 												 name:UIKeyboardDidShowNotification
@@ -70,21 +69,25 @@
 												  object:nil];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+	return 60.0;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+	return self.resultLabel;
+}
+
 - (void)textViewDidChange:(UITextView *)textView {
-	if (textView == self.scriptTextView) {
-		// The height of the script editor text field might have changed.
-		// Make the table view resize its cells, if necessary.
-		[UIView setAnimationsEnabled:NO];
-		[self.tableView beginUpdates];
-		[self.tableView endUpdates];
-		[UIView setAnimationsEnabled:YES];
-	}
+	// The height of the script editor text field might have changed.
+	// Make the table view resize its cells, if necessary.
+	[UIView setAnimationsEnabled:NO];
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView {
-	if (textView == self.scriptTextView) {
-		[self scrollToInsertionPointOf:self.scriptTextView];
-	}
+	[self scrollToInsertionPointOf:self.scriptTextView];
 }
 
 - (void)keyboardNotification:(NSNotification*)notification {
