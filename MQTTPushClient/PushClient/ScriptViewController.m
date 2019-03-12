@@ -36,11 +36,17 @@
 		dispatch_group_t group = dispatch_group_create();
 		dispatch_queue_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 		dispatch_group_async(group, background, ^{
+			__block BOOL exception = NO;
 			JSContext *context = [[JSContext alloc] init];
+			[context setExceptionHandler:^(JSContext *context, JSValue *value) {
+				msg = value.toString;
+				exception = YES;
+			}];
 			[context evaluateScript:script];
 			JSValue *function = [context objectForKeyedSubscript:@"filter"];
 			JSValue *value = [function callWithArguments:@[arg1, arg2]];
-			msg = [value toString];
+			if (!exception)
+				msg = [value toString];
 		});
 		uint64_t timeout = dispatch_time( DISPATCH_TIME_NOW, 500000000); // in nano seconds
 		dispatch_group_wait(group, timeout);
