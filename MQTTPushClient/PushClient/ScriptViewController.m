@@ -9,6 +9,7 @@
 #import "Account.h"
 #import "ScriptViewController.h"
 #import "ScriptListTableViewController.h"
+#import "ScriptViewSectionHeader.h"
 #import "Trace.h"
 @import SafariServices;
 
@@ -16,7 +17,8 @@
 
 @property (weak, nonatomic) IBOutlet UITextView *scriptTextView;
 @property (weak, nonatomic) IBOutlet UITextView *testMessageTextView;
-@property (weak, nonatomic) IBOutlet UILabel *resultLabel;
+
+@property NSString *statusMessage;
 
 @end
 
@@ -35,14 +37,21 @@
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
 	NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
 	if (filtered)
-		self.resultLabel.text = filtered;
+		self.statusMessage = filtered;
 	else
-		self.resultLabel.text = error.localizedDescription;
+		self.statusMessage = error.localizedDescription;
+	
+	ScriptViewSectionHeader *header = (ScriptViewSectionHeader *)[self.tableView headerViewForSection:0];
+	header.statusLabel.text = self.statusMessage;
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.scriptTextView.text = self.topic.filterScript;
+	self.statusMessage = [NSString stringWithFormat:@"Edit filter script for topic “%@”", self.topic.name];
+	
+	UINib *nib = [UINib nibWithNibName:@"ScriptViewSectionHeader" bundle:nil];
+	[self.tableView registerNib:nib forHeaderFooterViewReuseIdentifier:@"IDScriptViewSectionHeader"];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -66,7 +75,9 @@
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-	return self.resultLabel;
+	ScriptViewSectionHeader *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"IDScriptViewSectionHeader"];
+	header.statusLabel.text = self.statusMessage;
+	return header;
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
