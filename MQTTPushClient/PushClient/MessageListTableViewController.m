@@ -161,7 +161,7 @@
 						raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
 					NSDictionary *arg1 = @{@"raw": raw, @"text": msg, @"topic": topic.name, @"receivedDate": cdmessage.timestamp};
 					NSDictionary *arg2 = @{@"user": self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-					NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\n%@\nreturn content;\n}\n", topic.filterScript];
+					NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\nvar content = msg.text\n%@\nreturn content;\n}\n", topic.filterScript];
 					dispatch_group_t group = dispatch_group_create();
 					dispatch_queue_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
 					dispatch_group_async(group, background, ^{
