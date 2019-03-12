@@ -10,7 +10,9 @@
 #import "ScriptViewController.h"
 #import "ScriptListTableViewController.h"
 #import "ScriptViewSectionHeader.h"
+#import "CDMessage+CoreDataClass.h"
 #import "Trace.h"
+
 @import SafariServices;
 
 @interface ScriptViewController () <UITextViewDelegate, ScriptListDelegate>
@@ -50,11 +52,26 @@
 	
 	UINib *nib = [UINib nibWithNibName:@"ScriptViewSectionHeader" bundle:nil];
 	[self.tableView registerNib:nib forHeaderFooterViewReuseIdentifier:@"IDScriptViewSectionHeader"];
+	
+	NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
+	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@ AND topic = %@",
+							  self.account.cdaccount, self.topic.name];
+	fetchRequest.predicate = predicate;
+	fetchRequest.fetchLimit = 1;
+	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
+	NSSortDescriptor *sort2 = [[NSSortDescriptor alloc] initWithKey:@"messageID" ascending:NO];
+	fetchRequest.sortDescriptors = @[sort1, sort2];
+	
+	NSArray<CDMessage *> *messages = [self.account.context executeFetchRequest:fetchRequest error:nil];
+	if (messages.count > 0) {
+		self.testMessageTextView.text = [Message msgFromData:messages.firstObject.content];
+	} else {
+		self.testMessageTextView.text = @"";
+	}
 }
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	self.testMessageTextView.text = @"Hello";
 	[[NSNotificationCenter defaultCenter] addObserver:self
 											 selector:@selector(keyboardNotification:)
 												 name:UIKeyboardDidShowNotification
