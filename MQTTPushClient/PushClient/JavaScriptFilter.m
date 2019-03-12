@@ -38,15 +38,18 @@
 		[context evaluateScript:self.script];
 		JSValue *function = [context objectForKeyedSubscript:@"filter"];
 		JSValue *value = [function callWithArguments:@[msg, acc]];
-		if (exception)
+		if (exception) {
 			scriptError = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28190 userInfo:@{NSLocalizedDescriptionKey:text}];
-		else
+			text = nil;
+		} else
 			text = value.toString;
 	});
 	uint64_t timeout = dispatch_time( DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC); // in nano seconds
 	long result = dispatch_group_wait(group, timeout);
-	if (result > 0)
+	if (result > 0) {
 		scriptError = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28191 userInfo:@{NSLocalizedDescriptionKey:@"timeout"}];
+		text = nil;
+	}
 	*error = scriptError;
 	return text;
 }

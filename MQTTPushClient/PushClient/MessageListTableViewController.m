@@ -163,10 +163,10 @@
 				NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 				JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];
 				NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
-				if (error)
-					self.javaScriptTimedOut = YES;
-				else
+				if (filtered)
 					msg = filtered;
+				else
+					self.javaScriptTimedOut = YES;
 				break;
 			}
 		}

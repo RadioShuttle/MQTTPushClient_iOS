@@ -34,10 +34,10 @@
 	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
 	NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
-	if (error)
-		self.resultLabel.text = error.localizedDescription;
-	else
+	if (filtered)
 		self.resultLabel.text = filtered;
+	else
+		self.resultLabel.text = error.localizedDescription;
 }
 
 - (void)viewDidLoad {
