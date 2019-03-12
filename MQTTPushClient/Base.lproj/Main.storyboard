@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -445,26 +444,26 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1h0-wh-EVn">
-                                                    <rect key="frame" x="319" y="3" width="30" height="30"/>
+                                                    <rect key="frame" x="329" y="3" width="30" height="34"/>
                                                     <state key="normal" title="Run"/>
                                                     <connections>
                                                         <action selector="testScript:" destination="BfJ-6F-BiQ" eventType="touchUpInside" id="uOn-KT-Pa1"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Test Data (msg.text):" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="djr-Jb-pVG">
-                                                    <rect key="frame" x="16" y="23" width="110.5" height="14"/>
+                                                    <rect key="frame" x="16" y="15" width="110.5" height="14"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="1h0-wh-EVn" secondAttribute="bottom" constant="4" id="1hD-lg-xH0"/>
-                                                <constraint firstItem="djr-Jb-pVG" firstAttribute="top" secondItem="LAQ-Nq-cUe" secondAttribute="top" constant="23" id="7aS-fg-KDK"/>
+                                                <constraint firstAttribute="bottom" secondItem="1h0-wh-EVn" secondAttribute="bottom" id="1hD-lg-xH0"/>
+                                                <constraint firstItem="djr-Jb-pVG" firstAttribute="firstBaseline" secondItem="1h0-wh-EVn" secondAttribute="firstBaseline" id="3Ty-6R-hFv"/>
                                                 <constraint firstItem="1h0-wh-EVn" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="LAQ-Nq-cUe" secondAttribute="leading" constant="20" symbolic="YES" id="NIp-0z-I25"/>
                                                 <constraint firstItem="djr-Jb-pVG" firstAttribute="leading" secondItem="LAQ-Nq-cUe" secondAttribute="leading" constant="16" id="RjT-wm-1D5"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="djr-Jb-pVG" secondAttribute="trailing" id="T4m-9d-knY"/>
-                                                <constraint firstAttribute="trailing" secondItem="1h0-wh-EVn" secondAttribute="trailing" constant="26" id="xJ1-hZ-DAc"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="1h0-wh-EVn" secondAttribute="trailing" id="xJ1-hZ-DAc"/>
                                                 <constraint firstItem="1h0-wh-EVn" firstAttribute="top" secondItem="LAQ-Nq-cUe" secondAttribute="top" constant="3" id="yFX-v1-qBv"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -477,7 +476,8 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Lorem ipsum" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="yad-b1-gdt">
-                                                    <rect key="frame" x="21" y="11" width="338" height="22"/>
+                                                    <rect key="frame" x="16" y="2" width="343" height="31"/>
+                                                    <color key="backgroundColor" white="0.94999999999999996" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
                                                     <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                     <connections>
@@ -486,8 +486,8 @@
                                                 </textView>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="yad-b1-gdt" firstAttribute="leading" secondItem="GCy-cc-omd" secondAttribute="leadingMargin" constant="5" id="Cdz-O4-zCC"/>
-                                                <constraint firstItem="yad-b1-gdt" firstAttribute="top" secondItem="GCy-cc-omd" secondAttribute="topMargin" id="E70-AO-eOb"/>
+                                                <constraint firstItem="yad-b1-gdt" firstAttribute="leading" secondItem="GCy-cc-omd" secondAttribute="leadingMargin" id="Cdz-O4-zCC"/>
+                                                <constraint firstItem="yad-b1-gdt" firstAttribute="top" secondItem="GCy-cc-omd" secondAttribute="top" constant="2" id="E70-AO-eOb"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="yad-b1-gdt" secondAttribute="bottom" id="ORH-Ko-mjt"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="yad-b1-gdt" secondAttribute="trailing" id="nM7-4K-Kru"/>
                                             </constraints>
@@ -700,7 +700,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message - it can be very long and in this case should break into several lines." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdY-wD-6R2">
-                                            <rect key="frame" x="16" y="35" width="343" height="79.5"/>
+                                            <rect key="frame" x="16" y="35" width="343" height="79"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -806,13 +806,13 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No actions defined" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GQy-k1-x9B">
-                                    <rect key="frame" x="8" y="8" width="359" height="24"/>
+                                    <rect key="frame" x="8" y="28" width="359" height="24"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To define actions, navigate into the server account edit mode and tap on MQTT Actions." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Gh-H3-WRE">
-                                    <rect key="frame" x="28" y="48" width="319" height="61"/>
+                                    <rect key="frame" x="28" y="68" width="319" height="61"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
