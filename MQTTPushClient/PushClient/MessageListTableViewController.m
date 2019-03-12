@@ -4,7 +4,7 @@
  * 30827 Garbsen, Germany
  */
 
-#import <JavaScriptCore/JavaScriptCore.h>
+#import "JavaScriptFilter.h"
 #import "Account.h"
 #import "Connection.h"
 #import "CDMessage+CoreDataClass.h"
@@ -148,34 +148,25 @@
 	NSString *date = [self.dateFormatter stringFromDate:cdmessage.timestamp];
 	NSString *topicName = [cdmessage.topic stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topicName];
+	NSString *msg = [Message msgFromData:cdmessage.content];
 	cell.dateLabel.text = text;
-	__block NSString *msg = [Message msgFromData:cdmessage.content];
 	if (!self.javaScriptTimedOut) {
 		for (Topic *topic in self.account.topicList) {
 			if ([topic.name isEqualToString:topicName]) {
-				if (topic.filterScript.length) {
-					char *bytes = (char *)[cdmessage.content bytes];
-					NSUInteger n = cdmessage.content.length;
-					NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
-					for (int i = 0; i < n; i++)
-						raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
-					NSDictionary *arg1 = @{@"raw": raw, @"text": msg, @"topic": topic.name, @"receivedDate": cdmessage.timestamp};
-					NSDictionary *arg2 = @{@"user": self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-					NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\nvar content = msg.text\n%@\nreturn content;\n}\n", topic.filterScript];
-					dispatch_group_t group = dispatch_group_create();
-					dispatch_queue_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-					dispatch_group_async(group, background, ^{
-						JSContext *context = [[JSContext alloc] init];
-						[context evaluateScript:script];
-						JSValue *function = [context objectForKeyedSubscript:@"filter"];
-						JSValue *value = [function callWithArguments:@[arg1, arg2]];
-						msg = [value toString];
-					});
-					uint64_t timeout = dispatch_time( DISPATCH_TIME_NOW, 500000000); // in nano seconds
-					long result = dispatch_group_wait(group, timeout);
-					if (result > 0)
-						self.javaScriptTimedOut = YES;
-				}
+				NSError *error = nil;
+				char *bytes = (char *)[cdmessage.content bytes];
+				NSUInteger n = cdmessage.content.length;
+				NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
+				for (int i = 0; i < n; i++)
+					raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
+				NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":topic.name, @"receivedDate":cdmessage.timestamp};
+				NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
+				JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];
+				NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
+				if (error)
+					self.javaScriptTimedOut = YES;
+				else
+					msg = filtered;
 				break;
 			}
 		}

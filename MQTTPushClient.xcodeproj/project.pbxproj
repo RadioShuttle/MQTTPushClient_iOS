@@ -30,6 +30,7 @@
 		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
 		2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE87DBD214AA9AB0057935D /* FCMData.m */; };
 		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
+		2AEB225C2237E959008E2BC0 /* JavaScriptFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEB225B2237E959008E2BC0 /* JavaScriptFilter.m */; };
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
 		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
 		2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBCDC9222D29A50070C98C /* ScriptViewController.m */; };
@@ -137,6 +138,8 @@
 		2AE87DBD214AA9AB0057935D /* FCMData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMData.m; sourceTree = "<group>"; };
 		2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerListTableViewCell.h; sourceTree = "<group>"; };
 		2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewCell.m; sourceTree = "<group>"; };
+		2AEB225A2237E959008E2BC0 /* JavaScriptFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JavaScriptFilter.h; sourceTree = "<group>"; };
+		2AEB225B2237E959008E2BC0 /* JavaScriptFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JavaScriptFilter.m; sourceTree = "<group>"; };
 		2AEC5FCA214011890097D99A /* MessageListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListTableViewController.h; sourceTree = "<group>"; };
 		2AEC5FCB214011890097D99A /* MessageListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListTableViewController.m; sourceTree = "<group>"; };
 		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
@@ -240,6 +243,8 @@
 				2AE87DBD214AA9AB0057935D /* FCMData.m */,
 				2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */,
 				2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */,
+				2AEB225A2237E959008E2BC0 /* JavaScriptFilter.h */,
+				2AEB225B2237E959008E2BC0 /* JavaScriptFilter.m */,
 				847874E92177777B0059881B /* KeychainUtils.h */,
 				847874EB2177777B0059881B /* KeychainUtils.m */,
 				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
@@ -248,6 +253,8 @@
 				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
 				2A197D812195810300CDF015 /* PrivacyPolicyTableViewController.h */,
 				2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */,
+				84F4B4782232AFB800197005 /* ScriptListTableViewController.h */,
+				84F4B4792232AFB800197005 /* ScriptListTableViewController.m */,
 				2AFBCDC8222D29A50070C98C /* ScriptViewController.h */,
 				2AFBCDC9222D29A50070C98C /* ScriptViewController.m */,
 				2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */,
@@ -270,8 +277,6 @@
 				843E778621B9634A0071A6E8 /* UIAlertController+Window.m */,
 				843BE3C3221D4C370039EF7C /* Utils.h */,
 				843BE3C4221D4C370039EF7C /* Utils.m */,
-				84F4B4782232AFB800197005 /* ScriptListTableViewController.h */,
-				84F4B4792232AFB800197005 /* ScriptListTableViewController.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -554,6 +559,7 @@
 				84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
 				847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
+				2AEB225C2237E959008E2BC0 /* JavaScriptFilter.m in Sources */,
 				843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */,
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,

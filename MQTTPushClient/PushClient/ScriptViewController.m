@@ -4,7 +4,7 @@
  * 30827 Garbsen, Germany
  */
 
-#import <JavaScriptCore/JavaScriptCore.h>
+#import "JavaScriptFilter.h"
 #import "Topic.h"
 #import "Account.h"
 #import "ScriptViewController.h"
@@ -23,35 +23,21 @@
 @implementation ScriptViewController
 
 - (IBAction)testScript:(UIButton *)sender {
-	__block NSString *msg = self.testMessageTextView.text;
-	if (self.scriptTextView.text.length) {
-		char *bytes = (char *)[msg UTF8String];
-		NSUInteger n = msg.length;
-		NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
-		for (int i = 0; i < n; i++)
-			raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
-		NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":self.topic.name, @"receivedDate":[NSDate date]};
-		NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-		NSString *script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\nvar content = msg.text\n%@\nreturn content;\n}\n", self.scriptTextView.text];
-		dispatch_group_t group = dispatch_group_create();
-		dispatch_queue_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
-		dispatch_group_async(group, background, ^{
-			__block BOOL exception = NO;
-			JSContext *context = [[JSContext alloc] init];
-			[context setExceptionHandler:^(JSContext *context, JSValue *value) {
-				msg = value.toString;
-				exception = YES;
-			}];
-			[context evaluateScript:script];
-			JSValue *function = [context objectForKeyedSubscript:@"filter"];
-			JSValue *value = [function callWithArguments:@[arg1, arg2]];
-			if (!exception)
-				msg = [value toString];
-		});
-		uint64_t timeout = dispatch_time( DISPATCH_TIME_NOW, 500000000); // in nano seconds
-		dispatch_group_wait(group, timeout);
-	}
-	self.resultLabel.text = msg;
+	NSError *error = nil;
+	NSString *msg = self.testMessageTextView.text;
+	char *bytes = (char *)[msg UTF8String];
+	NSUInteger n = msg.length;
+	NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
+	for (int i = 0; i < n; i++)
+		raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
+	NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":self.topic.name, @"receivedDate":[NSDate date]};
+	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
+	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
+	NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
+	if (error)
+		self.resultLabel.text = error.localizedDescription;
+	else
+		self.resultLabel.text = filtered;
 }
 
 - (void)viewDidLoad {
