@@ -37,16 +37,16 @@
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
 	NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
 	if (filtered)
-		self.statusMessage = [filtered stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+		self.statusMessage = [@"JavaScript result:\n" stringByAppendingString:[filtered stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
 	else
-		self.statusMessage = error.localizedDescription;
+		self.statusMessage = [@"JavaScript error:\n" stringByAppendingString:error.localizedDescription];
 	[self.tableView reloadData]; // Force update and resize of section header view.
 }
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
 	self.scriptTextView.text = self.topic.filterScript;
-	self.statusMessage = [NSString stringWithFormat:@"Edit filter script for topic “%@”", self.topic.name];
+	self.statusMessage = [NSString stringWithFormat:@"Filter the content of all messages with the topic %@", self.topic.name];
 	
 	UINib *nib = [UINib nibWithNibName:@"ScriptViewSectionHeader" bundle:nil];
 	[self.tableView registerNib:nib forHeaderFooterViewReuseIdentifier:@"IDScriptViewSectionHeader"];
