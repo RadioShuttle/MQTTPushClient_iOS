@@ -116,11 +116,15 @@
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView {
-	[self scrollToInsertionPointOf:self.scriptTextView];
+	[self scrollToInsertionPointOf:textView];
 }
 
 - (void)keyboardNotification:(NSNotification*)notification {
-	[self scrollToInsertionPointOf:self.scriptTextView];
+	if (self.scriptTextView.isFirstResponder) {
+		[self scrollToInsertionPointOf:self.scriptTextView];
+	} else if (self.testMessageTextView.isFirstResponder) {
+		[self scrollToInsertionPointOf:self.testMessageTextView];
+	}
 }
 
 // Scroll table view – if necessary – to make the current insertion point
