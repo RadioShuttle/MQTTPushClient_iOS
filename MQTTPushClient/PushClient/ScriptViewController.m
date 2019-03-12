@@ -37,12 +37,10 @@
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
 	NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
 	if (filtered)
-		self.statusMessage = filtered;
+		self.statusMessage = [filtered stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 	else
 		self.statusMessage = error.localizedDescription;
-	
-	ScriptViewSectionHeader *header = (ScriptViewSectionHeader *)[self.tableView headerViewForSection:0];
-	header.statusLabel.text = self.statusMessage;
+	[self.tableView reloadData]; // Force update and resize of section header view.
 }
 
 - (void)viewDidLoad {
@@ -70,8 +68,12 @@
 												  object:nil];
 }
 
+- (CGFloat)tableView:(UITableView *)tableView estimatedHeightForHeaderInSection:(NSInteger)section {
+	return 20.0;
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-	return 60.0;
+	return UITableViewAutomaticDimension;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
