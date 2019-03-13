@@ -76,7 +76,7 @@
 		}
 		if (self.topic)
 			[connection updateTopicForAccount:self.account name:topicName type:type
-								 filterScript:self.topic.filterScript];
+								 filterScript:self.topic.filterScriptEdited];
 		else
 			[connection addTopicForAccount:self.account name:topicName type:type
 							  filterScript:@""];
