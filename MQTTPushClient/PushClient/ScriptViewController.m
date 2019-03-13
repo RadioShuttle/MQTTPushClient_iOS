@@ -47,7 +47,7 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.scriptTextView.text = self.topic.filterScript;
+	self.scriptTextView.text = self.topic.filterScriptEdited;
 	self.statusMessage = [NSString stringWithFormat:@"Filter the content of all messages with the topic %@", self.topic.name];
 	
 	UINib *nib = [UINib nibWithNibName:@"ScriptViewSectionHeader" bundle:nil];
@@ -70,6 +70,7 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:UIKeyboardDidShowNotification
 												  object:nil];
+	self.topic.filterScriptEdited = self.scriptTextView.text;
 }
 
 - (void)setTestMessage {

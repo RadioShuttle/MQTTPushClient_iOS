@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Alignment constraints to the first baseline" minToolsVersion="6.0"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -300,9 +302,18 @@
                                                         <segue destination="BfJ-6F-BiQ" kind="show" id="My1-7v-0mK"/>
                                                     </connections>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Modified" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aHn-GX-yuM">
+                                                    <rect key="frame" x="292" y="197" width="67" height="21"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <color key="textColor" red="1" green="0.14913141730000001" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="aHn-GX-yuM" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="ncR-mI-a7n" secondAttribute="leading" id="25e-Ac-ni0"/>
+                                                <constraint firstAttribute="trailing" secondItem="aHn-GX-yuM" secondAttribute="trailing" constant="16" id="2cB-0V-dRU"/>
                                                 <constraint firstItem="GNs-ak-LHO" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="64" id="APC-AH-PbL"/>
+                                                <constraint firstAttribute="bottom" secondItem="aHn-GX-yuM" secondAttribute="bottom" constant="196" id="APd-8G-mEX"/>
                                                 <constraint firstItem="C39-c2-fvT" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="141" id="Ajl-pH-7Sa"/>
                                                 <constraint firstAttribute="trailing" secondItem="4cU-FZ-RUo" secondAttribute="trailing" constant="15" id="Iho-oo-6Je"/>
                                                 <constraint firstItem="RRl-5g-49p" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="191" id="J2c-0s-RWI"/>
@@ -312,6 +323,7 @@
                                                 <constraint firstItem="4cU-FZ-RUo" firstAttribute="leading" secondItem="Rpj-dg-Tmq" secondAttribute="trailing" constant="10" id="Rfw-NF-gYo"/>
                                                 <constraint firstItem="pl8-Ve-Xhz" firstAttribute="trailing" secondItem="ncR-mI-a7n" secondAttribute="trailingMargin" id="S8M-gG-4z6"/>
                                                 <constraint firstItem="RRl-5g-49p" firstAttribute="leading" secondItem="851-6n-Vfz" secondAttribute="trailing" constant="20" id="T3G-O7-yGI"/>
+                                                <constraint firstItem="aHn-GX-yuM" firstAttribute="top" secondItem="ncR-mI-a7n" secondAttribute="top" constant="197" id="Y0c-2R-dT7"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="C39-c2-fvT" secondAttribute="trailing" id="d7w-fH-Thj"/>
                                                 <constraint firstItem="Rpj-dg-Tmq" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leadingMargin" id="dO6-ho-bxs"/>
                                                 <constraint firstItem="GNs-ak-LHO" firstAttribute="leading" secondItem="ncR-mI-a7n" secondAttribute="leadingMargin" id="daw-Lm-UJj"/>
@@ -343,6 +355,7 @@
                         <outlet property="filterButton" destination="RRl-5g-49p" id="FBH-iw-6Uo"/>
                         <outlet property="notificationTypeLabel" destination="4cU-FZ-RUo" id="bgG-Ag-U12"/>
                         <outlet property="notificationTypeSegmentedControl" destination="C39-c2-fvT" id="jd0-W3-50a"/>
+                        <outlet property="scriptModifiedLabel" destination="aHn-GX-yuM" id="cRt-H4-6Wj"/>
                         <outlet property="subscribeBarButtonItem" destination="hrg-PE-ymE" id="9Ks-ww-7bM"/>
                         <outlet property="topicTextField" destination="GNs-ak-LHO" id="IL7-pz-gzQ"/>
                         <outlet property="topicTitleLabel" destination="pl8-Ve-Xhz" id="qfi-QL-lhB"/>
@@ -797,13 +810,13 @@
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No actions defined" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GQy-k1-x9B">
-                                    <rect key="frame" x="8" y="28" width="359" height="24"/>
+                                    <rect key="frame" x="8" y="8" width="359" height="24"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To define actions, navigate into the server account edit mode and tap on MQTT Actions." lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Gh-H3-WRE">
-                                    <rect key="frame" x="28" y="68" width="319" height="61"/>
+                                    <rect key="frame" x="28" y="48" width="319" height="61"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>

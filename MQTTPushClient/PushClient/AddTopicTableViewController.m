@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *notificationTypeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *notificationTypeSegmentedControl;
 @property (weak, nonatomic) IBOutlet UIButton *filterButton;
+@property (weak, nonatomic) IBOutlet UILabel *scriptModifiedLabel;
 
 @end
 
@@ -85,6 +86,7 @@
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
+	self.scriptModifiedLabel.hidden = YES;
 	if (self.topic) {
 		self.subscribeBarButtonItem.enabled = YES;
 		self.topicTitleLabel.text = @"Topic:";
@@ -114,10 +116,22 @@
 		self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
 		self.notificationTypeLabel.text = @"Banner";
 	}
-	if (self.topic.filterScript.length)
-		[self.filterButton setTitle:@"Edit" forState:UIControlStateNormal];
-	else
-		[self.filterButton setTitle:@"Add" forState:UIControlStateNormal];
+	self.filterButton.hidden = YES;
+	if (self.topic) {
+		self.filterButton.hidden = NO;
+		if (self.topic.filterScript.length)
+			[self.filterButton setTitle:@"Edit" forState:UIControlStateNormal];
+		else
+			[self.filterButton setTitle:@"Add" forState:UIControlStateNormal];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if (self.topic) {
+		if (![self.topic.filterScriptEdited isEqualToString:self.topic.filterScript])
+			self.scriptModifiedLabel.hidden = NO;
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
