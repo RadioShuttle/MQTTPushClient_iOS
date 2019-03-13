@@ -24,34 +24,34 @@
 }
 
 - (nullable NSString *)filterMsg:(NSDictionary *)msg acc:(NSDictionary *)acc error:(NSError * _Nullable *)error {
-	__block NSString *text = @"";
-	__block NSError *scriptError = nil;
+
+	// Execute JavaScript on background queue:
 	dispatch_group_t group = dispatch_group_create();
 	dispatch_queue_t background = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+	JSContext *context = [[JSContext alloc] init];
+	__block JSValue *value = nil;
 	dispatch_group_async(group, background, ^{
-		__block BOOL exception = NO;
-		JSContext *context = [[JSContext alloc] init];
-		[context setExceptionHandler:^(JSContext *context, JSValue *value) {
-			text = value.toString;
-			exception = YES;
-		}];
 		[context evaluateScript:self.script];
 		JSValue *function = [context objectForKeyedSubscript:@"filter"];
-		JSValue *value = [function callWithArguments:@[msg, acc]];
-		if (exception) {
-			scriptError = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28190 userInfo:@{NSLocalizedDescriptionKey:text}];
-			text = nil;
-		} else
-			text = value.toString;
+		value = [function callWithArguments:@[msg, acc]];
 	});
-	uint64_t timeout = dispatch_time( DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC); // in nano seconds
+
+	// Wait for script to finish (0.5 second timeout):
+	dispatch_time_t timeout = dispatch_time(DISPATCH_TIME_NOW, 0.5 * NSEC_PER_SEC);
 	long result = dispatch_group_wait(group, timeout);
-	if (result > 0) {
-		scriptError = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28191 userInfo:@{NSLocalizedDescriptionKey:@"timeout"}];
-		text = nil;
+
+	// Return error or result:
+	if (context.exception) {
+		*error = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28190
+										userInfo:@{NSLocalizedDescriptionKey:context.exception.toString}];
+		return nil;
+	} else if (result > 0) {
+		*error = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28191
+										userInfo:@{NSLocalizedDescriptionKey:@"timeout"}];
+		return nil;
+	} else {
+		return value.toString;
 	}
-	*error = scriptError;
-	return text;
 }
 
 @end
