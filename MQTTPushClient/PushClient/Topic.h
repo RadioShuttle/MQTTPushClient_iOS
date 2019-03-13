@@ -18,5 +18,6 @@ enum NotificationType {
 @property(copy) NSString *name;
 @property enum NotificationType type;
 @property(copy) NSString *filterScript;
+@property(copy) NSString *filterScriptEdited;
 
 @end
