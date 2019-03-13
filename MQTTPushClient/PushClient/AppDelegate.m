@@ -18,7 +18,7 @@
 
 @interface AppDelegate () <UNUserNotificationCenterDelegate, FIRMessagingDelegate, NotificationQueueDelegate>
 
-@property(nullable) NSData *deviceToken;
+@property(nullable, copy) NSData *deviceToken;
 @property NotificationQueue *notificationQueue;
 
 @end

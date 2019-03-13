@@ -16,7 +16,7 @@ static NSString *kPrefkeyData = @"ExceptionData";
 static NSString *kPrefkeyExpires = @"ExpireDate";
 
 @interface CertException : NSObject
-@property NSData *exception;
+@property(copy) NSData *exception;
 @property NSDate *expires;
 @end
 

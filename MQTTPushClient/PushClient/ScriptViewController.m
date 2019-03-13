@@ -20,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *scriptTextView;
 @property (weak, nonatomic) IBOutlet UITextView *testMessageTextView;
 
-@property NSString *statusMessage;
+@property(copy) NSString *statusMessage;
 
 @end
 

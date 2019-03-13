@@ -20,10 +20,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property(readonly) NSString *mqttUser;
 @property(readonly) BOOL mqttSecureTransport;
 @property(readonly) NSString *uuid;
-@property(nullable) NSString *pushServerID;
+@property(nullable, copy) NSString *pushServerID;
 
 // Stored in Keychain:
-@property(nullable) NSString *mqttPassword;
+@property(nullable, copy) NSString *mqttPassword;
 
 @property(readonly) NSString *mqttURI;
 @property(readonly) NSString *accountID; // As sent by the server

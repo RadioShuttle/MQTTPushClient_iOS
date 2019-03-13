@@ -9,7 +9,7 @@
 
 @interface JavaScriptFilter()
 
-@property NSString *script;
+@property(copy) NSString *script;
 
 @end
 
