@@ -18,7 +18,7 @@
 - (instancetype)initWithScript:(NSString *)filterScript {
 	self = [super init];
 	if (self) {
-		_script = [NSString stringWithFormat:@"var filter = function(msg, acc) {\nvar content = msg.text\n%@\nreturn content;\n}\n", filterScript];
+		_script = [NSString stringWithFormat:@"var filterMsg = function(msg, acc) {\nvar content = msg.text\n%@\nreturn content;\n}\n", filterScript];
 	}
 	return self;
 }
@@ -32,7 +32,7 @@
 	__block JSValue *value = nil;
 	dispatch_group_async(group, background, ^{
 		[context evaluateScript:self.script];
-		JSValue *function = [context objectForKeyedSubscript:@"filter"];
+		JSValue *function = context[@"filterMsg"];
 		value = [function callWithArguments:@[msg, acc]];
 	});
 
