@@ -298,6 +298,7 @@ enum ConnectionState {
 	NSDate *syncTimestamp = account.cdaccount.syncTimestamp;
 	int32_t syncMessageID = account.cdaccount.syncMessageID;
 	dispatch_async(self.serialQueue, ^{
+		[self getTopicsAsync:account];
 		[self getMessagesAsync:account syncTimestamp:syncTimestamp syncMessageID:syncMessageID];
 	});
 }
