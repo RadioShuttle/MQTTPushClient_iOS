@@ -31,6 +31,7 @@
 
 - (IBAction)saveAction:(UIBarButtonItem *)sender {
 	Connection *connection = [[Connection alloc] init];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
 	if (self.action) {
 		self.action.topic = self.topicTextField.text;
 		self.action.content = self.contentTextField.text;
@@ -48,7 +49,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
 	self.saveBarButtonItem.enabled = NO;
 	if (self.action) {
 		self.nameTextField.text = self.action.name;
