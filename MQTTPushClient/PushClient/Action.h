@@ -8,9 +8,9 @@
 
 @interface Action : NSObject
 
-@property NSString *name;
-@property NSString *topic;
-@property NSString *content;
+@property(copy) NSString *name;
+@property(copy) NSString *topic;
+@property(copy) NSString *content;
 @property BOOL retainFlag;
 
 @end

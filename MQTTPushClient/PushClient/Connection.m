@@ -155,7 +155,6 @@ enum ConnectionState {
 			p += 2;
 			topic.filterScript = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
-			TRACE(@"%ld, %@, %@", p - (unsigned char *)command.rawCmd.data.bytes, topic.name, topic.filterScript);
 			[topicList addObject:topic];
 		}
 		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name"
@@ -299,6 +298,7 @@ enum ConnectionState {
 	NSDate *syncTimestamp = account.cdaccount.syncTimestamp;
 	int32_t syncMessageID = account.cdaccount.syncMessageID;
 	dispatch_async(self.serialQueue, ^{
+		[self getTopicsAsync:account];
 		[self getMessagesAsync:account syncTimestamp:syncTimestamp syncMessageID:syncMessageID];
 	});
 }

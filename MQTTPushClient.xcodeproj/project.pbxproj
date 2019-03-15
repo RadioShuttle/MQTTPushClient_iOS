@@ -15,6 +15,7 @@
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
 		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
+		2AD33526222ECB80004C9584 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */; };
 		2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAB1882181DE3200EBDC4D /* Topic.m */; };
 		2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE456213D7515000664D3 /* AppDelegate.m */; };
 		2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45B213D7515000664D3 /* Main.storyboard */; };
@@ -29,8 +30,10 @@
 		2AE609142146B3EF004F30B2 /* Connection.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE609132146B3EF004F30B2 /* Connection.m */; };
 		2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AE87DBD214AA9AB0057935D /* FCMData.m */; };
 		2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */; };
+		2AEB225C2237E959008E2BC0 /* JavaScriptFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEB225B2237E959008E2BC0 /* JavaScriptFilter.m */; };
 		2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEC5FCB214011890097D99A /* MessageListTableViewController.m */; };
 		2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */; };
+		2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AFBCDC9222D29A50070C98C /* ScriptViewController.m */; };
 		84095D0721903E8300CFC1DB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 84095D0621903E8300CFC1DB /* Message.m */; };
 		84095D0821903E8E00CFC1DB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 84095D0621903E8300CFC1DB /* Message.m */; };
 		84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = 84095D092190827300CFC1DB /* ca-certificate.der */; };
@@ -46,6 +49,8 @@
 		847874EE2177777B0059881B /* KeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EB2177777B0059881B /* KeychainUtils.m */; };
 		847874F2217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
 		847874F3217865700059881B /* SharedConstants.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874F1217865700059881B /* SharedConstants.m */; };
+		84A7CFD32238003100E17D03 /* ScriptViewSectionHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 84A7CFD22238003100E17D03 /* ScriptViewSectionHeader.m */; };
+		84A7CFD52238006900E17D03 /* ScriptViewSectionHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = 84A7CFD42238006900E17D03 /* ScriptViewSectionHeader.xib */; };
 		84B045602181DB8100C261F8 /* MessageDataHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADFE5672166286600FB19E4 /* MessageDataHandler.m */; };
 		84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 84B49944217F595E0016F9CB /* MQTT.xcdatamodeld */; };
 		84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */; };
@@ -55,6 +60,13 @@
 		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
 		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */; };
+		84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B46E2232950F00197005 /* ExampleJSON.js */; };
+		84F4B4712232955F00197005 /* ExampleSplit.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4702232955F00197005 /* ExampleSplit.js */; };
+		84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4722232962700197005 /* ExampleRegularExpression.js */; };
+		84F4B4752232966100197005 /* ExampleBinary.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4742232966100197005 /* ExampleBinary.js */; };
+		84F4B477223296C900197005 /* ExampleHexdump.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B476223296C900197005 /* ExampleHexdump.js */; };
+		84F4B47A2232AFB800197005 /* ScriptListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 84F4B4792232AFB800197005 /* ScriptListTableViewController.m */; };
+		84F4B47E2232BC5D00197005 /* ExampleScripts.plist in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B47D2232BC5D00197005 /* ExampleScripts.plist */; };
 		A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */; };
 /* End PBXBuildFile section */
 
@@ -100,6 +112,7 @@
 		2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewController.m; sourceTree = "<group>"; };
 		2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
 		2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
+		2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		2ADAB1872181DE3200EBDC4D /* Topic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Topic.h; sourceTree = "<group>"; };
 		2ADAB1882181DE3200EBDC4D /* Topic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Topic.m; sourceTree = "<group>"; };
 		2ADBE452213D7515000664D3 /* MQTTPushClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQTTPushClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -127,10 +140,14 @@
 		2AE87DBD214AA9AB0057935D /* FCMData.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FCMData.m; sourceTree = "<group>"; };
 		2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerListTableViewCell.h; sourceTree = "<group>"; };
 		2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerListTableViewCell.m; sourceTree = "<group>"; };
+		2AEB225A2237E959008E2BC0 /* JavaScriptFilter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JavaScriptFilter.h; sourceTree = "<group>"; };
+		2AEB225B2237E959008E2BC0 /* JavaScriptFilter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = JavaScriptFilter.m; sourceTree = "<group>"; };
 		2AEC5FCA214011890097D99A /* MessageListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageListTableViewController.h; sourceTree = "<group>"; };
 		2AEC5FCB214011890097D99A /* MessageListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageListTableViewController.m; sourceTree = "<group>"; };
 		2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ServerSetupTableViewController.h; sourceTree = "<group>"; };
 		2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ServerSetupTableViewController.m; sourceTree = "<group>"; };
+		2AFBCDC8222D29A50070C98C /* ScriptViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScriptViewController.h; sourceTree = "<group>"; };
+		2AFBCDC9222D29A50070C98C /* ScriptViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScriptViewController.m; sourceTree = "<group>"; };
 		84095D0521903E8300CFC1DB /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		84095D0621903E8300CFC1DB /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		84095D092190827300CFC1DB /* ca-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ca-certificate.der"; sourceTree = "<group>"; };
@@ -152,6 +169,9 @@
 		847874EB2177777B0059881B /* KeychainUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainUtils.m; sourceTree = "<group>"; };
 		847874F1217865700059881B /* SharedConstants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SharedConstants.m; sourceTree = "<group>"; };
 		847874F42178658F0059881B /* SharedConstants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SharedConstants.h; sourceTree = "<group>"; };
+		84A7CFD12238003100E17D03 /* ScriptViewSectionHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScriptViewSectionHeader.h; sourceTree = "<group>"; };
+		84A7CFD22238003100E17D03 /* ScriptViewSectionHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScriptViewSectionHeader.m; sourceTree = "<group>"; };
+		84A7CFD42238006900E17D03 /* ScriptViewSectionHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ScriptViewSectionHeader.xib; sourceTree = "<group>"; };
 		84B49945217F595E0016F9CB /* MQTT.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = MQTT.xcdatamodel; sourceTree = "<group>"; };
 		84B49948217F5B720016F9CB /* CDMessage+CoreDataClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CDMessage+CoreDataClass.h"; sourceTree = "<group>"; };
 		84B49949217F5B720016F9CB /* CDMessage+CoreDataClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CDMessage+CoreDataClass.m"; sourceTree = "<group>"; };
@@ -169,6 +189,14 @@
 		84B9EDD22175E120001A9D7D /* MQTTPushClientServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClientServiceExtension.entitlements; sourceTree = "<group>"; };
 		84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrustHandler.h; sourceTree = "<group>"; };
 		84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrustHandler.m; sourceTree = "<group>"; };
+		84F4B46E2232950F00197005 /* ExampleJSON.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleJSON.js; sourceTree = "<group>"; };
+		84F4B4702232955F00197005 /* ExampleSplit.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleSplit.js; sourceTree = "<group>"; };
+		84F4B4722232962700197005 /* ExampleRegularExpression.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleRegularExpression.js; sourceTree = "<group>"; };
+		84F4B4742232966100197005 /* ExampleBinary.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleBinary.js; sourceTree = "<group>"; };
+		84F4B476223296C900197005 /* ExampleHexdump.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleHexdump.js; sourceTree = "<group>"; };
+		84F4B4782232AFB800197005 /* ScriptListTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScriptListTableViewController.h; sourceTree = "<group>"; };
+		84F4B4792232AFB800197005 /* ScriptListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ScriptListTableViewController.m; sourceTree = "<group>"; };
+		84F4B47D2232BC5D00197005 /* ExampleScripts.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = ExampleScripts.plist; sourceTree = "<group>"; };
 		C07E3CADB1D42083AAE9B1D7 /* Pods-MQTTPushClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.debug.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.debug.xcconfig"; sourceTree = "<group>"; };
 		E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MQTTPushClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -178,6 +206,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2AD33526222ECB80004C9584 /* JavaScriptCore.framework in Frameworks */,
 				A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -195,8 +224,6 @@
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
-				843E778521B9634A0071A6E8 /* UIAlertController+Window.h */,
-				843E778621B9634A0071A6E8 /* UIAlertController+Window.m */,
 				2AE56979219481D30037FE30 /* AboutTableViewController.h */,
 				2AE5697A219481D30037FE30 /* AboutTableViewController.m */,
 				847874E0217760F00059881B /* Account.h */,
@@ -221,6 +248,8 @@
 				2AE87DBD214AA9AB0057935D /* FCMData.m */,
 				2A2859CD2142A02800CFA5DC /* GCDAsyncSocket.h */,
 				2A2859CC2142A02800CFA5DC /* GCDAsyncSocket.m */,
+				2AEB225A2237E959008E2BC0 /* JavaScriptFilter.h */,
+				2AEB225B2237E959008E2BC0 /* JavaScriptFilter.m */,
 				847874E92177777B0059881B /* KeychainUtils.h */,
 				847874EB2177777B0059881B /* KeychainUtils.m */,
 				2AEC5FCA214011890097D99A /* MessageListTableViewController.h */,
@@ -229,12 +258,18 @@
 				2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */,
 				2A197D812195810300CDF015 /* PrivacyPolicyTableViewController.h */,
 				2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */,
+				84F4B4782232AFB800197005 /* ScriptListTableViewController.h */,
+				84F4B4792232AFB800197005 /* ScriptListTableViewController.m */,
+				2AFBCDC8222D29A50070C98C /* ScriptViewController.h */,
+				2AFBCDC9222D29A50070C98C /* ScriptViewController.m */,
 				2AEAF63E21634F23001528E6 /* ServerListTableViewCell.h */,
 				2AEAF63F21634F23001528E6 /* ServerListTableViewCell.m */,
 				2A7DFF83213EAF6E001B1546 /* ServerListTableViewController.h */,
 				2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */,
 				2AF2BE60213FCC45009B57C7 /* ServerSetupTableViewController.h */,
 				2AF2BE61213FCC45009B57C7 /* ServerSetupTableViewController.m */,
+				843D35E42227EDBD00251D31 /* TokenManager.h */,
+				843D35E52227EDBD00251D31 /* TokenManager.m */,
 				2ADAB1872181DE3200EBDC4D /* Topic.h */,
 				2ADAB1882181DE3200EBDC4D /* Topic.m */,
 				2A02D7FB218B4EFA005E6934 /* TopicsListTableViewCell.h */,
@@ -243,10 +278,13 @@
 				2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */,
 				84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */,
 				84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */,
+				843E778521B9634A0071A6E8 /* UIAlertController+Window.h */,
+				843E778621B9634A0071A6E8 /* UIAlertController+Window.m */,
 				843BE3C3221D4C370039EF7C /* Utils.h */,
 				843BE3C4221D4C370039EF7C /* Utils.m */,
-				843D35E42227EDBD00251D31 /* TokenManager.h */,
-				843D35E52227EDBD00251D31 /* TokenManager.m */,
+				84A7CFD12238003100E17D03 /* ScriptViewSectionHeader.h */,
+				84A7CFD22238003100E17D03 /* ScriptViewSectionHeader.m */,
+				84A7CFD42238006900E17D03 /* ScriptViewSectionHeader.xib */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -277,6 +315,7 @@
 		2ADBE454213D7515000664D3 /* MQTTPushClient */ = {
 			isa = PBXGroup;
 			children = (
+				84F4B46D223294C100197005 /* Scripts */,
 				84095D092190827300CFC1DB /* ca-certificate.der */,
 				2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */,
 				2ADBE45E213D7516000664D3 /* Assets.xcassets */,
@@ -343,9 +382,23 @@
 			path = MQTTPushClientServiceExtension;
 			sourceTree = "<group>";
 		};
+		84F4B46D223294C100197005 /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				84F4B46E2232950F00197005 /* ExampleJSON.js */,
+				84F4B4722232962700197005 /* ExampleRegularExpression.js */,
+				84F4B4702232955F00197005 /* ExampleSplit.js */,
+				84F4B4742232966100197005 /* ExampleBinary.js */,
+				84F4B476223296C900197005 /* ExampleHexdump.js */,
+				84F4B47D2232BC5D00197005 /* ExampleScripts.plist */,
+			);
+			path = Scripts;
+			sourceTree = "<group>";
+		};
 		E4A46935F60EFDA587278ECF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */,
 				E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */,
 			);
 			name = Frameworks;
@@ -449,8 +502,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */,
+				84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
+				84A7CFD52238006900E17D03 /* ScriptViewSectionHeader.xib in Resources */,
+				84F4B477223296C900197005 /* ExampleHexdump.js in Resources */,
+				84F4B4752232966100197005 /* ExampleBinary.js in Resources */,
+				84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */,
+				84F4B4712232955F00197005 /* ExampleSplit.js in Resources */,
+				84F4B47E2232BC5D00197005 /* ExampleScripts.plist in Resources */,
 				84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,6 +551,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
+				2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */,
 				847874E2217760F00059881B /* Account.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
@@ -498,6 +559,7 @@
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
 				843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */,
 				84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */,
+				84A7CFD32238003100E17D03 /* ScriptViewSectionHeader.m in Sources */,
 				2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */,
 				2AEC5FCC214011890097D99A /* MessageListTableViewController.m in Sources */,
 				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
@@ -507,6 +569,7 @@
 				84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
 				847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
+				2AEB225C2237E959008E2BC0 /* JavaScriptFilter.m in Sources */,
 				843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */,
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
@@ -521,6 +584,7 @@
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
 				2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */,
+				84F4B47A2232AFB800197005 /* ScriptListTableViewController.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,
 				84B49952217F5B720016F9CB /* CDAccount+CoreDataClass.m in Sources */,
 				2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */,

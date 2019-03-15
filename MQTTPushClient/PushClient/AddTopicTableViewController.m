@@ -7,6 +7,7 @@
 #import "Account.h"
 #import "Connection.h"
 #import "Topic.h"
+#import "ScriptViewController.h"
 #import "AddTopicTableViewController.h"
 
 @interface AddTopicTableViewController ()
@@ -16,6 +17,8 @@
 @property (weak, nonatomic) IBOutlet UITextField *topicTextField;
 @property (weak, nonatomic) IBOutlet UILabel *notificationTypeLabel;
 @property (weak, nonatomic) IBOutlet UISegmentedControl *notificationTypeSegmentedControl;
+@property (weak, nonatomic) IBOutlet UIButton *filterButton;
+@property (weak, nonatomic) IBOutlet UILabel *scriptModifiedLabel;
 
 @end
 
@@ -74,15 +77,25 @@
 		}
 		if (self.topic)
 			[connection updateTopicForAccount:self.account name:topicName type:type
-								 filterScript:self.topic.filterScript];
+								 filterScript:self.topic.filterScriptEdited];
 		else
 			[connection addTopicForAccount:self.account name:topicName type:type
 							  filterScript:@""];
 	}
 }
 
+- (void)goBack:(id)sender {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Script has not been saved" message:@"Discard changes?" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction *discardAction = [UIAlertAction actionWithTitle:@"Discard" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self.navigationController popViewControllerAnimated:YES];}];
+	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+	[alert addAction:discardAction];
+	[alert addAction:cancelAction];
+	[self presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+	self.scriptModifiedLabel.hidden = YES;
 	if (self.topic) {
 		self.subscribeBarButtonItem.enabled = YES;
 		self.topicTitleLabel.text = @"Topic:";
@@ -112,6 +125,25 @@
 		self.notificationTypeSegmentedControl.selectedSegmentIndex = 2;
 		self.notificationTypeLabel.text = @"Banner";
 	}
+	self.filterButton.hidden = YES;
+	if (self.topic) {
+		self.filterButton.hidden = NO;
+		if (self.topic.filterScript.length)
+			[self.filterButton setTitle:@"Edit" forState:UIControlStateNormal];
+		else
+			[self.filterButton setTitle:@"Add" forState:UIControlStateNormal];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if (self.topic) {
+		if (![self.topic.filterScriptEdited isEqualToString:self.topic.filterScript]) {
+			self.scriptModifiedLabel.hidden = NO;
+			UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(goBack:)];
+			self.navigationItem.leftBarButtonItem = backButton;
+		}
+	}
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -125,5 +157,14 @@
 	[textField resignFirstResponder];
 	return YES;
 }
+
+#pragma mark - navigation
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	ScriptViewController *controller = segue.destinationViewController;
+	controller.topic = self.topic;
+	controller.account = self.account;
+}
+
 
 @end

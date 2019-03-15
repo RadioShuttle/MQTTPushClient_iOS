@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>label</key>
+		<string>JSON</string>
+		<key>script</key>
+		<string>ExampleJSON.js</string>
+	</dict>
+	<dict>
+		<key>label</key>
+		<string>Split</string>
+		<key>script</key>
+		<string>ExampleSplit.js</string>
+	</dict>
+	<dict>
+		<key>label</key>
+		<string>Regular Expression</string>
+		<key>script</key>
+		<string>ExampleRegularExpression.js</string>
+	</dict>
+	<dict>
+		<key>label</key>
+		<string>Binary</string>
+		<key>script</key>
+		<string>ExampleBinary.js</string>
+	</dict>
+	<dict>
+		<key>label</key>
+		<string>Hexdump</string>
+		<key>script</key>
+		<string>ExampleHexdump.js</string>
+	</dict>
+</array>
+</plist>

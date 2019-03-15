@@ -8,8 +8,8 @@
 
 @interface FCMData : NSObject
 
-@property NSString *app_id;
-@property NSString *sender_id;
-@property NSString *pushserverid;
+@property(copy) NSString *app_id;
+@property(copy) NSString *sender_id;
+@property(copy) NSString *pushserverid;
 
 @end
