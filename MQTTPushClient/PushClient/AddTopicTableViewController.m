@@ -83,6 +83,15 @@
 	}
 }
 
+- (void)goBack:(id)sender {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Script has not been saved" message:@"Discard changes?" preferredStyle:UIAlertControllerStyleAlert];
+	UIAlertAction *discardAction = [UIAlertAction actionWithTitle:@"Discard" style:UIAlertActionStyleDestructive handler:^(UIAlertAction *action) {[self.navigationController popViewControllerAnimated:YES];}];
+	UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {}];
+	[alert addAction:discardAction];
+	[alert addAction:cancelAction];
+	[self presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
@@ -129,8 +138,11 @@
 - (void)viewDidAppear:(BOOL)animated {
 	[super viewDidAppear:animated];
 	if (self.topic) {
-		if (![self.topic.filterScriptEdited isEqualToString:self.topic.filterScript])
+		if (![self.topic.filterScriptEdited isEqualToString:self.topic.filterScript]) {
 			self.scriptModifiedLabel.hidden = NO;
+			UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:@selector(goBack:)];
+			self.navigationItem.leftBarButtonItem = backButton;
+		}
 	}
 }
 
