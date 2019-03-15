@@ -56,6 +56,7 @@
 	NSString *topicName = self.topicTextField.text;
 	if (topicName.length) {
 		Connection *connection = [[Connection alloc] init];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
 		enum NotificationType type = NotificationDisabled;
 		switch (self.notificationTypeSegmentedControl.selectedSegmentIndex) {
 			case 3:
@@ -82,7 +83,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getResult:) name:@"ServerUpdateNotification" object:nil];
 	if (self.topic) {
 		self.subscribeBarButtonItem.enabled = YES;
 		self.topicTitleLabel.text = @"Topic:";
