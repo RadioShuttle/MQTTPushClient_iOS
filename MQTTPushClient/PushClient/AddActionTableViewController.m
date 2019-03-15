@@ -32,6 +32,9 @@
 - (IBAction)saveAction:(UIBarButtonItem *)sender {
 	Connection *connection = [[Connection alloc] init];
 	if (self.action) {
+		self.action.topic = self.topicTextField.text;
+		self.action.content = self.contentTextField.text;
+		self.action.retainFlag = self.retainSwitch.on;
 		[connection updateActionForAccount:self.account action:self.action name:self.nameTextField.text];
 	} else {
 		Action *action = [[Action alloc] init];
@@ -52,9 +55,6 @@
 		self.topicTextField.text = self.action.topic;
 		self.contentTextField.text = self.action.content;
 		self.retainSwitch.on = self.action.retainFlag;
-		self.topicTextField.enabled = NO;
-		self.contentTextField.enabled = NO;
-		self.retainSwitch.enabled = NO;
 	}
 }
 
