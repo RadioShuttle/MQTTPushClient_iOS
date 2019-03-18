@@ -48,8 +48,7 @@
 	[self.tableView reloadData]; // Force update and resize of section header view.
 }
 
-- (void)viewDidLoad {
-	[super viewDidLoad];
+- (void)updateDynamicType {
 	UIFontDescriptor *fontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCaption1];
 	UIFont *courier = [UIFont fontWithName:@"courier" size:fontDescriptor.pointSize];
 	self.functionMsgLabel.font = courier;
@@ -60,6 +59,11 @@
 	self.functionReturnLabel.adjustsFontForContentSizeCategory = YES;
 	self.testMsgLabel.font = courier;
 	self.testMsgLabel.adjustsFontForContentSizeCategory = YES;
+}
+
+- (void)viewDidLoad {
+	[super viewDidLoad];
+	[self updateDynamicType];
 	self.scriptTextView.text = self.topic.filterScriptEdited;
 	self.statusMessage = [NSString stringWithFormat:@"Filter the content of all messages with the topic %@", self.topic.name];
 	
@@ -76,13 +80,15 @@
 											 selector:@selector(keyboardNotification:)
 												 name:UIKeyboardDidShowNotification
 											   object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self
+											 selector:@selector(updateDynamicType)
+												 name:UIContentSizeCategoryDidChangeNotification
+											   object:nil];
 }
 
 - (void)viewDidDisappear:(BOOL)animated {
 	[super viewDidDisappear:animated];
-	[[NSNotificationCenter defaultCenter] removeObserver:self
-													name:UIKeyboardDidShowNotification
-												  object:nil];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	self.topic.filterScriptEdited = self.scriptTextView.text;
 }
 
