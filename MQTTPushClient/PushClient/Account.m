@@ -11,6 +11,7 @@
 #import "SharedConstants.h"
 #import "NSDictionary+HelSafeAccessors.h"
 #import "Message.h"
+#import "Topic.h"
 #include <sys/stat.h>    // for mkdir()
 
 static NSString *kPrefkeyHost = @"pushserver.host";
@@ -193,6 +194,15 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	} else {
 		return [NSString stringWithFormat:@"%@:%d", self.mqttHost, self.mqttPort];
 	}
+}
+
+- (nullable Topic *)topicWithName:(NSString *)topicName {
+	for (Topic *topic in self.topicList) {
+		if ([topic.name isEqualToString:topicName]) {
+			return topic;
+		}
+	}
+	return nil;
 }
 
 #pragma mark - Local helper methods

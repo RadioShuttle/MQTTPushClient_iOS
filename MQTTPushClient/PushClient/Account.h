@@ -12,6 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@class Topic, Action;
+
 @interface Account : NSObject
 
 @property(readonly) NSString *host;		// host:port
@@ -31,8 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Runtime properties which are stored in memory only:
 @property (readonly) NSURL *cacheURL; // Cache directory for this account
-@property NSMutableArray *topicList;
-@property NSMutableArray *actionList;
+@property NSMutableArray<Topic *> *topicList;
+@property NSMutableArray<Action *> *actionList;
 @property(nullable) NSError *error;
 @property BOOL secureTransportToPushServer;
 @property NSDate *secureTransportToPushServerDateSet; // Date when the above property was set to NO
@@ -61,6 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
 // Reading from and writing to user defaults:
 + (nullable instancetype)accountFromUserDefaultsDict:(NSDictionary *)dict;
 - (NSDictionary *)userDefaultsDict;
+
+- (nullable Topic *)topicWithName:(NSString *)topicName;
 
 @end
 
