@@ -81,7 +81,7 @@
 												 name:UIKeyboardDidShowNotification
 											   object:nil];
 	[[NSNotificationCenter defaultCenter] addObserver:self
-											 selector:@selector(updateDynamicType)
+											 selector:@selector(contentSizeCategoryDidChangeNotification:)
 												 name:UIContentSizeCategoryDidChangeNotification
 											   object:nil];
 }
@@ -145,6 +145,10 @@
 	} else if (self.testMessageTextView.isFirstResponder) {
 		[self scrollToInsertionPointOf:self.testMessageTextView];
 	}
+}
+
+- (void)contentSizeCategoryDidChangeNotification:(NSNotification*)notification {
+	[self updateDynamicType];
 }
 
 // Scroll table view – if necessary – to make the current insertion point
