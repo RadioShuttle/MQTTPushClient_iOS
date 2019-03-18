@@ -151,24 +151,22 @@
 	NSString *msg = [Message msgFromData:cdmessage.content];
 	cell.dateLabel.text = text;
 	if (!self.javaScriptTimedOut) {
-		for (Topic *topic in self.account.topicList) {
-			if ([topic.name isEqualToString:topicName]) {
-				NSError *error = nil;
-				char *bytes = (char *)[cdmessage.content bytes];
-				NSUInteger n = cdmessage.content.length;
-				NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
-				for (int i = 0; i < n; i++)
-					raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
-				NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":topic.name, @"receivedDate":cdmessage.timestamp};
-				NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-				JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];
-				NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
-				if (filtered)
-					msg = filtered;
-				else
-					self.javaScriptTimedOut = YES;
-				break;
-			}
+		Topic *topic = [self.account topicWithName:topicName];
+		if (topic != nil && topic.filterScript.length > 0) {
+			NSError *error = nil;
+			char *bytes = (char *)[cdmessage.content bytes];
+			NSUInteger n = cdmessage.content.length;
+			NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
+			for (int i = 0; i < n; i++)
+				raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
+			NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":topic.name, @"receivedDate":cdmessage.timestamp};
+			NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
+			JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];
+			NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
+			if (filtered)
+				msg = filtered;
+			else
+				self.javaScriptTimedOut = YES;
 		}
 	}
 	cell.messageLabel.text = [msg stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
