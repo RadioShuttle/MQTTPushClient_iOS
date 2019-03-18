@@ -19,6 +19,9 @@
 
 @property (weak, nonatomic) IBOutlet UITextView *scriptTextView;
 @property (weak, nonatomic) IBOutlet UITextView *testMessageTextView;
+@property (weak, nonatomic) IBOutlet UILabel *functionMsgLabel;
+@property (weak, nonatomic) IBOutlet UILabel *functionReturnLabel;
+@property (weak, nonatomic) IBOutlet UITextView *testMsgLabel;
 
 @property(copy) NSString *statusMessage;
 
@@ -47,6 +50,16 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	UIFontDescriptor *fontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCaption1];
+	UIFont *courier = [UIFont fontWithName:@"courier" size:fontDescriptor.pointSize];
+	self.functionMsgLabel.font = courier;
+	self.functionMsgLabel.adjustsFontForContentSizeCategory = YES;
+	self.scriptTextView.font = courier;
+	self.scriptTextView.adjustsFontForContentSizeCategory = YES;
+	self.functionReturnLabel.font = courier;
+	self.functionReturnLabel.adjustsFontForContentSizeCategory = YES;
+	self.testMsgLabel.font = courier;
+	self.testMsgLabel.adjustsFontForContentSizeCategory = YES;
 	self.scriptTextView.text = self.topic.filterScriptEdited;
 	self.statusMessage = [NSString stringWithFormat:@"Filter the content of all messages with the topic %@", self.topic.name];
 	
