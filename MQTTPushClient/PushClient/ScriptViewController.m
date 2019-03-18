@@ -50,7 +50,7 @@
 
 - (void)updateDynamicType {
 	UIFontDescriptor *fontDescriptor = [UIFontDescriptor preferredFontDescriptorWithTextStyle:UIFontTextStyleCaption1];
-	UIFont *courier = [UIFont fontWithName:@"courier" size:fontDescriptor.pointSize];
+	UIFont *courier = [UIFont fontWithName:@"Courier" size:fontDescriptor.pointSize];
 	self.functionMsgLabel.font = courier;
 	self.functionMsgLabel.adjustsFontForContentSizeCategory = YES;
 	self.scriptTextView.font = courier;
