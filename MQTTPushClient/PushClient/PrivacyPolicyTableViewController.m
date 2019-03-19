@@ -14,7 +14,11 @@
 @implementation PrivacyPolicyTableViewController
 
 - (IBAction)privacyPolicyAction:(UIButton *)sender {
-	NSURL *url = [NSURL URLWithString:@"https://www.helios.de/web/EN/privacy.html"];
+	NSString *urlString = @"https://www.helios.de/web/EN/privacy.html";
+	if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
+		urlString = @"https://www.helios.de/web/DE/privacy.html";
+	}
+	NSURL *url = [NSURL URLWithString:urlString];
 	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
 	[self presentViewController:safariViewController animated:YES completion:^{}];
 }
