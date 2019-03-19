@@ -32,11 +32,7 @@
 - (IBAction)testScript:(UIButton *)sender {
 	NSError *error = nil;
 	NSString *msg = self.testMessageTextView.text;
-	char *bytes = (char *)[msg UTF8String];
-	NSUInteger n = msg.length;
-	NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
-	for (int i = 0; i < n; i++)
-		raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
+	NSArray *raw = [JavaScriptFilter numberArrayFromData:[msg dataUsingEncoding:NSUTF8StringEncoding]];
 	NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":self.topic.name, @"receivedDate":[NSDate date]};
 	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];

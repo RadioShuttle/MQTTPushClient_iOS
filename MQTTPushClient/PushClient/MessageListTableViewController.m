@@ -154,11 +154,7 @@
 		Topic *topic = [self.account topicWithName:topicName];
 		if (topic != nil && topic.filterScript.length > 0) {
 			NSError *error = nil;
-			char *bytes = (char *)[cdmessage.content bytes];
-			NSUInteger n = cdmessage.content.length;
-			NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:n];
-			for (int i = 0; i < n; i++)
-				raw[i] = [NSNumber numberWithUnsignedChar:bytes[i]];
+			NSArray *raw = [JavaScriptFilter numberArrayFromData:cdmessage.content];
 			NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":topic.name, @"receivedDate":cdmessage.timestamp};
 			NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 			JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];

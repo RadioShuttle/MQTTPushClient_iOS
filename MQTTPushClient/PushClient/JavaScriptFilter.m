@@ -54,4 +54,14 @@
 	}
 }
 
++ (NSArray *)numberArrayFromData:(NSData *)data {
+	NSMutableArray *raw = [[NSMutableArray alloc] initWithCapacity:data.length];
+	[data enumerateByteRangesUsingBlock:^(const void *vbytes, NSRange byteRange, BOOL *stop) {
+		const unsigned char *bytes = vbytes;
+		for (NSUInteger idx = 0; idx < byteRange.length; idx++) {
+			[raw addObject:[NSNumber numberWithUnsignedChar:bytes[idx]]];
+		}
+	}];
+	return raw;
+}
 @end
