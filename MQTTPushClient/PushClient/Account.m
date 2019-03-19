@@ -58,8 +58,8 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 	account.secureTransportToPushServer = YES;
 	account.secureTransportToPushServerDateSet = [NSDate date];
 
-	account.topicList = [NSMutableArray array];
-	account.actionList = [NSMutableArray array];
+	account.topicList = [NSArray array];
+	account.actionList = [NSArray array];
 	return account;
 }
 

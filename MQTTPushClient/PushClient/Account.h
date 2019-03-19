@@ -33,8 +33,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 // Runtime properties which are stored in memory only:
 @property (readonly) NSURL *cacheURL; // Cache directory for this account
-@property NSMutableArray<Topic *> *topicList;
-@property NSMutableArray<Action *> *actionList;
+@property (copy) NSArray<Topic *> *topicList;
+@property (copy) NSArray<Action *> *actionList;
 @property(nullable) NSError *error;
 @property BOOL secureTransportToPushServer;
 @property NSDate *secureTransportToPushServerDateSet; // Date when the above property was set to NO

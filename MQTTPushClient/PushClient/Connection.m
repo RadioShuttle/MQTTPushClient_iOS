@@ -139,7 +139,6 @@ enum ConnectionState {
 	Cmd *command = [self login:account];
 	[command getTopicsRequest:0];
 	if (!command.rawCmd.error) {
-		[account.topicList removeAllObjects];
 		unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 		int numRecords = (p[0] << 8) + p[1];
 		p += 2;
