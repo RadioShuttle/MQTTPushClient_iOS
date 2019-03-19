@@ -115,6 +115,8 @@
 		Action *action = self.account.actionList[row];
 		[connection deleteActionForAccount:self.account name:action.name];
 		[connection getActionsForAccount:self.account];
+	} else if (editingStyle == UITableViewCellEditingStyleInsert) {
+		[self performSegueWithIdentifier:@"IDAddAction" sender:nil];
 	}
 }
 

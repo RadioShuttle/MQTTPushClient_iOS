@@ -95,6 +95,8 @@
 		Topic *topic = self.account.topicList[row];
 		[connection deleteTopicForAccount:self.account name:topic.name];
 		[connection getTopicsForAccount:self.account];
+	} else if (editingStyle == UITableViewCellEditingStyleInsert) {
+		[self performSegueWithIdentifier:@"IDAddTopic" sender:nil];
 	}
 }
 
