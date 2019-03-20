@@ -72,6 +72,7 @@
 			}
 		}
 		[connection getFcmDataForAccount:account];
+		[connection getTopicsForAccount:account];
 	}
 	[self.refreshControl endRefreshing];
 }
