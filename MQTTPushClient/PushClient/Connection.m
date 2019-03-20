@@ -155,7 +155,6 @@ enum ConnectionState {
 			topic.filterScript = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
 			[topicList addObject:topic];
-			TRACE(@"*** get topic: %@", topic.name);
 		}
 		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name"
 															   ascending:YES
@@ -163,6 +162,10 @@ enum ConnectionState {
 		[topicList sortUsingDescriptors:@[sort]];
 		account.topicList = topicList;
 		dispatch_async(dispatch_get_main_queue(), ^{
+			/*
+			 * Save accounts so that user notification extension knows
+			 * about the current topic list and can apply filter scripts.
+			 */
 			[[AccountList sharedAccountList] save];
 		});
 	}
