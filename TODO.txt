@@ -1,3 +1,2 @@
 
 - Handle multiple IP addresses in DNS lookup
-- Filter scripts
