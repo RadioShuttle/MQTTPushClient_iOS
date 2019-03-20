@@ -11,6 +11,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface AccountList : NSObject <NSFastEnumeration>
 
++ (nullable Account *)loadAccount:(NSString *)pushServerID accountID:(NSString *)accountID;
+
+#ifndef MQTT_EXTENSION
 + (instancetype)sharedAccountList;
 
 @property (nonatomic, readonly) NSUInteger count;
@@ -20,8 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)moveAccountAtIndex:(NSUInteger) fromIndex toIndex:(NSUInteger) toIndex;
 
 - (void)save;
-
-+ (nullable Account *)loadAccount:(NSString *)pushServerID accountID:(NSString *)accountID;
+#endif
 
 @end
 

@@ -14,6 +14,23 @@
 
 @implementation AccountList
 
++ (nullable Account *)loadAccount:(NSString *)pushServerID accountID:(NSString *)accountID {
+	NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroup];
+	NSArray *accountsPref = [sharedDefaults arrayForKey:@"Accounts"];
+	if (accountsPref != nil) {
+		for (NSDictionary *dict in accountsPref) {
+			Account *account = [Account accountFromUserDefaultsDict:dict];
+			if (account != nil && [account.pushServerID isEqualToString:pushServerID]
+				&& [account.accountID isEqualToString:accountID]) {
+				return account;
+			}
+		}
+	}
+	return nil;
+}
+
+#ifndef MQTT_EXTENSION
+
 // Private
 - (instancetype)init {
 	if ((self = [super init]) != nil) {
@@ -40,15 +57,6 @@
 	return self.accounts[index];
 }
 
-- (NSUInteger)countByEnumeratingWithState:(nonnull NSFastEnumerationState *)state
-								  objects:(id  _Nullable __unsafe_unretained * _Nonnull)buffer
-									count:(NSUInteger)len {
-
-	return [self.accounts countByEnumeratingWithState:state
-											  objects:buffer
-												count:len];
-}
-
 - (void)addAccount:(Account *)account {
 	[self.accounts addObject:account];
 }
@@ -66,7 +74,6 @@
 }
 
 // Private
-
 - (void)load {
 	[self.accounts removeAllObjects];
 	NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroup];
@@ -85,23 +92,6 @@
 			}
 		}
 	}
-}
-
-+ (nullable Account *)loadAccount:(NSString *)pushServerID accountID:(NSString *)accountID {
-	NSUserDefaults *sharedDefaults = [[NSUserDefaults alloc] initWithSuiteName:kSharedAppGroup];
-	NSArray *accountsPref = [sharedDefaults arrayForKey:@"Accounts"];
-	if (accountsPref != nil) {
-		for (NSDictionary *dict in accountsPref) {
-			Account *account = [Account accountFromUserDefaultsDict:dict];
-			if (account != nil && [account.pushServerID isEqualToString:pushServerID]
-				&& [account.accountID isEqualToString:accountID]) {
-				if ([account configure]) {
-					return account;
-				}
-			}
-		}
-	}
-	return nil;
 }
 
 - (void)save {
@@ -124,6 +114,17 @@
 		}
 	}
 	return nil;
+}
+
+#endif
+
+- (NSUInteger)countByEnumeratingWithState:(nonnull NSFastEnumerationState *)state
+								  objects:(id  _Nullable __unsafe_unretained * _Nonnull)buffer
+									count:(NSUInteger)len {
+	
+	return [self.accounts countByEnumeratingWithState:state
+											  objects:buffer
+												count:len];
 }
 
 @end

@@ -20,4 +20,8 @@ enum NotificationType {
 @property(copy) NSString *filterScript;
 @property(copy) NSString *filterScriptEdited;
 
+// Reading from and writing to user defaults:
++ (nullable instancetype)topicFromUserDefaultsDict:(NSDictionary *)dict;
+- (NSDictionary *)userDefaultsDict;
+
 @end

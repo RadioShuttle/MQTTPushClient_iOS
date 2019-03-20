@@ -155,12 +155,16 @@ enum ConnectionState {
 			topic.filterScript = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 			p += count;
 			[topicList addObject:topic];
+			TRACE(@"*** get topic: %@", topic.name);
 		}
 		NSSortDescriptor *sort = [NSSortDescriptor sortDescriptorWithKey:@"name"
 															   ascending:YES
 																selector:@selector(caseInsensitiveCompare:)];
 		[topicList sortUsingDescriptors:@[sort]];
 		account.topicList = topicList;
+		dispatch_async(dispatch_get_main_queue(), ^{
+			[[AccountList sharedAccountList] save];
+		});
 	}
 	[self disconnect:account withCommand:command];
 }

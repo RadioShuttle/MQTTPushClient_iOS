@@ -15,7 +15,6 @@
 		2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A7DFF84213EAF6E001B1546 /* ServerListTableViewController.m */; };
 		2A8D676A2178A1F300A3B3AF /* TopicsListTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */; };
 		2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */; };
-		2AD33526222ECB80004C9584 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */; };
 		2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAB1882181DE3200EBDC4D /* Topic.m */; };
 		2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADBE456213D7515000664D3 /* AppDelegate.m */; };
 		2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2ADBE45B213D7515000664D3 /* Main.storyboard */; };
@@ -42,6 +41,10 @@
 		843BE3C5221D4C370039EF7C /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 843BE3C4221D4C370039EF7C /* Utils.m */; };
 		843D35E62227EDBD00251D31 /* TokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 843D35E52227EDBD00251D31 /* TokenManager.m */; };
 		843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */ = {isa = PBXBuildFile; fileRef = 843E778621B9634A0071A6E8 /* UIAlertController+Window.m */; };
+		843F4DDD2241208600742AAE /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
+		843F4DDE224121B200742AAE /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
+		843F4DDF224128B600742AAE /* Topic.m in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAB1882181DE3200EBDC4D /* Topic.m */; };
+		843F4DE022412ACC00742AAE /* JavaScriptFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 2AEB225B2237E959008E2BC0 /* JavaScriptFilter.m */; };
 		847874E2217760F00059881B /* Account.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E1217760F00059881B /* Account.m */; };
 		847874E6217762B10059881B /* AccountList.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874E5217762B00059881B /* AccountList.m */; };
 		847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */ = {isa = PBXBuildFile; fileRef = 847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */; };
@@ -112,7 +115,6 @@
 		2A8D67692178A1F300A3B3AF /* TopicsListTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewController.m; sourceTree = "<group>"; };
 		2AC93089214BEECD00B603B4 /* MessageTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageTableViewCell.h; sourceTree = "<group>"; };
 		2AC9308A214BEECD00B603B4 /* MessageTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageTableViewCell.m; sourceTree = "<group>"; };
-		2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		2ADAB1872181DE3200EBDC4D /* Topic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Topic.h; sourceTree = "<group>"; };
 		2ADAB1882181DE3200EBDC4D /* Topic.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Topic.m; sourceTree = "<group>"; };
 		2ADBE452213D7515000664D3 /* MQTTPushClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MQTTPushClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -206,7 +208,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				2AD33526222ECB80004C9584 /* JavaScriptCore.framework in Frameworks */,
 				A34141AFBF3B4839BBA7704B /* libPods-MQTTPushClient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -398,7 +399,6 @@
 		E4A46935F60EFDA587278ECF /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				2AD33525222ECB7F004C9584 /* JavaScriptCore.framework */,
 				E1C1CEADCD6E609A37A85507 /* libPods-MQTTPushClient.a */,
 			);
 			name = Frameworks;
@@ -599,10 +599,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */,
+				843F4DDE224121B200742AAE /* AccountList.m in Sources */,
 				84B045602181DB8100C261F8 /* MessageDataHandler.m in Sources */,
+				843F4DDF224128B600742AAE /* Topic.m in Sources */,
 				847874F3217865700059881B /* SharedConstants.m in Sources */,
 				847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
+				843F4DDD2241208600742AAE /* Account.m in Sources */,
 				84095D0821903E8E00CFC1DB /* Message.m in Sources */,
+				843F4DE022412ACC00742AAE /* JavaScriptFilter.m in Sources */,
 				8412B3A821B030410070846D /* NotificationQueue.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -799,6 +803,7 @@
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
+				OTHER_CFLAGS = "-DMQTT_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = de.helios.MQTTPushClient.MQTTPushClientServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -819,6 +824,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MTL_FAST_MATH = YES;
+				OTHER_CFLAGS = "-DMQTT_EXTENSION";
 				PRODUCT_BUNDLE_IDENTIFIER = de.helios.MQTTPushClient.MQTTPushClientServiceExtension;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

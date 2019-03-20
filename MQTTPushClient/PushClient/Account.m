@@ -7,12 +7,14 @@
 @import UIKit;
 
 #import "Account.h"
-#import "KeychainUtils.h"
 #import "SharedConstants.h"
 #import "NSDictionary+HelSafeAccessors.h"
 #import "Message.h"
 #import "Topic.h"
+#ifndef MQTT_EXTENSION
+#import "KeychainUtils.h"
 #include <sys/stat.h>    // for mkdir()
+#endif
 
 static NSString *kPrefkeyHost = @"pushserver.host";
 static NSString *kPrefkeyMqttHost = @"mqtt.host";
@@ -21,6 +23,7 @@ static NSString *kPrefkeyMqttSecureTransport = @"mqtt.securetransport";
 static NSString *kPrefkeyMqttUser = @"mqtt.user";
 static NSString *kPrefkeyUuid = @"uuid";
 static NSString *kPrefkeyPushServerID = @"pushserver.id";
+static NSString *kPrefkeyTopicList = @"topiclist";
 
 @interface Account ()
 
@@ -31,11 +34,14 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 @property(readwrite) BOOL mqttSecureTransport;
 @property(readwrite, copy) NSString *mqttUser;
 @property(readwrite, copy) NSString *uuid;
+
+#ifndef MQTT_EXTENSION
 @property(readwrite, copy) NSURL *cacheURL;
 @property(readwrite) NSManagedObjectContext *context;
 @property(readwrite) NSManagedObjectContext *backgroundContext;
 @property(readwrite) NSPersistentContainer *cdcontainer;
 @property(readwrite) CDAccount *cdaccount;
+#endif
 
 @end
 
@@ -78,6 +84,20 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 										   mqttUser:mqttUser
 											   uuid:uuid];
 		account.pushServerID = [dict helStringForKey:kPrefkeyPushServerID];
+		
+		NSArray *topics = [dict helArrayForKey:kPrefkeyTopicList];
+		if (topics != nil) {
+			NSMutableArray *topicList = [NSMutableArray arrayWithCapacity:topics.count];
+			for (NSDictionary *topicDict in topics) {
+				if ([topicDict isKindOfClass:[NSDictionary class]]) {
+					Topic *topic = [Topic topicFromUserDefaultsDict:topicDict];
+					if (topic != nil) {
+						[topicList addObject:topic];
+					}
+				}
+			}
+			account.topicList = topicList;
+		}
 		return account;
 	} else {
 		return nil;
@@ -96,8 +116,49 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 								 nil];
 	// Optional properties:
 	dict[kPrefkeyPushServerID] = self.pushServerID;
+	if (self.topicList.count > 0) {
+		NSMutableArray *topics = [NSMutableArray arrayWithCapacity:self.topicList.count];
+		for (Topic *topic in self.topicList) {
+			[topics addObject:[topic userDefaultsDict]];
+		}
+		dict[kPrefkeyTopicList] = topics;
+	}
+
 	return dict;
 }
+
+- (NSString *)mqttURI {
+	return [NSString stringWithFormat:@"%@://%@:%d",
+			self.mqttSecureTransport ? @"ssl" : @"tcp",
+			self.mqttHost, self.mqttPort];
+}
+
+- (NSString *)accountID {
+	if (self.mqttUser.length > 0) {
+		return [NSString stringWithFormat:@"%@@%@:%d", self.mqttUser, self.mqttHost, self.mqttPort];
+	} else {
+		return [NSString stringWithFormat:@"@%@:%d", self.mqttHost, self.mqttPort];
+	}
+}
+
+- (NSString *)accountDescription {
+	if (self.mqttUser.length > 0) {
+		return [NSString stringWithFormat:@"%@@%@:%d", self.mqttUser, self.mqttHost, self.mqttPort];
+	} else {
+		return [NSString stringWithFormat:@"%@:%d", self.mqttHost, self.mqttPort];
+	}
+}
+
+- (nullable Topic *)topicWithName:(NSString *)topicName {
+	for (Topic *topic in self.topicList) {
+		if ([topic.name isEqualToString:topicName]) {
+			return topic;
+		}
+	}
+	return nil;
+}
+
+#ifndef MQTT_EXTENSION
 
 - (BOOL) configure
 {
@@ -172,37 +233,6 @@ static NSString *kPrefkeyPushServerID = @"pushserver.id";
 
 - (void)setMqttPassword:(NSString *)password {
 	[KeychainUtils setPassword:password forAccount:self.uuid];
-}
-
-- (NSString *)mqttURI {
-	return [NSString stringWithFormat:@"%@://%@:%d",
-			self.mqttSecureTransport ? @"ssl" : @"tcp",
-			self.mqttHost, self.mqttPort];
-}
-
-- (NSString *)accountID {
-	if (self.mqttUser.length > 0) {
-		return [NSString stringWithFormat:@"%@@%@:%d", self.mqttUser, self.mqttHost, self.mqttPort];
-	} else {
-		return [NSString stringWithFormat:@"@%@:%d", self.mqttHost, self.mqttPort];
-	}
-}
-
-- (NSString *)accountDescription {
-	if (self.mqttUser.length > 0) {
-		return [NSString stringWithFormat:@"%@@%@:%d", self.mqttUser, self.mqttHost, self.mqttPort];
-	} else {
-		return [NSString stringWithFormat:@"%@:%d", self.mqttHost, self.mqttPort];
-	}
-}
-
-- (nullable Topic *)topicWithName:(NSString *)topicName {
-	for (Topic *topic in self.topicList) {
-		if ([topic.name isEqualToString:topicName]) {
-			return topic;
-		}
-	}
-	return nil;
 }
 
 #pragma mark - Local helper methods
@@ -338,5 +368,5 @@ static NSString *kCacheDirSuffix = @".mqttcache";
 	}
 	return YES;
 }
-
+#endif
 @end

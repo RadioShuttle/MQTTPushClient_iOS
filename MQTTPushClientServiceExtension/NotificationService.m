@@ -8,6 +8,9 @@
 #import "MessageDataHandler.h"
 #import "NSDictionary+HelSafeAccessors.h"
 #import "NotificationQueue.h"
+#import "AccountList.h"
+#import "Topic.h"
+#import "JavaScriptFilter.h"
 
 @interface NotificationService ()
 @end
@@ -31,9 +34,35 @@
 		// No message:
 		newContent.body = @"";
 	} else if (messageList.count == 1) {
+		NSString *pushServerID = userInfo[@"pushserverid"];
+		NSString *accountID = userInfo[@"account"];
+
 		Message *msg = messageList[0];
 		// Single message:
-		NSString *stringMessage = [Message msgFromData:msg.content];
+		NSString *stringMessage = nil;
+		Account *account = [AccountList loadAccount:pushServerID accountID:accountID];
+		if (account != nil) {
+			Topic *topic = [account topicWithName:msg.topic];
+			if (topic != nil && topic.filterScript.length > 0) {
+				NSArray *raw = [JavaScriptFilter numberArrayFromData:msg.content];
+				NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":topic.name,
+									   @"receivedDate":msg.timestamp};
+				NSDictionary *arg2 = @{@"user":account.mqttUser, @"mqttServer":account.mqttHost,
+									   @"pushServer":account.host};
+				JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];
+				NSError *error = nil;
+				NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
+				if (filtered) {
+					stringMessage = filtered;
+				} else {
+					// XXX TODO: Handle error or timeout.
+				}
+			}
+		}
+		
+		if (stringMessage == nil) {
+			stringMessage = [Message msgFromData:msg.content];
+		}
 		newContent.body = [NSString stringWithFormat:@"%@: %@", msg.topic, stringMessage];
 	} else {
 		Message *msg = messageList[0];
