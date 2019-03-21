@@ -63,6 +63,7 @@
 		84B9EDC92175E0A1001A9D7D /* NotificationService.m in Sources */ = {isa = PBXBuildFile; fileRef = 84B9EDC82175E0A1001A9D7D /* NotificationService.m */; };
 		84B9EDCD2175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 84B9EDC52175E0A1001A9D7D /* MQTTPushClientServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */ = {isa = PBXBuildFile; fileRef = 84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */; };
+		84D6352E2243B75C0024E5A2 /* DynamicButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 84D6352D2243B75C0024E5A2 /* DynamicButton.m */; };
 		84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B46E2232950F00197005 /* ExampleJSON.js */; };
 		84F4B4712232955F00197005 /* ExampleSplit.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4702232955F00197005 /* ExampleSplit.js */; };
 		84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */ = {isa = PBXBuildFile; fileRef = 84F4B4722232962700197005 /* ExampleRegularExpression.js */; };
@@ -191,6 +192,8 @@
 		84B9EDD22175E120001A9D7D /* MQTTPushClientServiceExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = MQTTPushClientServiceExtension.entitlements; sourceTree = "<group>"; };
 		84C0F73021BAA4D200AB4EB1 /* TrustHandler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrustHandler.h; sourceTree = "<group>"; };
 		84C0F73121BAA4D200AB4EB1 /* TrustHandler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TrustHandler.m; sourceTree = "<group>"; };
+		84D6352C2243B75C0024E5A2 /* DynamicButton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DynamicButton.h; sourceTree = "<group>"; };
+		84D6352D2243B75C0024E5A2 /* DynamicButton.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DynamicButton.m; sourceTree = "<group>"; };
 		84F4B46E2232950F00197005 /* ExampleJSON.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleJSON.js; sourceTree = "<group>"; };
 		84F4B4702232955F00197005 /* ExampleSplit.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleSplit.js; sourceTree = "<group>"; };
 		84F4B4722232962700197005 /* ExampleRegularExpression.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = ExampleRegularExpression.js; sourceTree = "<group>"; };
@@ -286,6 +289,8 @@
 				84A7CFD12238003100E17D03 /* ScriptViewSectionHeader.h */,
 				84A7CFD22238003100E17D03 /* ScriptViewSectionHeader.m */,
 				84A7CFD42238006900E17D03 /* ScriptViewSectionHeader.xib */,
+				84D6352C2243B75C0024E5A2 /* DynamicButton.h */,
+				84D6352D2243B75C0024E5A2 /* DynamicButton.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -553,6 +558,7 @@
 				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
 				2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */,
 				847874E2217760F00059881B /* Account.m in Sources */,
+				84D6352E2243B75C0024E5A2 /* DynamicButton.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
