@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *testMsgLabel;
 
 @property(copy) NSString *statusMessage;
+@property(nullable, copy) NSData *testData;
 
 @end
 
@@ -32,10 +33,18 @@
 - (IBAction)testScript:(UIButton *)sender {
 	NSError *error = nil;
 	NSString *msg = self.testMessageTextView.text;
-	NSArray *raw = [JavaScriptFilter numberArrayFromData:[msg dataUsingEncoding:NSUTF8StringEncoding]];
+	
+	// Use the original binary data from the test message if the "Test Data" field
+	// was not edited, otherwise the given test message as UTF-8 data.
+	NSData *testData = self.testData;
+	if (testData == nil) {
+		testData = [msg dataUsingEncoding:NSUTF8StringEncoding];
+	}
+	
+	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
+	NSObject *raw = [filter arrayBufferFromData:testData];
 	NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":self.topic.name, @"receivedDate":[NSDate date]};
 	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
 	NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
 	if (filtered)
 		self.statusMessage = [@"JavaScript result:\n" stringByAppendingString:[filtered stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
@@ -102,6 +111,7 @@
 	fetchRequest.sortDescriptors = @[sort1, sort2];
 	NSArray<CDMessage *> *messages = [self.account.context executeFetchRequest:fetchRequest error:nil];
 	if (messages.count > 0) {
+		self.testData = messages.firstObject.content;
 		self.testMessageTextView.text = [Message msgFromData:messages.firstObject.content];
 	} else {
 		self.testMessageTextView.text = @"";
@@ -129,6 +139,10 @@
 	[self.tableView beginUpdates];
 	[self.tableView endUpdates];
 	[UIView setAnimationsEnabled:YES];
+	
+	if (textView == self.testMsgLabel) {
+		self.testData = nil;
+	}
 }
 
 - (void)textViewDidChangeSelection:(UITextView *)textView {

@@ -44,12 +44,12 @@
 		if (account != nil) {
 			Topic *topic = [account topicWithName:msg.topic];
 			if (topic != nil && topic.filterScript.length > 0) {
-				NSArray *raw = [JavaScriptFilter numberArrayFromData:msg.content];
+				JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];
+				NSObject *raw = [filter arrayBufferFromData:msg.content];
 				NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":topic.name,
 									   @"receivedDate":msg.timestamp};
 				NSDictionary *arg2 = @{@"user":account.mqttUser, @"mqttServer":account.mqttHost,
 									   @"pushServer":account.host};
-				JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:topic.filterScript];
 				NSError *error = nil;
 				NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
 				if (filtered) {

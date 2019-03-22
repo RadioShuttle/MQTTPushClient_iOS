@@ -10,6 +10,6 @@
 
 - (instancetype)initWithScript:(NSString *)filterScript;
 - (nullable NSString *)filterMsg:(NSDictionary *)msg acc:(NSDictionary *)acc error:(NSError * _Nullable *)error;
-+ (NSArray *)numberArrayFromData:(NSData *)data;
+- (NSObject *)arrayBufferFromData:(NSData *)data;
 
 @end
