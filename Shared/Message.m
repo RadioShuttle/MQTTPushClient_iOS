@@ -24,16 +24,17 @@
 
 + (NSString *)msgFromData:(NSData *)data {
 	NSString *msg;
-
-	// Try auto-detection (with preference to UTF-8):
-	NSDictionary *opts = @{NSStringEncodingDetectionSuggestedEncodingsKey :
-							   @[@(NSUTF8StringEncoding)]};
-	NSStringEncoding enc = [NSString stringEncodingForData:data
-										   encodingOptions:opts convertedString:&msg usedLossyConversion:NULL];
-	if (enc != 0) {
+	
+	// Try UTF-8 encoding:
+	msg = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+	if (msg != nil) {
 		return msg;
 	}
-	
+	// Try CP1252 (Windows Latin 1) encoding:
+	msg = [[NSString alloc] initWithData:data encoding:NSWindowsCP1252StringEncoding];
+	if (msg != nil) {
+		return msg;
+	}
 	// Fallback:
 	return [NSString stringWithFormat:@"%*.*s",
 			(int)data.length, (int)data.length, data.bytes];
