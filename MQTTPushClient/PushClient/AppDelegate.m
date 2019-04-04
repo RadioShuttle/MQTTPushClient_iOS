@@ -68,7 +68,7 @@ NSString *const kGCMMessageIDKey = @"gcm.message_id";
 	
 	[[UNUserNotificationCenter currentNotificationCenter] removeAllDeliveredNotifications];
 	
-	[self directoryDidChange:nil];
+	[self directoryDidChange:self.notificationQueue];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -122,7 +122,7 @@ fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler {
 #pragma mark - NotificationQueueDelegate
 
 - (void)directoryDidChange:(NotificationQueue *)notificationQueue {
-	NSArray *notifications = [self.notificationQueue notifications];
+	NSArray *notifications = [notificationQueue notifications];
 	// TRACE(@"%@: %d queued notifications", notificationQueue, (int)notifications.count);
 	for (NSDictionary *notification in notifications) {
 		NSString *pushServerID = notification[@"pushserverid"];
