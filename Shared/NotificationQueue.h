@@ -8,12 +8,11 @@
 
 @class NotificationQueue;
 
+NS_ASSUME_NONNULL_BEGIN
+
 @protocol NotificationQueueDelegate <NSObject>
 - (void)directoryDidChange:(NotificationQueue *)notificationQueue;
 @end
-
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface NotificationQueue : NSObject
 

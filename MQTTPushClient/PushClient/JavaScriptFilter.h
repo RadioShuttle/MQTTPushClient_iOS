@@ -8,8 +8,8 @@
 
 @interface JavaScriptFilter : NSObject
 
-- (instancetype)initWithScript:(NSString *)filterScript;
-- (nullable NSString *)filterMsg:(NSDictionary *)msg acc:(NSDictionary *)acc error:(NSError * _Nullable *)error;
-- (NSObject *)arrayBufferFromData:(NSData *)data;
+- (nonnull instancetype)initWithScript:(nonnull NSString *)filterScript;
+- (nullable NSString *)filterMsg:(nonnull NSDictionary *)msg acc:(nonnull NSDictionary *)acc error:(NSError * _Nullable *_Nullable)error;
+- (nonnull NSObject *)arrayBufferFromData:(nullable NSData *)data;
 
 @end

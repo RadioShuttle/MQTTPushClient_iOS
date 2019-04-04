@@ -15,13 +15,13 @@ enum NotificationType {
 
 @interface Topic : NSObject
 
-@property(copy) NSString *name;
+@property(nonnull, copy) NSString *name;
 @property enum NotificationType type;
-@property(copy) NSString *filterScript;
-@property(copy) NSString *filterScriptEdited;
+@property(nullable, copy) NSString *filterScript;
+@property(nullable, copy) NSString *filterScriptEdited;
 
 // Reading from and writing to user defaults:
-+ (nullable instancetype)topicFromUserDefaultsDict:(NSDictionary *)dict;
-- (NSDictionary *)userDefaultsDict;
++ (nullable instancetype)topicFromUserDefaultsDict:(nonnull NSDictionary *)dict;
+- (nonnull NSDictionary *)userDefaultsDict;
 
 @end
