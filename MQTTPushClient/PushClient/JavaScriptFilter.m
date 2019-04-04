@@ -43,12 +43,16 @@
 
 	// Return error or result:
 	if (self.context.exception) {
-		*error = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28190
+		if (error != NULL) {
+			*error = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28190
 										userInfo:@{NSLocalizedDescriptionKey:self.context.exception.toString}];
+		}
 		return nil;
 	} else if (result > 0) {
-		*error = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28191
+		if (error != NULL) {
+			*error = [[NSError alloc] initWithDomain:@"JavaScriptError" code:28191
 										userInfo:@{NSLocalizedDescriptionKey:@"timeout"}];
+		}
 		return nil;
 	} else {
 		return value.toString;
