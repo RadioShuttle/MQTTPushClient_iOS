@@ -48,11 +48,11 @@ The software is provided under the [Apache 2.0 license](/docs/readme/LICENSE-apa
 
 ### Getting Started
 * Check out (clone) this project
-* On the command line, run “pod install” in the MQTTPushClient_iOS directory to install the required dependencies.
-* Open “MQTTPushClient.xcworkspace” in Xcode.
-* Build and run the project.
+* On the command line, run “pod install” in the MQTTPushClient_iOS directory to install the required dependencies
+* Open “MQTTPushClient.xcworkspace” in Xcode
+* Build and run the project
 
-You can test the MQTT Push Client app in the iOS Simulator.
+You can test the MQTT Push Client app in the iOS Simulator
 
 ## Run the app on a real device, or publish an own app on the Apple App Store
 
@@ -60,9 +60,9 @@ You can test the MQTT Push Client app in the iOS Simulator.
 
 * Add your Apple ID in the Xcode Accounts preferences.
 * In the “Signing & Capabilities” settings of both targets “MQTTPushClient” and “MQTTPushClientServiceExtension” make the following changes:
-   - In the “Team” popup, select your development team.
-   - Replace the bundle identifier and the app groups identifier by unique identifiers for your company.
-   - In the Shared/SharedConstants.m file, replace the value of `kSharedAppGroup` by your app groups identifier.
+   - In the “Team” popup, select your development team
+   - Replace the bundle identifier and the app groups identifier by unique identifiers for your company
+   - In the Shared/SharedConstants.m file, replace the value of `kSharedAppGroup` by your app groups identifier
 
 ## RadioShuttle MQTT push server
 This app requires communication with the RadioShuttle MQTT push server. For non-commercial users, the use of the public push server (push.radioshuttle.de) is currently free of charge up to 3 mobile devices and 3 MQTT accounts.
