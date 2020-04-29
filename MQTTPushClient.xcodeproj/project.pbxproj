@@ -37,6 +37,9 @@
 		84095D0821903E8E00CFC1DB /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 84095D0621903E8300CFC1DB /* Message.m */; };
 		84095D0A2190827300CFC1DB /* ca-certificate.der in Resources */ = {isa = PBXBuildFile; fileRef = 84095D092190827300CFC1DB /* ca-certificate.der */; };
 		8412B3A821B030410070846D /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
+		841E1EED24585D3D00E6E0CD /* javascript_color.js in Resources */ = {isa = PBXBuildFile; fileRef = 841E1EEC24585D3D00E6E0CD /* javascript_color.js */; };
+		841E1EF224586A5E00E6E0CD /* ViewParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 841E1EF124586A5E00E6E0CD /* ViewParameter.m */; };
+		841E1EF324586C7C00E6E0CD /* ViewParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 841E1EF124586A5E00E6E0CD /* ViewParameter.m */; };
 		843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */; };
 		843BE3C5221D4C370039EF7C /* Utils.m in Sources */ = {isa = PBXBuildFile; fileRef = 843BE3C4221D4C370039EF7C /* Utils.m */; };
 		843D35E62227EDBD00251D31 /* TokenManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 843D35E52227EDBD00251D31 /* TokenManager.m */; };
@@ -154,6 +157,9 @@
 		84095D0521903E8300CFC1DB /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		84095D0621903E8300CFC1DB /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
 		84095D092190827300CFC1DB /* ca-certificate.der */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ca-certificate.der"; sourceTree = "<group>"; };
+		841E1EEC24585D3D00E6E0CD /* javascript_color.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = javascript_color.js; sourceTree = "<group>"; };
+		841E1EF024586A5E00E6E0CD /* ViewParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewParameter.h; sourceTree = "<group>"; };
+		841E1EF124586A5E00E6E0CD /* ViewParameter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewParameter.m; sourceTree = "<group>"; };
 		843578EC21AFF11F00F5B2F2 /* NotificationQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NotificationQueue.h; sourceTree = "<group>"; };
 		843578ED21AFF11F00F5B2F2 /* NotificationQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NotificationQueue.m; sourceTree = "<group>"; };
 		843BE3C3221D4C370039EF7C /* Utils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Utils.h; sourceTree = "<group>"; };
@@ -291,6 +297,8 @@
 				84A7CFD42238006900E17D03 /* ScriptViewSectionHeader.xib */,
 				84D6352C2243B75C0024E5A2 /* DynamicButton.h */,
 				84D6352D2243B75C0024E5A2 /* DynamicButton.m */,
+				841E1EF024586A5E00E6E0CD /* ViewParameter.h */,
+				841E1EF124586A5E00E6E0CD /* ViewParameter.m */,
 			);
 			path = PushClient;
 			sourceTree = "<group>";
@@ -391,6 +399,7 @@
 		84F4B46D223294C100197005 /* Scripts */ = {
 			isa = PBXGroup;
 			children = (
+				841E1EEC24585D3D00E6E0CD /* javascript_color.js */,
 				84F4B46E2232950F00197005 /* ExampleJSON.js */,
 				84F4B4722232962700197005 /* ExampleRegularExpression.js */,
 				84F4B4702232955F00197005 /* ExampleSplit.js */,
@@ -509,6 +518,7 @@
 				2ADBE462213D7516000664D3 /* LaunchScreen.storyboard in Resources */,
 				84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
+				841E1EED24585D3D00E6E0CD /* javascript_color.js in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
 				84A7CFD52238006900E17D03 /* ScriptViewSectionHeader.xib in Resources */,
 				84F4B477223296C900197005 /* ExampleHexdump.js in Resources */,
@@ -571,6 +581,7 @@
 				847874EE2177777B0059881B /* KeychainUtils.m in Sources */,
 				847874F2217865700059881B /* SharedConstants.m in Sources */,
 				2AE57BC221906A3900012A04 /* Action.m in Sources */,
+				841E1EF224586A5E00E6E0CD /* ViewParameter.m in Sources */,
 				847874E6217762B10059881B /* AccountList.m in Sources */,
 				84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
@@ -611,6 +622,7 @@
 				847874F3217865700059881B /* SharedConstants.m in Sources */,
 				847874ED2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
 				843F4DDD2241208600742AAE /* Account.m in Sources */,
+				841E1EF324586C7C00E6E0CD /* ViewParameter.m in Sources */,
 				84095D0821903E8E00CFC1DB /* Message.m in Sources */,
 				843F4DE022412ACC00742AAE /* JavaScriptFilter.m in Sources */,
 				8412B3A821B030410070846D /* NotificationQueue.m in Sources */,

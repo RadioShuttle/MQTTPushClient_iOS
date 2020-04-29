@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="1Gv-vC-haE">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -382,7 +382,7 @@
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Uam-I8-Clb">
                                                     <rect key="frame" x="16" y="11" width="343" height="34"/>
-                                                    <string key="text">function filterMsg(msg, acc) {
+                                                    <string key="text">function filterMsg(msg, acc, view) {
  var content = msg.text</string>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
                                                     <nil key="textColor"/>
@@ -706,26 +706,43 @@
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message - it can be very long and in this case should break into several lines." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdY-wD-6R2">
-                                            <rect key="frame" x="16" y="35" width="343" height="79"/>
-                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vXX-mM-xd8">
+                                            <rect key="frame" x="11" y="35" width="353" height="79"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Message - it can be very long and in this case should break into several lines." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cdY-wD-6R2">
+                                                    <rect key="frame" x="5" y="5" width="343" height="69"/>
+                                                    <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="cdY-wD-6R2" firstAttribute="top" secondItem="vXX-mM-xd8" secondAttribute="top" constant="5" id="875-9l-Siz"/>
+                                                <constraint firstItem="cdY-wD-6R2" firstAttribute="leading" secondItem="vXX-mM-xd8" secondAttribute="leading" constant="5" id="9vB-PX-w3u"/>
+                                                <constraint firstAttribute="bottom" secondItem="cdY-wD-6R2" secondAttribute="bottom" constant="5" id="Nfb-Jd-qWh"/>
+                                                <constraint firstAttribute="trailing" secondItem="cdY-wD-6R2" secondAttribute="trailing" constant="5" id="vZC-Yh-Hxk"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="5"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
                                     </subviews>
                                     <constraints>
-                                        <constraint firstAttribute="trailingMargin" secondItem="cdY-wD-6R2" secondAttribute="trailing" id="9Wa-tj-dhI"/>
-                                        <constraint firstItem="cdY-wD-6R2" firstAttribute="leading" secondItem="eNp-sV-DWC" secondAttribute="leadingMargin" id="KGB-Zs-ZM1"/>
-                                        <constraint firstItem="cdY-wD-6R2" firstAttribute="top" secondItem="eNp-sV-DWC" secondAttribute="top" constant="35" id="Pvq-Xm-U7r"/>
+                                        <constraint firstItem="ZX3-7T-ZaH" firstAttribute="trailing" secondItem="vXX-mM-xd8" secondAttribute="trailing" constant="-5" id="HEa-hU-nAA"/>
+                                        <constraint firstItem="vXX-mM-xd8" firstAttribute="leading" secondItem="ZX3-7T-ZaH" secondAttribute="leading" constant="-5" id="UMe-3D-4Pa"/>
+                                        <constraint firstItem="vXX-mM-xd8" firstAttribute="bottom" secondItem="eNp-sV-DWC" secondAttribute="bottomMargin" id="cMf-tq-1OC"/>
                                         <constraint firstItem="ZX3-7T-ZaH" firstAttribute="top" secondItem="eNp-sV-DWC" secondAttribute="top" constant="11" id="lto-yY-eIc"/>
                                         <constraint firstAttribute="trailingMargin" secondItem="ZX3-7T-ZaH" secondAttribute="trailing" id="ntq-MX-LyP"/>
-                                        <constraint firstAttribute="bottom" secondItem="cdY-wD-6R2" secondAttribute="bottom" constant="10.5" id="sgV-IG-YuG"/>
+                                        <constraint firstItem="vXX-mM-xd8" firstAttribute="top" secondItem="eNp-sV-DWC" secondAttribute="top" constant="35" id="sFw-i1-4g6"/>
                                         <constraint firstItem="ZX3-7T-ZaH" firstAttribute="leading" secondItem="eNp-sV-DWC" secondAttribute="leadingMargin" id="vki-Hk-8CX"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="dateLabel" destination="ZX3-7T-ZaH" id="ARw-gl-jWo"/>
                                     <outlet property="messageLabel" destination="cdY-wD-6R2" id="Wc4-jT-x8b"/>
+                                    <outlet property="messageView" destination="vXX-mM-xd8" id="9s5-tW-mh2"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -780,7 +797,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D3X-ps-hNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-214.49275362318843" y="954.24107142857133"/>
+            <point key="canvasLocation" x="-215.19999999999999" y="953.97301349325346"/>
         </scene>
         <!--MQTT Actions-->
         <scene sceneID="Kg5-pW-ot8">
@@ -1549,7 +1566,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="AboutImage" width="83" height="83"/>
+        <image name="AboutImage" width="83.5" height="83.5"/>
         <image name="Banner" width="18" height="18"/>
         <image name="BannerSound" width="18" height="18"/>
         <image name="NotificationDisabled" width="18" height="18"/>

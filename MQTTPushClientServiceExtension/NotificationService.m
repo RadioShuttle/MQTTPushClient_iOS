@@ -51,7 +51,9 @@
 				NSDictionary *arg2 = @{@"user":account.mqttUser, @"mqttServer":account.mqttHost,
 									   @"pushServer":account.host};
 				NSError *error = nil;
-				NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
+				NSString *filtered = [filter filterMsg:arg1 acc:arg2
+										  viewParameter:nil
+												 error:&error];
 				if (filtered) {
 					stringMessage = filtered;
 				} else {

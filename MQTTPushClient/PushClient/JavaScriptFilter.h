@@ -5,11 +5,14 @@
  */
 
 #import <Foundation/Foundation.h>
+#import "ViewParameter.h"
 
 @interface JavaScriptFilter : NSObject
 
 - (nonnull instancetype)initWithScript:(nonnull NSString *)filterScript;
-- (nullable NSString *)filterMsg:(nonnull NSDictionary *)msg acc:(nonnull NSDictionary *)acc error:(NSError * _Nullable *_Nullable)error;
+- (nullable NSString *)filterMsg:(nonnull NSDictionary *)msg acc:(nonnull NSDictionary *)acc
+				   viewParameter:(nullable ViewParameter *)viewParameter
+						   error:(NSError * _Nullable *_Nullable)error;
 - (nonnull NSObject *)arrayBufferFromData:(nullable NSData *)data;
 
 @end

@@ -149,6 +149,8 @@
 	NSString *topicName = [cdmessage.topic stringByReplacingOccurrencesOfString:@"\n" withString:@" "];
 	NSString *text = [NSString stringWithFormat:@"%@ – %@", date, topicName];
 	NSString *msg = [Message msgFromData:cdmessage.content];
+	UIColor *textColor = nil;
+	UIColor *backgroundColor = nil;
 	cell.dateLabel.text = text;
 	if (!self.javaScriptTimedOut) {
 		Topic *topic = [self.account topicWithName:topicName];
@@ -158,14 +160,22 @@
 			NSObject *raw = [filter arrayBufferFromData:cdmessage.content];
 			NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":topic.name, @"receivedDate":cdmessage.timestamp};
 			NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-			NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
-			if (filtered)
+			ViewParameter *viewParameter = [[ViewParameter alloc] init];
+			NSString *filtered = [filter filterMsg:arg1 acc:arg2
+									  viewParameter:viewParameter
+											 error:&error];
+			if (filtered) {
 				msg = filtered;
-			else
+				textColor = viewParameter.uiTextColor;
+				backgroundColor = viewParameter.uiBackgroundColor;
+			} else {
 				self.javaScriptTimedOut = YES;
+			}
 		}
 	}
 	cell.messageLabel.text = [msg stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+	cell.messageLabel.textColor = textColor;
+	cell.messageView.backgroundColor = backgroundColor;
 	if ([cdmessage.timestamp compare:self.lastViewed] == NSOrderedDescending) {
 		cell.backgroundColor = [UIColor colorWithRed:1.0 green:0.95 blue:0.0 alpha:1.0]; // Yellow
 	} else {

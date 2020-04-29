@@ -25,7 +25,7 @@
 
 @property(copy) NSString *statusMessage;
 @property(nullable, copy) NSData *testData;
-
+@property(nullable) ViewParameter *viewParameter;
 @end
 
 @implementation ScriptViewController
@@ -41,15 +41,21 @@
 		testData = [msg dataUsingEncoding:NSUTF8StringEncoding];
 	}
 	
+	ViewParameter *viewParameter = [[ViewParameter alloc] init];
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.scriptTextView.text];
 	NSObject *raw = [filter arrayBufferFromData:testData];
 	NSDictionary *arg1 = @{@"raw":raw, @"text":msg, @"topic":self.topic.name, @"receivedDate":[NSDate date]};
 	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
-	NSString *filtered = [filter filterMsg:arg1 acc:arg2 error:&error];
-	if (filtered)
+	NSString *filtered = [filter filterMsg:arg1 acc:arg2
+							  viewParameter:viewParameter
+									 error:&error];
+	if (filtered) {
 		self.statusMessage = [@"JavaScript result:\n" stringByAppendingString:[filtered stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]]];
-	else
+		self.viewParameter = viewParameter;
+	} else {
 		self.statusMessage = [@"JavaScript error:\n" stringByAppendingString:error.localizedDescription];
+		self.viewParameter = nil;
+	}
 	[self.tableView reloadData]; // Force update and resize of section header view.
 }
 
@@ -129,6 +135,8 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 	ScriptViewSectionHeader *header = [tableView dequeueReusableHeaderFooterViewWithIdentifier:@"IDScriptViewSectionHeader"];
 	header.statusLabel.text = self.statusMessage;
+	header.statusLabel.backgroundColor = self.viewParameter.uiBackgroundColor;
+	header.statusLabel.textColor = self.viewParameter.uiTextColor;
 	return header;
 }
 

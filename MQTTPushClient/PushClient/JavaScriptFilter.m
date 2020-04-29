@@ -19,13 +19,23 @@
 - (instancetype)initWithScript:(NSString *)filterScript {
 	self = [super init];
 	if (self) {
+		NSURL *javaScriptColorURL = [[NSBundle mainBundle] URLForResource:@"javascript_color" withExtension:@"js"];
+		NSString *javaScriptColor = [NSString stringWithContentsOfURL:javaScriptColorURL
+														encoding:NSUTF8StringEncoding error:NULL];
+
 		_context = [[JSContext alloc] init];
-		_script = [NSString stringWithFormat:@"var filterMsg = function(msg, acc) {\nvar content = msg.text\n%@\nreturn content;\n}\n", filterScript];
+		_script = [NSString stringWithFormat:@"var filterMsg = function(msg, acc, view) {\n%@\nvar content = msg.text\n%@\nreturn content;\n}\n", javaScriptColor, filterScript];
 	}
 	return self;
 }
 
-- (nullable NSString *)filterMsg:(NSDictionary *)msg acc:(NSDictionary *)acc error:(NSError * _Nullable *)error {
+- (nullable NSString *)filterMsg:(NSDictionary *)msg acc:(NSDictionary *)acc
+				   viewParameter:(ViewParameter *)viewParameter
+						   error:(NSError * _Nullable *)error {
+	
+	if (viewParameter == nil) {
+		viewParameter = [[ViewParameter alloc] init];
+	}
 
 	// Execute JavaScript on background queue:
 	dispatch_group_t group = dispatch_group_create();
@@ -34,7 +44,7 @@
 	dispatch_group_async(group, background, ^{
 		[self.context evaluateScript:self.script];
 		JSValue *function = self.context[@"filterMsg"];
-		value = [function callWithArguments:@[msg, acc]];
+		value = [function callWithArguments:@[msg, acc, viewParameter]];
 	});
 
 	// Wait for script to finish (0.5 second timeout):
