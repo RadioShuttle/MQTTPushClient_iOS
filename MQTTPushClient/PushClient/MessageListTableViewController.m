@@ -246,9 +246,8 @@
 	
 	NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
 	NSPredicate *predicate;
-	if (self.topicSearchController && self.topicSearchController.searchBar.text && [self.topicSearchController.searchBar.text length] > 0) {
-		NSString *filterExpr = [NSString stringWithFormat:@"*%@*", self.topicSearchController.searchBar.text];
-		predicate = [NSPredicate predicateWithFormat:@"account = %@ AND topic LIKE[C] %@", self.account.cdaccount, filterExpr];
+	if ([self.topicSearchController.searchBar.text length] > 0) {
+		predicate = [NSPredicate predicateWithFormat:@"account = %@ AND topic CONTAINS[C] %@", self.account.cdaccount, self.topicSearchController.searchBar.text];
 	} else {
 		predicate = [NSPredicate predicateWithFormat:@"account = %@", self.account.cdaccount];
 	}
