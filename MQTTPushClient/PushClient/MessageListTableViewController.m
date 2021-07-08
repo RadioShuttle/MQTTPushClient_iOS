@@ -12,7 +12,7 @@
 #import "ActionListTableViewController.h"
 #import "MessageListTableViewController.h"
 
-@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate>
+@interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate, UISearchResultsUpdating>
 
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
@@ -20,6 +20,8 @@
 @property NSDateFormatter *dateFormatter;
 @property NSDateFormatter *sectionDateFormatter;
 @property (strong, nonatomic) NSFetchedResultsController<CDMessage *> *frc;
+
+@property (strong, nonatomic) UISearchController *topicSearchController;
 
 // These two properties are used to detect new messages and display them with
 // a yellow background, until the user scrolls or leaves the view.
@@ -99,6 +101,18 @@
 											 selector:@selector(significantTimeChange:)
 												 name:UIApplicationSignificantTimeChangeNotification
 											   object:nil];
+	
+	// Search Topics SearchController
+	self.topicSearchController = [[UISearchController alloc] initWithSearchResultsController:nil];
+	self.topicSearchController.obscuresBackgroundDuringPresentation = NO;
+	self.topicSearchController.searchBar.placeholder = @"Search Topics";
+	self.topicSearchController.searchResultsUpdater = self;
+	self.definesPresentationContext = YES;
+	if (@available(iOS 11, *)) {
+		self.navigationItem.searchController = self.topicSearchController;
+	} else {
+		self.tableView.tableHeaderView = self.topicSearchController.searchBar;
+	}
 	
 	[self updateAccount];
 }
@@ -215,6 +229,13 @@
 	return [self.sectionDateFormatter stringFromDate:date];
 }
 
+#pragma mark - Search Topics results
+
+- (void)updateSearchResultsForSearchController:(UISearchController *)searchController {
+	_frc = nil;
+	[self.tableView reloadData];
+}
+
 
 #pragma mark - Fetched results controller
 
@@ -224,7 +245,13 @@
 	}
 	
 	NSFetchRequest<CDMessage *> *fetchRequest = CDMessage.fetchRequest;
-	NSPredicate *predicate = [NSPredicate predicateWithFormat:@"account = %@", self.account.cdaccount];
+	NSPredicate *predicate;
+	if (self.topicSearchController && self.topicSearchController.searchBar.text && [self.topicSearchController.searchBar.text length] > 0) {
+		NSString *filterExpr = [NSString stringWithFormat:@"*%@*", self.topicSearchController.searchBar.text];
+		predicate = [NSPredicate predicateWithFormat:@"account = %@ AND topic LIKE[C] %@", self.account.cdaccount, filterExpr];
+	} else {
+		predicate = [NSPredicate predicateWithFormat:@"account = %@", self.account.cdaccount];
+	}
 	fetchRequest.predicate = predicate;
 	NSSortDescriptor *sort1 = [[NSSortDescriptor alloc] initWithKey:@"timestamp" ascending:NO];
 	NSSortDescriptor *sort2 = [[NSSortDescriptor alloc] initWithKey:@"messageID" ascending:NO];
