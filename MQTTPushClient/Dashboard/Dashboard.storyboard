@@ -48,6 +48,7 @@
                     </collectionView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="bwo-Ib-p9L"/>
+                        <barButtonItem title="Manage Images" image="Manage Images" id="gEf-2B-JI9"/>
                         <barButtonItem title="Message View" image="List" id="rbh-YV-M6z">
                             <connections>
                                 <segue destination="JzK-uF-OyL" kind="custom" identifier="IDShowMessageList" customClass="SwitchViewSegue" id="BhN-nW-1El"/>
@@ -55,7 +56,11 @@
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Dashboard" id="6RS-Xe-5xe">
-                        <barButtonItem key="rightBarButtonItem" title="Zoom" image="Zoom" id="hGt-et-ZeZ"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Reload" image="Refresh" id="3j3-xX-rx7"/>
+                            <barButtonItem title="Zoom" image="Zoom" id="hGt-et-ZeZ"/>
+                            <barButtonItem title="Add" image="Add" id="Szd-Hw-UwF"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </collectionViewController>
@@ -65,7 +70,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Add" width="24" height="24"/>
         <image name="List" width="24" height="24"/>
+        <image name="Manage Images" width="24" height="24"/>
+        <image name="Refresh" width="24" height="24"/>
         <image name="Zoom" width="24" height="24"/>
     </resources>
 </document>
