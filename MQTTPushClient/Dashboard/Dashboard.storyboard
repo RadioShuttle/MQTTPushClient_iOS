@@ -15,7 +15,7 @@
                 <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="SIDMessageList" id="JzK-uF-OyL" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tzF-4h-DdX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-811" y="-384"/>
+            <point key="canvasLocation" x="253" y="-471"/>
         </scene>
         <!--Dashboard-->
         <scene sceneID="aze-Uf-fzj">
@@ -46,16 +46,16 @@
                             <outlet property="delegate" destination="F7T-nj-EyB" id="Q4y-rr-eK8"/>
                         </connections>
                     </collectionView>
-                    <toolbarItems/>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="bwo-Ib-p9L"/>
+                        <barButtonItem title="Message View" image="List" id="rbh-YV-M6z">
+                            <connections>
+                                <segue destination="JzK-uF-OyL" kind="custom" identifier="IDShowMessageList" customClass="SwitchViewSegue" id="BhN-nW-1El"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Dashboard" id="6RS-Xe-5xe">
-                        <rightBarButtonItems>
-                            <barButtonItem title="Zoom" image="Zoom" id="hGt-et-ZeZ"/>
-                            <barButtonItem title="Message View" image="List" id="rbh-YV-M6z">
-                                <connections>
-                                    <segue destination="JzK-uF-OyL" kind="custom" identifier="IDShowMessageList" customClass="SwitchViewSegue" id="BhN-nW-1El"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="Zoom" image="Zoom" id="hGt-et-ZeZ"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                 </collectionViewController>

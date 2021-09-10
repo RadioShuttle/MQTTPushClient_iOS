@@ -779,23 +779,22 @@
                             </view>
                         </barButtonItem>
                         <barButtonItem systemItem="flexibleSpace" id="Xee-3T-ep3"/>
+                        <barButtonItem tag="1" title="Dashboard" image="Dashboard" id="FWe-1m-WA6">
+                            <connections>
+                                <segue destination="ZoG-TN-Jvt" kind="custom" identifier="IDShowDashboard" customClass="SwitchViewSegue" id="uB2-p4-bjf"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Messages" id="sRy-hS-iYz">
-                        <rightBarButtonItems>
-                            <barButtonItem title="MQTT Actions" id="EF9-ur-0wd">
-                                <connections>
-                                    <segue destination="lL1-on-hWC" kind="popoverPresentation" identifier="IDShowMqttActions" popoverAnchorBarButtonItem="EF9-ur-0wd" id="Ia3-jN-VAq">
-                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                    </segue>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem tag="1" title="Dashboard" image="Dashboard" id="FWe-1m-WA6">
-                                <connections>
-                                    <segue destination="ZoG-TN-Jvt" kind="custom" identifier="IDShowDashboard" customClass="SwitchViewSegue" id="uB2-p4-bjf"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="MQTT Actions" id="EF9-ur-0wd">
+                            <connections>
+                                <segue destination="lL1-on-hWC" kind="popoverPresentation" identifier="IDShowMqttActions" popoverAnchorBarButtonItem="EF9-ur-0wd" id="Ia3-jN-VAq">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="statusLabel" destination="5WO-nn-elx" id="2xx-nK-Re0"/>
                         <outlet property="tableViewHeaderLabel" destination="wSS-Sk-0Dn" id="II8-vU-klY"/>
