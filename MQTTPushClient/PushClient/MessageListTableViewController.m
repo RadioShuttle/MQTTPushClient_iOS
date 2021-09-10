@@ -11,6 +11,7 @@
 #import "MessageTableViewCell.h"
 #import "ActionListTableViewController.h"
 #import "MessageListTableViewController.h"
+#import "DashCollectionViewController.h"
 
 @interface MessageListTableViewController () <NSFetchedResultsControllerDelegate, UIPopoverPresentationControllerDelegate, UISearchResultsUpdating>
 
@@ -329,17 +330,25 @@
 #pragma mark - navigation
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-	UIPopoverPresentationController *popOver = segue.destinationViewController.popoverPresentationController;
-	popOver.delegate = self;
 	
-	UINavigationController *nc = segue.destinationViewController;
-	ActionListTableViewController *controller = (ActionListTableViewController *)nc.topViewController;
-	controller.account = self.account;
-	controller.editAllowed = NO;
-	
-	UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
-															target:self action:@selector(dismissActionList)];
-	controller.navigationItem.rightBarButtonItem = done;
+	NSString *identifier = segue.identifier;
+
+	if ([identifier isEqualToString:@"IDShowDashboard"]) {
+		DashCollectionViewController *vc = segue.destinationViewController;
+		vc.account = self.account;
+	} else { //if ([identifier isEqualToString:@"IDShowMqttActions"])
+		UIPopoverPresentationController *popOver = segue.destinationViewController.popoverPresentationController;
+		popOver.delegate = self;
+		
+		UINavigationController *nc = segue.destinationViewController;
+		ActionListTableViewController *controller = (ActionListTableViewController *)nc.topViewController;
+		controller.account = self.account;
+		controller.editAllowed = NO;
+		
+		UIBarButtonItem *done = [[UIBarButtonItem alloc] initWithTitle:@"Done" style:UIBarButtonItemStyleDone
+																target:self action:@selector(dismissActionList)];
+		controller.navigationItem.rightBarButtonItem = done;
+	}
 }
 
 - (void)dismissActionList {

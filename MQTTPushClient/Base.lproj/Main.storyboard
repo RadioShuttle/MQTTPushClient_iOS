@@ -642,7 +642,7 @@
         <!--Message List-->
         <scene sceneID="12f-PV-aIe">
             <objects>
-                <tableViewController title="Message List" id="k5Q-cm-GtU" customClass="MessageListTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="SIDMessageList" title="Message List" id="k5Q-cm-GtU" customClass="MessageListTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zIr-sl-BuY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -781,13 +781,20 @@
                         <barButtonItem systemItem="flexibleSpace" id="Xee-3T-ep3"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Messages" id="sRy-hS-iYz">
-                        <barButtonItem key="rightBarButtonItem" title="MQTT Actions" id="EF9-ur-0wd">
-                            <connections>
-                                <segue destination="lL1-on-hWC" kind="popoverPresentation" popoverAnchorBarButtonItem="EF9-ur-0wd" id="Ia3-jN-VAq">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem title="MQTT Actions" id="EF9-ur-0wd">
+                                <connections>
+                                    <segue destination="lL1-on-hWC" kind="popoverPresentation" identifier="IDShowMqttActions" popoverAnchorBarButtonItem="EF9-ur-0wd" id="Ia3-jN-VAq">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem tag="1" title="Dashboard" image="Dashboard" id="FWe-1m-WA6">
+                                <connections>
+                                    <segue destination="ZoG-TN-Jvt" kind="custom" identifier="IDShowDashboard" customClass="SwitchViewSegue" id="uB2-p4-bjf"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="statusLabel" destination="5WO-nn-elx" id="2xx-nK-Re0"/>
@@ -798,6 +805,14 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D3X-ps-hNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-215.19999999999999" y="953.97301349325346"/>
+        </scene>
+        <!--Dashboard-->
+        <scene sceneID="ASd-z2-X9C">
+            <objects>
+                <viewControllerPlaceholder storyboardName="Dashboard" id="ZoG-TN-Jvt" sceneMemberID="viewController"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="XPi-yg-2qX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="415" y="697"/>
         </scene>
         <!--MQTT Actions-->
         <scene sceneID="Kg5-pW-ot8">
@@ -1569,6 +1584,7 @@
         <image name="AboutImage" width="83.5" height="83.5"/>
         <image name="Banner" width="18" height="18"/>
         <image name="BannerSound" width="18" height="18"/>
+        <image name="Dashboard" width="24" height="24"/>
         <image name="NotificationDisabled" width="18" height="18"/>
         <image name="NotificationNone" width="18" height="18"/>
     </resources>

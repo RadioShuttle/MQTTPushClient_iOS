@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		210B9A3C26E653740071E876 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 210B9A3B26E653740071E876 /* Dashboard.storyboard */; };
+		2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171417D26E752CC00BD7969 /* SwitchViewSegue.m */; };
+		2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171418026E7573100BD7969 /* DashCollectionViewController.m */; };
 		2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */; };
 		2A0E8DF3218332780080DF12 /* AddTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */; };
 		2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */; };
@@ -103,6 +106,11 @@
 
 /* Begin PBXFileReference section */
 		0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.release.xcconfig"; sourceTree = "<group>"; };
+		210B9A3B26E653740071E876 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		2171417C26E752CC00BD7969 /* SwitchViewSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwitchViewSegue.h; sourceTree = "<group>"; };
+		2171417D26E752CC00BD7969 /* SwitchViewSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchViewSegue.m; sourceTree = "<group>"; };
+		2171417F26E7573100BD7969 /* DashCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCollectionViewController.h; sourceTree = "<group>"; };
+		2171418026E7573100BD7969 /* DashCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashCollectionViewController.m; sourceTree = "<group>"; };
 		2A02D7FB218B4EFA005E6934 /* TopicsListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewCell.h; sourceTree = "<group>"; };
 		2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewCell.m; sourceTree = "<group>"; };
 		2A0E8DF1218332780080DF12 /* AddTopicTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddTopicTableViewController.h; sourceTree = "<group>"; };
@@ -231,6 +239,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2171417B26E7527700BD7969 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				2171417C26E752CC00BD7969 /* SwitchViewSegue.h */,
+				2171417D26E752CC00BD7969 /* SwitchViewSegue.m */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		218A631E26E6211E0011126E /* Dashboard */ = {
+			isa = PBXGroup;
+			children = (
+				210B9A3B26E653740071E876 /* Dashboard.storyboard */,
+				2171417F26E7573100BD7969 /* DashCollectionViewController.h */,
+				2171418026E7573100BD7969 /* DashCollectionViewController.m */,
+			);
+			path = Dashboard;
+			sourceTree = "<group>";
+		};
 		2A7DFF86213EAFE6001B1546 /* PushClient */ = {
 			isa = PBXGroup;
 			children = (
@@ -330,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				84F4B46D223294C100197005 /* Scripts */,
+				2171417B26E7527700BD7969 /* Utilities */,
 				84095D092190827300CFC1DB /* ca-certificate.der */,
 				2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */,
 				2ADBE45E213D7516000664D3 /* Assets.xcassets */,
@@ -337,6 +365,7 @@
 				2ADBE460213D7516000664D3 /* LaunchScreen.storyboard */,
 				2ADBE464213D7516000664D3 /* main.m */,
 				2ADBE45B213D7515000664D3 /* Main.storyboard */,
+				218A631E26E6211E0011126E /* Dashboard */,
 				2A7DFF86213EAFE6001B1546 /* PushClient */,
 			);
 			path = MQTTPushClient;
@@ -519,6 +548,7 @@
 				84F4B4732232962700197005 /* ExampleRegularExpression.js in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
 				841E1EED24585D3D00E6E0CD /* javascript_color.js in Resources */,
+				210B9A3C26E653740071E876 /* Dashboard.storyboard in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
 				84A7CFD52238006900E17D03 /* ScriptViewSectionHeader.xib in Resources */,
 				84F4B477223296C900197005 /* ExampleHexdump.js in Resources */,
@@ -568,6 +598,7 @@
 				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
 				2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */,
 				847874E2217760F00059881B /* Account.m in Sources */,
+				2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */,
 				84D6352E2243B75C0024E5A2 /* DynamicButton.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
@@ -595,6 +626,7 @@
 				84095D0721903E8300CFC1DB /* Message.m in Sources */,
 				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
+				2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
 				2AE5697B219481D30037FE30 /* AboutTableViewController.m in Sources */,
 				843BE3C5221D4C370039EF7C /* Utils.m in Sources */,
