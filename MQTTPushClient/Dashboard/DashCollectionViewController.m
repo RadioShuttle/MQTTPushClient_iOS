@@ -6,6 +6,7 @@
 
 #import "DashCollectionViewController.h"
 #import "MessageListTableViewController.h"
+#import "Connection.h"
 
 @interface DashCollectionViewController ()
 
@@ -24,15 +25,32 @@ static NSString * const reuseIdentifier = @"Cell";
     // Register cell classes
     // [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-    // Do any additional setup after loading the view.
+	/* init Dashboard */
+	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
+
+	Connection *connection = [[Connection alloc] init]; //TODO: remove after timer implementation
+	[connection getDashboardForAccount:self.dashboard];
+
+	[self startTimer];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	NSString *identifier = segue.identifier;
 	if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *vc = segue.destinationViewController;
-		vc.account = self.account;
+		vc.account = self.dashboard.account;
 	}
+}
+
+#pragma mark - Timer
+-(void) startTimer {
+}
+
+-(void) stopTimer {
+}
+
+- (void)viewWillDisappear:(BOOL)a {
+	[super viewWillDisappear:a];
 }
 
 /*

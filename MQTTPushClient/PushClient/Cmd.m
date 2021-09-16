@@ -37,7 +37,14 @@ enum Command {
 	CMD_MQTT_PUBLISH = 17,
 	CMD_GET_FCM_DATA_IOS = 18,
 	CMD_GET_MESSAGES = 19,
-	CMD_ADM = 20
+	CMD_ADM = 20,
+	CMD_SET_DASHBOARD = 22,
+	CMD_GET_DASHBOARD = 23,
+	CMD_GET_MESSAGES_DASH = 24,
+	CMD_SAVE_RESOURCE = 26,
+	CMD_GET_RESOURCE = 27,
+	CMD_DEL_RESOURCE = 28,
+	CMD_ENUM_RESOURCES = 29
 };
 
 enum TransmissionFlag {
@@ -478,6 +485,53 @@ enum StateCommand {
 	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:2];
 	[data appendData:[self dataFromString:name encoding:NSUTF8StringEncoding]];
 	[self writeCommand:CMD_DEL_ACTIONS seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+
+- (RawCmd *)getDashMessagesRequest:(int)seqNo date:(uint64_t)since id:(uint32_t)messageID {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"GET DASH MESSAGES request");
+	unsigned char buffer[8];
+	buffer[7] = since & 0xff;
+	buffer[6] = since >> 8;
+	buffer[5] = since >> 16;
+	buffer[4] = since >> 24;
+	buffer[3] = since >> 32;
+	buffer[2] = since >> 40;
+	buffer[1] = since >> 48;
+	buffer[0] = since >> 56;
+	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:8];
+	buffer[3] = messageID & 0xff;;
+	buffer[2] = messageID >> 8;
+	buffer[1] = messageID >> 16;
+	buffer[0] = messageID >> 24;
+	[data appendBytes:buffer length:4];
+	[self writeCommand:CMD_GET_MESSAGES_DASH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+- (RawCmd *)getDashboardRequest:(int)seqNo {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"GET DASHBOARD request");
+	[self request:CMD_GET_DASHBOARD seqNo:seqNo];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
+-(RawCmd *)getResourceRequest:(int)seqNo name:(NSString *)name type:(NSString *)type {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"GET RESOURCE request");
+	NSMutableData *data = [self dataFromString:name encoding:NSUTF8StringEncoding];
+	[data appendData:[self dataFromString:type encoding:NSUTF8StringEncoding]];
+	[self writeCommand:CMD_GET_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
 	return self.rawCmd;

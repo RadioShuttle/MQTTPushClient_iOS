@@ -7,6 +7,7 @@
 #import <Foundation/Foundation.h>
 #import "Action.h"
 #import "Cmd.h"
+#import "Dashboard.h"
 
 @interface Connection : NSObject
 
@@ -25,5 +26,6 @@
 - (void)addActionForAccount:(Account *)account action:(Action *)action;
 - (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name;
 - (void)deleteActionForAccount:(Account *)account name:(NSString *)name;
+- (void)getDashboardForAccount:(Dashboard *)dashboard;
 
 @end

@@ -14,6 +14,10 @@
 #import "Action.h"
 #import "Connection.h"
 #import "AccountList.h"
+#import "Utils.h"
+#import "DashConsts.h"
+#import "DashUtils.h"
+#import "NSString+HELUtils.h"
 #import "Trace.h"
 
 enum ConnectionState {
@@ -285,6 +289,242 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
+/* getDashboardAsync gets the latest messages (including historical data),
+ the up-to-date dashboard and (sync) resources */
+- (void)getDashboardAsync:(Dashboard *)dashboard localVersion:(uint64_t)localVersion timestamp:(uint64_t)timestamp messageID:(int)messageID  dashboard:(NSString *)localDashboardJS resourceDir:(NSURL *)resourceDir {
+	Cmd *command = [self login:dashboard.account];
+
+	if (!command.rawCmd.error) {
+		/* get lastest messages and historical data */
+		[command getDashMessagesRequest:0 date:timestamp id:messageID];
+		if (!command.rawCmd.error) {
+			unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+			uint64_t serverVersion = [Utils charArrayToUint64:p];
+			p += 8;
+
+			int noOfMsgs = (p[0] << 8) + p[1];
+			p += 2;
+			
+			NSMutableDictionary<NSString *, NSMutableArray<DashMessage *> *> *msgsPerTopic = [NSMutableDictionary new];
+			NSMutableArray<DashMessage *> *msgs;
+			DashMessage *newestMsg = nil;
+			while (noOfMsgs--) {
+				DashMessage *message = [[DashMessage alloc] init];
+				NSTimeInterval seconds = [Utils charArrayToUint64:p];
+				message.timestamp = [NSDate dateWithTimeIntervalSince1970:seconds];
+				p += 8;
+				int count = (p[0] << 8) + p[1];
+				p += 2;
+				message.topic = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+				p += count;
+				count = (p[0] << 8) + p[1];
+				p += 2;
+				message.content = [NSData dataWithBytes:p length:count];
+				p += count;
+				int msgID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+				message.messageID = msgID;
+				p += 4;
+				/* subscription status */
+				message.status = (p[0] << 8) + p[1];;
+				p += 2;
+				
+				msgs = [msgsPerTopic objectForKey:message.topic];
+				if (!msgs) {
+					msgs = [NSMutableArray<DashMessage *> new];
+					[msgsPerTopic setObject:msgs forKey:message.topic];
+				}
+				[msgs addObject:message];
+				if (!newestMsg || [message isNewerThan:newestMsg]) {
+					newestMsg = message;
+				}
+			}
+			/* sort */
+			NSEnumerator *enumerator = [msgsPerTopic keyEnumerator];
+			id key;
+			
+			NSComparisonResult (^sortFunc)(DashMessage *, DashMessage *) = ^(DashMessage *obj1, DashMessage *obj2) {
+				NSComparisonResult r = [obj1.timestamp compare:obj2.timestamp];
+				if (r == NSOrderedSame) {
+					if (obj1.messageID < obj2.messageID) {
+						r = NSOrderedAscending;
+					} else if (obj1.messageID > obj2.messageID) {
+						r = NSOrderedDescending;
+					}
+				}
+				return r;
+			};
+										   
+			msgs = [NSMutableArray<DashMessage *> new]; // latest messages
+			NSMutableDictionary<NSString *, NSArray<DashMessage *> *> *historicalData = [NSMutableDictionary new];
+			while ((key = [enumerator nextObject])) {
+				NSArray *vals = [msgsPerTopic objectForKey:key];
+				NSArray *sortedArray = [vals sortedArrayUsingComparator:sortFunc];
+				[historicalData setObject:sortedArray forKey:key];
+				[msgs addObject:[sortedArray lastObject]];
+			}
+			NSArray<DashMessage *> *dashMessages = [msgs sortedArrayUsingComparator: sortFunc];
+
+			NSString *dashboardJS = nil;
+			BOOL invalidVersion = NO;
+			
+			/* get dashboard if there is a newer version on the server */
+			if (serverVersion > 0 && localVersion != serverVersion) {
+				invalidVersion = YES; // the local version is not up-to-date;
+				[command getDashboardRequest:0];
+				if (!command.rawCmd.error) {
+					unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+					serverVersion = [Utils charArrayToUint64:p];
+					p += 8;
+					int count = (p[0] << 8) + p[1];
+					p += 2;
+					dashboardJS = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+					// NSLog(@"Dashboard: %@", dashboard);
+				}
+			}
+
+			if (!command.rawCmd.error) {
+				NSString *currentDash;
+				if (![Utils isEmpty:dashboardJS]) {
+					currentDash = dashboardJS;
+				} else {
+					currentDash = localDashboardJS;
+				}
+				[self syncImages:command dash:currentDash resourceDir:resourceDir];
+				
+				if (!command.rawCmd.error) {
+					dispatch_async(dispatch_get_main_queue(), ^{
+						/* return result */
+						[dashboard onGetDashboardRequestFinished:dashboardJS version:serverVersion receivedMsgs:dashMessages historicalData:historicalData lastReceivedMsgDate:newestMsg.timestamp lastReceivedMsgSeqNo:newestMsg.messageID];
+					});
+				}
+			}
+		}
+	}
+	
+	[self disconnect:dashboard.account withCommand:command];
+}
+
+-(void) syncImages:(Cmd *)command dash:(NSString *)currentDash resourceDir:(NSURL *)resourceDir {
+	if (![Utils isEmpty:currentDash]) {
+		NSData *jsonData = [currentDash dataUsingEncoding:NSUTF8StringEncoding];
+		NSError *error;
+		NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+		if (error) {
+			NSLog(@"sync images, json parse error.");
+		} else {
+			NSArray *groups = [jsonDict valueForKey:@"groups"];
+			NSArray *resources = [jsonDict valueForKey:@"resources"];
+			
+			NSMutableSet *resourceNames = [NSMutableSet new];
+			NSString *uri;
+			NSString *resourceName;
+			NSString *internalFilename;
+			NSURL *localDir = [DashUtils getUserFilesDir:resourceDir];
+			NSURL *fileURL;
+			
+			//TODO: remove the following 2 lines after test. Otherwise all images will be reloaded from server
+			// [[NSFileManager defaultManager] removeItemAtURL:localDir error:nil];
+			// localDir = [DashUtils getUserFilesDir:resourceDir];
+
+			/* check if referenced resources exists */
+			for(int i = 0; i < [resources count]; i++) {
+				uri = [resources objectAtIndex:i];
+				if ([DashUtils isUserResource:uri]) {
+					resourceName = [DashUtils getURIPath:uri];
+					internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
+					fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+					if (![DashUtils fileExists:fileURL]) {
+						// NSLog(@"internal filename not exists: %@", internalFilename);
+						[resourceNames addObject:resourceName];
+					}
+				}
+			}
+			
+			NSDictionary * group;
+			NSArray *items;
+			NSDictionary *item;
+			for(int i = 0; i < [groups count]; i++) {
+				group = [groups objectAtIndex:i];
+				items = [group valueForKey:@"items"];
+				for(int j = 0; j < [items count]; j++) {
+					item = [items objectAtIndex:j];
+					NSString *uris[3] = {@"uri", @"uri_off", @"background_uri"};
+					for(int z = 0; z < 3; z++) {
+						uri = [item objectForKey:uris[z]];
+						if (uri) {
+							if ([DashUtils isUserResource:uri]) {
+								resourceName = [DashUtils getURIPath:uri];
+								internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
+								fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+								if (![DashUtils fileExists:fileURL]) {
+									[resourceNames addObject:resourceName];
+								}
+							}
+						}
+					}
+					NSArray *optionList = [item objectForKey:@"optionlist"];
+					if (optionList) {
+						NSDictionary * optionItem;
+						for(int z = 0; z < [optionList count]; z++) {
+							optionItem = [optionList objectAtIndex:z];
+							if (optionItem) {
+								uri = [optionItem objectForKey:@"uri"];
+								if ([DashUtils isUserResource:uri]) {
+									resourceName = [DashUtils getURIPath:uri];
+									internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
+									fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+									if (![DashUtils fileExists:fileURL]) {
+										[resourceNames addObject:resourceName];
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			/* get all missing resources */
+			NSEnumerator *enumerator = [resourceNames objectEnumerator];
+			NSString *resName;
+			unsigned char *p;
+			uint64_t mdate;
+			int len;
+
+			while ((resName = [enumerator nextObject])) {
+				NSLog(@"mssing resource: %@", resName);
+				[command getResourceRequest:0 name:resName type:DASH512_PNG];
+				if (command.rawCmd.error) {
+					break;
+				}else {
+					p = (unsigned char *)command.rawCmd.data.bytes;
+					mdate = [Utils charArrayToUint64:p];
+					p += 8;
+					len = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+					p += 4;
+					NSData* data = [NSData dataWithBytes:p length:len];
+
+					internalFilename = [NSString stringWithFormat:@"%@.%@", [resName enquoteHelios], DASH512_PNG];
+					fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+					if (![data writeToURL:fileURL atomically:YES]) {
+						NSLog(@"Resource file %@ could not be written.", resName);
+					} else {
+						NSDate *modDate = [NSDate dateWithTimeIntervalSince1970:mdate];
+						NSString *dateString = [NSDateFormatter localizedStringFromDate:modDate
+																			  dateStyle:NSDateFormatterShortStyle
+																			  timeStyle:NSDateFormatterFullStyle];
+						NSLog(@"File %@: modification date %@",internalFilename, dateString);
+						NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys: modDate, NSFileModificationDate, NULL];
+						[[NSFileManager defaultManager] setAttributes:attr ofItemAtPath:[fileURL path] error:&error];
+						if (error) {
+							NSLog(@"Error: %@ %@", error, [error userInfo]); //TODO
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
 #pragma mark - public methods
 
 - (Cmd *)login:(Account *)account {
@@ -347,6 +587,16 @@ enum ConnectionState {
 
 - (void)deleteActionForAccount:(Account *)account name:(NSString *)name {
 	dispatch_async(self.serialQueue, ^{[self deleteActionAsync:account name:name];});
+}
+
+- (void)getDashboardForAccount:(Dashboard *)dashboard {
+	uint64_t vers = dashboard.localVersion;
+	uint64_t ts = [dashboard.lastReceivedMsgDate timeIntervalSince1970];
+	int messageID = dashboard.lastReceivedMsgSeqNo;
+	NSString *db = dashboard.dashboardJS;
+	NSURL *resourceDir = dashboard.account.cacheURL;
+	
+	dispatch_async(self.serialQueue, ^{[self getDashboardAsync:dashboard localVersion:vers timestamp:ts messageID:messageID dashboard:db resourceDir:resourceDir];});
 }
 
 @end

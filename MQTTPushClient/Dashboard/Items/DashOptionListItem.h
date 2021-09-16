@@ -4,17 +4,14 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-@import UIKit;
-#import "Account.h"
-#import "Dashboard.h"
+#import <Foundation/Foundation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DashCollectionViewController : UICollectionViewController
-
-@property Account *account;
-@property Dashboard *dashboard;
-
+@interface DashOptionListItem : NSObject
+@property NSString *value;
+@property NSString *displayValue;
+@property NSString *imageURI;
 @end
 
 NS_ASSUME_NONNULL_END

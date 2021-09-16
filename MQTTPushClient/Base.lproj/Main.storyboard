@@ -642,7 +642,7 @@
         <!--Message List-->
         <scene sceneID="12f-PV-aIe">
             <objects>
-                <tableViewController storyboardIdentifier="SIDMessageList" title="Message List" id="k5Q-cm-GtU" customClass="MessageListTableViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="MessageList" title="Message List" id="k5Q-cm-GtU" customClass="MessageListTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="zIr-sl-BuY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

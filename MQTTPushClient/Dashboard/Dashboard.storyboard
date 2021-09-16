@@ -9,13 +9,13 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--SIDMessageList-->
+        <!--MessageList-->
         <scene sceneID="oBh-aC-WLI">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="SIDMessageList" id="JzK-uF-OyL" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="MessageList" id="JzK-uF-OyL" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tzF-4h-DdX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="253" y="-471"/>
+            <point key="canvasLocation" x="244" y="-472"/>
         </scene>
         <!--Dashboard-->
         <scene sceneID="aze-Uf-fzj">

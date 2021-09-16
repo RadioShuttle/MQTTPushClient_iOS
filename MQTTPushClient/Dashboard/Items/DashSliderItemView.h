@@ -4,17 +4,14 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-@import UIKit;
-#import "Account.h"
-#import "Dashboard.h"
+#import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface DashCollectionViewController : UICollectionViewController
-
-@property Account *account;
-@property Dashboard *dashboard;
-
+@interface DashSliderItemView : UIView
+@property UILabel *valueLabel;
+@property UIProgressView *progressView;
+@property UISlider *sliderCtrl;
 @end
 
 NS_ASSUME_NONNULL_END
