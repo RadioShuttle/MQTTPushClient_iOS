@@ -50,13 +50,12 @@
 	if (dashboard) {
 		self.dashboardJS = dashboard;
 		self.localVersion = version;
-
 		[self saveDashboard:dashboard version:version];
 	}
 }
 
 /* saves the given dashboard str (json) including dashboard version info */
-- (void)saveDashboard:(NSString *)dashboard version:(uint64_t) version  {
+- (BOOL)saveDashboard:(NSString *)dashboard version:(uint64_t) version  {
 	NSMutableString *db = [NSMutableString new];
 	/* put the version info before the dashboard and separate with new line */
 	[db appendString:[@(version) stringValue]];
@@ -65,9 +64,41 @@
 		[db appendString:dashboard];
 	}
 	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.js"];
-	if (![db writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:nil]) {
+	BOOL ok = [db writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
+	if (!ok) {
 		NSLog(@"Saving dashboard failed.");
 	}
+	return ok;
+}
+
+#pragma mark - Dashboard view preferrences
+
++ (void) setPreferredViewDashboard:(BOOL)prefer forAccount:(Account *)account {
+	NSDictionary *dict = [Dashboard loadDashboardSettings:account];
+	NSMutableDictionary *settings;
+	if (dict) {
+		settings = [dict mutableCopy];
+	} else {
+		settings = [NSMutableDictionary new];
+	}
+	[settings setObject:[NSNumber numberWithBool:prefer] forKey:@"showDashboard"];
+	[Dashboard saveDashboardSettings:account settings:settings];
+}
+
++ (BOOL)showDashboard:(Account *)account {
+	NSDictionary * settings = [Dashboard loadDashboardSettings:account];
+	return [[settings objectForKey:@"showDashboard"] boolValue];
+}
+
++(NSDictionary *) loadDashboardSettings:(Account *) account {
+	NSURL *fileURL = [DashUtils appendStringToURL:account.cacheURL str:@"dashboard_settings.plist"];
+	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfURL:fileURL];
+	return settings;
+}
+
++(BOOL) saveDashboardSettings:(Account *) account settings:(NSDictionary *) settings {
+	NSURL *fileURL = [DashUtils appendStringToURL:account.cacheURL str:@"dashboard_settings.plist"];
+	return [settings writeToURL:fileURL atomically:YES];
 }
 
 @end

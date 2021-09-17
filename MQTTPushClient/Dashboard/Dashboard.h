@@ -31,6 +31,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)onGetDashboardRequestFinished:(NSString *)dashboard version:(uint64_t)version receivedMsgs:(NSArray<DashMessage *> *)receivedMsgs historicalData:(NSDictionary<NSString *, NSArray<DashMessage *> *> *)historicalData lastReceivedMsgDate:(NSDate *)lastReceivedMsgDate lastReceivedMsgSeqNo:(int) lastReceivedMsgSeqNo;
 
+/* returns true if the dashboard view is the preferred view mode */
++ (BOOL) showDashboard:(Account *) account;
+/* set preferred view mode */
++ (void) setPreferredViewDashboard:(BOOL)pref forAccount:(Account *)account;
 
 /* version no of local stored dashboard */
 @property uint64_t localVersion;

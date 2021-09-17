@@ -13,6 +13,7 @@
 #import "ServerListTableViewCell.h"
 #import "ServerListTableViewController.h"
 #import "TokenManager.h"
+#import "DashCollectionViewController.h"
 
 @interface ServerListTableViewController ()
 
@@ -223,7 +224,12 @@
 		}
 	} else {
 		self.indexPathSelected = indexPath;
-		[self performSegueWithIdentifier:@"IDShowMessageList" sender:nil];
+		Account *account = self.accountList[self.indexPathSelected.row];
+		if ([Dashboard showDashboard:account]) {
+			[self performSegueWithIdentifier:@"IDShowDash" sender:nil];
+		} else {
+			[self performSegueWithIdentifier:@"IDShowMessageList" sender:nil];
+		}
 	}
 }
 
@@ -239,6 +245,10 @@
 		controller.editIndex = self.indexPathSelected.row;
 	} else if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *controller = segue.destinationViewController;
+		Account *account = self.accountList[self.indexPathSelected.row];
+		controller.account = account;
+	} else if ([identifier isEqualToString:@"IDShowDash"]) {
+		DashCollectionViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];
 		controller.account = account;
 	}
