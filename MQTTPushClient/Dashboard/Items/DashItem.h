@@ -24,6 +24,6 @@
 
 - (instancetype)initWithJSON:(NSDictionary *)dictObj;
 
-+ (DashItem *)createObjectFromJSON:(NSDictionary *)jobj;
++ (DashItem *)createObjectFromJSON:(NSDictionary *)dictObj;
 
 @end

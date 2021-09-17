@@ -1,10 +1,8 @@
-//
-//  GroupItem.h
-//  MQTTPushClient
-//
-//  Created by Adalbert Winkler on 17.09.21.
-//  Copyright © 2021 Helios. All rights reserved.
-//
+/*
+ * Copyright (c) 2021 HELIOS Software GmbH
+ * 30827 Garbsen (Hannover) Germany
+ * Licensed under the Apache License, Version 2.0
+ */
 
 #import "DashItem.h"
 
