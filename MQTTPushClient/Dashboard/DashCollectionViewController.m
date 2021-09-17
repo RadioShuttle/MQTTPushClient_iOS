@@ -20,6 +20,8 @@ static NSString * const reuseIdentifier = @"Cell";
     [super viewDidLoad];
 	[Dashboard setPreferredViewDashboard:YES forAccount:self.account];
 	
+	// [self.statusBarLabel setText:@"Test"];
+	
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     

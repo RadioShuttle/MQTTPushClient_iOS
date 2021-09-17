@@ -47,6 +47,27 @@
                         </connections>
                     </collectionView>
                     <toolbarItems>
+                        <barButtonItem style="plain" id="mh0-pb-SbM">
+                            <view key="customView" contentMode="scaleToFill" id="4Yr-u2-VPH">
+                                <rect key="frame" x="20" y="11" width="283" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ny-lx-5gl">
+                                        <rect key="frame" x="0.0" y="0.0" width="283" height="32"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="1ny-lx-5gl" firstAttribute="leading" secondItem="4Yr-u2-VPH" secondAttribute="leading" id="GMF-Hh-DzC"/>
+                                    <constraint firstAttribute="bottom" secondItem="1ny-lx-5gl" secondAttribute="bottom" id="IUx-Gh-XKP"/>
+                                    <constraint firstAttribute="trailing" secondItem="1ny-lx-5gl" secondAttribute="trailing" id="hJC-Xy-86C"/>
+                                    <constraint firstItem="1ny-lx-5gl" firstAttribute="top" secondItem="4Yr-u2-VPH" secondAttribute="top" id="iRG-g2-Hif"/>
+                                </constraints>
+                            </view>
+                        </barButtonItem>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="bwo-Ib-p9L"/>
                         <barButtonItem title="Manage Images" image="Manage Images" id="gEf-2B-JI9"/>
                         <barButtonItem title="Message View" image="List" id="rbh-YV-M6z">
@@ -63,8 +84,18 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="statusBarLabel" destination="1ny-lx-5gl" id="bvC-Zz-amo"/>
+                    </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pvJ-LA-fYD" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="wvM-ci-LAT">
+                    <rect key="frame" x="0.0" y="0.0" width="42" height="21"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                    <nil key="textColor"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </objects>
             <point key="canvasLocation" x="-304" y="-153"/>
         </scene>

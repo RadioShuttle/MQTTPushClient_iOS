@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property Account *account;
 @property Dashboard *dashboard;
+@property (weak, nonatomic) IBOutlet UILabel *statusBarLabel;
 
 @end
 
