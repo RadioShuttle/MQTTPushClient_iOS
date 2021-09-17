@@ -19,7 +19,7 @@
 }
 
 - (instancetype)initWithJSON:(NSDictionary *) dictObj {
-	self = [self init];
+	self = [super initWithJSON:dictObj];
 
 	self.html = [dictObj helStringForKey:@"html"];
 
