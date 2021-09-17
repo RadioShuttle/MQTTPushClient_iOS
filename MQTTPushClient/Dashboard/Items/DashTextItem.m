@@ -5,7 +5,13 @@
  */
 
 #import "DashTextItem.h"
+#import "NSDictionary+HelSafeAccessors.h"
 
 @implementation DashTextItem
 
+- (instancetype)initWithJSON:(NSDictionary *) dictObj {
+	self = [super initWithJSON:dictObj];
+	self.inputtype = [[dictObj helNumberForKey:@"input_type"] intValue];
+	return self;
+}
 @end

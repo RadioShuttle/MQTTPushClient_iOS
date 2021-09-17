@@ -5,7 +5,18 @@
  */
 
 #import "DashOptionListItem.h"
+#import "NSDictionary+HelSafeAccessors.h"
 
 @implementation DashOptionListItem
+
+- (instancetype)initWithJSON:(NSDictionary *) dictObj {
+	self = [self init];
+
+	self.value = [dictObj helStringForKey:@"value"];
+	self.displayValue = [dictObj helStringForKey:@"displayvalue"];
+	self.imageURI = [dictObj helStringForKey:@"uri"];
+
+	return self;
+}
 
 @end

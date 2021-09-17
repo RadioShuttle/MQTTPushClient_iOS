@@ -12,12 +12,13 @@
 		2131927D26EF6E0700E65AF0 /* DashOptionListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927126EF6E0600E65AF0 /* DashOptionListItem.m */; };
 		2131927E26EF6E0700E65AF0 /* DashCustomItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927326EF6E0600E65AF0 /* DashCustomItem.m */; };
 		2131927F26EF6E0700E65AF0 /* DashSwitchItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927526EF6E0600E65AF0 /* DashSwitchItem.m */; };
-		2131928026EF6E0700E65AF0 /* DashSliderItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927726EF6E0600E65AF0 /* DashSliderItemView.m */; };
 		2131928126EF6E0700E65AF0 /* DashItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927926EF6E0600E65AF0 /* DashItem.m */; };
 		2131928226EF6E0700E65AF0 /* DashOptionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927A26EF6E0600E65AF0 /* DashOptionItem.m */; };
 		2131928626EF8BF000E65AF0 /* Dashboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131928526EF8BF000E65AF0 /* Dashboard.m */; };
 		2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171417D26E752CC00BD7969 /* SwitchViewSegue.m */; };
 		2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171418026E7573100BD7969 /* DashCollectionViewController.m */; };
+		21ACFBAB26F4996E00737875 /* DashGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAA26F4996E00737875 /* DashGroupItem.m */; };
+		21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAC26F4A3E300737875 /* DashSliderItem.m */; };
 		21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC426F1DEE40019C488 /* DashUtils.m */; };
 		21EF4EC826F1E6280019C488 /* NSString+HELUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC726F1E6270019C488 /* NSString+HELUtils.m */; };
 		2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */; };
@@ -118,7 +119,6 @@
 		0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.release.xcconfig"; sourceTree = "<group>"; };
 		210B9A3B26E653740071E876 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		2131926E26EF6E0600E65AF0 /* DashOptionListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashOptionListItem.h; sourceTree = "<group>"; };
-		2131926F26EF6E0600E65AF0 /* DashSliderItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashSliderItemView.h; sourceTree = "<group>"; };
 		2131927026EF6E0600E65AF0 /* DashTextItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashTextItem.m; sourceTree = "<group>"; };
 		2131927126EF6E0600E65AF0 /* DashOptionListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashOptionListItem.m; sourceTree = "<group>"; };
 		2131927226EF6E0600E65AF0 /* DashTextItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashTextItem.h; sourceTree = "<group>"; };
@@ -126,7 +126,6 @@
 		2131927426EF6E0600E65AF0 /* DashOptionItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashOptionItem.h; sourceTree = "<group>"; };
 		2131927526EF6E0600E65AF0 /* DashSwitchItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashSwitchItem.m; sourceTree = "<group>"; };
 		2131927626EF6E0600E65AF0 /* DashItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashItem.h; sourceTree = "<group>"; };
-		2131927726EF6E0600E65AF0 /* DashSliderItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashSliderItemView.m; sourceTree = "<group>"; };
 		2131927826EF6E0600E65AF0 /* DashSwitchItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashSwitchItem.h; sourceTree = "<group>"; };
 		2131927926EF6E0600E65AF0 /* DashItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashItem.m; sourceTree = "<group>"; };
 		2131927A26EF6E0600E65AF0 /* DashOptionItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashOptionItem.m; sourceTree = "<group>"; };
@@ -138,6 +137,10 @@
 		2171417D26E752CC00BD7969 /* SwitchViewSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchViewSegue.m; sourceTree = "<group>"; };
 		2171417F26E7573100BD7969 /* DashCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCollectionViewController.h; sourceTree = "<group>"; };
 		2171418026E7573100BD7969 /* DashCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashCollectionViewController.m; sourceTree = "<group>"; };
+		21ACFBA926F4996E00737875 /* DashGroupItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashGroupItem.h; sourceTree = "<group>"; };
+		21ACFBAA26F4996E00737875 /* DashGroupItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashGroupItem.m; sourceTree = "<group>"; };
+		21ACFBAC26F4A3E300737875 /* DashSliderItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashSliderItem.m; sourceTree = "<group>"; };
+		21ACFBAD26F4A3E300737875 /* DashSliderItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashSliderItem.h; sourceTree = "<group>"; };
 		21EF4EC326F1DEE40019C488 /* DashUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashUtils.h; sourceTree = "<group>"; };
 		21EF4EC426F1DEE40019C488 /* DashUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashUtils.m; sourceTree = "<group>"; };
 		21EF4EC626F1E6270019C488 /* NSString+HELUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HELUtils.h"; sourceTree = "<group>"; };
@@ -273,20 +276,22 @@
 		2131925826EF6BA100E65AF0 /* Items */ = {
 			isa = PBXGroup;
 			children = (
-				2131927B26EF6E0700E65AF0 /* DashCustomItem.h */,
-				2131927326EF6E0600E65AF0 /* DashCustomItem.m */,
 				2131927626EF6E0600E65AF0 /* DashItem.h */,
 				2131927926EF6E0600E65AF0 /* DashItem.m */,
+				21ACFBA926F4996E00737875 /* DashGroupItem.h */,
+				21ACFBAA26F4996E00737875 /* DashGroupItem.m */,
+				2131927226EF6E0600E65AF0 /* DashTextItem.h */,
+				2131927026EF6E0600E65AF0 /* DashTextItem.m */,
+				2131927826EF6E0600E65AF0 /* DashSwitchItem.h */,
+				2131927526EF6E0600E65AF0 /* DashSwitchItem.m */,
+				21ACFBAD26F4A3E300737875 /* DashSliderItem.h */,
+				21ACFBAC26F4A3E300737875 /* DashSliderItem.m */,
 				2131927426EF6E0600E65AF0 /* DashOptionItem.h */,
 				2131927A26EF6E0600E65AF0 /* DashOptionItem.m */,
 				2131926E26EF6E0600E65AF0 /* DashOptionListItem.h */,
 				2131927126EF6E0600E65AF0 /* DashOptionListItem.m */,
-				2131926F26EF6E0600E65AF0 /* DashSliderItemView.h */,
-				2131927726EF6E0600E65AF0 /* DashSliderItemView.m */,
-				2131927826EF6E0600E65AF0 /* DashSwitchItem.h */,
-				2131927526EF6E0600E65AF0 /* DashSwitchItem.m */,
-				2131927226EF6E0600E65AF0 /* DashTextItem.h */,
-				2131927026EF6E0600E65AF0 /* DashTextItem.m */,
+				2131927B26EF6E0700E65AF0 /* DashCustomItem.h */,
+				2131927326EF6E0600E65AF0 /* DashCustomItem.m */,
 			);
 			path = Items;
 			sourceTree = "<group>";
@@ -660,6 +665,8 @@
 				847874E2217760F00059881B /* Account.m in Sources */,
 				2131927F26EF6E0700E65AF0 /* DashSwitchItem.m in Sources */,
 				2131927C26EF6E0700E65AF0 /* DashTextItem.m in Sources */,
+				21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */,
+				21ACFBAB26F4996E00737875 /* DashGroupItem.m in Sources */,
 				2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */,
 				84D6352E2243B75C0024E5A2 /* DynamicButton.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
@@ -692,7 +699,6 @@
 				84095D0721903E8300CFC1DB /* Message.m in Sources */,
 				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
-				2131928026EF6E0700E65AF0 /* DashSliderItemView.m in Sources */,
 				2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
 				2131928126EF6E0700E65AF0 /* DashItem.m in Sources */,

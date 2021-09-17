@@ -12,6 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property NSString *value;
 @property NSString *displayValue;
 @property NSString *imageURI;
+
+- (instancetype)initWithJSON:(NSDictionary *) dictObj;
+
 @end
 
 NS_ASSUME_NONNULL_END

@@ -6,6 +6,9 @@
 
 #import <Foundation/Foundation.h>
 #import "Account.h"
+#import "DashItem.h"
+#import "DashGroupItem.h"
+
 
 NS_ASSUME_NONNULL_BEGIN
 @class DashMessage;
@@ -45,6 +48,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /* current dash board in JS format*/
 @property NSString *dashboardJS;
+
+/* Dashboard item data used in view controller */
+@property NSArray<DashGroupItem *> *groups;
+/* key is DashGroupItem.id_ */
+@property NSDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems;
+
+/* The max item id_ in groups, groupItems*/
+@property int max_id;
 
 @end
 

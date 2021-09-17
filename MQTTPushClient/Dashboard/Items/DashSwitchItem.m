@@ -6,6 +6,7 @@
 
 #import "DashSwitchItem.h"
 #import "DashConsts.h"
+#import "NSDictionary+HelSafeAccessors.h"
 
 @implementation DashSwitchItem
 
@@ -21,8 +22,21 @@
     return self;
 }
 
+- (instancetype)initWithJSON:(NSDictionary *) dictObj {
+	self = [super initWithJSON:dictObj];
+	self.val = [dictObj helStringForKey:@"val"];
+	self.uri = [dictObj helStringForKey:@"uri"];
+	self.color = [[dictObj helNumberForKey:@"color"] unsignedLongLongValue];
+	self.bgcolor = [[dictObj helNumberForKey:@"bgcolor"] unsignedLongLongValue];
+	self.valOff = [dictObj helStringForKey:@"val_Off"];
+	self.uriOff = [dictObj helStringForKey:@"uri_off"];
+	self.colorOff = [[dictObj helNumberForKey:@"color_off"] unsignedLongLongValue];
+	self.bgcolorOff = [[dictObj helNumberForKey:@"bgcolor_off"] unsignedLongLongValue];
+	return self;
+}
+
 -(BOOL)isOnState {
-    return [self.valOff length] == 0 || [self.val isEqualToString:self.content];
+	return NO; // [self.valOff length] == 0 || [self.val isEqualToString:self.content]; //TODO
 }
 
 @end

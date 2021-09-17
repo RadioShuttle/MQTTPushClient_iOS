@@ -7,5 +7,5 @@
 #import "DashItem.h"
 
 @interface DashTextItem : DashItem
-
+@property int inputtype;
 @end

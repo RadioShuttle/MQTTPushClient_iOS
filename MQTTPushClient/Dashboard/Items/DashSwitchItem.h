@@ -10,13 +10,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface DashSwitchItem : DashItem
 @property NSString *val;
-@property int64_t color; // ctrl tint color
-@property int64_t bgcolor; // ctrl background color
+@property uint64_t color; // ctrl tint color
+@property uint64_t bgcolor; // ctrl background color
 @property NSString *uri; // res://internal/ic_alarm
 
 @property NSString *valOff; // off state (if switch), unused if button
-@property int64_t colorOff;
-@property int64_t bgcolorOff;
+@property uint64_t colorOff;
+@property uint64_t bgcolorOff;
 @property NSString *uriOff;
 
 -(BOOL)isOnState;
