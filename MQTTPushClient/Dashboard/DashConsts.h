@@ -44,5 +44,7 @@
 
 #define DASH_DIALOG_VIEW_SIZE 250.0f
 
+// other
+#define DASH_TIMER_INTERVAL_SEC 5.0f
 
 #endif /* DashConsts_h */

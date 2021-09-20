@@ -7,6 +7,7 @@
 #import "DashCollectionViewController.h"
 #import "MessageListTableViewController.h"
 #import "Connection.h"
+#import "DashConsts.h"
 
 @interface DashCollectionViewController ()
 
@@ -31,10 +32,6 @@ static NSString * const reuseIdentifier = @"Cell";
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 
-	Connection *connection = [[Connection alloc] init]; //TODO: remove after timer implementation
-	[connection getDashboardForAccount:self.dashboard];
-
-	[self startTimer];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -46,14 +43,42 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 #pragma mark - Timer
--(void) startTimer {
-}
-
--(void) stopTimer {
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:nil];
+	[self startTimer];
 }
 
 - (void)viewWillDisappear:(BOOL)a {
 	[super viewWillDisappear:a];
+	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[self stopTimer];
+}
+
+- (void)onRequestFinished:(NSNotification *)aNotification {
+	if ([aNotification object] == self.connection) {
+		if (self.account.error) {
+			self.statusBarLabel.text = self.account.error.localizedDescription;
+		} else {
+			self.statusBarLabel.text = @"";
+		}
+	}
+}
+
+-(void) startTimer {
+	if (!self.connection) {
+		self.connection = [[Connection alloc] init];
+	}
+	self.timer = [NSTimer scheduledTimerWithTimeInterval:DASH_TIMER_INTERVAL_SEC repeats:YES block:^(NSTimer * _Nonnull timer) {
+		[self.connection getDashboardForAccount:self.dashboard];
+	}];
+}
+
+-(void) stopTimer {
+	if (self.timer) {
+		[self.timer invalidate];
+		self.timer = nil;
+	}
 }
 
 /*

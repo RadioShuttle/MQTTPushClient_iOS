@@ -7,6 +7,7 @@
 @import UIKit;
 #import "Account.h"
 #import "Dashboard.h"
+#import "Connection.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property Account *account;
 @property Dashboard *dashboard;
+@property Connection *connection;
+@property NSTimer* timer;
 @property (weak, nonatomic) IBOutlet UILabel *statusBarLabel;
 
 @end
