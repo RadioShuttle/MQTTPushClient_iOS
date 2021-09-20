@@ -19,31 +19,31 @@
 
 - (instancetype)init
 {
-    self = [super init];
-    if (self) {
-        _textcolor = DASH_COLOR_OS_DEFAULT;
-        _background = DASH_COLOR_OS_DEFAULT;
-    }
-    return self;
+	return [self initWithJSON:nil];
 }
 
 - (instancetype)initWithJSON:(NSDictionary *) dictObj {
 	
-	self = [self init];
-	
-	self.id_ = [[dictObj helNumberForKey:@"id"] unsignedIntValue];
-	self.textcolor = [[dictObj helNumberForKey:@"textcolor"] unsignedLongLongValue];
-	self.background = [[dictObj helNumberForKey:@"background"] unsignedLongLongValue];
-	self.textsize = [[dictObj helNumberForKey:@"textsize"] intValue];
-	self.topic_s = [dictObj helStringForKey:@"topic_s"];
-	self.script_f = [dictObj helStringForKey:@"script_f"];
-	self.background_uri = [dictObj helStringForKey:@"background_uri"];
-	
-	self.topic_p = [dictObj helStringForKey:@"topic_p"];
-	self.script_p = [dictObj helStringForKey:@"script_p"];
-	self.retain_ = [[dictObj helNumberForKey:@"retain"] boolValue];
-	self.label = [dictObj helStringForKey:@"label"];
-	self.history = [[dictObj helNumberForKey:@"history"] boolValue];
+	self = [super init];
+
+	_textcolor = DASH_COLOR_OS_DEFAULT;
+	_background = DASH_COLOR_OS_DEFAULT;
+
+	if (dictObj) {
+		self.id_ = [[dictObj helNumberForKey:@"id"] unsignedIntValue];
+		self.textcolor = [[dictObj helNumberForKey:@"textcolor"] unsignedLongLongValue];
+		self.background = [[dictObj helNumberForKey:@"background"] unsignedLongLongValue];
+		self.textsize = [[dictObj helNumberForKey:@"textsize"] intValue];
+		self.topic_s = [dictObj helStringForKey:@"topic_s"];
+		self.script_f = [dictObj helStringForKey:@"script_f"];
+		self.background_uri = [dictObj helStringForKey:@"background_uri"];
+		
+		self.topic_p = [dictObj helStringForKey:@"topic_p"];
+		self.script_p = [dictObj helStringForKey:@"script_p"];
+		self.retain_ = [[dictObj helNumberForKey:@"retain"] boolValue];
+		self.label = [dictObj helStringForKey:@"label"];
+		self.history = [[dictObj helNumberForKey:@"history"] boolValue];
+	}
 	
 	return self;
 }

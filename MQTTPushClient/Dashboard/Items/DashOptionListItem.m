@@ -9,8 +9,13 @@
 
 @implementation DashOptionListItem
 
+- (instancetype)init
+{
+	return [self initWithJSON:nil];
+}
+
 - (instancetype)initWithJSON:(NSDictionary *) dictObj {
-	self = [self init];
+	self = [super init];
 
 	self.value = [dictObj helStringForKey:@"value"];
 	self.displayValue = [dictObj helStringForKey:@"displayvalue"];
