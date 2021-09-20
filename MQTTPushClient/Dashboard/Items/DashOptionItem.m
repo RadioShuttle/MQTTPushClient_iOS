@@ -17,14 +17,14 @@
 - (instancetype)initWithJSON:(NSDictionary *) dictObj {
 	self = [super initWithJSON:dictObj];
 
-	_optionList = [NSMutableArray new];
+	self.optionList = [NSMutableArray new];
 
 	if (dictObj) {
 		NSArray *optionListJSON = [dictObj helArrayForKey:@"optionlist"];
 		DashOptionListItem *listItem;
 		for(int i = 0; i < [optionListJSON count]; i++) {
 			listItem = [[DashOptionListItem alloc]initWithJSON:optionListJSON[i]];
-			[self.optionList addObject:listItem];
+			[(NSMutableArray *) self.optionList addObject:listItem];
 		}
 	}
 

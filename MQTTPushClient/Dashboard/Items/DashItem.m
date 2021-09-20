@@ -26,13 +26,25 @@
 	
 	self = [super init];
 
-	_textcolor = DASH_COLOR_OS_DEFAULT;
-	_background = DASH_COLOR_OS_DEFAULT;
+	self.textcolor = DASH_COLOR_OS_DEFAULT;
+	self.background = DASH_COLOR_OS_DEFAULT;
 
 	if (dictObj) {
-		self.id_ = [[dictObj helNumberForKey:@"id"] unsignedIntValue];
-		self.textcolor = [[dictObj helNumberForKey:@"textcolor"] unsignedLongLongValue];
-		self.background = [[dictObj helNumberForKey:@"background"] unsignedLongLongValue];
+		NSNumber *numVal;
+		numVal = [dictObj helNumberForKey:@"id"];
+		if (!numVal) {
+			return nil;
+		}
+		self.id_ = [numVal unsignedIntValue];
+		
+		numVal = [dictObj helNumberForKey:@"textcolor"];
+		if (numVal) {
+			self.textcolor = [numVal unsignedLongLongValue];
+		}
+		numVal = [dictObj helNumberForKey:@"background"];
+		if (numVal) {
+			self.background = [numVal unsignedLongLongValue];
+		}
 		self.textsize = [[dictObj helNumberForKey:@"textsize"] intValue];
 		self.topic_s = [dictObj helStringForKey:@"topic_s"];
 		self.script_f = [dictObj helStringForKey:@"script_f"];

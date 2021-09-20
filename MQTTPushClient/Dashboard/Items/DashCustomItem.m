@@ -11,26 +11,22 @@
 
 - (instancetype)init
 {
-	self = [super init];
-	if (self) {
-		_parameter = [NSMutableArray new];
-	}
-	return self;
+	return [self initWithJSON:nil];;
 }
 
 - (instancetype)initWithJSON:(NSDictionary *) dictObj {
 	self = [super initWithJSON:dictObj];
 
+	self.parameter = [NSMutableArray new];
 	self.html = [dictObj helStringForKey:@"html"];
-
-	NSArray *parameterListJSON = [dictObj helArrayForKey:@"parameter"];
-	NSString *listItem;
-	for(int i = 0; i < [parameterListJSON count]; i++) {
-		listItem = parameterListJSON[i];
-		if (listItem) {
-			[self.parameter addObject:listItem];
+	
+	if (dictObj) {
+		NSArray *parameterListJSON = [dictObj helArrayForKey:@"parameter"];
+		if (parameterListJSON) {
+			self.parameter = parameterListJSON;
 		}
 	}
+
 	return self;
 }
 

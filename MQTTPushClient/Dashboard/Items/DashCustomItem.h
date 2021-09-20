@@ -9,5 +9,5 @@
 
 @interface DashCustomItem : DashItem
 @property NSString *html;
-@property NSMutableArray<NSString *> *parameter;
+@property NSArray<NSString *> *parameter;
 @end

@@ -6,8 +6,6 @@
 
 #import "DashItem.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DashSliderItem : DashItem
 
 @property double range_min;
@@ -18,5 +16,3 @@ NS_ASSUME_NONNULL_BEGIN
 
 +(double) calcProgressInPercent:(double)v min:(double)min max:(double)max;
 @end
-
-NS_ASSUME_NONNULL_END

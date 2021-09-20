@@ -6,8 +6,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DashOptionListItem : NSObject
 @property NSString *value;
 @property NSString *displayValue;
@@ -16,5 +14,3 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)initWithJSON:(NSDictionary *) dictObj;
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -6,10 +6,6 @@
 
 #import "DashItem.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DashGroupItem : DashItem
 
 @end
-
-NS_ASSUME_NONNULL_END

@@ -6,8 +6,6 @@
 
 #import "DashItem.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DashSwitchItem : DashItem
 @property NSString *val;
 @property uint64_t color; // ctrl tint color
@@ -22,5 +20,3 @@ NS_ASSUME_NONNULL_BEGIN
 -(BOOL)isOnState;
 
 @end
-
-NS_ASSUME_NONNULL_END

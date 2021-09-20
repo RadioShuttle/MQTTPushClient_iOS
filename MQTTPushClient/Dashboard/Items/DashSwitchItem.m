@@ -18,20 +18,35 @@
 - (instancetype)initWithJSON:(NSDictionary *) dictObj {
 	self = [super initWithJSON:dictObj];
 	
-	_color = DASH_COLOR_OS_DEFAULT;
-	_bgcolor = DASH_COLOR_OS_DEFAULT;
-	_colorOff = DASH_COLOR_OS_DEFAULT;
-	_bgcolorOff = DASH_COLOR_OS_DEFAULT;
+	self.color = DASH_COLOR_OS_DEFAULT;
+	self.bgcolor = DASH_COLOR_OS_DEFAULT;
+	self.colorOff = DASH_COLOR_OS_DEFAULT;
+	self.bgcolorOff = DASH_COLOR_OS_DEFAULT;
 
 	if (dictObj) {
+	
 		self.val = [dictObj helStringForKey:@"val"];
 		self.uri = [dictObj helStringForKey:@"uri"];
-		self.color = [[dictObj helNumberForKey:@"color"] unsignedLongLongValue];
-		self.bgcolor = [[dictObj helNumberForKey:@"bgcolor"] unsignedLongLongValue];
+		
+		NSNumber *numVal = [dictObj helNumberForKey:@"color"];
+		if (numVal) {
+			self.color = [numVal unsignedLongLongValue];
+		}
+		numVal = [dictObj helNumberForKey:@"bgcolor"];
+		if (numVal) {
+			self.bgcolor = [numVal unsignedLongLongValue];
+		}
 		self.valOff = [dictObj helStringForKey:@"val_Off"];
 		self.uriOff = [dictObj helStringForKey:@"uri_off"];
-		self.colorOff = [[dictObj helNumberForKey:@"color_off"] unsignedLongLongValue];
-		self.bgcolorOff = [[dictObj helNumberForKey:@"bgcolor_off"] unsignedLongLongValue];
+		
+		numVal = [dictObj helNumberForKey:@"color_off"];
+		if (numVal) {
+			self.colorOff = [numVal unsignedLongLongValue];
+		}
+		numVal = [dictObj helNumberForKey:@"bgcolor_off"];
+		if (numVal) {
+			self.bgcolorOff = [numVal unsignedLongLongValue];
+		}
 	}
 	
 	return self;

@@ -19,16 +19,24 @@
 - (instancetype)initWithJSON:(NSDictionary *) dictObj {
 	self = [super initWithJSON:dictObj];
 	
-	_progresscolor = DASH_COLOR_OS_DEFAULT;
-	_range_max = 100.0f;
-	_range_min = 0.0f;
+	self.progresscolor = DASH_COLOR_OS_DEFAULT;
+	self.range_max = 100.0f;
 	
 	if (dictObj) {
+		NSNumber *numVal;
+		
+		numVal = [dictObj helNumberForKey:@"progresscolor"];
+		if (numVal) {
+			self.progresscolor = [numVal unsignedLongLongValue];
+		}
+		numVal = [dictObj helNumberForKey:@"range_max"];
+		if (numVal) {
+			self.range_max = [numVal unsignedLongLongValue];
+		}
+
 		self.range_min = [[dictObj helNumberForKey:@"range_min"] doubleValue];
-		self.range_max = [[dictObj helNumberForKey:@"range_max"] doubleValue];
 		self.decimal = [[dictObj helNumberForKey:@"decimal"] intValue];
 		self.percent = [[dictObj helNumberForKey:@"percent"] boolValue];
-		self.progresscolor = [[dictObj helNumberForKey:@"progresscolor"] boolValue];
 	}
 	return self;
 }

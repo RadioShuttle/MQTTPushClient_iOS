@@ -7,10 +7,6 @@
 #import "DashItem.h"
 #import "DashOptionListItem.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DashOptionItem : DashItem
-@property NSMutableArray<DashOptionListItem *> *optionList;
+@property NSArray<DashOptionListItem *> *optionList;
 @end
-
-NS_ASSUME_NONNULL_END
