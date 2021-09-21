@@ -22,6 +22,8 @@
 @property NSString *label;
 @property BOOL history;
 
+@property NSString *content;
+
 - (instancetype)initWithJSON:(NSDictionary *)dictObj;
 
 + (DashItem *)createObjectFromJSON:(NSDictionary *)dictObj;

@@ -7,7 +7,27 @@
 #import "DashCollectionViewController.h"
 #import "MessageListTableViewController.h"
 #import "Connection.h"
+#import "Utils.h"
 #import "DashConsts.h"
+
+#import "DashGroupItemView.h"
+#import "DashTextItemView.h"
+#import "DashSwitchItemView.h"
+#import "DashSliderItemView.h"
+#import "DashOptionItemView.h"
+
+#import "DashTextItemViewCell.h"
+#import "DashCustomItemViewCell.h"
+#import "DashCollectionViewCell.h"
+#import "DashSwitchItemViewCell.h"
+#import "DashSliderItemViewCell.h"
+#import "DashOptionItemViewCell.h"
+
+#import "DashTextItem.h"
+#import "DashCustomItem.h"
+#import "DashSwitchItem.h"
+#import "DashSliderItem.h"
+#import "DashOptionItem.h"
 
 @interface DashCollectionViewController ()
 
@@ -15,7 +35,11 @@
 
 @implementation DashCollectionViewController
 
-static NSString * const reuseIdentifier = @"Cell";
+static NSString * const reuseIDtextItem = @"textItemCell";
+static NSString * const reuseIDcustomItem = @"customItemCell";
+static NSString * const reuseIDswitchItem = @"switchItemCell";
+static NSString * const reuseIDsliderItem = @"sliderItemCell";
+static NSString * const reuseIDoptionItem = @"optionItemCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -26,9 +50,12 @@ static NSString * const reuseIdentifier = @"Cell";
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
-    // Register cell classes
-    // [self.collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
+	/* calc label height and pass it to layout object. IMPORTANT: specify correct font and size (see storyboard) */
+	NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:@"Dummy" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0]}];
+	CGRect cellRect = [labelString boundingRectWithSize:CGSizeMake(100.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+	// sets height to DASH_ZOOM_X + cellRect.size.height
+	self.dashCollectionFlowLayout.labelHeight = cellRect.size.height;
+
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 
@@ -103,28 +130,254 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 */
 
+- (IBAction)actionZoom:(id)sender {
+	[self.dashCollectionFlowLayout zoom];
+}
+
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+	return self.dashboard.groups.count;
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of items
-    return 0;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell
-    
-    return cell;
+	int n = 0;
+	if (section < self.dashboard.groups.count) {
+		DashGroupItem *group = self.dashboard.groups[section];
+		n = (int) [[self.dashboard.groupItems objectForKey:[NSNumber numberWithUnsignedInt:group.id_]] count];
+	}
+    return n;
 }
 
 #pragma mark <UICollectionViewDelegate>
+
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	
+	// item click
+	NSLog(@"item selected");
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+	UICollectionViewCell *cell;
+	
+	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
+	NSNumber *key = [NSNumber numberWithUnsignedInt:group.id_];
+	DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
+	
+	int64_t bg = item.background;
+	if (bg >= DASH_COLOR_OS_DEFAULT) {
+		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
+	}
+	
+	UIColor *textColor;
+	if (item.textcolor >= DASH_COLOR_OS_DEFAULT) {
+		textColor = [UILabel new].textColor;
+	} else {
+		textColor = UIColorFromRGB(item.textcolor);
+	}
+	
+	if ([DashCustomItem class] == [item class]) {
+		/* Custom Item (Web) */
+		DashCustomItem *customItem = (DashCustomItem *) item;
+		DashCustomItemViewCell *cv = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
+		cell = cv;
+		
+		Boolean load = NO;
+		if (!cv.dashItem) { // the cell is new
+			/* add log and error message handler */
+			[cv.webviewContainer.webView.configuration.userContentController addScriptMessageHandler:cv name:@"error"];
+			[cv.webviewContainer.webView.configuration.userContentController addScriptMessageHandler:cv name:@"log"];
+			load = YES;
+			cv.webviewContainer.userInteractionEnabled = NO;
+			NSLog(@"Custom Item View (including webview): created");
+		} else if (cv.dashItem == customItem) { // cell view has not been reused for a diffrent custom item
+			NSLog(@"Custom Item View (including webview): update data");
+			//update data
+			
+		} else { // cell has been reused
+			NSLog(@"Custom Item View (including webview): recycled");
+			[cv.webviewContainer.webView.configuration.userContentController removeAllUserScripts];
+			load = YES;
+		}
+		cv.dashItem = customItem;
+		if (load) {
+			[cv.webviewContainer showProgressBar];
+			/* background color */
+			cv.webviewContainer.webView.opaque = NO;
+			[cv.webviewContainer.webView setBackgroundColor:UIColorFromRGB(bg)];
+			[cv.webviewContainer.webView.scrollView setBackgroundColor:UIColorFromRGB(bg)];
+			
+			/* add error function */
+			WKUserScript *errHandlerSkript = [[WKUserScript alloc] initWithSource:[[NSString alloc] initWithData:[[NSDataAsset alloc] initWithName:@"error_handler"].data encoding:NSUTF8StringEncoding] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+			[cv.webviewContainer.webView.configuration.userContentController addUserScript:errHandlerSkript];
+			
+			/* add log function */
+			WKUserScript *logSkript = [[WKUserScript alloc] initWithSource:@"function log(t) {window.webkit.messageHandlers.log.postMessage(t);}" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+			[cv.webviewContainer.webView.configuration.userContentController addUserScript:logSkript];
+			
+			/* call Dash-javascript init function: */
+			WKUserScript *initSkript = [[WKUserScript alloc] initWithSource:@"onMqttInit(); log('Clock app initialized!');" injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+			[cv.webviewContainer.webView.configuration.userContentController addUserScript:initSkript];
+			
+			[cv.webviewContainer.webView loadHTMLString:customItem.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
+		}
+		
+		/* when passing messages to custom view use: [webView evaluateJavaScript:@"onMqttMessage(...); " completionHandler:^(NSString *result, NSError *error) {}] */
+		/* When using [webView evaluateJavaScript ...] the document must have been fully loaded! This can be checked with via WKNavigationDelegate.didFinishNavigation callback */
+		cv.webviewContainer.webView.navigationDelegate = cv.webviewContainer;
+		
+		
+		[cv.customItemLabel setText:customItem.label];
+		
+	} else if ([DashTextItem class] == [item class]) {
+		/* Text Item */
+		DashTextItem *textItem = (DashTextItem *) item;
+		DashTextItemViewCell *tv = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];
+		tv.dashItem = textItem;
+		if (!textItem.content) {
+			[((DashTextItemView *) tv.textItemContainer).valueLabel setText:@""];
+		} else {
+			[((DashTextItemView *) tv.textItemContainer).valueLabel setText:textItem.content];
+		}
+		cell = tv;
+		
+		[tv.textItemLabel setText:item.label];
+		[tv.textItemContainer setBackgroundColor:UIColorFromRGB(bg)];
+	} else if ([DashSwitchItem class] == [item class]) {
+		/* Switch */
+		DashSwitchItem *switchItem = (DashSwitchItem *) item;
+		DashSwitchItemViewCell *sw = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDswitchItem forIndexPath:indexPath];
+		DashSwitchItemView *view = ((DashSwitchItemView *) sw.itemContainer);
+		view.button.userInteractionEnabled = NO;
+		sw.dashItem = switchItem;
+		//NSLog(@"switch is on state: %d", [switchItem isOnState]);
+		int64_t buttonTintColor;
+		NSString *buttonTitle;
+		NSString *imageURI;
+		if ([switchItem isOnState]) {
+			buttonTitle = switchItem.val;
+			buttonTintColor = switchItem.color;
+			imageURI = switchItem.uri;
+		} else {
+			buttonTitle = switchItem.valOff;
+			buttonTintColor = switchItem.colorOff;
+			imageURI = switchItem.uriOff;
+		}
+		if (buttonTintColor >= DASH_COLOR_CLEAR) {
+			[view.button setTintColor:nil];
+		} else if (buttonTintColor >= DASH_COLOR_OS_DEFAULT) {
+			UIColor *textColor = [UILabel new].textColor;
+			[view.button setTintColor:textColor];
+		} else {
+			[view.button setTintColor:UIColorFromRGB(buttonTintColor)];
+		}
+		UIImage *image;
+		if (imageURI.length > 0) {
+			//TODO: handle user images and errors
+			NSURL *u = [NSURL URLWithString:imageURI];
+			NSString *internalResourceName = [u lastPathComponent]; //TODO: assuming internal image here
+			image = [UIImage imageNamed:internalResourceName];
+		}
+		if (image) {
+			view.button.imageView.contentMode = UIViewContentModeScaleAspectFit;
+			view.button.imageEdgeInsets = UIEdgeInsetsMake(16,16,16,16);
+			view.button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+			[view.button setImage:image forState:UIControlStateNormal];
+			view.button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+			
+			[view.button setTitle:nil forState:UIControlStateNormal];
+		} else {
+			[view.button setImage:nil forState:UIControlStateNormal];
+			[view.button setTitle:buttonTitle forState:UIControlStateNormal];
+		}
+		
+		[sw.itemLabel setText:item.label];
+		[sw.itemContainer setBackgroundColor:UIColorFromRGB(bg)];
+		cell = sw;
+	} else if ([DashSliderItem class] == [item class]) {
+		/* Slider Item */
+		DashSliderItem *sliderItem = (DashSliderItem *) item;
+		DashSliderItemViewCell *sv = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDsliderItem forIndexPath:indexPath];
+		sv.dashItem = sliderItem;
+		
+		DashSliderItemView *view = (DashSliderItemView *) sv.itemContainer ;
+		UIColor *progressTintColor = nil;
+		
+		double progress = [DashSliderItem calcProgressInPercent:[sliderItem.content doubleValue] min:sliderItem.range_min max:sliderItem.range_max];
+		
+		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+		[formatter setMaximumFractionDigits:sliderItem.decimal];
+		[formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
+		
+		NSString * val = [formatter stringFromNumber:[NSNumber numberWithFloat:progress]];
+		if (sliderItem.percent) {
+			val = [NSString stringWithFormat:@"%@%%", val];
+		}
+		[view.valueLabel setText:val];
+		[view.progressView setProgress:progress / 100.0f];
+		if (sliderItem.progresscolor < DASH_COLOR_OS_DEFAULT) {
+			progressTintColor = UIColorFromRGB(sliderItem.progresscolor);
+		}
+		[view.progressView setProgressTintColor:progressTintColor];
+		
+		[sv.itemLabel setText:item.label];
+		[sv.itemContainer setBackgroundColor:UIColorFromRGB(bg)];
+		cell = sv;
+	} else if ([DashOptionItem class] == [item class]) {
+		DashOptionItem *optionItem = (DashOptionItem *) item;
+		DashOptionItemViewCell *ov = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDoptionItem forIndexPath:indexPath];
+		ov.dashItem = optionItem;
+		
+		NSString *txt = optionItem.content;
+		DashOptionListItem *e;
+		for(int i = 0; i < optionItem.optionList.count; i++) {
+			e = [optionItem.optionList objectAtIndex:i];
+			if ([e.value isEqualToString:txt]) {
+				if ([Utils isEmpty:e.displayValue]) {
+					txt = e.value;
+				} else {
+					txt = e.displayValue;
+				}
+				break;
+			}
+		}
+		DashOptionItemView *view = (DashOptionItemView *) ov.itemContainer;
+		[view.valueLabel setText:txt];
+		
+		[ov.itemLabel setText:item.label];
+		[ov.itemContainer setBackgroundColor:UIColorFromRGB(bg)];
+		cell = ov;
+	}
+	
+	return cell;
+}
+
+- (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
+	DashGroupItemView *v = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"groupCell" forIndexPath:indexPath];
+	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
+	
+	int64_t bg = group.background;
+	if (bg >= DASH_COLOR_OS_DEFAULT) {
+		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
+	}
+	
+	UIColor *textColor;
+	if (group.textcolor >= DASH_COLOR_OS_DEFAULT) {
+		textColor = [UILabel new].textColor;
+	} else {
+		textColor = UIColorFromRGB(group.textcolor);
+	}
+	
+	[v.groupViewContainer setBackgroundColor:UIColorFromRGB(bg)];
+	[v.groupViewLabel setTextColor:textColor];
+	[v.groupViewLabel setText:group.label];
+	
+	// layout info needed in layout pass (only for header)
+	v.layoutInfo = ((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo;
+	
+	return v;
+}
 
 /*
 // Uncomment this method to specify if the specified item should be highlighted during tracking

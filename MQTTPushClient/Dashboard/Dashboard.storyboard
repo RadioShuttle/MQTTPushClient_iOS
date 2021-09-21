@@ -25,22 +25,215 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jX3-IZ-LVW">
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="jX3-IZ-LVW" customClass="DashCollectionFlowLayout">
                             <size key="itemSize" width="50" height="50"/>
-                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="headerReferenceSize" width="50" height="50"/>
                             <size key="footerReferenceSize" width="0.0" height="0.0"/>
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="eOt-PV-Hwd">
-                                <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="textItemCell" id="TwX-82-1PE" customClass="DashTextItemViewCell">
+                                <rect key="frame" x="0.0" y="50" width="50" height="50"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                     <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LZN-Qa-klc">
+                                            <rect key="frame" x="0.0" y="29.5" width="50" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tC1-ec-yky" customClass="DashTextItemView">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="29.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
                                 </view>
+                                <constraints>
+                                    <constraint firstItem="tC1-ec-yky" firstAttribute="top" secondItem="TwX-82-1PE" secondAttribute="top" id="9ch-AI-deF"/>
+                                    <constraint firstAttribute="bottom" secondItem="LZN-Qa-klc" secondAttribute="bottom" id="Bkz-gd-sof"/>
+                                    <constraint firstItem="tC1-ec-yky" firstAttribute="bottom" secondItem="LZN-Qa-klc" secondAttribute="top" id="Io7-yh-5Bq"/>
+                                    <constraint firstItem="tC1-ec-yky" firstAttribute="leading" secondItem="TwX-82-1PE" secondAttribute="leading" id="PZW-SQ-ryf"/>
+                                    <constraint firstAttribute="trailing" secondItem="tC1-ec-yky" secondAttribute="trailing" id="nB6-1N-ERx"/>
+                                    <constraint firstAttribute="trailing" secondItem="LZN-Qa-klc" secondAttribute="trailing" id="r6W-ZU-mLz"/>
+                                    <constraint firstItem="LZN-Qa-klc" firstAttribute="leading" secondItem="TwX-82-1PE" secondAttribute="leading" id="wRt-NC-Fb4"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="textItemContainer" destination="tC1-ec-yky" id="e6h-y0-3RX"/>
+                                    <outlet property="textItemLabel" destination="LZN-Qa-klc" id="IoV-pz-TFc"/>
+                                </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="customItemCell" id="lRJ-tr-4zY" customClass="DashCustomItemViewCell">
+                                <rect key="frame" x="60.5" y="50" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ynt-En-rNV" userLabel="Web View Container" customClass="DashCustomItemView">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="29"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <gestureRecognizers/>
+                                        </view>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="AhU-pb-xNO">
+                                            <rect key="frame" x="0.0" y="29" width="50" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <gestureRecognizers/>
+                                <constraints>
+                                    <constraint firstItem="Ynt-En-rNV" firstAttribute="top" secondItem="lRJ-tr-4zY" secondAttribute="top" id="GJm-YK-1iL"/>
+                                    <constraint firstItem="Ynt-En-rNV" firstAttribute="leading" secondItem="lRJ-tr-4zY" secondAttribute="leading" id="HIc-f8-6lT"/>
+                                    <constraint firstItem="AhU-pb-xNO" firstAttribute="top" secondItem="Ynt-En-rNV" secondAttribute="bottom" id="LTm-IB-k9q"/>
+                                    <constraint firstItem="AhU-pb-xNO" firstAttribute="leading" secondItem="lRJ-tr-4zY" secondAttribute="leading" id="SXd-d9-K0H"/>
+                                    <constraint firstAttribute="trailing" secondItem="AhU-pb-xNO" secondAttribute="trailing" id="fEm-q9-aoG"/>
+                                    <constraint firstAttribute="trailing" secondItem="Ynt-En-rNV" secondAttribute="trailing" id="fbH-FE-FQh"/>
+                                    <constraint firstAttribute="bottom" secondItem="AhU-pb-xNO" secondAttribute="bottom" id="sDy-mE-jSW"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="customItemLabel" destination="AhU-pb-xNO" id="gXd-tj-zCK"/>
+                                    <outlet property="webviewContainer" destination="Ynt-En-rNV" id="dWo-MU-9wj"/>
+                                </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="switchItemCell" id="Leh-p3-UVB" userLabel="switchItemCell" customClass="DashSwitchItemViewCell">
+                                <rect key="frame" x="121.5" y="50" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TS8-d6-btp" userLabel="Switch Item Label">
+                                            <rect key="frame" x="0.0" y="29.5" width="50" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hqc-nq-LF2" userLabel="Switch Item Container" customClass="DashSwitchItemView">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="29.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="Hqc-nq-LF2" firstAttribute="leading" secondItem="Leh-p3-UVB" secondAttribute="leading" id="AVj-xW-xzb"/>
+                                    <constraint firstAttribute="trailing" secondItem="Hqc-nq-LF2" secondAttribute="trailing" id="XNk-Rb-1NC"/>
+                                    <constraint firstItem="Hqc-nq-LF2" firstAttribute="bottom" secondItem="TS8-d6-btp" secondAttribute="top" id="bWd-DU-YGu"/>
+                                    <constraint firstAttribute="trailing" secondItem="TS8-d6-btp" secondAttribute="trailing" id="d3C-Vj-0cH"/>
+                                    <constraint firstItem="Hqc-nq-LF2" firstAttribute="top" secondItem="Leh-p3-UVB" secondAttribute="top" id="gBg-Tz-hGJ"/>
+                                    <constraint firstAttribute="bottom" secondItem="TS8-d6-btp" secondAttribute="bottom" id="k5e-y3-ZZT"/>
+                                    <constraint firstItem="TS8-d6-btp" firstAttribute="leading" secondItem="Leh-p3-UVB" secondAttribute="leading" id="ysT-Fo-ISr"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="itemContainer" destination="Hqc-nq-LF2" id="eGe-dg-azC"/>
+                                    <outlet property="itemLabel" destination="TS8-d6-btp" id="JVt-9C-2ni"/>
+                                </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="sliderItemCell" id="ZV5-VE-h8D" userLabel="sliderItemCell" customClass="DashSliderItemViewCell">
+                                <rect key="frame" x="182" y="50" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="X4e-MK-yrQ" userLabel="Slider Item Label">
+                                            <rect key="frame" x="0.0" y="29.5" width="50" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gFI-WY-huX" userLabel="Slider Item Container" customClass="DashSliderItemView">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="29.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="gFI-WY-huX" firstAttribute="leading" secondItem="ZV5-VE-h8D" secondAttribute="leading" id="F0p-Dx-Wc1"/>
+                                    <constraint firstItem="X4e-MK-yrQ" firstAttribute="leading" secondItem="ZV5-VE-h8D" secondAttribute="leading" id="G8w-V6-6UZ"/>
+                                    <constraint firstItem="gFI-WY-huX" firstAttribute="bottom" secondItem="X4e-MK-yrQ" secondAttribute="top" id="bba-aN-X3q"/>
+                                    <constraint firstAttribute="trailing" secondItem="X4e-MK-yrQ" secondAttribute="trailing" id="cul-et-dGG"/>
+                                    <constraint firstAttribute="bottom" secondItem="X4e-MK-yrQ" secondAttribute="bottom" id="gXt-bL-iJR"/>
+                                    <constraint firstAttribute="trailing" secondItem="gFI-WY-huX" secondAttribute="trailing" id="tJq-Dl-PBy"/>
+                                    <constraint firstItem="gFI-WY-huX" firstAttribute="top" secondItem="ZV5-VE-h8D" secondAttribute="top" id="xuX-fk-RIP"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="itemContainer" destination="gFI-WY-huX" id="Pxq-oo-tfC"/>
+                                    <outlet property="itemLabel" destination="X4e-MK-yrQ" id="Cjx-PD-zlX"/>
+                                </connections>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="optionItemCell" id="FoN-zD-kYI" userLabel="optionItemCell" customClass="DashOptionItemViewCell">
+                                <rect key="frame" x="242.5" y="50" width="50" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gqc-U8-1N2" userLabel="Option Item Label">
+                                            <rect key="frame" x="0.0" y="29.5" width="50" height="20.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QvH-NG-YNY" userLabel="Option Item Container" customClass="DashOptionItemView">
+                                            <rect key="frame" x="0.0" y="0.0" width="50" height="29.5"/>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        </view>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="QvH-NG-YNY" firstAttribute="top" secondItem="FoN-zD-kYI" secondAttribute="top" id="3T2-sv-ikG"/>
+                                    <constraint firstAttribute="trailing" secondItem="QvH-NG-YNY" secondAttribute="trailing" id="9x8-VH-JAw"/>
+                                    <constraint firstItem="gqc-U8-1N2" firstAttribute="leading" secondItem="FoN-zD-kYI" secondAttribute="leading" id="Eha-6w-tMq"/>
+                                    <constraint firstItem="QvH-NG-YNY" firstAttribute="leading" secondItem="FoN-zD-kYI" secondAttribute="leading" id="HOx-IT-FOU"/>
+                                    <constraint firstItem="QvH-NG-YNY" firstAttribute="bottom" secondItem="gqc-U8-1N2" secondAttribute="top" id="MDN-uL-pVe"/>
+                                    <constraint firstAttribute="trailing" secondItem="gqc-U8-1N2" secondAttribute="trailing" id="lbe-PB-33U"/>
+                                    <constraint firstAttribute="bottom" secondItem="gqc-U8-1N2" secondAttribute="bottom" id="thH-TM-oi5"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="itemContainer" destination="QvH-NG-YNY" id="rQK-sV-LEC"/>
+                                    <outlet property="itemLabel" destination="gqc-U8-1N2" id="c6T-ic-M9g"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="groupCell" id="khj-gz-Obi" customClass="DashGroupItemView">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
+                            <autoresizingMask key="autoresizingMask"/>
+                            <subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nhG-q8-NYH">
+                                    <rect key="frame" x="16" y="0.0" width="382" height="50"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nbp-Hs-pHf">
+                                            <rect key="frame" x="170" y="14.5" width="42" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <constraints>
+                                        <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerX" secondItem="nhG-q8-NYH" secondAttribute="centerX" id="EYd-ct-wll"/>
+                                        <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerY" secondItem="nhG-q8-NYH" secondAttribute="centerY" id="io5-HD-QWS"/>
+                                    </constraints>
+                                </view>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="nhG-q8-NYH" firstAttribute="trailing" secondItem="khj-gz-Obi" secondAttribute="trailing" constant="-16" id="6pY-IB-D7u"/>
+                                <constraint firstItem="nhG-q8-NYH" firstAttribute="leading" secondItem="khj-gz-Obi" secondAttribute="leading" constant="16" id="6xe-tG-aFc"/>
+                                <constraint firstAttribute="bottom" secondItem="nhG-q8-NYH" secondAttribute="bottom" id="LjJ-Sp-vUU"/>
+                                <constraint firstItem="nhG-q8-NYH" firstAttribute="top" secondItem="khj-gz-Obi" secondAttribute="top" id="cbE-iP-LwQ"/>
+                            </constraints>
+                            <connections>
+                                <outlet property="groupViewContainer" destination="nhG-q8-NYH" id="PEl-H8-7GW"/>
+                                <outlet property="groupViewLabel" destination="nbp-Hs-pHf" id="6gu-aP-8iD"/>
+                                <outlet property="groupViewLeadingConstraint" destination="6xe-tG-aFc" id="4H3-8Z-Zpl"/>
+                                <outlet property="groupViewTrailingConstraint" destination="6pY-IB-D7u" id="QhB-EJ-c3p"/>
+                            </connections>
+                        </collectionReusableView>
                         <connections>
                             <outlet property="dataSource" destination="F7T-nj-EyB" id="le9-U1-2xy"/>
                             <outlet property="delegate" destination="F7T-nj-EyB" id="Q4y-rr-eK8"/>
@@ -79,12 +272,17 @@
                     <navigationItem key="navigationItem" title="Dashboard" id="6RS-Xe-5xe">
                         <rightBarButtonItems>
                             <barButtonItem title="Reload" image="Refresh" id="3j3-xX-rx7"/>
-                            <barButtonItem title="Zoom" image="Zoom" id="hGt-et-ZeZ"/>
+                            <barButtonItem title="Zoom" image="Zoom" id="hGt-et-ZeZ">
+                                <connections>
+                                    <action selector="actionZoom:" destination="F7T-nj-EyB" id="GIz-dY-PmH"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Add" image="Add" id="Szd-Hw-UwF"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="dashCollectionFlowLayout" destination="jX3-IZ-LVW" id="tfP-8c-eLo"/>
                         <outlet property="statusBarLabel" destination="1ny-lx-5gl" id="bvC-Zz-amo"/>
                     </connections>
                 </collectionViewController>
