@@ -9,8 +9,6 @@
 #import "Dashboard.h"
 #import "Connection.h"
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface DashCollectionViewController : UICollectionViewController
 
 @property Account *account;
@@ -20,5 +18,3 @@ NS_ASSUME_NONNULL_BEGIN
 @property (weak, nonatomic) IBOutlet UILabel *statusBarLabel;
 
 @end
-
-NS_ASSUME_NONNULL_END

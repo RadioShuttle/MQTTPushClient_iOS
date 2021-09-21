@@ -45,7 +45,8 @@ static NSString * const reuseIdentifier = @"Cell";
 #pragma mark - Timer
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:nil];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewDashboardDataReceived:) name:@"DashboardDataUpdateNotification" object:self.dashboard];
 	[self startTimer];
 }
 
@@ -56,13 +57,24 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (void)onRequestFinished:(NSNotification *)aNotification {
-	if ([aNotification object] == self.connection) {
-		if (self.account.error) {
-			self.statusBarLabel.text = self.account.error.localizedDescription;
-		} else {
-			self.statusBarLabel.text = @"";
-		}
+	if (self.account.error) {
+		self.statusBarLabel.text = self.account.error.localizedDescription;
+	} else {
+		self.statusBarLabel.text = @"";
 	}
+}
+
+/* new Dashboard and/or new messages and resources */
+- (void)onNewDashboardDataReceived:(NSNotification *)aNotification {
+	
+	//TODO: remove
+	NSDictionary* userInfo = aNotification.userInfo;
+	NSEnumerator *enumerator = [userInfo keyEnumerator];
+	id key;
+	while ((key = [enumerator nextObject])) {
+		NSLog(@"key: %@ value: %@", key, userInfo[key]);
+	}
+	// end remove
 }
 
 -(void) startTimer {

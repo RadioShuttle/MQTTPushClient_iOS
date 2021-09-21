@@ -54,15 +54,33 @@
 /* called by connection object on succesfull request */
 - (void)onGetDashboardRequestFinished:(NSString *)dashboard version:(uint64_t)version receivedMsgs:(NSArray<DashMessage *> *)receivedMsgs historicalData:(NSDictionary<NSString *, NSArray<DashMessage *> *> *)historicalData lastReceivedMsgDate:(NSDate *)lastReceivedMsgDate lastReceivedMsgSeqNo:(int) lastReceivedMsgSeqNo {
 
+	NSMutableDictionary *resultInfo = [NSMutableDictionary new];
+	
+	/* updated dashboard */
 	if (dashboard) {
 		self.dashboardJS = dashboard;
 		self.localVersion = version;
 		if ([self saveDashboard:dashboard version:version]) {
 			if (![self buildDashboardObjectsFromJSON]) {
-				NSLog(@"Error while building dash objects from json.");
+				/* this error should never occur (while development only;-)*/
+				[resultInfo setObject:@"The received dashboard has an invalid format." forKey:@"dashboard_err"];
+			} else {
+				[resultInfo setObject:[NSNumber numberWithBool:YES] forKey:@"dashboard_new"];
 			}
+		} else {
+			[resultInfo setObject:@"Error while saving dashboard." forKey:@"dashboard_err"];
 		}
 	}
+	/* new messages */
+	//TODO: new messages
+	
+	
+	//TODO: historical data
+	
+	if ([resultInfo count] > 0) { // anything new?
+		[[NSNotificationCenter defaultCenter] postNotificationName:@"DashboardDataUpdateNotification" object:self userInfo:resultInfo];
+	}
+
 }
 
 /* saves the given dashboard str (json) including dashboard version info */
