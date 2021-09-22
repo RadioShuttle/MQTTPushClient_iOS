@@ -14,4 +14,5 @@
 	self.inputtype = [[dictObj helNumberForKey:@"input_type"] intValue];
 	return self;
 }
+
 @end

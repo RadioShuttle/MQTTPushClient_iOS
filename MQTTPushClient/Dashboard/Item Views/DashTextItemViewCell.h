@@ -4,10 +4,11 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "DashCollectionViewCell.h"
+#import "DashTextItemView.h"
 
 @interface DashTextItemViewCell : DashCollectionViewCell
 @property (weak, nonatomic) IBOutlet UILabel *textItemLabel;
-@property (weak, nonatomic) IBOutlet UIView *textItemContainer;
+@property (weak, nonatomic) IBOutlet DashTextItemView *textItemContainer;
 @end

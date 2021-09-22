@@ -17,8 +17,8 @@
 @implementation Dashboard
 
 - (instancetype)initWithAccount:(Account *)account {
-	self.account = account;
 	if ((self = [super init]) != nil) {
+		self.account = account;
 		[self load];
 	}
 	return self;

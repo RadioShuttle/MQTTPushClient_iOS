@@ -5,18 +5,19 @@
  */
 
 #import <Foundation/Foundation.h>
-
-NS_ASSUME_NONNULL_BEGIN
+@import UIKit;
 
 @interface DashUtils : NSObject
 
 +(BOOL) isUserResource:(NSString *)uri;
++(BOOL) isInternalResource:(NSString *)uri;
+
 +(NSString *)getURIPath:(NSString *)uri;
 
 +(NSURL *)getUserFilesDir:(NSURL *)path;
 +(NSURL *)appendStringToURL:(NSURL *)url str:(NSString *)str;
 +(BOOL)fileExists:(NSURL *)fileUrl;
 
-@end
++(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir;
 
-NS_ASSUME_NONNULL_END
+@end

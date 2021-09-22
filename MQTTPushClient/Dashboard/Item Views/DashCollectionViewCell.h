@@ -4,9 +4,13 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-#import <UIKit/UIKit.h>
+@import UIKit;
 #import "DashItem.h"
+#import "Dashboard.h"
 
 @interface DashCollectionViewCell : UICollectionViewCell
 @property DashItem *dashItem;
+
+-(void)onBind:(DashItem *)item context:(Dashboard *)context;
+
 @end

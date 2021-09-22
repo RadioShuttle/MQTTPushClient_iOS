@@ -40,12 +40,12 @@ static NSString * const reuseIDcustomItem = @"customItemCell";
 static NSString * const reuseIDswitchItem = @"switchItemCell";
 static NSString * const reuseIDsliderItem = @"sliderItemCell";
 static NSString * const reuseIDoptionItem = @"optionItemCell";
+static NSString * const reuseIGroupItem = @"groupItemCell";
+
 
 - (void)viewDidLoad {
     [super viewDidLoad];
 	[Dashboard setPreferredViewDashboard:YES forAccount:self.account];
-	
-	// [self.statusBarLabel setText:@"Test"];
 	
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -55,7 +55,7 @@ static NSString * const reuseIDoptionItem = @"optionItemCell";
 	CGRect cellRect = [labelString boundingRectWithSize:CGSizeMake(100.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 	// sets height to DASH_ZOOM_X + cellRect.size.height
 	self.dashCollectionFlowLayout.labelHeight = cellRect.size.height;
-
+	
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 
@@ -102,6 +102,9 @@ static NSString * const reuseIDoptionItem = @"optionItemCell";
 		NSLog(@"key: %@ value: %@", key, userInfo[key]);
 	}
 	// end remove
+	if (userInfo[@"dashboard_new"]) {
+		[self.collectionView reloadData];
+	}
 }
 
 -(void) startTimer {
@@ -159,23 +162,45 @@ static NSString * const reuseIDoptionItem = @"optionItemCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	UICollectionViewCell *cell;
+	DashCollectionViewCell *cell;
 	
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
 	NSNumber *key = [NSNumber numberWithUnsignedInt:group.id_];
 	DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
 	
+	if ([DashCustomItem class] == [item class]) {
+		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
+	} else if ([DashTextItem class] == [item class]) {
+		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];			
+	} else if ([DashSwitchItem class] == [item class]) {
+		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDswitchItem forIndexPath:indexPath];
+	} else if ([DashSliderItem class] == [item class]) {
+		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDsliderItem forIndexPath:indexPath];
+	} else if ([DashOptionItem class] == [item class]) {
+		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDoptionItem forIndexPath:indexPath];
+	}
+	
+	cell.dashItem = item;
+	[cell onBind:item context:self.dashboard];
+	
+	/*
+	 * TODO: prototpy code below can be removed when all onBind() functions of reusable views have been implemented
+	 */
+	
+
 	int64_t bg = item.background;
 	if (bg >= DASH_COLOR_OS_DEFAULT) {
 		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
 	}
+	
+
 	
 	UIColor *textColor;
 	if (item.textcolor >= DASH_COLOR_OS_DEFAULT) {
 		textColor = [UILabel new].textColor;
 	} else {
 		textColor = UIColorFromRGB(item.textcolor);
-	}
+	}	
 	
 	if ([DashCustomItem class] == [item class]) {
 		/* Custom Item (Web) */
@@ -230,20 +255,6 @@ static NSString * const reuseIDoptionItem = @"optionItemCell";
 		
 		[cv.customItemLabel setText:customItem.label];
 		
-	} else if ([DashTextItem class] == [item class]) {
-		/* Text Item */
-		DashTextItem *textItem = (DashTextItem *) item;
-		DashTextItemViewCell *tv = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];
-		tv.dashItem = textItem;
-		if (!textItem.content) {
-			[((DashTextItemView *) tv.textItemContainer).valueLabel setText:@""];
-		} else {
-			[((DashTextItemView *) tv.textItemContainer).valueLabel setText:textItem.content];
-		}
-		cell = tv;
-		
-		[tv.textItemLabel setText:item.label];
-		[tv.textItemContainer setBackgroundColor:UIColorFromRGB(bg)];
 	} else if ([DashSwitchItem class] == [item class]) {
 		/* Switch */
 		DashSwitchItem *switchItem = (DashSwitchItem *) item;
@@ -354,7 +365,7 @@ static NSString * const reuseIDoptionItem = @"optionItemCell";
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-	DashGroupItemView *v = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"groupCell" forIndexPath:indexPath];
+	DashGroupItemView *v = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"groupItemCell" forIndexPath:indexPath];
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
 	
 	int64_t bg = group.background;

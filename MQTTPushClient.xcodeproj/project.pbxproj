@@ -373,6 +373,10 @@
 			children = (
 				21EC25C926F9D778003CD109 /* DashCollectionViewCell.h */,
 				21EC25CF26F9D779003CD109 /* DashCollectionViewCell.m */,
+				21EC25BF26F9D778003CD109 /* DashTextItemViewCell.h */,
+				21EC25BE26F9D778003CD109 /* DashTextItemViewCell.m */,
+				21EC25BB26F9D778003CD109 /* DashTextItemView.h */,
+				21EC25C726F9D778003CD109 /* DashTextItemView.m */,
 				21EC25BC26F9D778003CD109 /* DashCustomItemView.h */,
 				21EC25D126F9D779003CD109 /* DashCustomItemView.m */,
 				21EC25C626F9D778003CD109 /* DashCustomItemViewCell.h */,
@@ -393,10 +397,6 @@
 				21EC25BD26F9D778003CD109 /* DashSwitchItemView.m */,
 				21EC25CD26F9D779003CD109 /* DashSwitchItemViewCell.h */,
 				21EC25C326F9D778003CD109 /* DashSwitchItemViewCell.m */,
-				21EC25BB26F9D778003CD109 /* DashTextItemView.h */,
-				21EC25C726F9D778003CD109 /* DashTextItemView.m */,
-				21EC25BF26F9D778003CD109 /* DashTextItemViewCell.h */,
-				21EC25BE26F9D778003CD109 /* DashTextItemViewCell.m */,
 			);
 			path = "Item Views";
 			sourceTree = "<group>";

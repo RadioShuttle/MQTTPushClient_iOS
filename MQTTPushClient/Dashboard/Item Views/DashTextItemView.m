@@ -30,6 +30,18 @@
 }
 
 -(void) initTextView {
+	
+	self.backgroundImageView = [[UIImageView alloc] init];
+	self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
+	// self.backgroundImageView.clipsToBounds = YES;
+	self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
+	[self addSubview:self.backgroundImageView];
+	[self.backgroundImageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
+	[self.backgroundImageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
+	[self.backgroundImageView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
+	[self.backgroundImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
+
+
     self.valueLabel = [[UILabel alloc] init];
     // self.valueLabel.textColor = [UIColor blackColor];
     self.valueLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -46,7 +58,6 @@
     labelBottomConstraint = [self.valueLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0]; // this constraint will be removed when calling showInputElements
     labelBottomConstraint.active = YES;
 }
-
 
 - (void)showInputElements {
     CGFloat margin = 8;

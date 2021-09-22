@@ -7,11 +7,16 @@
 #import "DashUtils.h"
 #import "DashConsts.h"
 #import "Utils.h"
+#import "NSString+HELUtils.h"
 
 @implementation DashUtils
 
 +(BOOL) isUserResource:(NSString *)uri {
 	return ![Utils isEmpty:uri] && [[uri lowercaseString] hasPrefix:@"res://user/"];
+}
+
++(BOOL) isInternalResource:(NSString *)uri {
+	return ![Utils isEmpty:uri] && [[uri lowercaseString] hasPrefix:@"res://internal/"];
 }
 
 +(NSString *)getURIPath:(NSString *)uri {
@@ -47,6 +52,24 @@
 
 +(BOOL)fileExists:(NSURL *)fileUrl {
 	return [[NSFileManager defaultManager] fileExistsAtPath:[fileUrl path]];
+}
+
++(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir {
+	UIImage *img;
+	if (![Utils isEmpty:uri]) {
+		NSString *resourceName = [DashUtils getURIPath:uri];
+		if ([self isInternalResource:uri]) {
+			//TODO: map names with internal names?
+			img = [UIImage imageNamed:resourceName];
+		}
+		else if ([self isUserResource:uri]) {
+			NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
+			NSURL *localDir = [DashUtils getUserFilesDir:userDataDir];
+			NSURL *fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+			img = [UIImage imageWithContentsOfFile:[fileURL path]];
+		}
+	}
+	return img;
 }
 
 @end
