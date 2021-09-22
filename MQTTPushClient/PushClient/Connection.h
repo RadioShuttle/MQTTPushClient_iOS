@@ -27,5 +27,6 @@
 - (void)updateActionForAccount:(Account *)account action:(Action *)action name:(NSString *)name;
 - (void)deleteActionForAccount:(Account *)account name:(NSString *)name;
 - (void)getDashboardForAccount:(Dashboard *)dashboard;
+-(int)activeDashboardRequests;
 
 @end

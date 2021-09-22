@@ -19,6 +19,7 @@
 #import "DashUtils.h"
 #import "NSString+HELUtils.h"
 #import "Trace.h"
+#import <stdatomic.h>
 
 enum ConnectionState {
 	StateBusy,
@@ -29,7 +30,7 @@ enum ConnectionState {
 
 @property dispatch_queue_t serialQueue;
 @property enum ConnectionState state;
-
+@property atomic_int noOfActiveDashRequests;
 @end
 
 @implementation Connection
@@ -400,8 +401,8 @@ enum ConnectionState {
 			}
 		}
 	}
-	
 	[self disconnect:dashboard.account withCommand:command];
+	atomic_fetch_sub(&_noOfActiveDashRequests, 1);
 }
 
 -(void) syncImages:(Cmd *)command dash:(NSString *)currentDash resourceDir:(NSURL *)resourceDir {
@@ -596,7 +597,13 @@ enum ConnectionState {
 	NSString *db = dashboard.dashboardJS;
 	NSURL *resourceDir = dashboard.account.cacheURL;
 	
+	atomic_fetch_add(&_noOfActiveDashRequests, 1);
+	
 	dispatch_async(self.serialQueue, ^{[self getDashboardAsync:dashboard localVersion:vers timestamp:ts messageID:messageID dashboard:db resourceDir:resourceDir];});
+}
+
+-(int)activeDashboardRequests {
+	return atomic_fetch_add(&_noOfActiveDashRequests, 0);
 }
 
 @end

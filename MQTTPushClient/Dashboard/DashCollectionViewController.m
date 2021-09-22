@@ -112,7 +112,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		self.connection = [[Connection alloc] init];
 	}
 	self.timer = [NSTimer scheduledTimerWithTimeInterval:DASH_TIMER_INTERVAL_SEC repeats:YES block:^(NSTimer * _Nonnull timer) {
-		[self.connection getDashboardForAccount:self.dashboard];
+		// NSLog(@"xxxx no of acitve connection %d", [self.connection activeDashboardRequests]);
+		if ([self.connection activeDashboardRequests] == 0) {
+			[self.connection getDashboardForAccount:self.dashboard];
+		}
 	}];
 }
 
