@@ -603,7 +603,7 @@ enum ConnectionState {
 }
 
 -(int)activeDashboardRequests {
-	return atomic_fetch_add(&_noOfActiveDashRequests, 0);
+	return atomic_load(&_noOfActiveDashRequests);
 }
 
 @end
