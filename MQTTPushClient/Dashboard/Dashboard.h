@@ -8,10 +8,7 @@
 #import "Account.h"
 #import "DashItem.h"
 #import "DashGroupItem.h"
-
-
-NS_ASSUME_NONNULL_BEGIN
-@class DashMessage;
+#import "DashMessage.h"
 
 @interface Dashboard : NSObject
 
@@ -22,32 +19,27 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithAccount:(Account *)account;
 
-/*
- * Will be called after a successfull dashboard request
- *
- * dashboard - nil if the local dashboard is up to date
- * version - dashboard version no if dashboard has been updated
- * receivedMsgs - message array only containing the latest msg per topic
- * historicalData - historical data per topic
- * lastReceivedMsgDate - last received msg date
- * lastReceivedMsgSeqNo - seq no
- */
-- (void)onGetDashboardRequestFinished:(NSString *)dashboard version:(uint64_t)version receivedMsgs:(NSArray<DashMessage *> *)receivedMsgs historicalData:(NSDictionary<NSString *, NSArray<DashMessage *> *> *)historicalData lastReceivedMsgDate:(NSDate *)lastReceivedMsgDate lastReceivedMsgSeqNo:(int) lastReceivedMsgSeqNo;
-
 /* returns true if the dashboard view is the preferred view mode */
 + (BOOL) showDashboard:(Account *) account;
 /* set preferred view mode */
 + (void) setPreferredViewDashboard:(BOOL)pref forAccount:(Account *)account;
 
-/* version no of local stored dashboard */
-@property uint64_t localVersion;
+/* sets a new dashboard and resturns a dictionary with error info */
+-(NSDictionary *)setDashboard:(NSString *)dashboard version:(uint64_t)version;
+-(void)addNewMessages:(NSArray<DashMessage *> *)receivedMsgs;
+/* save cached messages to have a local copy of latest messages */
+-(BOOL)saveMessages;
 
 /* last received message date and sequence no */
 @property NSDate *lastReceivedMsgDate;
 @property int lastReceivedMsgSeqNo;
+@property NSMutableDictionary<NSString *, DashMessage *> *lastReceivedMsgs;
+@property BOOL lastMsgsUnsaved;
 
 /* current dash board in JS format*/
 @property NSString *dashboardJS;
+/* version no of local stored dashboard */
+@property uint64_t localVersion;
 
 /* Dashboard item data used in view controller */
 @property NSArray<DashGroupItem *> *groups;
@@ -58,10 +50,3 @@ NS_ASSUME_NONNULL_BEGIN
 @property int max_id;
 
 @end
-
-@interface DashMessage : Message
-@property int status;
-@end
-
-
-NS_ASSUME_NONNULL_END

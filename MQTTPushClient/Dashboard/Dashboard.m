@@ -44,43 +44,116 @@
 			self.localVersion = [Utils stringToUint64:versionStr];
 			self.dashboardJS = [db substringFromIndex:r.location + 1];
 			// NSLog(@"Local stored dashboard:\n %@", self.dashboardJS);
-			if (![self buildDashboardObjectsFromJSON]) {
+			if (![self buildDashboardObjectsFromJSON:self.dashboardJS]) {
 				NSLog(@"Error while building dash objects from json.");
+				self.dashboardJS = @"";
+				self.localVersion = 0L;
 			}
+		}
+		
+		/* load messages */
+		fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard_messages.js"];
+		NSData *jsonData = [NSData dataWithContentsOfURL:fileURL options:0 error:&error];
+		if (error) {
+			NSLog(@"Error reading file: %@", error.localizedDescription);
+		} else {
+			NSDictionary *msgObjJSON = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
+			if (error) {
+				NSLog(@"Error while parsing messages json: %@", error);
+				return;
+			}
+			NSArray * msgArrayJSON = msgObjJSON[@"messageArray"];
+			NSMutableDictionary<NSString *, DashMessage *> *dashMessages = [NSMutableDictionary new];
+			DashMessage *msg;
+			for(int i = 0; i < [msgArrayJSON count]; i++) {
+				msg = [[DashMessage alloc] initWithJSON:msgArrayJSON[i]];
+				[dashMessages setObject:msg forKey:msg.topic];
+			}
+			NSTimeInterval ts = [[msgObjJSON helNumberForKey:@"timestamp"] doubleValue] ;
+			self.lastReceivedMsgDate = [NSDate dateWithTimeIntervalSince1970:ts];
+			self.lastReceivedMsgSeqNo = [[msgObjJSON helNumberForKey:@"lastReceivedMsgSeqNo"] intValue];
+			self.lastReceivedMsgs = dashMessages;
 		}
 	}
 }
 
-/* called by connection object on succesfull request */
-- (void)onGetDashboardRequestFinished:(NSString *)dashboard version:(uint64_t)version receivedMsgs:(NSArray<DashMessage *> *)receivedMsgs historicalData:(NSDictionary<NSString *, NSArray<DashMessage *> *> *)historicalData lastReceivedMsgDate:(NSDate *)lastReceivedMsgDate lastReceivedMsgSeqNo:(int) lastReceivedMsgSeqNo {
-
+-(NSDictionary *)setDashboard:(NSString *)dashboard version:(uint64_t)version {
 	NSMutableDictionary *resultInfo = [NSMutableDictionary new];
-	
+
 	/* updated dashboard */
 	if (dashboard) {
-		self.dashboardJS = dashboard;
-		self.localVersion = version;
+		BOOL versionError = self.localVersion != 0 && self.localVersion != version;
 		if ([self saveDashboard:dashboard version:version]) {
-			if (![self buildDashboardObjectsFromJSON]) {
+			if (![self buildDashboardObjectsFromJSON:dashboard]) {
 				/* this error should never occur (while development only;-)*/
 				[resultInfo setObject:@"The received dashboard has an invalid format." forKey:@"dashboard_err"];
 			} else {
+				if (versionError) {
+					[resultInfo setObject:@"Dashboard has been replaced by a newer version." forKey:@"dashboard_err"];
+				}
 				[resultInfo setObject:[NSNumber numberWithBool:YES] forKey:@"dashboard_new"];
+				self.dashboardJS = dashboard;
+				self.localVersion = version;
 			}
 		} else {
 			[resultInfo setObject:@"Error while saving dashboard." forKey:@"dashboard_err"];
 		}
 	}
-	/* new messages */
-	//TODO: new messages
-	
-	
-	//TODO: historical data
-	
-	if ([resultInfo count] > 0) { // anything new?
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"DashboardDataUpdateNotification" object:self userInfo:resultInfo];
-	}
+	return resultInfo;
+}
 
+-(void)addNewMessages:(NSArray<DashMessage *> *)receivedMsgs {
+	
+	/* new messages */
+	if ([receivedMsgs count] > 0) {
+		/* saving messages is handled by view controller to prevent frequent saves */
+		self.lastMsgsUnsaved = YES;
+		DashMessage *newestMsg = nil, *msg;
+		for(int i = 0; i < [receivedMsgs count]; i++) {
+			msg = receivedMsgs[i];
+			if (!newestMsg || [msg isNewerThan:newestMsg]) {
+				newestMsg = msg;
+			}
+			[self.lastReceivedMsgs setObject:msg forKey:msg.topic];
+		}
+		self.lastReceivedMsgDate = newestMsg.timestamp;
+		self.lastReceivedMsgSeqNo = newestMsg.messageID;
+	}
+}
+
+-(BOOL)saveMessages {
+	BOOL ok = YES;
+	
+	if (self.lastMsgsUnsaved && [self.lastReceivedMsgs count] > 0) {
+		NSMutableDictionary *jsonObj = [NSMutableDictionary new];
+		NSMutableArray *jsonMsgs = [NSMutableArray new];
+		
+		NSEnumerator *enumerator = [self.lastReceivedMsgs objectEnumerator];
+		id value;
+		
+		while ((value = [enumerator nextObject])) {
+			[jsonMsgs addObject:[(DashMessage *) value toJSON]];
+		}
+		
+		[jsonObj setObject:[NSNumber numberWithDouble:[self.lastReceivedMsgDate timeIntervalSince1970]] forKey:@"timestamp"];
+
+		[jsonObj setObject:[NSNumber numberWithInteger:self.lastReceivedMsgSeqNo] forKey:@"lastReceivedMsgSeqNo"];
+		[jsonObj setObject:jsonMsgs forKey:@"messageArray"];
+		
+		NSData *data =[NSJSONSerialization dataWithJSONObject:jsonObj options:0 error:nil];
+		
+		NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard_messages.js"];
+		ok = [data writeToURL:fileURL atomically:YES];
+		
+		/*
+		NSString *strData = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		NSLog(@"%@", strData);
+		*/
+		
+	}
+	self.lastMsgsUnsaved = NO;
+	
+	return ok;
 }
 
 /* saves the given dashboard str (json) including dashboard version info */
@@ -102,9 +175,9 @@
 
 #pragma mark - dashboard creation and modification
 
-- (BOOL) buildDashboardObjectsFromJSON {
-	if (self.dashboardJS) {
-		NSData *jsonData = [self.dashboardJS dataUsingEncoding:NSUTF8StringEncoding];
+- (BOOL) buildDashboardObjectsFromJSON:(NSString *)dashboardJS {
+	if (dashboardJS) {
+		NSData *jsonData = [dashboardJS dataUsingEncoding:NSUTF8StringEncoding];
 		NSError *error;
 		NSDictionary *dashboardObjJSON = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
 		if (error) {
@@ -191,7 +264,4 @@
 	return [settings writeToURL:fileURL atomically:YES];
 }
 
-@end
-
-@implementation DashMessage
 @end

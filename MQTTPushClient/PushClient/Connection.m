@@ -17,6 +17,7 @@
 #import "Utils.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
+#import "DashMessage.h"
 #import "NSString+HELUtils.h"
 #import "Trace.h"
 #import <stdatomic.h>
@@ -45,8 +46,12 @@ enum ConnectionState {
 }
 
 - (void)postServerUpdateNotification {
+	[self postServerUpdateNotification:nil];
+}
+
+- (void)postServerUpdateNotification:(NSDictionary *)userInfo {
 	self.state = StateReady;
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"ServerUpdateNotification" object:self userInfo:userInfo];
 }
 
 - (void)applyFcmData:(NSData *)data forAccount:(Account *)account {
@@ -116,10 +121,14 @@ enum ConnectionState {
 }
 
 - (void)disconnect:(Account *)account withCommand:(Cmd *)command {
+	[self disconnect:account withCommand:command userInfo:nil];
+}
+
+- (void)disconnect:(Account *)account withCommand:(Cmd *)command userInfo:(NSDictionary*) userInfo {
 	account.error = command.rawCmd.error;
 	[command bye:0];
 	[command exit];
-	[self performSelectorOnMainThread:@selector(postServerUpdateNotification) withObject:nil waitUntilDone:YES];
+	[self performSelectorOnMainThread:@selector(postServerUpdateNotification:) withObject:userInfo waitUntilDone:YES];
 }
 
 - (void)getFcmDataAsync:(Account *)account {
@@ -295,6 +304,8 @@ enum ConnectionState {
 - (void)getDashboardAsync:(Dashboard *)dashboard localVersion:(uint64_t)localVersion timestamp:(uint64_t)timestamp messageID:(int)messageID  dashboard:(NSString *)localDashboardJS resourceDir:(NSURL *)resourceDir {
 	Cmd *command = [self login:dashboard.account];
 
+	NSMutableDictionary *resultInfo = nil;
+	
 	if (!command.rawCmd.error) {
 		/* get lastest messages and historical data */
 		[command getDashMessagesRequest:0 date:timestamp id:messageID];
@@ -308,7 +319,6 @@ enum ConnectionState {
 			
 			NSMutableDictionary<NSString *, NSMutableArray<DashMessage *> *> *msgsPerTopic = [NSMutableDictionary new];
 			NSMutableArray<DashMessage *> *msgs;
-			DashMessage *newestMsg = nil;
 			while (noOfMsgs--) {
 				DashMessage *message = [[DashMessage alloc] init];
 				NSTimeInterval seconds = [Utils charArrayToUint64:p];
@@ -335,9 +345,6 @@ enum ConnectionState {
 					[msgsPerTopic setObject:msgs forKey:message.topic];
 				}
 				[msgs addObject:message];
-				if (!newestMsg || [message isNewerThan:newestMsg]) {
-					newestMsg = message;
-				}
 			}
 			/* sort */
 			NSEnumerator *enumerator = [msgsPerTopic keyEnumerator];
@@ -392,16 +399,23 @@ enum ConnectionState {
 				}
 				[self syncImages:command dash:currentDash resourceDir:resourceDir];
 				
-				if (!command.rawCmd.error) {
-					dispatch_async(dispatch_get_main_queue(), ^{
-						/* return result */
-						[dashboard onGetDashboardRequestFinished:dashboardJS version:serverVersion receivedMsgs:dashMessages historicalData:historicalData lastReceivedMsgDate:newestMsg.timestamp lastReceivedMsgSeqNo:newestMsg.messageID];
-					});
+				if (!command.rawCmd.error) {					
+					resultInfo = [NSMutableDictionary new];
+					[resultInfo setObject:@"getDashboardRequest" forKey:@"response"];
+					if (dashboardJS) {
+						[resultInfo setObject:dashboardJS forKey:@"dashboardJS"];
+						[resultInfo setObject:[NSNumber numberWithUnsignedLongLong:serverVersion] forKey:@"serverVersion"];
+					}
+					[resultInfo setObject:dashMessages forKey:@"dashMessages"];
+					[resultInfo setObject:historicalData forKey:@"historicalData"];
+					[resultInfo setObject:[NSDate dateWithTimeIntervalSince1970:timestamp] forKey:@"msgs_since_date"];
+					[resultInfo setObject:[NSNumber numberWithUnsignedLongLong:messageID] forKey:@"msgs_since_seqno"];
 				}
 			}
 		}
+		
+		[self disconnect:dashboard.account withCommand:command userInfo:resultInfo];
 	}
-	[self disconnect:dashboard.account withCommand:command];
 	atomic_fetch_sub(&_noOfActiveDashRequests, 1);
 }
 

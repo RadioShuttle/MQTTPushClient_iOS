@@ -8,7 +8,9 @@
 #import "MessageListTableViewController.h"
 #import "Connection.h"
 #import "Utils.h"
+#import "MqttUtils.h"
 #import "DashConsts.h"
+#import "NSDictionary+HelSafeAccessors.h"
 
 #import "DashGroupItemView.h"
 #import "DashTextItemView.h"
@@ -30,7 +32,7 @@
 #import "DashOptionItem.h"
 
 @interface DashCollectionViewController ()
-
+@property NSDate *statusBarUpdateTime;
 @end
 
 @implementation DashCollectionViewController
@@ -58,7 +60,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
-
+	
+	/* deliver local stored messages*/
+	[self deliverMessages:[[NSDate alloc]initWithTimeIntervalSince1970:0] seqNo:0 notify:NO];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
@@ -72,8 +76,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 #pragma mark - Timer
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
+
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onNewDashboardDataReceived:) name:@"DashboardDataUpdateNotification" object:self.dashboard];
+	
 	[self startTimer];
 }
 
@@ -81,32 +86,156 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[super viewWillDisappear:a];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self stopTimer];
+	[self.dashboard saveMessages];
 }
 
-- (void)onRequestFinished:(NSNotification *)aNotification {
+- (void)onRequestFinished:(NSNotification *)notif {
 	if (self.account.error) {
-		self.statusBarLabel.text = self.account.error.localizedDescription;
+		[self showErrorMessage:self.account.error.localizedDescription];
 	} else {
-		self.statusBarLabel.text = @"";
+		BOOL dashboardUpdate = NO;
+		NSString *msg;
+		NSString *response = [notif.userInfo helStringForKey:@"response"];
+		if ([response isEqualToString:@"getDashboardRequest"]) {
+			uint64_t serverVersion = [[notif.userInfo helNumberForKey:@"serverVersion"] unsignedLongLongValue];
+			if (serverVersion > 0) {
+				/* received a new dashboard */
+				NSString *dashboardJS = [notif.userInfo helStringForKey:@"dashboardJS"];
+				// NSLog(@"Dashboard: %@", dashboardJS);
+				
+				NSDictionary * resultInfo = [self.dashboard setDashboard:dashboardJS version:serverVersion];
+				dashboardUpdate = [[resultInfo helNumberForKey:@"dashboard_new"] boolValue];
+				msg = [notif.userInfo helStringForKey:@"dashboard_err"];
+			}
+			
+			NSArray<DashMessage *> *dashMessages = [notif.userInfo helArrayForKey:@"dashMessages"];
+			NSDate *msgsSinceDate = nil;
+			int msgsSinceSeqNo = 0;
+			if ([dashMessages count] > 0) {
+				msgsSinceDate = [notif.userInfo helDateForKey:@"msgs_since_date"];
+				msgsSinceSeqNo = [[notif.userInfo helNumberForKey:@"msgs_since_seqno"] intValue];
+				[self.dashboard addNewMessages:dashMessages];
+			}
+			
+			if (dashboardUpdate) {
+				/* dashboard update? deliver all messages (cached and new messages) */
+				[self deliverMessages:[NSDate dateWithTimeIntervalSince1970:0L] seqNo:0 notify:NO];
+				[self.collectionView reloadData];
+			} else if ([dashMessages count] > 0) {
+				/* deliver new messages */
+				[self deliverMessages:msgsSinceDate seqNo:msgsSinceSeqNo notify:YES];
+			}
+
+		}
+		/* show error/info message or reset status bar*/
+		[self showErrorMessage:msg];
 	}
 }
 
-/* new Dashboard and/or new messages and resources */
-- (void)onNewDashboardDataReceived:(NSNotification *)aNotification {
+-(void)deliverMessages:(NSDate *)since seqNo:(int) seqNo notify:(BOOL)notify {
+	NSEnumerator *enumerator = [self.dashboard.lastReceivedMsgs objectEnumerator];
+	DashMessage *msg;
 	
-	//TODO: remove
-	NSDictionary* userInfo = aNotification.userInfo;
-	NSEnumerator *enumerator = [userInfo keyEnumerator];
-	id key;
-	while ((key = [enumerator nextObject])) {
-		NSLog(@"key: %@ value: %@", key, userInfo[key]);
+	NSMutableArray<DashMessage *> *filteredDashMessages = [NSMutableArray new];
+	while ((msg = [enumerator nextObject])) {
+		NSComparisonResult res = [since compare:msg.timestamp];
+		/* filter already delivered messages */
+		if (res == NSOrderedAscending || (res == NSOrderedSame && seqNo < msg.messageID)) {
+			[filteredDashMessages addObject:msg];
+		}
 	}
-	// end remove
-	if (userInfo[@"dashboard_new"]) {
-		[self.collectionView reloadData];
+	/* messages must be sorted ascending before being processed */
+	NSComparisonResult (^sortFunc)(DashMessage *, DashMessage *) = ^(DashMessage *obj1, DashMessage *obj2) {
+		NSComparisonResult r = [obj1.timestamp compare:obj2.timestamp];
+		if (r == NSOrderedSame) {
+			if (obj1.messageID < obj2.messageID) {
+				r = NSOrderedAscending;
+			} else if (obj1.messageID > obj2.messageID) {
+				r = NSOrderedDescending;
+			}
+		}
+		return r;
+	};
+	NSArray<DashMessage *> *dashMessages = [filteredDashMessages sortedArrayUsingComparator: sortFunc];
+	/* will contain items to update */
+	NSMutableDictionary<NSNumber *, NSIndexPath *> *indexPathDict;
+	if (notify) {
+		indexPathDict = [NSMutableDictionary new];
+	}
+	
+	for(int i = 0; i < [dashMessages count]; i++) {
+		[self onNewMessage:dashMessages[i] indexPathDict:indexPathDict];
+	}
+	
+	if (notify && indexPathDict.count > 0) {
+		NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray new];
+		NSEnumerator *enumerator = [indexPathDict objectEnumerator];
+		NSIndexPath *value;
+		
+		while ((value = [enumerator nextObject])) {
+			[indexPaths addObject:value];
+		}
+		[self.collectionView reloadItemsAtIndexPaths:indexPaths];		
 	}
 }
 
+-(void)onNewMessage:(DashMessage *)msg indexPathDict:(NSMutableDictionary<NSNumber *, NSIndexPath *> *)indexPathDict {
+	DashGroupItem *groupItem;
+	BOOL matches = NO;
+	for(int i = 0; i < self.dashboard.groups.count; i++) {
+		groupItem = self.dashboard.groups[i];
+		NSArray<DashItem *> *items = self.dashboard.groupItems[[NSNumber numberWithUnsignedLong:groupItem.id_]];
+		DashItem *item;
+		for(int j = 0; j < items.count; j++) {
+			item = items[j];
+			if (![Utils isEmpty:item.topic_s] && [MqttUtils topicIsMatched:item.topic_s topic:msg.topic] ) {
+				matches = YES;
+				if ([Utils isEmpty:item.script_f]) {
+					//TODO: set content
+					item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
+					if (indexPathDict) {
+						NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
+						[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
+					}
+				} else {
+					//TODO: trigger javascript here. remove lines
+					item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
+					if (indexPathDict) {
+						NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
+						[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
+					}
+					//TODO: end remove lines
+				}
+			}
+		}
+	}
+	if (!matches && ![Utils isEmpty:msg.topic]) {
+		/* no matches found, which can happen it the dasboard has been updated */
+		[self.dashboard.lastReceivedMsgs removeObjectForKey:msg.topic];
+	}
+}
+
+- (void)showErrorMessage:(NSString *)msg {
+	if ([Utils isEmpty:msg]) {
+		BOOL clear = YES;
+		/* make sure an error message is displayed at least for 5 sec */
+		if (![Utils isEmpty:self.statusBarLabel.text]) {
+			if (self.statusBarUpdateTime) {
+				NSTimeInterval ti = -[self.statusBarUpdateTime timeIntervalSinceNow];
+				if (ti < DASH_TIMER_INTERVAL_SEC) {
+					clear = NO;
+				}
+			}
+		}
+		if (clear) {
+			self.statusBarLabel.text = @"";
+			self.statusBarUpdateTime = nil;
+		}
+	} else {
+		self.statusBarLabel.text = msg;
+		self.statusBarUpdateTime = [[NSDate alloc] init];
+	}
+}
 -(void) startTimer {
 	if (!self.connection) {
 		self.connection = [[Connection alloc] init];

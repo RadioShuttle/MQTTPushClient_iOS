@@ -18,8 +18,6 @@
 	[super onBind:item context:context];
 	DashTextItem *textItem = (DashTextItem *)item;
 
-	textItem.content = @"24 °";//TODO: remove
-	
 	/* set value text label */
 	if (!textItem.content) {
 		[self.textItemContainer.valueLabel setText:@""];
