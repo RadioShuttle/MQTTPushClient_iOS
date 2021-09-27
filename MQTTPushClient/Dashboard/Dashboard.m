@@ -124,7 +124,7 @@
 -(BOOL)saveMessages {
 	BOOL ok = YES;
 	
-	if (self.lastMsgsUnsaved && [self.lastReceivedMsgs count] > 0) {
+	if (self.lastMsgsUnsaved) {
 		NSMutableDictionary *jsonObj = [NSMutableDictionary new];
 		NSMutableArray *jsonMsgs = [NSMutableArray new];
 		

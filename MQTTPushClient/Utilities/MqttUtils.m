@@ -9,8 +9,6 @@
 @implementation MqttUtils
 
 +(void) topicValidate:(NSString *)topic wildcardAllowed:(BOOL)wildcardAllowed {
-	//TODO: implement
-	/*
 	NSUInteger len = [[topic dataUsingEncoding:NSUTF8StringEncoding] length];
 	if (len < 1 || len > 65535) {
 		@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Invalid topic length" userInfo:nil];
@@ -19,10 +17,30 @@
 		if ([topic rangeOfString:@"+"].location != NSNotFound || [topic rangeOfString:@"#"].location != NSNotFound) {
 			@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Wildcards are not allowed" userInfo:nil];
 		}
+	} else if ([topic isEqualToString:@"+"] || [topic isEqualToString:@"#"]) {
+		;
 	} else {
-		topic rangeOfString:@"#"];
+		NSUInteger noOfWildcards = [[topic componentsSeparatedByString:@"#"] count] - 1;
+		if (noOfWildcards > 1) {
+			@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Only one wildcard # allowed" userInfo:nil];
+		} else if (noOfWildcards == 1 && ![topic hasSuffix:@"/#"]) {
+			@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Invalid usage of wildcard #" userInfo:nil];
+		}
+		for(int i = 0; i < topic.length; i++) {
+			if ([topic characterAtIndex:i] == '+') {
+				if (i > 0) {
+					if ([topic characterAtIndex:i - 1] != '/') {
+						@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Invalid usage of wildcard +" userInfo:nil];
+					}
+				}
+				if (i + 1 < topic.length) {
+					if ([topic characterAtIndex:i + 1] != '/') {
+						@throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Invalid usage of wildcard +" userInfo:nil];
+					}
+				}
+			}
+		}
 	}
-	*/
 }
 
 +(BOOL) topicIsMatched:(NSString *)filter topic:(NSString *)topic {

@@ -188,24 +188,28 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		DashItem *item;
 		for(int j = 0; j < items.count; j++) {
 			item = items[j];
-			if (![Utils isEmpty:item.topic_s] && [MqttUtils topicIsMatched:item.topic_s topic:msg.topic] ) {
-				matches = YES;
-				if ([Utils isEmpty:item.script_f]) {
-					//TODO: set content
-					item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
-					if (indexPathDict) {
-						NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
-						[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
+			@try {
+				if (![Utils isEmpty:item.topic_s] && [MqttUtils topicIsMatched:item.topic_s topic:msg.topic] ) {
+					matches = YES;
+					if ([Utils isEmpty:item.script_f]) {
+						//TODO: set content
+						item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
+						if (indexPathDict) {
+							NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
+							[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
+						}
+					} else {
+						//TODO: trigger javascript here. remove lines
+						item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
+						if (indexPathDict) {
+							NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
+							[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
+						}
+						//TODO: end remove lines
 					}
-				} else {
-					//TODO: trigger javascript here. remove lines
-					item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
-					if (indexPathDict) {
-						NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
-						[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
-					}
-					//TODO: end remove lines
 				}
+			} @catch(NSException *exception) {
+				NSLog(@"Error: %@", exception.reason); //topic validation error (should never occur since the stored topics are validated)
 			}
 		}
 	}
