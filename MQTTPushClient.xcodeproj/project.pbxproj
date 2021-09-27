@@ -37,6 +37,7 @@
 		21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC426F1DEE40019C488 /* DashUtils.m */; };
 		21EF4EC826F1E6280019C488 /* NSString+HELUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC726F1E6270019C488 /* NSString+HELUtils.m */; };
 		21FC4D8626FC73700013F09D /* DashMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FC4D8526FC73700013F09D /* DashMessage.m */; };
+		21FCE9692701D01B00DBCA42 /* DashCircleBackroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */; };
 		2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */; };
 		2A0E8DF3218332780080DF12 /* AddTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */; };
 		2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */; };
@@ -193,6 +194,8 @@
 		21EF4EC726F1E6270019C488 /* NSString+HELUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HELUtils.m"; sourceTree = "<group>"; };
 		21FC4D8426FC73700013F09D /* DashMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashMessage.h; sourceTree = "<group>"; };
 		21FC4D8526FC73700013F09D /* DashMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashMessage.m; sourceTree = "<group>"; };
+		21FCE9672701D01B00DBCA42 /* DashCircleBackroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCircleBackroundView.h; sourceTree = "<group>"; };
+		21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashCircleBackroundView.m; sourceTree = "<group>"; };
 		2A02D7FB218B4EFA005E6934 /* TopicsListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewCell.h; sourceTree = "<group>"; };
 		2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewCell.m; sourceTree = "<group>"; };
 		2A0E8DF1218332780080DF12 /* AddTopicTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddTopicTableViewController.h; sourceTree = "<group>"; };
@@ -407,6 +410,8 @@
 				21EC25BD26F9D778003CD109 /* DashSwitchItemView.m */,
 				21EC25CD26F9D779003CD109 /* DashSwitchItemViewCell.h */,
 				21EC25C326F9D778003CD109 /* DashSwitchItemViewCell.m */,
+				21FCE9672701D01B00DBCA42 /* DashCircleBackroundView.h */,
+				21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */,
 			);
 			path = "Item Views";
 			sourceTree = "<group>";
@@ -808,6 +813,7 @@
 				2131927E26EF6E0700E65AF0 /* DashCustomItem.m in Sources */,
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
+				21FCE9692701D01B00DBCA42 /* DashCircleBackroundView.m in Sources */,
 				2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */,
 				84F4B47A2232AFB800197005 /* ScriptListTableViewController.m in Sources */,
 				2AE609142146B3EF004F30B2 /* Connection.m in Sources */,

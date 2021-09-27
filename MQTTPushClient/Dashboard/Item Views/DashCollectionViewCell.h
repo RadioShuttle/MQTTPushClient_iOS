@@ -7,10 +7,20 @@
 @import UIKit;
 #import "DashItem.h"
 #import "Dashboard.h"
+#import "DashCircleBackroundView.h"
 
 @interface DashCollectionViewCell : UICollectionViewCell
 @property DashItem *dashItem;
+@property UIImageView *errorImageView1;
+@property DashCircleBackroundView *backgroundView1;
+@property UIImageView *errorImageView2;
+@property DashCircleBackroundView *backgroundView2;
+
+@property UIColor *labelColor;
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context;
+
+-(void)showErrorInfo:(BOOL)error1 error2:(BOOL)error2;
+
 
 @end

@@ -63,6 +63,10 @@
 	/* label */
 	[self.textItemLabel setText:item.label];
 
+	/* error info */
+	//TODO:
+	[self showErrorInfo:NO error2:NO];
+	
 }
 
 
