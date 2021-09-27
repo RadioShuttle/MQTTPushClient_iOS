@@ -36,7 +36,7 @@
 		if (numVal) {
 			self.bgcolor = [numVal unsignedLongLongValue];
 		}
-		self.valOff = [dictObj helStringForKey:@"val_Off"];
+		self.valOff = [dictObj helStringForKey:@"val_off"];
 		self.uriOff = [dictObj helStringForKey:@"uri_off"];
 		
 		numVal = [dictObj helNumberForKey:@"color_off"];
@@ -53,7 +53,7 @@
 }
 
 -(BOOL)isOnState {
-	return NO; // [self.valOff length] == 0 || [self.val isEqualToString:self.content]; //TODO
+	return [self.valOff length] == 0 || [self.val isEqualToString:self.content];
 }
 
 @end

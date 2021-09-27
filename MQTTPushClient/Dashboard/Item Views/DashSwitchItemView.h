@@ -8,4 +8,6 @@
 
 @interface DashSwitchItemView : UIView
 @property UIButton *button;
+@property UIImageView *backgroundImageView;
+
 @end

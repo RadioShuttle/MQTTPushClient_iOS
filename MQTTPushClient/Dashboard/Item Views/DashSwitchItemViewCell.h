@@ -6,9 +6,10 @@
 
 #import <UIKit/UIKit.h>
 #import "DashCollectionViewCell.h"
+#import "DashSwitchItemView.h"
 
 @interface DashSwitchItemViewCell : DashCollectionViewCell
 @property (weak, nonatomic) IBOutlet UILabel *itemLabel;
-@property (weak, nonatomic) IBOutlet UIView *itemContainer;
+@property (weak, nonatomic) IBOutlet DashSwitchItemView *switchItemContainer;
 
 @end

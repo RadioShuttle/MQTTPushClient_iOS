@@ -6,6 +6,7 @@
 
 #import "DashTextItemView.h"
 #import "DashTextItemViewCell.h"
+#import "DashUtils.h"
 
 @implementation DashTextItemView {
     NSLayoutConstraint *labelBottomConstraint;
@@ -30,18 +31,7 @@
 }
 
 -(void) initTextView {
-	
-	self.backgroundImageView = [[UIImageView alloc] init];
-	self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFit;
-	// self.backgroundImageView.clipsToBounds = YES;
-	self.backgroundImageView.translatesAutoresizingMaskIntoConstraints = NO;
-	[self addSubview:self.backgroundImageView];
-	[self.backgroundImageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
-	[self.backgroundImageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
-	[self.backgroundImageView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
-	[self.backgroundImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
-
-
+	self.backgroundImageView = [DashUtils createImageView:self];
     self.valueLabel = [[UILabel alloc] init];
     // self.valueLabel.textColor = [UIColor blackColor];
     self.valueLabel.lineBreakMode = NSLineBreakByTruncatingTail;

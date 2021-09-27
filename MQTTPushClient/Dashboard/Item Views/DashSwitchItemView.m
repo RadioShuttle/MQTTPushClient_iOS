@@ -5,6 +5,7 @@
  */
 
 #import "DashSwitchItemView.h"
+#import "DashUtils.h"
 
 @implementation DashSwitchItemView
 
@@ -27,14 +28,9 @@
 }
 
 -(void) initSwitchView {
-    // self.button = [[UIButton alloc] init];
+	self.backgroundImageView = [DashUtils createImageView:self];
     self.button = [UIButton buttonWithType:UIButtonTypeSystem];
-    // [self.button setTintColor:[UIColor redColor]];
-    
-    // [self.button setTitleColor:[UIColor redColor] forState:(UIControlStateHighlighted | UIControlStateNormal | UIControlStateSelected)];
-    
-    self.button.translatesAutoresizingMaskIntoConstraints = NO;
-    
+    self.button.translatesAutoresizingMaskIntoConstraints = NO;    
     [self addSubview:self.button];
     
     [self.button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16.0].active = YES;

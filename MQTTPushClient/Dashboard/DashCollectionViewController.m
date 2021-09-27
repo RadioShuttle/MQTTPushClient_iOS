@@ -391,57 +391,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		
 		[cv.customItemLabel setText:customItem.label];
 		
-	} else if ([DashSwitchItem class] == [item class]) {
-		/* Switch */
-		DashSwitchItem *switchItem = (DashSwitchItem *) item;
-		DashSwitchItemViewCell *sw = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDswitchItem forIndexPath:indexPath];
-		DashSwitchItemView *view = ((DashSwitchItemView *) sw.itemContainer);
-		view.button.userInteractionEnabled = NO;
-		sw.dashItem = switchItem;
-		//NSLog(@"switch is on state: %d", [switchItem isOnState]);
-		int64_t buttonTintColor;
-		NSString *buttonTitle;
-		NSString *imageURI;
-		if ([switchItem isOnState]) {
-			buttonTitle = switchItem.val;
-			buttonTintColor = switchItem.color;
-			imageURI = switchItem.uri;
-		} else {
-			buttonTitle = switchItem.valOff;
-			buttonTintColor = switchItem.colorOff;
-			imageURI = switchItem.uriOff;
-		}
-		if (buttonTintColor >= DASH_COLOR_CLEAR) {
-			[view.button setTintColor:nil];
-		} else if (buttonTintColor >= DASH_COLOR_OS_DEFAULT) {
-			UIColor *textColor = [UILabel new].textColor;
-			[view.button setTintColor:textColor];
-		} else {
-			[view.button setTintColor:UIColorFromRGB(buttonTintColor)];
-		}
-		UIImage *image;
-		if (imageURI.length > 0) {
-			//TODO: handle user images and errors
-			NSURL *u = [NSURL URLWithString:imageURI];
-			NSString *internalResourceName = [u lastPathComponent]; //TODO: assuming internal image here
-			image = [UIImage imageNamed:internalResourceName];
-		}
-		if (image) {
-			view.button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-			view.button.imageEdgeInsets = UIEdgeInsetsMake(16,16,16,16);
-			view.button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
-			[view.button setImage:image forState:UIControlStateNormal];
-			view.button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
-			
-			[view.button setTitle:nil forState:UIControlStateNormal];
-		} else {
-			[view.button setImage:nil forState:UIControlStateNormal];
-			[view.button setTitle:buttonTitle forState:UIControlStateNormal];
-		}
-		
-		[sw.itemLabel setText:item.label];
-		[sw.itemContainer setBackgroundColor:UIColorFromRGB(bg)];
-		cell = sw;
 	} else if ([DashSliderItem class] == [item class]) {
 		/* Slider Item */
 		DashSliderItem *sliderItem = (DashSliderItem *) item;
@@ -505,12 +454,12 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
 	
 	int64_t bg = group.background;
-	if (bg >= DASH_COLOR_OS_DEFAULT) {
+	if (bg == DASH_COLOR_OS_DEFAULT) {
 		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
 	}
 	
 	UIColor *textColor;
-	if (group.textcolor >= DASH_COLOR_OS_DEFAULT) {
+	if (group.textcolor == DASH_COLOR_OS_DEFAULT) {
 		textColor = [UILabel new].textColor;
 	} else {
 		textColor = UIColorFromRGB(group.textcolor);
