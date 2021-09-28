@@ -24,6 +24,10 @@
 /* set preferred view mode */
 + (void) setPreferredViewDashboard:(BOOL)pref forAccount:(Account *)account;
 
+/* load/save preferences (zoom_level, ...) */
++(NSDictionary *) loadDashboardSettings:(Account *) account;
++(BOOL) saveDashboardSettings:(Account *) account settings:(NSDictionary *) settings;
+
 /* sets a new dashboard and resturns a dictionary with error info */
 -(NSDictionary *)setDashboard:(NSString *)dashboard version:(uint64_t)version;
 -(void)addNewMessages:(NSArray<DashMessage *> *)receivedMsgs;

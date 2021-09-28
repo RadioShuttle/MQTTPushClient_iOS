@@ -48,7 +48,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 - (void)viewDidLoad {
     [super viewDidLoad];
 	[Dashboard setPreferredViewDashboard:YES forAccount:self.account];
-	
+	self.preferences = [Dashboard loadDashboardSettings:self.account];
+
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     
@@ -57,9 +58,11 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	CGRect cellRect = [labelString boundingRectWithSize:CGSizeMake(100.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 	// sets height to DASH_ZOOM_X + cellRect.size.height
 	self.dashCollectionFlowLayout.labelHeight = cellRect.size.height;
-	
+	self.dashCollectionFlowLayout.zoomLevel = [[self.preferences helNumberForKey:@"zoom_level"] intValue];
+
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
+	
 	
 	/* deliver local stored messages*/
 	[self deliverMessages:[[NSDate alloc]initWithTimeIntervalSince1970:0] seqNo:0 notify:NO];
@@ -86,6 +89,13 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[super viewWillDisappear:a];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
 	[self stopTimer];
+	
+	/* save preferneces */
+	NSMutableDictionary * prefs = [self.preferences mutableCopy];
+	[prefs setObject:[NSNumber numberWithInt:self.dashCollectionFlowLayout.zoomLevel] forKey:@"zoom_level"];
+	[Dashboard saveDashboardSettings:self.account settings:prefs];
+	
+	/* save last received messages */
 	[self.dashboard saveMessages];
 }
 

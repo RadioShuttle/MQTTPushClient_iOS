@@ -15,6 +15,7 @@
 @property Account *account;
 @property Dashboard *dashboard;
 @property Connection *connection;
+@property NSDictionary *preferences;
 
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;
