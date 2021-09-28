@@ -34,6 +34,7 @@
 		21EC25DF26F9D779003CD109 /* DashCustomItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25D126F9D779003CD109 /* DashCustomItemView.m */; };
 		21EC25E026F9D779003CD109 /* DashGroupItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25D226F9D779003CD109 /* DashGroupItemView.m */; };
 		21EC25E126F9D779003CD109 /* DashOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25D426F9D779003CD109 /* DashOptionTableViewCell.m */; };
+		21EC8E452702F01A00DE8644 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21EC8E442702F01A00DE8644 /* Images.xcassets */; };
 		21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC426F1DEE40019C488 /* DashUtils.m */; };
 		21EF4EC826F1E6280019C488 /* NSString+HELUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC726F1E6270019C488 /* NSString+HELUtils.m */; };
 		21FC4D8626FC73700013F09D /* DashMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FC4D8526FC73700013F09D /* DashMessage.m */; };
@@ -188,6 +189,7 @@
 		21EC25D226F9D779003CD109 /* DashGroupItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashGroupItemView.m; sourceTree = "<group>"; };
 		21EC25D326F9D779003CD109 /* DashSwitchItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashSwitchItemView.h; sourceTree = "<group>"; };
 		21EC25D426F9D779003CD109 /* DashOptionTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashOptionTableViewCell.m; sourceTree = "<group>"; };
+		21EC8E442702F01A00DE8644 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		21EF4EC326F1DEE40019C488 /* DashUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashUtils.h; sourceTree = "<group>"; };
 		21EF4EC426F1DEE40019C488 /* DashUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashUtils.m; sourceTree = "<group>"; };
 		21EF4EC626F1E6270019C488 /* NSString+HELUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HELUtils.h"; sourceTree = "<group>"; };
@@ -375,6 +377,7 @@
 				2131928326EF730C00E65AF0 /* DashConsts.h */,
 				21EF4EC326F1DEE40019C488 /* DashUtils.h */,
 				21EF4EC426F1DEE40019C488 /* DashUtils.m */,
+				21EC8E442702F01A00DE8644 /* Images.xcassets */,
 				2131925826EF6BA100E65AF0 /* Items */,
 				21EC25BA26F9D6FA003CD109 /* Item Views */,
 			);
@@ -711,6 +714,7 @@
 				84A7CFD52238006900E17D03 /* ScriptViewSectionHeader.xib in Resources */,
 				84F4B477223296C900197005 /* ExampleHexdump.js in Resources */,
 				84F4B4752232966100197005 /* ExampleBinary.js in Resources */,
+				21EC8E452702F01A00DE8644 /* Images.xcassets in Resources */,
 				84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */,
 				84F4B4712232955F00197005 /* ExampleSplit.js in Resources */,
 				84F4B47E2232BC5D00197005 /* ExampleScripts.plist in Resources */,

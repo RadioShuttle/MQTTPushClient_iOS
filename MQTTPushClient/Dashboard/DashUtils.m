@@ -59,8 +59,10 @@
 	if (![Utils isEmpty:uri]) {
 		NSString *resourceName = [DashUtils getURIPath:uri];
 		if ([self isInternalResource:uri]) {
-			//TODO: map names with internal names?
-			img = [UIImage imageNamed:resourceName];
+			/*
+			img = [[UIImage imageNamed:resourceName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			 */
+			img = [UIImage imageNamed:resourceName] ;
 		}
 		else if ([self isUserResource:uri]) {
 			NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
