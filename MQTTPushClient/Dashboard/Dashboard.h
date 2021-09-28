@@ -22,7 +22,7 @@
 /* returns true if the dashboard view is the preferred view mode */
 + (BOOL) showDashboard:(Account *) account;
 /* set preferred view mode */
-+ (void) setPreferredViewDashboard:(BOOL)pref forAccount:(Account *)account;
++ (NSDictionary *) setPreferredViewDashboard:(BOOL)pref forAccount:(Account *)account;
 
 /* load/save preferences (zoom_level, ...) */
 +(NSDictionary *) loadDashboardSettings:(Account *) account;

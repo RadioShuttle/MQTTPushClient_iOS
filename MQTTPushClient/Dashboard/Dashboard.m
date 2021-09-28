@@ -236,7 +236,7 @@
 
 #pragma mark - Dashboard view preferrences
 
-+ (void) setPreferredViewDashboard:(BOOL)prefer forAccount:(Account *)account {
++ (NSDictionary *) setPreferredViewDashboard:(BOOL)prefer forAccount:(Account *)account {
 	NSDictionary *dict = [Dashboard loadDashboardSettings:account];
 	NSMutableDictionary *settings;
 	if (dict) {
@@ -246,6 +246,7 @@
 	}
 	[settings setObject:[NSNumber numberWithBool:prefer] forKey:@"showDashboard"];
 	[Dashboard saveDashboardSettings:account settings:settings];
+	return settings;
 }
 
 + (BOOL)showDashboard:(Account *)account {

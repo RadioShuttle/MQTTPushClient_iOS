@@ -6,6 +6,7 @@
 
 #import "DashCollectionViewController.h"
 #import "MessageListTableViewController.h"
+#import "DashDetailViewController.h"
 #import "Connection.h"
 #import "Utils.h"
 #import "MqttUtils.h"
@@ -47,8 +48,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	[Dashboard setPreferredViewDashboard:YES forAccount:self.account];
-	self.preferences = [Dashboard loadDashboardSettings:self.account];
+	self.preferences = [Dashboard setPreferredViewDashboard:YES forAccount:self.account];
 
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -73,30 +73,49 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *vc = segue.destinationViewController;
 		vc.account = self.dashboard.account;
+	} else  {
+		if ([sender isKindOfClass:[DashCollectionViewCell class]]) {
+			self.activeDetailView = segue.destinationViewController;
+			self.activeDetailView.dashItem = ((DashCollectionViewCell *) sender).dashItem;
+		}
 	}
 }
+
+-(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
+	if (segue.sourceViewController == self.activeDetailView) {
+		self.activeDetailView = nil;
+		NSLog(@"prepare for unwind.");
+	}
+}
+
 
 #pragma mark - Timer
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
 
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
-	
-	[self startTimer];
+	/* if timer is active, all observers are still running. this happens if a detail view was shown previously */
+	if (!self.timer) {
+		[self startTimer];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
+	}
 }
 
-- (void)viewWillDisappear:(BOOL)a {
-	[super viewWillDisappear:a];
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-	[self stopTimer];
+- (void)viewWillDisappear:(BOOL)animated {
+	[super viewWillDisappear:animated];
 	
-	/* save preferneces */
-	NSMutableDictionary * prefs = [self.preferences mutableCopy];
-	[prefs setObject:[NSNumber numberWithInt:self.dashCollectionFlowLayout.zoomLevel] forKey:@"zoom_level"];
-	[Dashboard saveDashboardSettings:self.account settings:prefs];
-	
-	/* save last received messages */
-	[self.dashboard saveMessages];
+	/* do not remove observer when reason for disappearing is displaying a detail view */
+	if (!self.activeDetailView) {
+		[[NSNotificationCenter defaultCenter] removeObserver:self];
+		[self stopTimer];
+		
+		/* save preferneces */
+		NSMutableDictionary * prefs = [self.preferences mutableCopy];
+		[prefs setObject:[NSNumber numberWithInt:self.dashCollectionFlowLayout.zoomLevel] forKey:@"zoom_level"];
+		[Dashboard saveDashboardSettings:self.account settings:prefs];
+		
+		/* save last received messages */
+		[self.dashboard saveMessages];
+	}
 }
 
 - (void)onRequestFinished:(NSNotification *)notif {
@@ -116,6 +135,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				NSDictionary * resultInfo = [self.dashboard setDashboard:dashboardJS version:serverVersion];
 				dashboardUpdate = [[resultInfo helNumberForKey:@"dashboard_new"] boolValue];
 				msg = [notif.userInfo helStringForKey:@"dashboard_err"];
+				if (self.activeDetailView) {
+					/* notify detail view about change */
+					[self.activeDetailView onDashboardUpdate];
+				}
 			}
 			
 			NSArray<DashMessage *> *dashMessages = [notif.userInfo helArrayForKey:@"dashMessages"];
@@ -185,7 +208,12 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		while ((value = [enumerator nextObject])) {
 			[indexPaths addObject:value];
 		}
-		[self.collectionView reloadItemsAtIndexPaths:indexPaths];		
+		[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+		if (self.activeDetailView) {
+			if ([indexPathDict objectForKey:[NSNumber numberWithUnsignedLong:self.activeDetailView.dashItem.id_]]) {
+				[self.activeDetailView onNewMessage];
+			}
+		}
 	}
 }
 
@@ -269,15 +297,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	}
 }
 
-/*
 #pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 - (IBAction)actionZoom:(id)sender {
 	[self.dashCollectionFlowLayout zoom];

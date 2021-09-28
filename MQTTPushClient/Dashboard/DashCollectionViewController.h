@@ -9,6 +9,7 @@
 #import "Dashboard.h"
 #import "Connection.h"
 #import "DashCollectionFlowLayout.h"
+#import "DashDetailViewController.h"
 
 @interface DashCollectionViewController : UICollectionViewController
 
@@ -16,6 +17,8 @@
 @property Dashboard *dashboard;
 @property Connection *connection;
 @property NSDictionary *preferences;
+
+@property DashDetailViewController *activeDetailView;
 
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;
