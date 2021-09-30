@@ -346,6 +346,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
 	
 	if ([DashCustomItem class] == [item class]) {
+		//TODO: consider not to recycle webviews
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
 	} else if ([DashTextItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];			
@@ -368,69 +369,14 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
 	}
 	
-
-	
 	UIColor *textColor;
 	if (item.textcolor >= DASH_COLOR_OS_DEFAULT) {
 		textColor = [UILabel new].textColor;
 	} else {
 		textColor = UIColorFromRGB(item.textcolor);
-	}	
+	}
 	
-	if ([DashCustomItem class] == [item class]) {
-		/* Custom Item (Web) */
-		DashCustomItem *customItem = (DashCustomItem *) item;
-		DashCustomItemViewCell *cv = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
-		cell = cv;
-		
-		Boolean load = NO;
-		if (!cv.dashItem) { // the cell is new
-			/* add log and error message handler */
-			[cv.webviewContainer.webView.configuration.userContentController addScriptMessageHandler:cv name:@"error"];
-			[cv.webviewContainer.webView.configuration.userContentController addScriptMessageHandler:cv name:@"log"];
-			load = YES;
-			cv.webviewContainer.userInteractionEnabled = NO;
-			NSLog(@"Custom Item View (including webview): created");
-		} else if (cv.dashItem == customItem) { // cell view has not been reused for a diffrent custom item
-			NSLog(@"Custom Item View (including webview): update data");
-			//update data
-			
-		} else { // cell has been reused
-			NSLog(@"Custom Item View (including webview): recycled");
-			[cv.webviewContainer.webView.configuration.userContentController removeAllUserScripts];
-			load = YES;
-		}
-		cv.dashItem = customItem;
-		if (load) {
-			[cv.webviewContainer showProgressBar];
-			/* background color */
-			cv.webviewContainer.webView.opaque = NO;
-			[cv.webviewContainer.webView setBackgroundColor:UIColorFromRGB(bg)];
-			[cv.webviewContainer.webView.scrollView setBackgroundColor:UIColorFromRGB(bg)];
-			
-			/* add error function */
-			WKUserScript *errHandlerSkript = [[WKUserScript alloc] initWithSource:[[NSString alloc] initWithData:[[NSDataAsset alloc] initWithName:@"error_handler"].data encoding:NSUTF8StringEncoding] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-			[cv.webviewContainer.webView.configuration.userContentController addUserScript:errHandlerSkript];
-			
-			/* add log function */
-			WKUserScript *logSkript = [[WKUserScript alloc] initWithSource:@"function log(t) {window.webkit.messageHandlers.log.postMessage(t);}" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-			[cv.webviewContainer.webView.configuration.userContentController addUserScript:logSkript];
-			
-			/* call Dash-javascript init function: */
-			WKUserScript *initSkript = [[WKUserScript alloc] initWithSource:@"onMqttInit(); log('Clock app initialized!');" injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
-			[cv.webviewContainer.webView.configuration.userContentController addUserScript:initSkript];
-			
-			[cv.webviewContainer.webView loadHTMLString:customItem.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
-		}
-		
-		/* when passing messages to custom view use: [webView evaluateJavaScript:@"onMqttMessage(...); " completionHandler:^(NSString *result, NSError *error) {}] */
-		/* When using [webView evaluateJavaScript ...] the document must have been fully loaded! This can be checked with via WKNavigationDelegate.didFinishNavigation callback */
-		cv.webviewContainer.webView.navigationDelegate = cv.webviewContainer;
-		
-		
-		[cv.customItemLabel setText:customItem.label];
-		
-	} else if ([DashSliderItem class] == [item class]) {
+	if ([DashSliderItem class] == [item class]) {
 		/* Slider Item */
 		DashSliderItem *sliderItem = (DashSliderItem *) item;
 		DashSliderItemViewCell *sv = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDsliderItem forIndexPath:indexPath];
@@ -512,6 +458,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	v.layoutInfo = ((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo;
 	
 	return v;
+}
+
+-(void)dealloc {
 }
 
 /*

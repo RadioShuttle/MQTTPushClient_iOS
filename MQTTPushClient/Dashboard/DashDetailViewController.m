@@ -7,6 +7,8 @@
 #import "DashDetailViewController.h"
 #import "DashTextItem.h"
 #import "DashTextItemView.h"
+#import "DashCustomItem.h"
+#import "DashCustomItemView.h"
 
 @interface DashDetailViewController ()
 
@@ -20,17 +22,22 @@
 	// [self hideBarButtonItem:self.errorButton1];
 	// self.errorView.layer.zPosition = -1;
 	
+	//TODO: optimize code when all dash items implemented
 	if ([DashTextItem class] == [self.dashItem class]) {
-		DashTextItemView *view = [[DashTextItemView alloc] initWithFrame:self.containerView.bounds];
-		[view onBind:self.dashItem context:self.dashboard];
-		[view showInputElements];
+		self.dashItemView = [[DashTextItemView alloc] initWithFrame:self.containerView.bounds];
+		[(DashTextItemView *) self.dashItemView showInputElements];
 
-		[self.view bringSubviewToFront:self.containerView];
-		
-		[self.containerView addSubview:view];
-		self.dashItemView = view;
+	} else if ([DashCustomItem class] == [self.dashItem class]) {
+		self.dashItemView = [[DashCustomItemView alloc] initWithFrame:self.containerView.bounds];
 	}
 	
+	if (self.dashItemView) {
+		[self.dashItemView onBind:self.dashItem context:self.dashboard];
+		[self.containerView addSubview:self.dashItemView];
+		[self.view bringSubviewToFront:self.containerView];
+	}
+	
+
 }
 
 /*
