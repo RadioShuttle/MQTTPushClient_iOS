@@ -28,7 +28,7 @@
 		[self.view bringSubviewToFront:self.containerView];
 		
 		[self.containerView addSubview:view];
-		// self.dashView = view;
+		self.dashItemView = view;
 	}
 	
 }
@@ -53,8 +53,8 @@
 -(void)onNewMessage {
 	/* a new message has arrived that matches dashItem.topic_s */
 	if (!self.invalid) {
-		//TODO: update ui
-		NSLog(@"DashDetailViewController: onNewMessage");
+		/* update view */
+		[self.dashItemView onBind:self.dashItem context:self.dashboard];
 	}
 }
 

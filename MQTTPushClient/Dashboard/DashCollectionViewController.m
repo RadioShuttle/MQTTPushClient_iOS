@@ -327,6 +327,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashDetailViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"DashDetailViewController"];
 	vc.dashItem = (DashItem *) item;
 	vc.dashboard = self.dashboard;
+	self.activeDetailView = vc;
 	
 	vc.modalPresentationStyle = UIModalPresentationPopover;
 	

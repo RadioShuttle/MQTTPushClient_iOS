@@ -7,6 +7,7 @@
 #import <UIKit/UIKit.h>
 #import "DashItem.h"
 #import "Dashboard.h"
+#import "DashItemView.h"
 
 @interface DashDetailViewController : UIViewController
 
@@ -21,6 +22,7 @@
 @property (weak, nonatomic) IBOutlet UIView *errorView;
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
+@property DashItemView *dashItemView;
 
 /* will be called, if the dashboard has been updated. In this case this view controller is no longer valid */
 -(void)onDashboardUpdate;
