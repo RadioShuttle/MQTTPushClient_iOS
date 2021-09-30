@@ -5,12 +5,12 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "DashItemView.h"
 
-@interface DashTextItemView : UIView
+@interface DashTextItemView : DashItemView
 @property UILabel *valueLabel;
 @property UITextField *inputTextField;
 @property UIButton *submitButton;
-@property UIImageView *backgroundImageView;
 
 -(void) showInputElements; // must be called to show input elements in detail view
 

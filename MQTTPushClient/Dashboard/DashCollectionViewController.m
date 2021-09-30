@@ -45,7 +45,6 @@ static NSString * const reuseIDsliderItem = @"sliderItemCell";
 static NSString * const reuseIDoptionItem = @"optionItemCell";
 static NSString * const reuseIGroupItem = @"groupItemCell";
 
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.preferences = [Dashboard setPreferredViewDashboard:YES forAccount:self.account];
@@ -73,11 +72,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *vc = segue.destinationViewController;
 		vc.account = self.dashboard.account;
-	} else  {
-		if ([sender isKindOfClass:[DashCollectionViewCell class]]) {
-			self.activeDetailView = segue.destinationViewController;
-			self.activeDetailView.dashItem = ((DashCollectionViewCell *) sender).dashItem;
-		}
 	}
 }
 
@@ -323,8 +317,24 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	
-	// item click
-	NSLog(@"item selected");
+	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
+	NSNumber *key = [NSNumber numberWithUnsignedInt:group.id_];
+	DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
+
+	CGRect sourceRect = [collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+	
+	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
+	DashDetailViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"DashDetailViewController"];
+	vc.dashItem = (DashItem *) item;
+	vc.dashboard = self.dashboard;
+	
+	vc.modalPresentationStyle = UIModalPresentationPopover;
+	
+	
+	vc.popoverPresentationController.sourceView = collectionView;
+	vc.popoverPresentationController.sourceRect = sourceRect;
+	
+	[self presentViewController:vc animated:YES completion:nil];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -345,10 +355,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	} else if ([DashOptionItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDoptionItem forIndexPath:indexPath];
 	}
-	
 	cell.dashItem = item;
 	[cell onBind:item context:self.dashboard];
-	
 	/*
 	 * TODO: prototpy code below can be removed when all onBind() functions of reusable views have been implemented
 	 */

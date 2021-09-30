@@ -31,6 +31,7 @@
 	self.localVersion = 0L;
 	self.lastReceivedMsgDate = [NSDate dateWithTimeIntervalSince1970:0L];
 	self.lastReceivedMsgSeqNo = 0;
+	self.lastReceivedMsgs = [NSMutableDictionary new];
 	
 	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.js"];
 	NSError *error;

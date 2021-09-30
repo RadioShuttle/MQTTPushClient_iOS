@@ -5,6 +5,8 @@
  */
 
 #import "DashDetailViewController.h"
+#import "DashTextItem.h"
+#import "DashTextItemView.h"
 
 @interface DashDetailViewController ()
 
@@ -14,7 +16,21 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+	// [self hideBarButtonItem:self.errorButton1];
+	// self.errorView.layer.zPosition = -1;
+	
+	if ([DashTextItem class] == [self.dashItem class]) {
+		DashTextItemView *view = [[DashTextItemView alloc] initWithFrame:self.containerView.bounds];
+		[view onBind:self.dashItem context:self.dashboard];
+		[view showInputElements];
+
+		[self.view bringSubviewToFront:self.containerView];
+		
+		[self.containerView addSubview:view];
+		// self.dashView = view;
+	}
+	
 }
 
 /*
@@ -39,6 +55,27 @@
 	if (!self.invalid) {
 		//TODO: update ui
 		NSLog(@"DashDetailViewController: onNewMessage");
+	}
+}
+
+-(void) hideBarButtonItem :(UIBarButtonItem *)myButton {
+	// Get the reference to the current toolbar buttons
+	NSMutableArray *navBarBtns = [self.toolbarNavigationItem.rightBarButtonItems mutableCopy];
+	
+	// This is how you remove the button from the toolbar and animate it
+	[navBarBtns removeObject:myButton];
+	[self.toolbarNavigationItem setRightBarButtonItems:navBarBtns animated:NO];
+}
+
+
+-(void) showBarButtonItem :(UIBarButtonItem *)myButton {
+	// Get the reference to the current toolbar buttons
+	NSMutableArray *navBarBtns = [self.toolbarNavigationItem.rightBarButtonItems mutableCopy];
+	
+	// This is how you add the button to the toolbar and animate it
+	if (![navBarBtns containsObject:myButton]) {
+		[navBarBtns addObject:myButton];
+		[self.toolbarNavigationItem setRightBarButtonItems:navBarBtns animated:NO];
 	}
 }
 

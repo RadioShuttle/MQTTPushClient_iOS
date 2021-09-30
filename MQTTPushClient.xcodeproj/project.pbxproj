@@ -17,6 +17,7 @@
 		2131928626EF8BF000E65AF0 /* Dashboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131928526EF8BF000E65AF0 /* Dashboard.m */; };
 		2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171417D26E752CC00BD7969 /* SwitchViewSegue.m */; };
 		2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171418026E7573100BD7969 /* DashCollectionViewController.m */; };
+		21787D522703611A0004FF9D /* DashItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21787D512703611A0004FF9D /* DashItemView.m */; };
 		21ACFBAB26F4996E00737875 /* DashGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAA26F4996E00737875 /* DashGroupItem.m */; };
 		21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAC26F4A3E300737875 /* DashSliderItem.m */; };
 		21CC56EB26FDF9DF00E9E7D6 /* MqttUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */; };
@@ -156,6 +157,8 @@
 		2171417D26E752CC00BD7969 /* SwitchViewSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchViewSegue.m; sourceTree = "<group>"; };
 		2171417F26E7573100BD7969 /* DashCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCollectionViewController.h; sourceTree = "<group>"; };
 		2171418026E7573100BD7969 /* DashCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashCollectionViewController.m; sourceTree = "<group>"; };
+		21787D502703611A0004FF9D /* DashItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashItemView.h; sourceTree = "<group>"; };
+		21787D512703611A0004FF9D /* DashItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashItemView.m; sourceTree = "<group>"; };
 		21ACFBA926F4996E00737875 /* DashGroupItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashGroupItem.h; sourceTree = "<group>"; };
 		21ACFBAA26F4996E00737875 /* DashGroupItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashGroupItem.m; sourceTree = "<group>"; };
 		21ACFBAC26F4A3E300737875 /* DashSliderItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashSliderItem.m; sourceTree = "<group>"; };
@@ -394,6 +397,8 @@
 			children = (
 				21EC25C926F9D778003CD109 /* DashCollectionViewCell.h */,
 				21EC25CF26F9D779003CD109 /* DashCollectionViewCell.m */,
+				21787D502703611A0004FF9D /* DashItemView.h */,
+				21787D512703611A0004FF9D /* DashItemView.m */,
 				21EC25BF26F9D778003CD109 /* DashTextItemViewCell.h */,
 				21EC25BE26F9D778003CD109 /* DashTextItemViewCell.m */,
 				21EC25BB26F9D778003CD109 /* DashTextItemView.h */,
@@ -820,6 +825,7 @@
 				2AE5697B219481D30037FE30 /* AboutTableViewController.m in Sources */,
 				843BE3C5221D4C370039EF7C /* Utils.m in Sources */,
 				21EF4EC826F1E6280019C488 /* NSString+HELUtils.m in Sources */,
+				21787D522703611A0004FF9D /* DashItemView.m in Sources */,
 				2131927E26EF6E0700E65AF0 /* DashCustomItem.m in Sources */,
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,

@@ -6,8 +6,12 @@
 
 #import "DashTextItemView.h"
 #import "DashTextItemViewCell.h"
-#import "DashUtils.h"
 
+#import "DashConsts.h"
+#import "DashUtils.h"
+#import "DashTextItem.h"
+
+#
 @implementation DashTextItemView {
     NSLayoutConstraint *labelBottomConstraint;
 }
@@ -31,7 +35,7 @@
 }
 
 -(void) initTextView {
-	self.backgroundImageView = [DashUtils createImageView:self];
+	[super addBackgroundImageView];
     self.valueLabel = [[UILabel alloc] init];
     // self.valueLabel.textColor = [UIColor blackColor];
     self.valueLabel.lineBreakMode = NSLineBreakByTruncatingTail;
@@ -71,7 +75,7 @@
 
     /* Add button to stack view */
     self.submitButton = [[UIButton alloc] init];
-    UIImage *btnImage = [UIImage imageNamed:@"baseline_send_black_24pt"];
+    UIImage *btnImage = [UIImage imageNamed:@"send"];
     [self.submitButton setImage:btnImage forState:UIControlStateNormal];
     [self.submitButton setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [self.submitButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
@@ -97,6 +101,42 @@
 - (void)submitButtonClicked:(UIButton*)button
 {
     [self.valueLabel setText:self.inputTextField.text];
+}
+
+-(void)onBind:(DashItem *)item context:(Dashboard *)context {
+	[super onBind:item context:context];
+	
+	DashTextItem *textItem = (DashTextItem *) item;
+	
+	/* set value text label */
+	if (!textItem.content) {
+		[self.valueLabel setText:@""];
+	} else {
+		[self.valueLabel setText:textItem.content];
+	}
+	
+	/* text color */
+	uint64_t color;
+	if (textItem.textcolor == DASH_COLOR_OS_DEFAULT) {
+		UIColor *defaultLabelColor = [UILabel new].textColor;
+		[self.valueLabel setTextColor:defaultLabelColor];
+	} else {
+		[self.valueLabel setTextColor:UIColorFromRGB(textItem.textcolor)];
+	}
+	
+	/* font size (TODO: consider moving to utility class */
+	// UILabel * tmp = [UILabel new]; CGFloat labelFontSize = [tmp.font pointSize];
+	CGFloat labelFontSize = 17.0f;
+	int dashFontSize = item.textsize; // 0 - default, 1 small, 2 medium, 3 large
+	if (dashFontSize == 0) { // use system default?
+		dashFontSize = 2; // then use medium
+	}
+	if (dashFontSize == 1) {
+		labelFontSize -= 2;
+	} else if (dashFontSize == 3) {
+		labelFontSize += 2;
+	}
+	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
 }
 
 @end
