@@ -24,21 +24,4 @@
 	[self showErrorInfo:NO error2:NO];
 
 }
-
-// call onMqttInit() when document has been loaded
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    [self.webviewContainer hideProgressBar];
-    /*
-    [webView evaluateJavaScript:@"onMqttInit(); log('hello world!');" completionHandler:^(NSString *result, NSError *error)
-    {
-        NSLog(@"Error %@",error);
-        NSLog(@"Result %@",result);
-    }];
-     */
-}
-
--(void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
-    NSLog(@"Received message: %@", message.body);
-}
-
 @end

@@ -8,15 +8,25 @@
 #import "DashItemView.h"
 #import "DashCustomItem.h"
 
-@interface DashCustomItemView : DashItemView <WKURLSchemeHandler, WKNavigationDelegate, WKScriptMessageHandler>
+@class DashWebViewHandler;
+@interface DashCustomItemView : DashItemView
 
 @property (strong, nonatomic) WKWebView *webView;
 @property UIActivityIndicatorView *progressBar;
 /* indicates if webeview was already loaded (should be updated before calling onBind) */
 @property BOOL loaded;
 @property DashCustomItem *dashCustomItem;
+@property DashWebViewHandler *handler;
 
 -(void)showProgressBar;
 -(void)hideProgressBar;
 
 @end
+
+@interface DashWebViewHandler : NSObject <WKURLSchemeHandler, WKNavigationDelegate, WKScriptMessageHandler>
+
+-(instancetype)initWithView:(DashCustomItemView *)view;
+
+@property (weak) DashCustomItemView* dashView;
+@end
+

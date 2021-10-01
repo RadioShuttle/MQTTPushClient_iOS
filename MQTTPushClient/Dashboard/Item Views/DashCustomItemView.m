@@ -27,38 +27,20 @@
 
 -(void) initWebView {
     WKWebViewConfiguration *c = [[WKWebViewConfiguration alloc] init];
+	self.handler = [[DashWebViewHandler alloc] initWithView:self];
 	if (@available(iOS 11, *)) {
-		[c setURLSchemeHandler:self forURLScheme:@"pushapp"];
+		[c setURLSchemeHandler:self.handler forURLScheme:@"pushapp"];
 	}
 	
-    _webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:c];
-    _webView.navigationDelegate = self;
-    _webView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:c];
+	self.webView.navigationDelegate = self.handler;
+    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
     [self addSubview:_webView];
     
-    [_webView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
-    [_webView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
-    [_webView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
-    [_webView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
-}
-
-- (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask  API_AVAILABLE(ios(11.0)){
-    NSLog(@"webview resource request: %@", urlSchemeTask.request.URL);
-    
-    UIImage *img = [UIImage imageNamed:@"baseline_filter_list_black_24pt"];
-    NSData *d = UIImageJPEGRepresentation(img, 0.7);
-    NSURLResponse *urlResponse = [[NSURLResponse alloc] initWithURL:urlSchemeTask.request.URL MIMEType:@"image/jpeg" expectedContentLength:-1 textEncodingName:nil];
-    
-    [urlSchemeTask didReceiveResponse:urlResponse];
-    [urlSchemeTask didReceiveData:d];
-    [urlSchemeTask didFinish];
-}
-
-- (void)webView:(nonnull WKWebView *)webView stopURLSchemeTask:(nonnull id<WKURLSchemeTask>)urlSchemeTask  API_AVAILABLE(ios(11.0)){
-}
-
-- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
-    [self hideProgressBar];
+    [self.webView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
+    [self.webView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
+    [self.webView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
+    [self.webView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
 }
 
 - (void)showProgressBar {
@@ -87,16 +69,20 @@
 	Boolean load = NO;
 
 	if (!self.dashCustomItem) { // first call?
-		//TODO: set scripts here
-		[self.webView.configuration.userContentController addScriptMessageHandler:self name:@"error"];
-		[self.webView.configuration.userContentController addScriptMessageHandler:self name:@"log"];
+		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
+		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
 		NSLog(@"Custom Item View (including webview): created");
 		load = YES;
-	} else if (item != self.dashCustomItem) {
+	} else if (item == self.dashCustomItem) {
 		/* view has not been reused for a diffrent custom item */
 	} else {
 		/* view has been reused */
+		//TODO: change scripts?
+		/*
+		[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"log"];
+		[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"error"];
 		[self.webView.configuration.userContentController removeAllUserScripts];
+		 */
 		load = YES;
 	}
 	self.dashCustomItem = (DashCustomItem *) item;
@@ -125,13 +111,44 @@
 		/* call Dash-javascript init function: */
 		WKUserScript *initSkript = [[WKUserScript alloc] initWithSource:@"onMqttInit(); log('Clock app initialized!');" injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:initSkript];
-		
+
 		[self.webView loadHTMLString:self.dashCustomItem.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
 
 		/* when passing messages to custom view use: [webView evaluateJavaScript:@"onMqttMessage(...); " completionHandler:^(NSString *result, NSError *error) {}] */
 		/* When using [webView evaluateJavaScript ...] the document must have been fully loaded! This can be checked with via WKNavigationDelegate.didFinishNavigation callback */
-		self.webView.navigationDelegate = self;
 	}
+}
+
+@end
+
+@implementation DashWebViewHandler
+
+-(instancetype)initWithView:(DashCustomItemView *)view {
+	self = [super init];
+	if (self) {
+		self.dashView = view;
+	}
+	return self;
+}
+
+- (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask  API_AVAILABLE(ios(11.0)){
+	NSLog(@"webview resource request: %@", urlSchemeTask.request.URL);
+
+	//TODO
+	UIImage *img = [UIImage imageNamed:@"baseline_filter_list_black_24pt"];
+	NSData *d = UIImageJPEGRepresentation(img, 0.7);
+	NSURLResponse *urlResponse = [[NSURLResponse alloc] initWithURL:urlSchemeTask.request.URL MIMEType:@"image/jpeg" expectedContentLength:-1 textEncodingName:nil];
+	
+	[urlSchemeTask didReceiveResponse:urlResponse];
+	[urlSchemeTask didReceiveData:d];
+	[urlSchemeTask didFinish];
+}
+
+- (void)webView:(nonnull WKWebView *)webView stopURLSchemeTask:(nonnull id<WKURLSchemeTask>)urlSchemeTask  API_AVAILABLE(ios(11.0)){
+}
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+	[self.dashView hideProgressBar];
 }
 
 /* script message handler */
@@ -139,5 +156,9 @@
 	NSLog(@"Received message: %@", message.body);
 }
 
+-(void)dealloc {
+	// NSLog(@"dealloc");
+}
 
 @end
+
