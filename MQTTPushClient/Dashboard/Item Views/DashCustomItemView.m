@@ -28,10 +28,8 @@
 -(void) initWebView {
     WKWebViewConfiguration *c = [[WKWebViewConfiguration alloc] init];
 	self.handler = [[DashWebViewHandler alloc] initWithView:self];
-	if (@available(iOS 11, *)) {
-		[c setURLSchemeHandler:self.handler forURLScheme:@"pushapp"];
-	}
-	
+	[c setURLSchemeHandler:self.handler forURLScheme:@"pushapp"];
+
     self.webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:c];
 	self.webView.navigationDelegate = self.handler;
     self.webView.translatesAutoresizingMaskIntoConstraints = NO;
@@ -131,7 +129,7 @@
 	return self;
 }
 
-- (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask  API_AVAILABLE(ios(11.0)){
+- (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask {
 	NSLog(@"webview resource request: %@", urlSchemeTask.request.URL);
 
 	//TODO
@@ -144,7 +142,7 @@
 	[urlSchemeTask didFinish];
 }
 
-- (void)webView:(nonnull WKWebView *)webView stopURLSchemeTask:(nonnull id<WKURLSchemeTask>)urlSchemeTask  API_AVAILABLE(ios(11.0)){
+- (void)webView:(nonnull WKWebView *)webView stopURLSchemeTask:(nonnull id<WKURLSchemeTask>)urlSchemeTask {
 }
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
