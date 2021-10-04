@@ -71,7 +71,7 @@
 	return img;
 }
 
-+(NSString *)gerResourceURIFromResourceName:(NSString *) resourceName userDataDir:(NSURL *)userDataDir {
++(NSString *)getResourceURIFromResourceName:(NSString *) resourceName userDataDir:(NSURL *)userDataDir {
 	NSString *uri = nil;
 	
 	if ([resourceName hasPrefix:@"/"]) {

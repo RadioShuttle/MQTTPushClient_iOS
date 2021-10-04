@@ -539,10 +539,10 @@
 				2131928326EF730C00E65AF0 /* DashConsts.h */,
 				21EF4EC326F1DEE40019C488 /* DashUtils.h */,
 				21EF4EC426F1DEE40019C488 /* DashUtils.m */,
-				21EC8E442702F01A00DE8644 /* Images.xcassets */,
-				21F32043270AEE8400C89DCF /* Images SVG */,
 				2131925826EF6BA100E65AF0 /* Items */,
 				21EC25BA26F9D6FA003CD109 /* Item Views */,
+				21F32043270AEE8400C89DCF /* Images SVG */,
+				21EC8E442702F01A00DE8644 /* Images.xcassets */,
 			);
 			path = Dashboard;
 			sourceTree = "<group>";

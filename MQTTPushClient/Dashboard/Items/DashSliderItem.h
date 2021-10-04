@@ -11,7 +11,7 @@
 @property double range_min;
 @property double range_max;
 @property int decimal;
-@property uint64_t progresscolor;
+@property int64_t progresscolor;
 @property BOOL percent;
 
 +(double) calcProgressInPercent:(double)v min:(double)min max:(double)max;

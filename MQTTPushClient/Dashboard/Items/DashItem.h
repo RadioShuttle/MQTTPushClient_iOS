@@ -10,8 +10,8 @@
 @interface DashItem : NSObject
 
 @property uint32_t id_;
-@property uint64_t textcolor;
-@property uint64_t background;
+@property int64_t textcolor;
+@property int64_t background;
 @property int textsize;
 @property NSString *topic_s;
 @property NSString *script_f;

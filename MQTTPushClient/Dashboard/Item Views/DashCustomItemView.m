@@ -143,7 +143,7 @@
 
 	NSData *data;
 	NSURLResponse *urlResponse;
-	NSString *uri = [DashUtils gerResourceURIFromResourceName:path userDataDir:self.userDataDir];
+	NSString *uri = [DashUtils getResourceURIFromResourceName:path userDataDir:self.userDataDir];
 	if (uri) {
 		NSString *resourceName = [DashUtils getURIPath:uri];
 

@@ -5,9 +5,9 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "DashItemView.h"
 
-@interface DashSwitchItemView : UIView
+@interface DashSwitchItemView : DashItemView
 @property UIButton *button;
-@property UIImageView *backgroundImageView;
 
 @end

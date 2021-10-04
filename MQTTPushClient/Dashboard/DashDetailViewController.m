@@ -9,6 +9,8 @@
 #import "DashTextItemView.h"
 #import "DashCustomItem.h"
 #import "DashCustomItemView.h"
+#import "DashSwitchItem.h"
+#import "DashSwitchItemView.h"
 
 @interface DashDetailViewController ()
 
@@ -29,8 +31,10 @@
 
 	} else if ([DashCustomItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashCustomItemView alloc] initWithFrame:self.containerView.bounds];
+	} else if ([DashSwitchItem class] == [self.dashItem class]) {
+		self.dashItemView = [[DashSwitchItemView alloc] initWithFrame:self.containerView.bounds];
 	}
-	
+
 	if (self.dashItemView) {
 		[self.dashItemView onBind:self.dashItem context:self.dashboard];
 		[self.containerView addSubview:self.dashItemView];

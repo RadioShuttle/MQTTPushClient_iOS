@@ -8,8 +8,8 @@
 
 @interface DashSwitchItem : DashItem
 @property NSString *val;
-@property uint64_t color; // ctrl tint color
-@property uint64_t bgcolor; // ctrl background color
+@property int64_t color; // ctrl tint color
+@property int64_t bgcolor; // ctrl background color
 @property NSString *uri; // res://internal/ic_alarm
 
 @property NSString *valOff; // off state (if switch), unused if button
