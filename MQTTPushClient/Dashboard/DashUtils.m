@@ -107,18 +107,4 @@
 	return uri;
 }
 
-//TODO: remove after refactoring of switch item
-+(UIImageView *)createImageView:(UIView *)targetView {
-	UIImageView * view =  [[UIImageView alloc] init];
-	view = [[UIImageView alloc] init];
-	view.contentMode = UIViewContentModeScaleAspectFit;
-	view.translatesAutoresizingMaskIntoConstraints = NO;
-	[targetView addSubview:view];
-	[view.leadingAnchor constraintEqualToAnchor:targetView.leadingAnchor constant:0.0].active = YES;
-	[view.trailingAnchor constraintEqualToAnchor:targetView.trailingAnchor constant:0.0].active = YES;
-	[view.topAnchor constraintEqualToAnchor:targetView.topAnchor constant:0.0].active = YES;
-	[view.bottomAnchor constraintEqualToAnchor:targetView.bottomAnchor constant:0.0].active = YES;
-	return view;
-}
-
 @end

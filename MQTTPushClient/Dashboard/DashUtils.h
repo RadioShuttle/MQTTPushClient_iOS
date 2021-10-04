@@ -22,6 +22,4 @@
 
 +(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir;
 
-+(UIImageView *)createImageView:(UIView *)targetView;
-
 @end
