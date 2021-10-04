@@ -71,6 +71,43 @@
 	return img;
 }
 
++(NSString *)gerResourceURIFromResourceName:(NSString *) resourceName userDataDir:(NSURL *)userDataDir {
+	NSString *uri = nil;
+	
+	if ([resourceName hasPrefix:@"/"]) {
+		resourceName = [resourceName substringFromIndex:1];
+	}
+	
+	BOOL checkUserRes = NO;
+	NSString *path = [resourceName lowercaseString];
+	if ([path hasPrefix:@"int/"]) {
+		resourceName = [resourceName substringFromIndex:4];
+	} else {
+		if ([path hasPrefix:@"user/"]) {
+			resourceName = [resourceName substringFromIndex:5];
+		}
+		checkUserRes = YES;
+	}
+	if (checkUserRes) {
+		NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
+		NSURL *localDir = [DashUtils getUserFilesDir:userDataDir];
+		NSURL *fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+		if ([DashUtils fileExists:fileURL]) {
+			NSString *pc = [resourceName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+			uri = [NSString stringWithFormat:@"res://user/%@", pc];
+		}
+	}
+	if ([Utils isEmpty:uri]) {
+		NSURL *svgImageURL = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@"svg"];
+		if ([DashUtils fileExists:svgImageURL]) {
+			NSString *pc = [resourceName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+			uri = [NSString stringWithFormat:@"res://internal/%@", pc];
+		}
+	}
+	return uri;
+}
+
+//TODO: remove after refactoring of switch item
 +(UIImageView *)createImageView:(UIView *)targetView {
 	UIImageView * view =  [[UIImageView alloc] init];
 	view = [[UIImageView alloc] init];

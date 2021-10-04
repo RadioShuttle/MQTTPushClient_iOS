@@ -6,6 +6,9 @@
 
 #import "DashCustomItemView.h"
 #import "DashConsts.h"
+#import "DashUtils.h"
+#import "NSString+HELUtils.h"
+
 
 @implementation DashCustomItemView
 
@@ -69,6 +72,7 @@
 	if (!self.dashCustomItem) { // first call?
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
+		self.handler.userDataDir = context.account.cacheURL;
 		NSLog(@"Custom Item View (including webview): created");
 		load = YES;
 	} else if (item == self.dashCustomItem) {
@@ -130,15 +134,42 @@
 }
 
 - (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask {
-	NSLog(@"webview resource request: %@", urlSchemeTask.request.URL);
+	NSLog(@"webview resource request: %@", [urlSchemeTask.request.URL path]);
+	
+	NSString *path = [urlSchemeTask.request.URL path];
+	if ([path hasPrefix:@"/"]) {
+		path = [path substringFromIndex:1];
+	}
 
-	//TODO
-	UIImage *img = [UIImage imageNamed:@"baseline_filter_list_black_24pt"];
-	NSData *d = UIImageJPEGRepresentation(img, 0.7);
-	NSURLResponse *urlResponse = [[NSURLResponse alloc] initWithURL:urlSchemeTask.request.URL MIMEType:@"image/jpeg" expectedContentLength:-1 textEncodingName:nil];
+	NSData *data;
+	NSURLResponse *urlResponse;
+	NSString *uri = [DashUtils gerResourceURIFromResourceName:path userDataDir:self.userDataDir];
+	if (uri) {
+		NSString *resourceName = [DashUtils getURIPath:uri];
+
+		if ([DashUtils isUserResource:uri]) {
+			NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
+			NSURL *localDir = [DashUtils getUserFilesDir:self.userDataDir];
+			NSURL *fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+			if ([DashUtils fileExists:fileURL]) {
+				urlResponse = [[NSURLResponse alloc] initWithURL:urlSchemeTask.request.URL MIMEType:@"image/png" expectedContentLength:-1 textEncodingName:nil];
+				data = [[NSData alloc] initWithContentsOfURL:fileURL];
+			}
+		} else if ([DashUtils isInternalResource:uri]) {
+			NSURL *svgImageURL = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@"svg"];
+			if ([DashUtils fileExists:svgImageURL]) {
+				urlResponse = [[NSURLResponse alloc] initWithURL:urlSchemeTask.request.URL MIMEType:@"image/svg+xml" expectedContentLength:-1 textEncodingName:nil];
+				data = [[NSData alloc] initWithContentsOfURL:svgImageURL];
+			}
+		}
+	}
+	if (!urlResponse) {
+		/* resource not found */
+		urlResponse = [[NSHTTPURLResponse alloc] initWithURL:urlSchemeTask.request.URL statusCode:404 HTTPVersion:@"HTTP/1.1" headerFields:nil];
+	}
 	
 	[urlSchemeTask didReceiveResponse:urlResponse];
-	[urlSchemeTask didReceiveData:d];
+	[urlSchemeTask didReceiveData:data];
 	[urlSchemeTask didFinish];
 }
 

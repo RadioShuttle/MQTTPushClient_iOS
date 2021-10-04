@@ -28,5 +28,6 @@
 -(instancetype)initWithView:(DashCustomItemView *)view;
 
 @property (weak) DashCustomItemView* dashView;
+@property (weak) NSURL* userDataDir;
 @end
 

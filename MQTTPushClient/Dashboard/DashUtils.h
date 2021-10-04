@@ -18,6 +18,8 @@
 +(NSURL *)appendStringToURL:(NSURL *)url str:(NSString *)str;
 +(BOOL)fileExists:(NSURL *)fileUrl;
 
++(NSString *)gerResourceURIFromResourceName:(NSString *) resourceName userDataDir:(NSURL *)userDataDir;
+
 +(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir;
 
 +(UIImageView *)createImageView:(UIView *)targetView;
