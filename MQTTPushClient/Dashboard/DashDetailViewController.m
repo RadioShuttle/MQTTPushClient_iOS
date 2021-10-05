@@ -11,6 +11,8 @@
 #import "DashCustomItemView.h"
 #import "DashSwitchItem.h"
 #import "DashSwitchItemView.h"
+#import "DashSliderItem.h"
+#import "DashSliderItemView.h"
 
 @interface DashDetailViewController ()
 
@@ -33,6 +35,8 @@
 		self.dashItemView = [[DashCustomItemView alloc] initWithFrame:self.containerView.bounds];
 	} else if ([DashSwitchItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashSwitchItemView alloc] initWithFrame:self.containerView.bounds];
+	} else if ([DashSliderItem class] == [self.dashItem class]) {
+		self.dashItemView = [[DashSliderItemView alloc] initWithFrame:self.containerView.bounds];
 	}
 
 	if (self.dashItemView) {

@@ -5,6 +5,9 @@
  */
 
 #import "DashSliderItemView.h"
+#import "DashSliderItem.h"
+#import "DashUtils.h"
+#import "DashConsts.h"
 
 @implementation DashSliderItemView
 
@@ -65,7 +68,7 @@
         self.progressView = [[UIProgressView alloc] init];
         self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
         
-        self.progressView.transform = CGAffineTransformMakeScale(1.0f, 4.0f);
+        self.progressView.transform = CGAffineTransformMakeScale(1.0f, 3.0f);
         
         addedView = self.self.progressView;
     }
@@ -77,5 +80,52 @@
     [addedView.centerYAnchor constraintEqualToAnchor:container.centerYAnchor constant:0].active = YES;
 
 }
+
+- (void)onBind:(DashItem *)item context:(Dashboard *)context {
+	[super onBind:item context:context];
+	
+	DashSliderItem *sliderItem = (DashSliderItem *) item;
+
+	UIColor *progressTintColor = nil;
+	UIColor *trackTintColor = nil;
+
+	double progress = [DashSliderItem calcProgressInPercent:[sliderItem.content doubleValue] min:sliderItem.range_min max:sliderItem.range_max];
+	
+	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
+	[formatter setMaximumFractionDigits:sliderItem.decimal];
+	[formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
+	
+	NSString * val = [formatter stringFromNumber:[NSNumber numberWithFloat:progress]];
+	if (sliderItem.percent) {
+		val = [NSString stringWithFormat:@"%@%%", val];
+	}
+	
+	[self.valueLabel setText:val];
+	[self.progressView setProgress:progress / 100.0f];
+	if (sliderItem.progresscolor == DASH_COLOR_OS_DEFAULT) {
+		progressTintColor = nil;
+		trackTintColor = nil;
+	} else {
+		progressTintColor = UIColorFromRGB(sliderItem.progresscolor);
+		CGFloat r, g, b, a;
+		[progressTintColor getRed:&r green:&g blue:&b alpha:&a];
+		trackTintColor = [UIColor colorWithRed:r green:g blue:b alpha:.3];
+	}
+	[self.progressView setProgressTintColor:progressTintColor];
+	[self.progressView setTrackTintColor:trackTintColor];
+
+	/* text color */
+	if (sliderItem.textcolor == DASH_COLOR_OS_DEFAULT) {
+		UIColor *defaultLabelColor = [UILabel new].textColor;
+		[self.valueLabel setTextColor:defaultLabelColor];
+	} else {
+		[self.valueLabel setTextColor:UIColorFromRGB(sliderItem.textcolor)];
+	}
+	
+	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
+	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
+
+}
+
 
 @end

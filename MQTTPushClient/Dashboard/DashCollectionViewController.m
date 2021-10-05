@@ -376,36 +376,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		textColor = UIColorFromRGB(item.textcolor);
 	}
 	
-	if ([DashSliderItem class] == [item class]) {
-		/* Slider Item */
-		DashSliderItem *sliderItem = (DashSliderItem *) item;
-		DashSliderItemViewCell *sv = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDsliderItem forIndexPath:indexPath];
-		sv.dashItem = sliderItem;
-		
-		DashSliderItemView *view = (DashSliderItemView *) sv.itemContainer ;
-		UIColor *progressTintColor = nil;
-		
-		double progress = [DashSliderItem calcProgressInPercent:[sliderItem.content doubleValue] min:sliderItem.range_min max:sliderItem.range_max];
-		
-		NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-		[formatter setMaximumFractionDigits:sliderItem.decimal];
-		[formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
-		
-		NSString * val = [formatter stringFromNumber:[NSNumber numberWithFloat:progress]];
-		if (sliderItem.percent) {
-			val = [NSString stringWithFormat:@"%@%%", val];
-		}
-		[view.valueLabel setText:val];
-		[view.progressView setProgress:progress / 100.0f];
-		if (sliderItem.progresscolor < DASH_COLOR_OS_DEFAULT) {
-			progressTintColor = UIColorFromRGB(sliderItem.progresscolor);
-		}
-		[view.progressView setProgressTintColor:progressTintColor];
-		
-		[sv.itemLabel setText:item.label];
-		[sv.itemContainer setBackgroundColor:UIColorFromRGB(bg)];
-		cell = sv;
-	} else if ([DashOptionItem class] == [item class]) {
+	if ([DashOptionItem class] == [item class]) {
 		DashOptionItem *optionItem = (DashOptionItem *) item;
 		DashOptionItemViewCell *ov = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDoptionItem forIndexPath:indexPath];
 		ov.dashItem = optionItem;

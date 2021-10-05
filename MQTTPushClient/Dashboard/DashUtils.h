@@ -22,4 +22,7 @@
 
 +(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir;
 
+/* returns font size for given itemSize: 0 - default, 1 small, 2 medium, 3 large */
++(CGFloat)getLabelFontSize:(int)itemSize;
+
 @end

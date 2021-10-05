@@ -107,4 +107,17 @@
 	return uri;
 }
 
++(CGFloat)getLabelFontSize:(int)itemSize {
+	CGFloat labelFontSize = 17.0f;
+	int dashFontSize = itemSize; // 0 - default, 1 small, 2 medium, 3 large
+	if (dashFontSize == 0) { // use system default?
+		dashFontSize = 2; // then use medium
+	}
+	if (dashFontSize == 1) {
+		labelFontSize -= 2;
+	} else if (dashFontSize == 3) {
+		labelFontSize += 2;
+	}
+	return labelFontSize;
+}
 @end

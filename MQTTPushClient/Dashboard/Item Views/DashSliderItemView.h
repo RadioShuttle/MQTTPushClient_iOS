@@ -5,8 +5,9 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "DashItemView.h"
 
-@interface DashSliderItemView : UIView
+@interface DashSliderItemView : DashItemView
 @property UILabel *valueLabel;
 @property UIProgressView *progressView;
 @property UISlider *sliderCtrl;

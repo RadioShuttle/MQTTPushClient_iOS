@@ -5,10 +5,11 @@
  */
 
 #import "DashCollectionViewCell.h"
+#import "DashSliderItemView.h"
 
 @interface DashSliderItemViewCell : DashCollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *itemLabel;
-@property (weak, nonatomic) IBOutlet UIView *itemContainer;
+@property (weak, nonatomic) IBOutlet DashSliderItemView *itemContainer;
 
 @end
