@@ -13,7 +13,7 @@
 #import "DashConsts.h"
 #import "NSDictionary+HelSafeAccessors.h"
 
-#import "DashGroupItemView.h"
+#import "DashGroupItemViewCell.h"
 
 #import "DashTextItemViewCell.h"
 
@@ -355,28 +355,11 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
-	DashGroupItemView *v = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:@"groupItemCell" forIndexPath:indexPath];
+	DashGroupItemViewCell *v = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIGroupItem forIndexPath:indexPath];
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
-	
-	int64_t bg = group.background;
-	if (bg == DASH_COLOR_OS_DEFAULT) {
-		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
-	}
-	
-	UIColor *textColor;
-	if (group.textcolor == DASH_COLOR_OS_DEFAULT) {
-		textColor = [UILabel new].textColor;
-	} else {
-		textColor = UIColorFromRGB(group.textcolor);
-	}
-	
-	[v.groupViewContainer setBackgroundColor:UIColorFromRGB(bg)];
-	[v.groupViewLabel setTextColor:textColor];
-	[v.groupViewLabel setText:group.label];
-	
+
 	// layout info needed in layout pass (only for header)
-	v.layoutInfo = ((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo;
-	
+	[v onBind:group layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo];
 	return v;
 }
 

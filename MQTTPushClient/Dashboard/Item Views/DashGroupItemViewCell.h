@@ -6,11 +6,15 @@
 
 #import <UIKit/UIKit.h>
 #import "DashCollectionFlowLayout.h"
+#import "DashItem.h"
 
-@interface DashGroupItemView : UICollectionReusableView
+@interface DashGroupItemViewCell : UICollectionReusableView
 @property (weak, nonatomic) IBOutlet UILabel *groupViewLabel;
 @property (weak, nonatomic) IBOutlet UIView *groupViewContainer;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupViewTrailingConstraint;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *groupViewLeadingConstraint;
 @property (weak) DashCollectionViewLayoutInfo *layoutInfo;
+
+-(void)onBind:(DashItem *)item layoutInfo:(DashCollectionViewLayoutInfo *)layoutInfo;
+
 @end
