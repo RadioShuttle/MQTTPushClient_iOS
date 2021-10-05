@@ -5,9 +5,11 @@
  */
 
 #import "DashCollectionViewCell.h"
+#import "DashOptionItemView.h"
+
 @interface DashOptionItemViewCell : DashCollectionViewCell
 
 @property (weak, nonatomic) IBOutlet UILabel *itemLabel;
-@property (weak, nonatomic) IBOutlet UIView *itemContainer;
+@property (weak, nonatomic) IBOutlet DashOptionItemView *itemContainer;
 
 @end

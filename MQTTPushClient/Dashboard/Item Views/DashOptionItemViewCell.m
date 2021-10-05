@@ -8,4 +8,16 @@
 
 @implementation DashOptionItemViewCell
 
+- (void)onBind:(DashItem *)item context:(Dashboard *)context {
+	[super onBind:item context:context];
+	
+	[self.itemContainer onBind:item context:context];
+	
+	/* label */
+	[self.itemLabel setText:item.label];
+	
+	/* error info */
+	//TODO:
+	[self showErrorInfo:NO error2:NO];
+}
 @end

@@ -14,17 +14,8 @@
 #import "NSDictionary+HelSafeAccessors.h"
 
 #import "DashGroupItemView.h"
-#import "DashTextItemView.h"
-#import "DashSwitchItemView.h"
-#import "DashSliderItemView.h"
-#import "DashOptionItemView.h"
 
 #import "DashTextItemViewCell.h"
-#import "DashCustomItemViewCell.h"
-#import "DashCollectionViewCell.h"
-#import "DashSwitchItemViewCell.h"
-#import "DashSliderItemViewCell.h"
-#import "DashOptionItemViewCell.h"
 
 #import "DashTextItem.h"
 #import "DashCustomItem.h"
@@ -359,48 +350,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	}
 	cell.dashItem = item;
 	[cell onBind:item context:self.dashboard];
-	/*
-	 * TODO: prototpy code below can be removed when all onBind() functions of reusable views have been implemented
-	 */
-	
-
-	int64_t bg = item.background;
-	if (bg >= DASH_COLOR_OS_DEFAULT) {
-		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
-	}
-	
-	UIColor *textColor;
-	if (item.textcolor >= DASH_COLOR_OS_DEFAULT) {
-		textColor = [UILabel new].textColor;
-	} else {
-		textColor = UIColorFromRGB(item.textcolor);
-	}
-	
-	if ([DashOptionItem class] == [item class]) {
-		DashOptionItem *optionItem = (DashOptionItem *) item;
-		DashOptionItemViewCell *ov = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDoptionItem forIndexPath:indexPath];
-		ov.dashItem = optionItem;
-		
-		NSString *txt = optionItem.content;
-		DashOptionListItem *e;
-		for(int i = 0; i < optionItem.optionList.count; i++) {
-			e = [optionItem.optionList objectAtIndex:i];
-			if ([e.value isEqualToString:txt]) {
-				if ([Utils isEmpty:e.displayValue]) {
-					txt = e.value;
-				} else {
-					txt = e.displayValue;
-				}
-				break;
-			}
-		}
-		DashOptionItemView *view = (DashOptionItemView *) ov.itemContainer;
-		[view.valueLabel setText:txt];
-		
-		[ov.itemLabel setText:item.label];
-		[ov.itemContainer setBackgroundColor:UIColorFromRGB(bg)];
-		cell = ov;
-	}
 	
 	return cell;
 }

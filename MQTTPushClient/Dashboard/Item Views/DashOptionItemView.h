@@ -5,10 +5,13 @@
  */
 
 #import <UIKit/UIKit.h>
+#import "DashItemView.h"
 
-@interface DashOptionItemView : UIView
+@interface DashOptionItemView : DashItemView
 
 @property UILabel *valueLabel;
+@property UIImageView *valueImageView;
+@property NSLayoutConstraint *valueLabelTopConstraint;
 @property UITableView *optionListTableView;
 
 @end
