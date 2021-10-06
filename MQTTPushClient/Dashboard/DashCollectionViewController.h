@@ -19,6 +19,8 @@
 @property NSDictionary *preferences;
 
 @property DashDetailViewController *activeDetailView;
+@property NSOperationQueue *jsOperationQueue;
+@property NSMutableArray<NSInvocationOperation *> *jsTaskQueue;
 
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;

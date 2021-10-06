@@ -20,6 +20,7 @@
 		21787D522703611A0004FF9D /* DashItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21787D512703611A0004FF9D /* DashItemView.m */; };
 		21ACFBAB26F4996E00737875 /* DashGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAA26F4996E00737875 /* DashGroupItem.m */; };
 		21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAC26F4A3E300737875 /* DashSliderItem.m */; };
+		21BADEA9270C89FF00B2E59F /* DashJavaScriptTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */; };
 		21CC56EB26FDF9DF00E9E7D6 /* MqttUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */; };
 		21EC25B926F9D5BB003CD109 /* DashCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25B726F9D5BB003CD109 /* DashCollectionFlowLayout.m */; };
 		21EC25D526F9D779003CD109 /* DashSwitchItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25BD26F9D778003CD109 /* DashSwitchItemView.m */; };
@@ -240,6 +241,8 @@
 		21ACFBAA26F4996E00737875 /* DashGroupItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashGroupItem.m; sourceTree = "<group>"; };
 		21ACFBAC26F4A3E300737875 /* DashSliderItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashSliderItem.m; sourceTree = "<group>"; };
 		21ACFBAD26F4A3E300737875 /* DashSliderItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashSliderItem.h; sourceTree = "<group>"; };
+		21BADEA7270C89FF00B2E59F /* DashJavaScriptTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashJavaScriptTask.h; sourceTree = "<group>"; };
+		21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashJavaScriptTask.m; sourceTree = "<group>"; };
 		21CC56E926FDF9DF00E9E7D6 /* MqttUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MqttUtils.h; sourceTree = "<group>"; };
 		21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MqttUtils.m; sourceTree = "<group>"; };
 		21EC25B726F9D5BB003CD109 /* DashCollectionFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashCollectionFlowLayout.m; sourceTree = "<group>"; };
@@ -539,6 +542,8 @@
 				2131928326EF730C00E65AF0 /* DashConsts.h */,
 				21EF4EC326F1DEE40019C488 /* DashUtils.h */,
 				21EF4EC426F1DEE40019C488 /* DashUtils.m */,
+				21BADEA7270C89FF00B2E59F /* DashJavaScriptTask.h */,
+				21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */,
 				2131925826EF6BA100E65AF0 /* Items */,
 				21EC25BA26F9D6FA003CD109 /* Item Views */,
 				21F32043270AEE8400C89DCF /* Images SVG */,
@@ -1096,6 +1101,7 @@
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,
 				2131928626EF8BF000E65AF0 /* Dashboard.m in Sources */,
 				2ADAB1892181DE3200EBDC4D /* Topic.m in Sources */,
+				21BADEA9270C89FF00B2E59F /* DashJavaScriptTask.m in Sources */,
 				2A7DFF85213EAF6E001B1546 /* ServerListTableViewController.m in Sources */,
 				2ADBE465213D7516000664D3 /* main.m in Sources */,
 				2131928226EF6E0700E65AF0 /* DashOptionItem.m in Sources */,

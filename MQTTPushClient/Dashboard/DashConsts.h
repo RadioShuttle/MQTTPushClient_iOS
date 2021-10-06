@@ -46,5 +46,7 @@
 
 // other
 #define DASH_TIMER_INTERVAL_SEC 5.0f
+#define DASH_MAX_CONCURRENT_JS_TASKS 4
+#define DASH_MAX_JS_TASKS_QUEUE_TIME 5
 
 #endif /* DashConsts_h */

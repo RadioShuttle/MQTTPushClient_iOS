@@ -23,6 +23,8 @@
 #import "DashSliderItem.h"
 #import "DashOptionItem.h"
 
+#import "DashJavaScriptTask.h"
+
 @interface DashCollectionViewController ()
 @property NSDate *statusBarUpdateTime;
 @end
@@ -53,6 +55,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 	
+	/* java script task executor */
+	self.jsOperationQueue = [[NSOperationQueue alloc] init];
+	[self.jsOperationQueue setMaxConcurrentOperationCount:DASH_MAX_CONCURRENT_JS_TASKS];
+	self.jsTaskQueue = [NSMutableArray new];
 	
 	/* deliver local stored messages*/
 	[self deliverMessages:[[NSDate alloc]initWithTimeIntervalSince1970:0] seqNo:0 notify:NO];
@@ -82,6 +88,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if (!self.timer) {
 		[self startTimer];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
+		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJavaScriptTaskFinished:) name:@"DashJavaScriptTaskNotification" object:nil];
 	}
 }
 
@@ -181,8 +188,24 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		indexPathDict = [NSMutableDictionary new];
 	}
 	
+	/* cancel long running java script tasks */
+	[self checkJSTasks];
+	
+	/* javascript tasks grouped per dash object, since there can be multiple message objects matching a dash's subscription.for these objects the js execution order is important */
+	NSMutableDictionary<NSNumber *, NSMutableArray<NSInvocationOperation *> *> *dependenciesDict = [NSMutableDictionary new];
+	
+	
 	for(int i = 0; i < [dashMessages count]; i++) {
-		[self onNewMessage:dashMessages[i] indexPathDict:indexPathDict];
+		[self onNewMessage:dashMessages[i] indexPathDict:indexPathDict dependencies:dependenciesDict];
+	}
+	
+	/* add new tasks to queue */
+	enumerator = [dependenciesDict objectEnumerator];
+	NSMutableArray<NSInvocationOperation *> *taskArray;
+	while ((taskArray = [enumerator nextObject])) {
+		for(int i = 0; i < taskArray.count; i++) {
+			[self.jsTaskQueue addObject:taskArray[i]];
+		}
 	}
 	
 	if (notify && indexPathDict.count > 0) {
@@ -202,7 +225,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	}
 }
 
--(void)onNewMessage:(DashMessage *)msg indexPathDict:(NSMutableDictionary<NSNumber *, NSIndexPath *> *)indexPathDict {
+-(void)onNewMessage:(DashMessage *)msg indexPathDict:(NSMutableDictionary<NSNumber *, NSIndexPath *> *)indexPathDict dependencies:(NSMutableDictionary<NSNumber *, NSMutableArray<NSInvocationOperation *> *> *) dependenciesDict{
 	DashGroupItem *groupItem;
 	BOOL matches = NO;
 	for(int i = 0; i < self.dashboard.groups.count; i++) {
@@ -222,13 +245,23 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 							[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
 						}
 					} else {
-						//TODO: trigger javascript here. remove lines
-						item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
-						if (indexPathDict) {
-							NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
-							[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
+						/* trigger java script execution */
+						DashJavaScriptTask *jsTask = [[DashJavaScriptTask alloc]initWithItem:item message:msg version:self.dashboard.localVersion];
+						
+						NSInvocationOperation *op = [[NSInvocationOperation alloc]initWithTarget:jsTask selector:@selector(execute) object:nil];
+						
+						NSMutableArray<NSInvocationOperation *> * q = dependenciesDict[@(item.id_)];
+						if (!q) {
+							q = [NSMutableArray new];
+							dependenciesDict[@(item.id_)] = q;
 						}
-						//TODO: end remove lines
+						
+						if (q.count > 0) {
+							[op addDependency:q[q.count - 1]];
+						}
+						
+						[q addObject:op];
+						[self.jsOperationQueue addOperation:op];
 					}
 				}
 			} @catch(NSException *exception) {
@@ -241,6 +274,62 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		[self.dashboard.lastReceivedMsgs removeObjectForKey:msg.topic];
 	}
 }
+
+- (void)onJavaScriptTaskFinished:(NSNotification *)notif {
+	uint64_t version = [[notif.userInfo helNumberForKey:@"version"] unsignedLongLongValue];
+	DashGroupItem *groupItem;
+	
+	/* still correct dashboard ? then deliver result */
+	if (version > 0 && version == self.dashboard.localVersion) {
+		uint32_t oid = [[notif.userInfo helNumberForKey:@"id"] unsignedIntValue];
+		
+		/* find dash object */
+		for(int i = 0; i < self.dashboard.groups.count; i++) {
+			groupItem = self.dashboard.groups[i];
+			NSArray<DashItem *> *items = self.dashboard.groupItems[[NSNumber numberWithUnsignedLong:groupItem.id_]];
+			DashItem *item;
+			for(int j = 0; j < items.count; j++) {
+				item = items[j];
+				if (item.id_ == oid) {
+					//TODO: set data
+					item.content = [[NSString alloc]initWithData:[notif.userInfo helDataForKey:@"result"] encoding:NSUTF8StringEncoding];
+					NSMutableArray * indexPaths = [NSMutableArray new];
+					NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
+					[indexPaths addObject:loc];
+					/* notify dash object about update */
+					[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+					break;
+				}
+			}
+		}
+	}
+}
+
+/* cancel java script tasks, which are in queue for long time*/
+-(void)checkJSTasks {
+	
+	NSMutableIndexSet *discardedItems = [NSMutableIndexSet indexSet];
+	NSInvocationOperation *operation;
+	DashJavaScriptTask *task;
+	NSTimeInterval timeInterval;
+	NSDate *now = [NSDate new];
+	
+	for(int i = 0; i < self.jsTaskQueue.count; i++) {
+		operation = self.jsTaskQueue[i];
+		if (operation.isFinished || operation.isCancelled) {
+			[discardedItems addIndex:i];
+		} else {
+			task = operation.invocation.target;
+			timeInterval = [now timeIntervalSinceDate:task.timestamp];
+			if (timeInterval > DASH_MAX_JS_TASKS_QUEUE_TIME) {
+				[operation cancel];
+				[discardedItems addIndex:i];
+			}
+		}
+	}
+	[self.jsTaskQueue removeObjectsAtIndexes:discardedItems];
+}
+
 
 - (void)showErrorMessage:(NSString *)msg {
 	if ([Utils isEmpty:msg]) {
