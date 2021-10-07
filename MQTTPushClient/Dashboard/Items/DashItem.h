@@ -23,9 +23,10 @@
 @property NSString *label;
 @property BOOL history;
 
-@property NSString *content;
+@property NSString *content; // message content or result of filter script
 @property NSString* error1; // filter script errors (input)
 @property NSString* error2; // publish errors (outptut)
+@property NSDictionary* userData; // javascript user data
 
 - (instancetype)initWithJSON:(NSDictionary *)dictObj;
 

@@ -36,21 +36,18 @@
 	NSDictionary *arg1 = @{@"raw":raw, @"text":[Message msgFromData:self.message.content], @"topic":self.message.topic, @"receivedDate":self.message.timestamp};
 	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 	
-	/* init view parameter on main thread */
-	
-	DashViewParameter *viewParameter = [[DashViewParameter alloc] initWithItem:self.item context:filter.context account:self.account];
+	DashViewParameter *viewParameter = [DashViewParameter viewParameterWithItem:self.item context:filter.context account:self.account];
 	
 	NSString *result = [filter filterMsg:arg1 acc:arg2 viewParameter:viewParameter error:&error];
 	if (result) {
 		self.item.content = result;
-	} else {
-		/* TIMEOUT */
-		//TODO: check if error description holds timeout info
 	}
+	
 	if (error) {
 		/* on error set message content */
 		self.item.content = [DashMessage msgFromData:self.message.content];
 		self.item.error1 = [Utils isEmpty:[error localizedDescription]] ? @"n/a" : [error localizedDescription];
+		NSLog(@"Javasciprt error: %@", self.item.error1);
 	} else {
 		self.item.error1 = nil;
 	}

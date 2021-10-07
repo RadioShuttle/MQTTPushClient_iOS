@@ -12,9 +12,23 @@
 @interface DashViewParameter : ViewParameter
 
 -(instancetype)initWithItem:(DashItem *)item context:(JSContext *)context account:(Account *)account;
++(instancetype)viewParameterWithItem:(DashItem *)item context:(JSContext *)context account:(Account *)account;
 
 @property DashItem *dashItem;
 @property JSContext *jsContext;
 @property Account *account;
 
 @end
+
+@interface DashTextItemViewParameter : DashViewParameter
+@end
+
+@interface DashSwitchItemViewParameter : DashViewParameter
+@end
+
+@interface DashSliderItemViewParameter : DashViewParameter
+@end
+
+@interface DashOptionItemViewParameter : DashViewParameter
+@end
+
