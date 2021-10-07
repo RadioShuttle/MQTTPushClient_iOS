@@ -4,12 +4,10 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-#import <JavaScriptCore/JavaScriptCore.h>
 #import "JavaScriptFilter.h"
 
 @interface JavaScriptFilter()
 
-@property JSContext *context;
 @property(copy) NSString *script;
 
 @end

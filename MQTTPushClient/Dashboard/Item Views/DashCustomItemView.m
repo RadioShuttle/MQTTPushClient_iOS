@@ -92,11 +92,9 @@
 		[self showProgressBar];
 		
 		/* background color */
-		int64_t color;
-		if (item.background == DASH_COLOR_OS_DEFAULT) {
+		int64_t color = item.background;
+		if (color == DASH_COLOR_OS_DEFAULT) {
 			color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
-		} else {
-			color = item.background;
 		}
 		self.webView.opaque = NO;
 		[self setBackgroundColor:UIColorFromRGB(color)];

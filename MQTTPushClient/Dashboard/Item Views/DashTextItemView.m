@@ -109,18 +109,21 @@
 	DashTextItem *textItem = (DashTextItem *) item;
 	
 	/* set value text label */
-	if (!textItem.content) {
+	NSString *content = textItem.content;
+	
+	if (!content) {
 		[self.valueLabel setText:@""];
 	} else {
-		[self.valueLabel setText:textItem.content];
+		[self.valueLabel setText:content];
 	}
 	
 	/* text color */
-	if (textItem.textcolor == DASH_COLOR_OS_DEFAULT) {
+	int64_t textcolor = textItem.textcolor;
+	if (textcolor == DASH_COLOR_OS_DEFAULT) {
 		UIColor *defaultLabelColor = [UILabel new].textColor;
 		[self.valueLabel setTextColor:defaultLabelColor];
 	} else {
-		[self.valueLabel setTextColor:UIColorFromRGB(textItem.textcolor)];
+		[self.valueLabel setTextColor:UIColorFromRGB(textcolor)];
 	}
 	
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];

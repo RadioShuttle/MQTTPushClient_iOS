@@ -39,19 +39,19 @@ static NSString * const reuseIDoptionItem = @"optionItemCell";
 static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
+	[super viewDidLoad];
 	self.preferences = [Dashboard setPreferredViewDashboard:YES forAccount:self.account];
-
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
+	
+	// Uncomment the following line to preserve selection between presentations
+	// self.clearsSelectionOnViewWillAppear = NO;
+	
 	/* calc label height and pass it to layout object. IMPORTANT: specify correct font and size (see storyboard) */
 	NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:@"Dummy" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0]}];
 	CGRect cellRect = [labelString boundingRectWithSize:CGSizeMake(100.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 	// sets height to DASH_ZOOM_X + cellRect.size.height
 	self.dashCollectionFlowLayout.labelHeight = cellRect.size.height;
 	self.dashCollectionFlowLayout.zoomLevel = [[self.preferences helNumberForKey:@"zoom_level"] intValue];
-
+	
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 	
@@ -83,7 +83,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 #pragma mark - Timer
 - (void)viewWillAppear:(BOOL)animated {
 	[super viewWillAppear:animated];
-
+	
 	/* if timer is active, all observers are still running. this happens if a detail view was shown previously */
 	if (!self.timer) {
 		[self startTimer];
@@ -150,7 +150,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				/* deliver new messages */
 				[self deliverMessages:msgsSinceDate seqNo:msgsSinceSeqNo notify:YES];
 			}
-
+			
 		}
 		/* show error/info message or reset status bar*/
 		[self showErrorMessage:msg];
@@ -246,7 +246,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 						}
 					} else {
 						/* trigger java script execution */
-						DashJavaScriptTask *jsTask = [[DashJavaScriptTask alloc]initWithItem:item message:msg version:self.dashboard.localVersion];
+						DashJavaScriptTask *jsTask = [[DashJavaScriptTask alloc]initWithItem:item message:msg version:self.dashboard.localVersion account:self.dashboard.account];
 						
 						NSInvocationOperation *op = [[NSInvocationOperation alloc]initWithTarget:jsTask selector:@selector(execute) object:nil];
 						
@@ -257,7 +257,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 						}
 						
 						if (q.count > 0) {
-							[op addDependency:q[q.count - 1]];
+							[op addDependency:q.lastObject];
 						}
 						
 						[q addObject:op];
@@ -277,30 +277,16 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (void)onJavaScriptTaskFinished:(NSNotification *)notif {
 	uint64_t version = [[notif.userInfo helNumberForKey:@"version"] unsignedLongLongValue];
-	DashGroupItem *groupItem;
 	
 	/* still correct dashboard ? then deliver result */
 	if (version > 0 && version == self.dashboard.localVersion) {
 		uint32_t oid = [[notif.userInfo helNumberForKey:@"id"] unsignedIntValue];
 		
-		/* find dash object */
-		for(int i = 0; i < self.dashboard.groups.count; i++) {
-			groupItem = self.dashboard.groups[i];
-			NSArray<DashItem *> *items = self.dashboard.groupItems[[NSNumber numberWithUnsignedLong:groupItem.id_]];
-			DashItem *item;
-			for(int j = 0; j < items.count; j++) {
-				item = items[j];
-				if (item.id_ == oid) {
-					//TODO: set data
-					item.content = [[NSString alloc]initWithData:[notif.userInfo helDataForKey:@"result"] encoding:NSUTF8StringEncoding];
-					NSMutableArray * indexPaths = [NSMutableArray new];
-					NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
-					[indexPaths addObject:loc];
-					/* notify dash object about update */
-					[self.collectionView reloadItemsAtIndexPaths:indexPaths];
-					break;
-				}
-			}
+		NSMutableArray * indexPaths = [NSMutableArray new];
+		if ([self.dashboard getItemForID:oid indexPathArr:indexPaths]) {
+			/* notify dash object about update */
+			[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+			//TODO: update detail view dialog
 		}
 	}
 }
@@ -390,7 +376,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		DashGroupItem *group = self.dashboard.groups[section];
 		n = (int) [[self.dashboard.groupItems objectForKey:[NSNumber numberWithUnsignedInt:group.id_]] count];
 	}
-    return n;
+	return n;
 }
 
 #pragma mark <UICollectionViewDelegate>
@@ -400,7 +386,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
 	NSNumber *key = [NSNumber numberWithUnsignedInt:group.id_];
 	DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
-
+	
 	CGRect sourceRect = [collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
 	
 	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
@@ -429,7 +415,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		//TODO: consider not to recycle webviews
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
 	} else if ([DashTextItem class] == [item class]) {
-		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];			
+		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];
 	} else if ([DashSwitchItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDswitchItem forIndexPath:indexPath];
 	} else if ([DashSliderItem class] == [item class]) {
@@ -446,7 +432,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
 	DashGroupItemViewCell *v = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIGroupItem forIndexPath:indexPath];
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
-
+	
 	// layout info needed in layout pass (only for header)
 	[v onBind:group layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo];
 	return v;
@@ -456,32 +442,32 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 }
 
 /*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
+ // Uncomment this method to specify if the specified item should be highlighted during tracking
+ - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
+ return YES;
+ }
+ */
 
 /*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
+ // Uncomment this method to specify if the specified item should be selected
+ - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+ return YES;
+ }
+ */
 
 /*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
+ // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
+ - (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
+ return NO;
+ }
+ 
+ - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+ return NO;
+ }
+ 
+ - (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
+ 
+ }
+ */
 
 @end

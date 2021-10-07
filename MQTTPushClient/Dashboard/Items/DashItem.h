@@ -24,6 +24,8 @@
 @property BOOL history;
 
 @property NSString *content;
+@property NSString* error1; // filter script errors (input)
+@property NSString* error2; // publish errors (outptut)
 
 - (instancetype)initWithJSON:(NSDictionary *)dictObj;
 

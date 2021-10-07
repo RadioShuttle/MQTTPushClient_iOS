@@ -22,6 +22,7 @@
 		21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAC26F4A3E300737875 /* DashSliderItem.m */; };
 		21BADEA9270C89FF00B2E59F /* DashJavaScriptTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */; };
 		21CC56EB26FDF9DF00E9E7D6 /* MqttUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */; };
+		21D92693270DB1300062FAAE /* DashViewParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D92692270DB1300062FAAE /* DashViewParameter.m */; };
 		21EC25B926F9D5BB003CD109 /* DashCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25B726F9D5BB003CD109 /* DashCollectionFlowLayout.m */; };
 		21EC25D526F9D779003CD109 /* DashSwitchItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25BD26F9D778003CD109 /* DashSwitchItemView.m */; };
 		21EC25D626F9D779003CD109 /* DashTextItemViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25BE26F9D778003CD109 /* DashTextItemViewCell.m */; };
@@ -245,6 +246,8 @@
 		21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashJavaScriptTask.m; sourceTree = "<group>"; };
 		21CC56E926FDF9DF00E9E7D6 /* MqttUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MqttUtils.h; sourceTree = "<group>"; };
 		21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MqttUtils.m; sourceTree = "<group>"; };
+		21D92691270DB1300062FAAE /* DashViewParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashViewParameter.h; sourceTree = "<group>"; };
+		21D92692270DB1300062FAAE /* DashViewParameter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashViewParameter.m; sourceTree = "<group>"; };
 		21EC25B726F9D5BB003CD109 /* DashCollectionFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashCollectionFlowLayout.m; sourceTree = "<group>"; };
 		21EC25B826F9D5BB003CD109 /* DashCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashCollectionFlowLayout.h; sourceTree = "<group>"; };
 		21EC25BB26F9D778003CD109 /* DashTextItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashTextItemView.h; sourceTree = "<group>"; };
@@ -544,6 +547,8 @@
 				21EF4EC426F1DEE40019C488 /* DashUtils.m */,
 				21BADEA7270C89FF00B2E59F /* DashJavaScriptTask.h */,
 				21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */,
+				21D92691270DB1300062FAAE /* DashViewParameter.h */,
+				21D92692270DB1300062FAAE /* DashViewParameter.m */,
 				2131925826EF6BA100E65AF0 /* Items */,
 				21EC25BA26F9D6FA003CD109 /* Item Views */,
 				21F32043270AEE8400C89DCF /* Images SVG */,
@@ -1151,6 +1156,7 @@
 				2131927E26EF6E0700E65AF0 /* DashCustomItem.m in Sources */,
 				84B49954217F5B720016F9CB /* CDMessage+CoreDataProperties.m in Sources */,
 				2AC9308B214BEECD00B603B4 /* MessageTableViewCell.m in Sources */,
+				21D92693270DB1300062FAAE /* DashViewParameter.m in Sources */,
 				21FCE9692701D01B00DBCA42 /* DashCircleBackroundView.m in Sources */,
 				2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */,
 				84F4B47A2232AFB800197005 /* ScriptListTableViewController.m in Sources */,

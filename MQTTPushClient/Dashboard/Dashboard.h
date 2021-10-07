@@ -34,6 +34,9 @@
 /* save cached messages to have a local copy of latest messages */
 -(BOOL)saveMessages;
 
+/* returns dashitem for the given item id and returns item position in indexPathArr  */
+-(DashItem *)getItemForID:(uint32_t) itemID indexPathArr:(NSMutableArray *)indexPathArr;
+
 /* last received message date and sequence no */
 @property NSDate *lastReceivedMsgDate;
 @property int lastReceivedMsgSeqNo;

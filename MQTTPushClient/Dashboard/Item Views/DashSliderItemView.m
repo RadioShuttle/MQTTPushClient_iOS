@@ -101,12 +101,14 @@
 	}
 	
 	[self.valueLabel setText:val];
+	
+	int64_t color = sliderItem.progresscolor;
 	[self.progressView setProgress:progress / 100.0f];
-	if (sliderItem.progresscolor == DASH_COLOR_OS_DEFAULT) {
+	if (color == DASH_COLOR_OS_DEFAULT) {
 		progressTintColor = nil;
 		trackTintColor = nil;
 	} else {
-		progressTintColor = UIColorFromRGB(sliderItem.progresscolor);
+		progressTintColor = UIColorFromRGB(color);
 		CGFloat r, g, b, a;
 		[progressTintColor getRed:&r green:&g blue:&b alpha:&a];
 		trackTintColor = [UIColor colorWithRed:r green:g blue:b alpha:.3];
@@ -115,11 +117,12 @@
 	[self.progressView setTrackTintColor:trackTintColor];
 
 	/* text color */
-	if (sliderItem.textcolor == DASH_COLOR_OS_DEFAULT) {
+	color = sliderItem.textcolor;
+	if (color == DASH_COLOR_OS_DEFAULT) {
 		UIColor *defaultLabelColor = [UILabel new].textColor;
 		[self.valueLabel setTextColor:defaultLabelColor];
 	} else {
-		[self.valueLabel setTextColor:UIColorFromRGB(sliderItem.textcolor)];
+		[self.valueLabel setTextColor:UIColorFromRGB(color)];
 	}
 	
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];

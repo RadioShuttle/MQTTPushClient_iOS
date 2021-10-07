@@ -12,13 +12,12 @@
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
 	
-	int64_t color;
+	int64_t color = item.background;
 	/* background color */
-	if (item.background == DASH_COLOR_OS_DEFAULT) {
+	if (color == DASH_COLOR_OS_DEFAULT) {
 		color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
-	} else {
-		color = item.background;
 	}
+	
 	[self setBackgroundColor:UIColorFromRGB(color)];
 	
 	/* background image (TODO: image caching) */

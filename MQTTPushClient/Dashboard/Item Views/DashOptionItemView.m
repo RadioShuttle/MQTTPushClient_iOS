@@ -125,11 +125,12 @@
 	}
 	
 	/* text color */
-	if (optionItem.textcolor == DASH_COLOR_OS_DEFAULT) {
+	int64_t color = optionItem.textcolor;
+	if (color == DASH_COLOR_OS_DEFAULT) {
 		UIColor *defaultLabelColor = [UILabel new].textColor;
 		[self.valueLabel setTextColor:defaultLabelColor];
 	} else {
-		[self.valueLabel setTextColor:UIColorFromRGB(optionItem.textcolor)];
+		[self.valueLabel setTextColor:UIColorFromRGB(color)];
 	}
 	
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];

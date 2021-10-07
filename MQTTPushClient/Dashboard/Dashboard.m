@@ -234,6 +234,29 @@
 	return YES;
 }
 
+-(DashItem *)getItemForID:(uint32_t) itemID indexPathArr:(NSMutableArray *)indexPathArr {
+	DashItem *foundItem = nil;
+	DashGroupItem *groupItem;
+	DashItem *item;
+
+	/* find dash object */
+	for(int i = 0; i < self.groups.count; i++) {
+		groupItem = self.groups[i];
+		NSArray<DashItem *> *items = self.groupItems[@(groupItem.id_)];
+		for(int j = 0; j < items.count; j++) {
+			item = items[j];
+			if (item.id_ == itemID) {
+				if (indexPathArr) {
+					NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
+					[indexPathArr addObject:loc];
+				}
+				foundItem = item;
+				break;
+			}
+		}
+	}
+	return foundItem;
+}
 
 #pragma mark - Dashboard view preferrences
 

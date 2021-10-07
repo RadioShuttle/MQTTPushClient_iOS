@@ -29,10 +29,11 @@
 	}
 	
 	UIColor *textColor;
-	if (item.textcolor == DASH_COLOR_OS_DEFAULT) {
+	int64_t color = item.textcolor;
+	if (color == DASH_COLOR_OS_DEFAULT) {
 		textColor = [UILabel new].textColor;
 	} else {
-		textColor = UIColorFromRGB(item.textcolor);
+		textColor = UIColorFromRGB(color);
 	}
 	
 	[self.groupViewContainer setBackgroundColor:UIColorFromRGB(bg)];

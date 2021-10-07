@@ -6,10 +6,15 @@
 
 #import "DashCollectionViewCell.h"
 #import "DashConsts.h"
+#import "Utils.h"
 
 @implementation DashCollectionViewCell
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
+	BOOL error1 = ![Utils isEmpty:item.error1];
+	BOOL error2 = ![Utils isEmpty:item.error2];
+
+	[self showErrorInfo:error1 error2:error2];
 }
 
 /* Displays one or two error images, indicating java script errors */
