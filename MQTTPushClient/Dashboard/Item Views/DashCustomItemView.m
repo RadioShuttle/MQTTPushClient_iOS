@@ -77,7 +77,9 @@
 		load = YES;
 	} else if (item == self.dashCustomItem) {
 		/* view has not been reused for a diffrent custom item */
+		// NSLog(@"DashCustomItemView has not beeing reused.");
 	} else {
+		NSLog(@"DashCustomItemView used for diffrent item");
 		/* view has been reused */
 		//TODO: change scripts?
 		/*

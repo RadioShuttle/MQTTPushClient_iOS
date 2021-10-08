@@ -6,9 +6,11 @@
 
 @import Foundation;
 #import "DashItem.h"
+#import <WebKit/WebKit.h>
 
 @interface DashCustomItem : DashItem
 @property NSString *html;
 @property NSArray<NSString *> *parameter;
 
+@property NSString *cellReuseID;
 @end
