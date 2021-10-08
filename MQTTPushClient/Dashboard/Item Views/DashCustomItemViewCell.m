@@ -38,6 +38,9 @@
 	label.translatesAutoresizingMaskIntoConstraints = NO;
 	[self.contentView addSubview:label];
 
+	label.textAlignment = NSTextAlignmentCenter;
+	label.lineBreakMode = NSLineBreakByTruncatingTail;
+	
 	[label.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
 	[label.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
 	[label.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
