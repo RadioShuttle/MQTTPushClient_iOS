@@ -40,8 +40,20 @@
 @end
 
 @interface  DashViewParameter () <DashJSViewExports>
-	
 @end
+
+@interface DashTextItemViewParameter : DashViewParameter
+@end
+
+@interface DashSwitchItemViewParameter : DashViewParameter
+@end
+
+@interface DashSliderItemViewParameter : DashViewParameter
+@end
+
+@interface DashOptionItemViewParameter : DashViewParameter
+@end
+
 
 @implementation DashViewParameter
 
