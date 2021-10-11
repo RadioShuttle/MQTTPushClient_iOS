@@ -267,7 +267,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				if (![Utils isEmpty:item.topic_s] && [MqttUtils topicIsMatched:item.topic_s topic:msg.topic] ) {
 					matches = YES;
 					if ([Utils isEmpty:item.script_f]) {
-						//TODO: set content
+						if ([item class] == [DashCustomItem class]) {
+							((DashCustomItem *) item).message = msg;
+						}
 						item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
 						if (indexPathDict) {
 							NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];

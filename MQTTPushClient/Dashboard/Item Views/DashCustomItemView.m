@@ -67,22 +67,19 @@
 }
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	Boolean load = NO;
+	BOOL load = NO;
 
 	if (!self.dashCustomItem) { // first call?
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
 		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
-		NSLog(@"Custom Item View (including webview): created");  //TODO: remove later
 		load = YES;
 	} else if (item == self.dashCustomItem) {
-		/* view has not been reused for a diffrent custom item */
-		NSLog(@"DashCustomItemView has not beeing reused."); //TODO: remove later
 		if (self.contentLoaded) {
-			//TODO: call js onMqttMessage
+			/* message update */
+			[self.webView evaluateJavaScript:[self buildOnMqttMessageCode] completionHandler:nil];
 		}
-		
 	} else {
 		NSLog(@"DashCustomItemView used for diffrent item"); //TODO: remove later
 		//TODO: test if recycling works as intendent
@@ -158,9 +155,53 @@
 	[code appendString:@"MQTT.view"];
 	[code appendString:@"); "];
 	
-	//TODO: append onMqttMessage call, if message data exists
+	if (self.dashCustomItem.message) {
+		[code appendString:[self buildOnMqttMessageCode]];
+	}
 
 	[self.webView evaluateJavaScript:code completionHandler:nil];
+}
+
+-(void)injectNewMessageCode {
+	[self.webView evaluateJavaScript:[self buildOnMqttMessageCode] completionHandler:nil];
+}
+
+-(NSString *)buildOnMqttMessageCode {
+	NSMutableString *code = [NSMutableString new];
+	
+	if (self.dashCustomItem.message) {
+		NSString *enc;
+		[code appendString:@"if (typeof window['onMqttMessage'] === 'function') _onMqttMessage("];
+
+		/* message date epoche 1970 ms */
+		NSTimeInterval when = [self.dashCustomItem.message.timestamp timeIntervalSince1970] * 1000.0L;
+		[code appendFormat:@"%lld", (uint64_t) when];
+		[code appendString:@", "];
+
+		/* topic */
+		[code appendString:@"decodeURIComponent('"];
+		enc = [self.dashCustomItem.topic_s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		[code appendString:enc];
+		[code appendString:@"'),"];
+		
+		/* message str */
+		[code appendString:@"decodeURIComponent('"];
+		enc = [DashMessage msgFromData:self.dashCustomItem.message.content];
+		enc = [enc stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		[code appendString:enc];
+		[code appendString:@"'),"];
+
+		/* raw */
+		[code appendString:@"decodeURIComponent('"];
+		enc = @""; //TODO: convert message.content to hexstring
+		enc = [enc stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		[code appendString:enc];
+		[code appendString:@"')"];
+		
+		[code appendString:@");"];
+	}
+
+	return code;
 }
 
 -(void)dealloc {

@@ -5,12 +5,16 @@
  */
 
 @import Foundation;
-#import "DashItem.h"
 #import <WebKit/WebKit.h>
+#import "DashItem.h"
+#import "DashMessage.h"
 
 @interface DashCustomItem : DashItem
 @property NSString *html;
 @property NSArray<NSString *> *parameter;
+
+/* last message received matching dash item's topic */
+@property DashMessage *message;
 
 @property NSString *cellReuseID;
 @end
