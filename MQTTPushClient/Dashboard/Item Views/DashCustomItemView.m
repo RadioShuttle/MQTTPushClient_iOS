@@ -128,13 +128,16 @@
 		[itemDataCode appendString:@"MQTT.acc = new Object();"];
 		[itemDataCode appendString:@"MQTT.acc.user = decodeURIComponent('"];
 		enc = [self.account.mqttUser stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		[itemDataCode appendString:enc];
 		[itemDataCode appendString:@"');"];
 		[itemDataCode appendString:@"MQTT.acc.mqttServer = decodeURIComponent('"];
 		enc = [self.account.mqttHost stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+		[itemDataCode appendString:enc];
 		[itemDataCode appendString:@"');"];
 		[itemDataCode appendString:@"MQTT.acc.pushServer = decodeURIComponent('"];
 		//TODO: context.account.pushServerID != pushserver address
 		enc = [self.account.pushServerID stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+		[itemDataCode appendString:enc];
 		[itemDataCode appendString:@"');"];
 		[itemDataCode appendString:@"MQTT.view.isDialog = function() { return "];
 		[itemDataCode appendString:(self.userInput ? @"true" : @"false")];
@@ -147,7 +150,7 @@
 	}
 }
 
--(void)injectInitSciprt {
+-(void)injectInitCode {
 	NSMutableString *code = [NSMutableString new];
 	[code appendString:@"if (typeof window['onMqttInit'] === 'function') onMqttInit("];
 	[code appendString:@"MQTT.acc"];
@@ -223,7 +226,7 @@
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
 	[self.dashView hideProgressBar];
 	self.dashView.contentLoaded = YES;
-	[self.dashView injectInitSciprt];
+	[self.dashView injectInitCode];
 }
 
 /* script message handler */
