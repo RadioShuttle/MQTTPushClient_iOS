@@ -15,12 +15,12 @@
 		2131928126EF6E0700E65AF0 /* DashItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927926EF6E0600E65AF0 /* DashItem.m */; };
 		2131928226EF6E0700E65AF0 /* DashOptionItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927A26EF6E0600E65AF0 /* DashOptionItem.m */; };
 		2131928626EF8BF000E65AF0 /* Dashboard.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131928526EF8BF000E65AF0 /* Dashboard.m */; };
+		2160A6A427142FFA00CA7468 /* javascript_webview.js in Resources */ = {isa = PBXBuildFile; fileRef = 2160A6A327142FFA00CA7468 /* javascript_webview.js */; };
 		2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171417D26E752CC00BD7969 /* SwitchViewSegue.m */; };
 		2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171418026E7573100BD7969 /* DashCollectionViewController.m */; };
 		21787D522703611A0004FF9D /* DashItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21787D512703611A0004FF9D /* DashItemView.m */; };
 		21ACFBAB26F4996E00737875 /* DashGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAA26F4996E00737875 /* DashGroupItem.m */; };
 		21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAC26F4A3E300737875 /* DashSliderItem.m */; };
-		21AE7DDB271070840008A893 /* error_handler.js in Resources */ = {isa = PBXBuildFile; fileRef = 21AE7DDA271070840008A893 /* error_handler.js */; };
 		21BADEA9270C89FF00B2E59F /* DashJavaScriptTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */; };
 		21CC56EB26FDF9DF00E9E7D6 /* MqttUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */; };
 		21D92693270DB1300062FAAE /* DashViewParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D92692270DB1300062FAAE /* DashViewParameter.m */; };
@@ -233,6 +233,7 @@
 		2131928326EF730C00E65AF0 /* DashConsts.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashConsts.h; sourceTree = "<group>"; };
 		2131928426EF8BF000E65AF0 /* Dashboard.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Dashboard.h; sourceTree = "<group>"; };
 		2131928526EF8BF000E65AF0 /* Dashboard.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Dashboard.m; sourceTree = "<group>"; };
+		2160A6A327142FFA00CA7468 /* javascript_webview.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = javascript_webview.js; sourceTree = "<group>"; };
 		2171417C26E752CC00BD7969 /* SwitchViewSegue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwitchViewSegue.h; sourceTree = "<group>"; };
 		2171417D26E752CC00BD7969 /* SwitchViewSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SwitchViewSegue.m; sourceTree = "<group>"; };
 		2171417F26E7573100BD7969 /* DashCollectionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCollectionViewController.h; sourceTree = "<group>"; };
@@ -243,7 +244,6 @@
 		21ACFBAA26F4996E00737875 /* DashGroupItem.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashGroupItem.m; sourceTree = "<group>"; };
 		21ACFBAC26F4A3E300737875 /* DashSliderItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashSliderItem.m; sourceTree = "<group>"; };
 		21ACFBAD26F4A3E300737875 /* DashSliderItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashSliderItem.h; sourceTree = "<group>"; };
-		21AE7DDA271070840008A893 /* error_handler.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = error_handler.js; sourceTree = "<group>"; };
 		21BADEA7270C89FF00B2E59F /* DashJavaScriptTask.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashJavaScriptTask.h; sourceTree = "<group>"; };
 		21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashJavaScriptTask.m; sourceTree = "<group>"; };
 		21CC56E926FDF9DF00E9E7D6 /* MqttUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MqttUtils.h; sourceTree = "<group>"; };
@@ -563,7 +563,7 @@
 		21AE7DDC27107DB80008A893 /* Webview Resources */ = {
 			isa = PBXGroup;
 			children = (
-				21AE7DDA271070840008A893 /* error_handler.js */,
+				2160A6A327142FFA00CA7468 /* javascript_webview.js */,
 			);
 			path = "Webview Resources";
 			sourceTree = "<group>";
@@ -1024,6 +1024,7 @@
 				21F32094270AEEC400C89DCF /* replay.svg in Resources */,
 				21F320A4270AEEC400C89DCF /* alarm.svg in Resources */,
 				21F320C6270AEEC400C89DCF /* notifications_active.svg in Resources */,
+				2160A6A427142FFA00CA7468 /* javascript_webview.js in Resources */,
 				21F320B4270AEEC400C89DCF /* forward_5.svg in Resources */,
 				21F3209E270AEEC400C89DCF /* wifi.svg in Resources */,
 				21F320A1270AEEC400C89DCF /* volume_mute.svg in Resources */,
@@ -1057,7 +1058,6 @@
 				21F32095270AEEC400C89DCF /* toggle_off.svg in Resources */,
 				21F320BA270AEEC400C89DCF /* error.svg in Resources */,
 				21F320CD270AEEC400C89DCF /* lock.svg in Resources */,
-				21AE7DDB271070840008A893 /* error_handler.js in Resources */,
 				84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */,
 				21F320D7270AEEC400C89DCF /* ac_unit.svg in Resources */,
 				84F4B4712232955F00197005 /* ExampleSplit.js in Resources */,

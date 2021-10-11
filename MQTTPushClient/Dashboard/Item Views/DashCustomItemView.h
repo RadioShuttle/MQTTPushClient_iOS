@@ -15,8 +15,13 @@
 @property UIActivityIndicatorView *progressBar;
 /* indicates if webeview was already loaded (should be updated before calling onBind) */
 @property BOOL loaded;
+/* indicates if webview.load was called, and document has been loaded */
+@property BOOL contentLoaded;
+/* true when used in detail dialog view */
+@property BOOL userInput;
 @property DashCustomItem *dashCustomItem;
 @property DashWebViewHandler *handler;
+@property Account *account;
 
 -(void)showProgressBar;
 -(void)hideProgressBar;

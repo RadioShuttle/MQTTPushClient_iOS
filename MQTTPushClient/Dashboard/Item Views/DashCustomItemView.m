@@ -72,23 +72,26 @@
 	if (!self.dashCustomItem) { // first call?
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
+		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
-		NSLog(@"Custom Item View (including webview): created");
+		NSLog(@"Custom Item View (including webview): created");  //TODO: remove later
 		load = YES;
 	} else if (item == self.dashCustomItem) {
 		/* view has not been reused for a diffrent custom item */
-		// NSLog(@"DashCustomItemView has not beeing reused.");
+		NSLog(@"DashCustomItemView has not beeing reused."); //TODO: remove later
+		if (self.contentLoaded) {
+			//TODO: call js onMqttMessage
+		}
+		
 	} else {
-		NSLog(@"DashCustomItemView used for diffrent item");
+		NSLog(@"DashCustomItemView used for diffrent item"); //TODO: remove later
+		//TODO: test if recycling works as intendent
 		/* view has been reused */
-		//TODO: change scripts?
-		/*
-		[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"log"];
-		[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"error"];
 		[self.webView.configuration.userContentController removeAllUserScripts];
-		 */
+		self.contentLoaded = NO;
 		load = YES;
 	}
+	
 	self.dashCustomItem = (DashCustomItem *) item;
 	if (load) {
 		[self showProgressBar];
@@ -102,23 +105,59 @@
 		[self setBackgroundColor:UIColorFromRGB(color)];
 		[self.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
 		
-		/* add error function */
-		WKUserScript *errHandlerSkript = [[WKUserScript alloc] initWithSource:[[NSString alloc] initWithData:[[NSDataAsset alloc] initWithName:@"error_handler"].data encoding:NSUTF8StringEncoding] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-		[self.webView.configuration.userContentController addUserScript:errHandlerSkript];
+		/* add Dash library functions */
+		NSURL *dashLibURL = [[NSBundle mainBundle] URLForResource:@"javascript_webview" withExtension:@"js"];
+		NSString *dashLibStr = [NSString stringWithContentsOfURL:dashLibURL encoding:NSUTF8StringEncoding error:NULL];
+
+		WKUserScript *dashLibSkript = [[WKUserScript alloc] initWithSource:dashLibStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+		[self.webView.configuration.userContentController addUserScript:dashLibSkript];
+
+		NSURL *colorsScriptURL = [[NSBundle mainBundle] URLForResource:@"javascript_color" withExtension:@"js"];
+		NSString *colorScriptStr = [NSString stringWithContentsOfURL:colorsScriptURL encoding:NSUTF8StringEncoding error:NULL];
+
+		WKUserScript *colorsSkript = [[WKUserScript alloc] initWithSource:colorScriptStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+		[self.webView.configuration.userContentController addUserScript:colorsSkript];
+
+		/* build objects with item and account data */
+		//TODO: consider moving code block to method after test/impl.
+		NSString *enc;
+		NSMutableString *itemDataCode = [NSMutableString new];
+		[itemDataCode appendString:@"MQTT.view = new Object();"];
+		//TODO: add view properties
 		
-		/* add log function */
-		WKUserScript *logSkript = [[WKUserScript alloc] initWithSource:@"function log(t) {window.webkit.messageHandlers.log.postMessage(t);}" injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-		[self.webView.configuration.userContentController addUserScript:logSkript];
-		
-		/* call Dash-javascript init function: */
-		WKUserScript *initSkript = [[WKUserScript alloc] initWithSource:@"onMqttInit(); log('Clock app initialized!');" injectionTime:WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
-		[self.webView.configuration.userContentController addUserScript:initSkript];
+		[itemDataCode appendString:@"MQTT.acc = new Object();"];
+		[itemDataCode appendString:@"MQTT.acc.user = decodeURIComponent('"];
+		enc = [self.account.mqttUser stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		[itemDataCode appendString:@"');"];
+		[itemDataCode appendString:@"MQTT.acc.mqttServer = decodeURIComponent('"];
+		enc = [self.account.mqttHost stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+		[itemDataCode appendString:@"');"];
+		[itemDataCode appendString:@"MQTT.acc.pushServer = decodeURIComponent('"];
+		//TODO: context.account.pushServerID != pushserver address
+		enc = [self.account.pushServerID stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
+		[itemDataCode appendString:@"');"];
+		[itemDataCode appendString:@"MQTT.view.isDialog = function() { return "];
+		[itemDataCode appendString:(self.userInput ? @"true" : @"false")];
+		[itemDataCode appendString:@";}; "];
+
+		WKUserScript *itemDataSkript = [[WKUserScript alloc] initWithSource:itemDataCode injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+		[self.webView.configuration.userContentController addUserScript:itemDataSkript];
 
 		[self.webView loadHTMLString:self.dashCustomItem.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
-
-		/* when passing messages to custom view use: [webView evaluateJavaScript:@"onMqttMessage(...); " completionHandler:^(NSString *result, NSError *error) {}] */
-		/* When using [webView evaluateJavaScript ...] the document must have been fully loaded! This can be checked with via WKNavigationDelegate.didFinishNavigation callback */
 	}
+}
+
+-(void)injectInitSciprt {
+	NSMutableString *code = [NSMutableString new];
+	[code appendString:@"if (typeof window['onMqttInit'] === 'function') onMqttInit("];
+	[code appendString:@"MQTT.acc"];
+	[code appendString:@","];
+	[code appendString:@"MQTT.view"];
+	[code appendString:@"); "];
+	
+	//TODO: append onMqttMessage call, if message data exists
+
+	[self.webView evaluateJavaScript:code completionHandler:nil];
 }
 
 -(void)dealloc {
@@ -183,6 +222,8 @@
 
 - (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
 	[self.dashView hideProgressBar];
+	self.dashView.contentLoaded = YES;
+	[self.dashView injectInitSciprt];
 }
 
 /* script message handler */
