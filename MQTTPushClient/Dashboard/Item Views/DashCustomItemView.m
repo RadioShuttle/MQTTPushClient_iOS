@@ -162,10 +162,6 @@
 	[self.webView evaluateJavaScript:code completionHandler:nil];
 }
 
--(void)injectNewMessageCode {
-	[self.webView evaluateJavaScript:[self buildOnMqttMessageCode] completionHandler:nil];
-}
-
 -(NSString *)buildOnMqttMessageCode {
 	NSMutableString *code = [NSMutableString new];
 	
@@ -192,12 +188,10 @@
 		[code appendString:@"'),"];
 
 		/* raw */
-		[code appendString:@"decodeURIComponent('"];
+		[code appendString:@"'"];
 		enc = @""; //TODO: convert message.content to hexstring
-		enc = [enc stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 		[code appendString:enc];
-		[code appendString:@"')"];
-		
+		[code appendString:@"'"];
 		[code appendString:@");"];
 	}
 
