@@ -121,6 +121,11 @@
 	}
 }
 
+-(void)dealloc {
+	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"error"];
+	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"log"];
+}
+
 @end
 
 @implementation DashWebViewHandler
