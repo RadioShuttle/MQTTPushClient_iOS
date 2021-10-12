@@ -21,7 +21,7 @@ if (typeof MQTT === 'undefined') {
 
 MQTT.log = function(msg) {
 	window.webkit.messageHandlers.log.postMessage(msg);
-}
+};
 
 MQTT.buf2hex = function (buffer) {
 	var byteArray = new Uint8Array(buffer);
@@ -77,3 +77,8 @@ function _onMqttMessage(receivedDateMillis, topic, payloadStr, payloadHEX) {
 	onMqttMessage(msg);
 }
 
+MQTT.view = new Object();
+MQTT.view._parameters = [];
+MQTT.view.getParameters = function() {
+	return MQTT.view._parameters;
+};

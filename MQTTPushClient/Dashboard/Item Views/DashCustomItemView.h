@@ -19,7 +19,7 @@
 @property BOOL contentLoaded;
 /* true when used in detail dialog view */
 @property BOOL userInput;
-@property DashCustomItem *dashCustomItem;
+@property DashCustomItem *item;
 @property DashWebViewHandler *handler;
 @property Account *account;
 

@@ -30,6 +30,7 @@
 
 -(void) initWebView {
     WKWebViewConfiguration *c = [[WKWebViewConfiguration alloc] init];
+	
 	self.handler = [[DashWebViewHandler alloc] initWithView:self];
 	[c setURLSchemeHandler:self.handler forURLScheme:@"pushapp"];
 
@@ -69,13 +70,13 @@
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
 	BOOL load = NO;
 
-	if (!self.dashCustomItem) { // first call?
+	if (!self.item) { // first call?
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
 		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
 		load = YES;
-	} else if (item == self.dashCustomItem) {
+	} else if (item == self.item) {
 		if (self.contentLoaded) {
 			/* message update */
 			[self.webView evaluateJavaScript:[self buildOnMqttMessageCode] completionHandler:nil];
@@ -89,7 +90,7 @@
 		load = YES;
 	}
 	
-	self.dashCustomItem = (DashCustomItem *) item;
+	self.item = (DashCustomItem *) item;
 	if (load) {
 		[self showProgressBar];
 		
@@ -116,34 +117,11 @@
 		[self.webView.configuration.userContentController addUserScript:colorsSkript];
 
 		/* build objects with item and account data */
-		//TODO: consider moving code block to method after test/impl.
-		NSString *enc;
-		NSMutableString *itemDataCode = [NSMutableString new];
-		[itemDataCode appendString:@"MQTT.view = new Object();"];
-		//TODO: add view properties
-		
-		[itemDataCode appendString:@"MQTT.acc = new Object();"];
-		[itemDataCode appendString:@"MQTT.acc.user = decodeURIComponent('"];
-		enc = [self.account.mqttUser stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-		[itemDataCode appendString:enc];
-		[itemDataCode appendString:@"');"];
-		[itemDataCode appendString:@"MQTT.acc.mqttServer = decodeURIComponent('"];
-		enc = [self.account.mqttHost stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-		[itemDataCode appendString:enc];
-		[itemDataCode appendString:@"');"];
-		[itemDataCode appendString:@"MQTT.acc.pushServer = decodeURIComponent('"];
-		//TODO: context.account.pushServerID != pushserver address
-		enc = [self.account.pushServerID stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLHostAllowedCharacterSet]];
-		[itemDataCode appendString:enc];
-		[itemDataCode appendString:@"');"];
-		[itemDataCode appendString:@"MQTT.view.isDialog = function() { return "];
-		[itemDataCode appendString:(self.userInput ? @"true" : @"false")];
-		[itemDataCode appendString:@";}; "];
-
+		NSString *itemDataCode = [self buildItemDataCode];
 		WKUserScript *itemDataSkript = [[WKUserScript alloc] initWithSource:itemDataCode injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:itemDataSkript];
 
-		[self.webView loadHTMLString:self.dashCustomItem.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
+		[self.webView loadHTMLString:self.item.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
 	}
 }
 
@@ -154,36 +132,69 @@
 	[code appendString:@","];
 	[code appendString:@"MQTT.view"];
 	[code appendString:@"); "];
-	
-	if (self.dashCustomItem.message) {
+
+	if (self.item.message) {
 		[code appendString:[self buildOnMqttMessageCode]];
 	}
 
 	[self.webView evaluateJavaScript:code completionHandler:nil];
 }
 
+-(NSString *)buildItemDataCode {
+	/* build objects with item and account data */
+	NSString *enc;
+	NSMutableString *itemDataCode = [NSMutableString new];
+	for(int i = 0; i < self.item.parameter.count; i++) {
+		[itemDataCode appendFormat:@"MQTT.view._parameters[%d", i];
+		[itemDataCode appendString:@"] = decodeURIComponent('"];
+		enc = [self urlEnc:self.item.parameter[i]];
+		NSLog(@"%@", enc);
+		[itemDataCode appendString:enc];
+		[itemDataCode appendString:@"'); "];
+	}
+	
+	[itemDataCode appendString:@"MQTT.acc = new Object();"];
+	[itemDataCode appendString:@"MQTT.acc.user = decodeURIComponent('"];
+	enc = [self urlEnc:self.account.mqttUser];
+	[itemDataCode appendString:enc];
+	[itemDataCode appendString:@"');"];
+	[itemDataCode appendString:@"MQTT.acc.mqttServer = decodeURIComponent('"];
+	enc = [self urlEnc:self.account.mqttHost];
+	[itemDataCode appendString:enc];
+	[itemDataCode appendString:@"');"];
+	[itemDataCode appendString:@"MQTT.acc.pushServer = decodeURIComponent('"];
+	enc = [self urlEnc:self.account.pushServerID];
+	[itemDataCode appendString:enc];
+	[itemDataCode appendString:@"');"];
+	[itemDataCode appendString:@"MQTT.view.isDialog = function() { return "];
+	[itemDataCode appendString:(self.userInput ? @"true" : @"false")];
+	[itemDataCode appendString:@";}; "];
+	
+	return itemDataCode;
+}
+
 -(NSString *)buildOnMqttMessageCode {
 	NSMutableString *code = [NSMutableString new];
 	
-	if (self.dashCustomItem.message) {
+	if (self.item.message) {
 		NSString *enc;
 		[code appendString:@"if (typeof window['onMqttMessage'] === 'function') _onMqttMessage("];
 
 		/* message date epoche 1970 ms */
-		NSTimeInterval when = [self.dashCustomItem.message.timestamp timeIntervalSince1970] * 1000.0L;
+		NSTimeInterval when = [self.item.message.timestamp timeIntervalSince1970] * 1000.0L;
 		[code appendFormat:@"%lld", (uint64_t) when];
 		[code appendString:@", "];
 
 		/* topic */
 		[code appendString:@"decodeURIComponent('"];
-		enc = [self.dashCustomItem.topic_s stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		enc = [self urlEnc:self.item.topic_s];
 		[code appendString:enc];
 		[code appendString:@"'),"];
 		
 		/* message str */
 		[code appendString:@"decodeURIComponent('"];
-		enc = [DashMessage msgFromData:self.dashCustomItem.message.content];
-		enc = [enc stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+		enc = [DashMessage msgFromData:self.item.message.content];
+		enc = [self urlEnc:enc];
 		[code appendString:enc];
 		[code appendString:@"'),"];
 
@@ -196,6 +207,10 @@
 	}
 
 	return code;
+}
+
+-(NSString *)urlEnc:(NSString *)v {
+	return [(v ? v : @"") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
 
 -(void)dealloc {
