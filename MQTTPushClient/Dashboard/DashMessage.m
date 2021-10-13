@@ -6,6 +6,7 @@
 
 #import "DashMessage.h"
 #import "NSDictionary+HelSafeAccessors.h"
+#import "NSData+Conversion.h"
 
 @implementation DashMessage
 
@@ -35,6 +36,14 @@
 	[dict setObject:[NSNumber numberWithInteger:self.messageID] forKey:@"status"];
 
 	return dict;
+}
+
+-(NSString *) contentToHex {
+	return [self.content hexString];
+}
+
+-(NSString *) contentToStr {
+	return [Message msgFromData:self.content];
 }
 
 @end

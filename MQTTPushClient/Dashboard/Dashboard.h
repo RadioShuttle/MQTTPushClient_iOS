@@ -31,6 +31,7 @@
 /* sets a new dashboard and resturns a dictionary with error info */
 -(NSDictionary *)setDashboard:(NSString *)dashboard version:(uint64_t)version;
 -(void)addNewMessages:(NSArray<DashMessage *> *)receivedMsgs;
+-(void)addHistoricalData:(NSDictionary<NSString *, NSArray<DashMessage *> *> *)historicalData;
 /* save cached messages to have a local copy of latest messages */
 -(BOOL)saveMessages;
 
@@ -41,6 +42,7 @@
 @property NSDate *lastReceivedMsgDate;
 @property int lastReceivedMsgSeqNo;
 @property NSMutableDictionary<NSString *, DashMessage *> *lastReceivedMsgs;
+@property NSMutableDictionary<NSString *, NSMutableArray<DashMessage *> *> *historicalData;
 @property BOOL lastMsgsUnsaved;
 
 /* current dash board in JS format*/

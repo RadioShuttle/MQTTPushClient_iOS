@@ -25,7 +25,7 @@
 
 - (NSDictionary *)helDictForKey:(id)aKey {
 	id value = self[aKey];
-	return [value isKindOfClass:[NSString class]] ? value : nil;
+	return [value isKindOfClass:[NSDictionary class]] ? value : nil;
 }
 
 - (NSData *)helDataForKey:(id)aKey {

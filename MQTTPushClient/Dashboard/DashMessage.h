@@ -12,5 +12,7 @@
 
 -(NSDictionary *)toJSON;
 
+-(NSString *)contentToHex;
+-(NSString *)contentToStr;
 
 @end

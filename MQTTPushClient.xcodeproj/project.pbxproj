@@ -40,6 +40,7 @@
 		21EC25E126F9D779003CD109 /* DashOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25D426F9D779003CD109 /* DashOptionTableViewCell.m */; };
 		21EC8E452702F01A00DE8644 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 21EC8E442702F01A00DE8644 /* Images.xcassets */; };
 		21EC8E4B2703355100DE8644 /* DashDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC8E4A2703355100DE8644 /* DashDetailViewController.m */; };
+		21EDECB42716C65C0045E808 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EDECB32716C65C0045E808 /* NSData+Conversion.m */; };
 		21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC426F1DEE40019C488 /* DashUtils.m */; };
 		21EF4EC826F1E6280019C488 /* NSString+HELUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC726F1E6270019C488 /* NSString+HELUtils.m */; };
 		21F32091270AEEC400C89DCF /* clear.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21F32044270AEEBE00C89DCF /* clear.svg */; };
@@ -281,6 +282,8 @@
 		21EC8E442702F01A00DE8644 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		21EC8E492703355100DE8644 /* DashDetailViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashDetailViewController.h; sourceTree = "<group>"; };
 		21EC8E4A2703355100DE8644 /* DashDetailViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashDetailViewController.m; sourceTree = "<group>"; };
+		21EDECB22716C65C0045E808 /* NSData+Conversion.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+Conversion.h"; sourceTree = "<group>"; };
+		21EDECB32716C65C0045E808 /* NSData+Conversion.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+Conversion.m"; sourceTree = "<group>"; };
 		21EF4EC326F1DEE40019C488 /* DashUtils.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashUtils.h; sourceTree = "<group>"; };
 		21EF4EC426F1DEE40019C488 /* DashUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashUtils.m; sourceTree = "<group>"; };
 		21EF4EC626F1E6270019C488 /* NSString+HELUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HELUtils.h"; sourceTree = "<group>"; };
@@ -816,6 +819,8 @@
 			children = (
 				847874E82177777B0059881B /* NSDictionary+HelSafeAccessors.h */,
 				847874EA2177777B0059881B /* NSDictionary+HelSafeAccessors.m */,
+				21EDECB22716C65C0045E808 /* NSData+Conversion.h */,
+				21EDECB32716C65C0045E808 /* NSData+Conversion.m */,
 				847874F42178658F0059881B /* SharedConstants.h */,
 				847874F1217865700059881B /* SharedConstants.m */,
 				2ADFE5662166286600FB19E4 /* MessageDataHandler.h */,
@@ -1153,6 +1158,7 @@
 				21EC25D926F9D779003CD109 /* DashSwitchItemViewCell.m in Sources */,
 				21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
+				21EDECB42716C65C0045E808 /* NSData+Conversion.m in Sources */,
 				21EC25DC26F9D779003CD109 /* DashOptionItemViewCell.m in Sources */,
 				2AE57BC52190826600012A04 /* ActionListTableViewController.m in Sources */,
 				84095D0721903E8300CFC1DB /* Message.m in Sources */,

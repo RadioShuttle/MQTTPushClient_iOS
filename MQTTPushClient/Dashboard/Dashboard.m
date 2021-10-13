@@ -13,6 +13,7 @@
 #import "DashItem.h"
 #import "DashGroupItem.h"
 #import "Utils.h"
+#import "DashConsts.h"
 
 @implementation Dashboard
 
@@ -32,8 +33,9 @@
 	self.lastReceivedMsgDate = [NSDate dateWithTimeIntervalSince1970:0L];
 	self.lastReceivedMsgSeqNo = 0;
 	self.lastReceivedMsgs = [NSMutableDictionary new];
+	self.historicalData = [NSMutableDictionary new];
 	
-	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.js"];
+	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.json"];
 	NSError *error;
 	NSString *db = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:&error];
 	if (error) {
@@ -53,7 +55,7 @@
 		}
 		
 		/* load messages */
-		fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard_messages.js"];
+		fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard_messages.json"];
 		NSData *jsonData = [NSData dataWithContentsOfURL:fileURL options:0 error:&error];
 		if (error) {
 			NSLog(@"Error reading file: %@", error.localizedDescription);
@@ -71,8 +73,10 @@
 				[dashMessages setObject:msg forKey:msg.topic];
 			}
 			NSTimeInterval ts = [[msgObjJSON helNumberForKey:@"timestamp"] doubleValue] ;
+			/*
 			self.lastReceivedMsgDate = [NSDate dateWithTimeIntervalSince1970:ts];
 			self.lastReceivedMsgSeqNo = [[msgObjJSON helNumberForKey:@"lastReceivedMsgSeqNo"] intValue];
+			*/
 			self.lastReceivedMsgs = dashMessages;
 		}
 	}
@@ -122,6 +126,29 @@
 	}
 }
 
+-(void)addHistoricalData:(NSDictionary<NSString *, NSArray<DashMessage *> *> *)historicalData {
+	if (historicalData.count > 0) {
+		NSEnumerator *enumerator = [historicalData keyEnumerator];
+		NSString* key;
+		NSArray<DashMessage *> *val;
+		NSMutableArray<DashMessage *> *target;
+		while ((key = [enumerator nextObject])) {
+			val = [historicalData objectForKey:key];
+			target = [self.historicalData objectForKey:key];
+			if (!target) {
+				target = [NSMutableArray new];
+				[self.historicalData setObject:target forKey:key];
+			}
+			[target addObjectsFromArray:val];
+			if (target.count > DASH_MAX_HISTORICAL_DATA_SIZE) {
+				while(target.count > DASH_MAX_HISTORICAL_DATA_SIZE) {
+					[target removeObjectAtIndex:0];
+				}
+			}
+		}
+	}
+}
+
 -(BOOL)saveMessages {
 	BOOL ok = YES;
 	
@@ -143,7 +170,7 @@
 		
 		NSData *data =[NSJSONSerialization dataWithJSONObject:jsonObj options:0 error:nil];
 		
-		NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard_messages.js"];
+		NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard_messages.json"];
 		ok = [data writeToURL:fileURL atomically:YES];
 		
 		/*
@@ -166,7 +193,7 @@
 	if (dashboard) {
 		[db appendString:dashboard];
 	}
-	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.js"];
+	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.json"];
 	BOOL ok = [db writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:nil];
 	if (!ok) {
 		NSLog(@"Saving dashboard failed.");

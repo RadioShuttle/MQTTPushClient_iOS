@@ -77,10 +77,7 @@
 		self.handler.userDataDir = context.account.cacheURL;
 		load = YES;
 	} else if (item == self.item) {
-		if (self.contentLoaded) {
-			/* message update */
-			[self.webView evaluateJavaScript:[self buildOnMqttMessageCode] completionHandler:nil];
-		}
+		/* message update */
 	} else {
 		NSLog(@"DashCustomItemView used for diffrent item"); //TODO: remove later
 		//TODO: test if recycling works as intendent
@@ -91,6 +88,10 @@
 	}
 	
 	self.item = (DashCustomItem *) item;
+	if (item.history) {
+		self.histData = [context.historicalData objectForKey:self.item.topic_s];
+	}
+	
 	if (load) {
 		[self showProgressBar];
 		
@@ -116,12 +117,16 @@
 		WKUserScript *colorsSkript = [[WKUserScript alloc] initWithSource:colorScriptStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:colorsSkript];
 
-		/* build objects with item and account data */
 		NSString *itemDataCode = [self buildItemDataCode];
 		WKUserScript *itemDataSkript = [[WKUserScript alloc] initWithSource:itemDataCode injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:itemDataSkript];
 
 		[self.webView loadHTMLString:self.item.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
+	} else {
+		/* message update */
+		if (self.contentLoaded) {
+			[self.webView evaluateJavaScript:[self buildOnMqttMessageCode] completionHandler:nil];
+		}
 	}
 }
 
@@ -144,15 +149,17 @@
 	/* build objects with item and account data */
 	NSString *enc;
 	NSMutableString *itemDataCode = [NSMutableString new];
+	
+	/* parameters */
 	for(int i = 0; i < self.item.parameter.count; i++) {
 		[itemDataCode appendFormat:@"MQTT.view._parameters[%d", i];
 		[itemDataCode appendString:@"] = decodeURIComponent('"];
 		enc = [self urlEnc:self.item.parameter[i]];
-		NSLog(@"%@", enc);
 		[itemDataCode appendString:enc];
 		[itemDataCode appendString:@"'); "];
 	}
 	
+	/* account data */
 	[itemDataCode appendString:@"MQTT.acc = new Object();"];
 	[itemDataCode appendString:@"MQTT.acc.user = decodeURIComponent('"];
 	enc = [self urlEnc:self.account.mqttUser];
@@ -166,6 +173,8 @@
 	enc = [self urlEnc:self.account.pushServerID];
 	[itemDataCode appendString:enc];
 	[itemDataCode appendString:@"');"];
+	
+	/* detail view ? */
 	[itemDataCode appendString:@"MQTT.view.isDialog = function() { return "];
 	[itemDataCode appendString:(self.userInput ? @"true" : @"false")];
 	[itemDataCode appendString:@";}; "];
@@ -176,38 +185,61 @@
 -(NSString *)buildOnMqttMessageCode {
 	NSMutableString *code = [NSMutableString new];
 	
+	if (self.histData) {
+		for(int i = 0; i < self.histData.count; i++) {
+			if (!self.lastHistoricalMsg || [self.histData[i] isNewerThan:self.lastHistoricalMsg]) {
+				[self addHistMessageToCode:code message:self.histData[i]];
+				NSLog(@"historical data: %@" , [self.histData[i] contentToStr]);
+			}
+		}
+		self.lastHistoricalMsg = self.histData.lastObject;
+	}
+	
 	if (self.item.message) {
-		NSString *enc;
 		[code appendString:@"if (typeof window['onMqttMessage'] === 'function') _onMqttMessage("];
-
-		/* message date epoche 1970 ms */
-		NSTimeInterval when = [self.item.message.timestamp timeIntervalSince1970] * 1000.0L;
-		[code appendFormat:@"%lld", (uint64_t) when];
-		[code appendString:@", "];
-
-		/* topic */
-		[code appendString:@"decodeURIComponent('"];
-		enc = [self urlEnc:self.item.topic_s];
-		[code appendString:enc];
-		[code appendString:@"'),"];
-		
-		/* message str */
-		[code appendString:@"decodeURIComponent('"];
-		enc = [DashMessage msgFromData:self.item.message.content];
-		enc = [self urlEnc:enc];
-		[code appendString:enc];
-		[code appendString:@"'),"];
-
-		/* raw */
-		[code appendString:@"'"];
-		enc = @""; //TODO: convert message.content to hexstring
-		[code appendString:enc];
-		[code appendString:@"'"];
+		[self appendMessageFuncArgs:code message:self.item.message];
 		[code appendString:@");"];
 	}
-
 	return code;
 }
+
+-(void)addHistMessageToCode:(NSMutableString *)code message:(DashMessage *)message {
+	if (message) {
+		[code appendString:@"_addHistDataMsg("];
+		[self appendMessageFuncArgs:code message:message];
+		[code appendString:@");"];
+	}
+}
+/* builds "receivedDateMillis, topic, payloadStr, payloadHEX" */
+-(void)appendMessageFuncArgs:(NSMutableString *)code message:(DashMessage *)message {
+	NSString *enc;
+
+	/* message date epoche 1970 ms */
+	NSTimeInterval when = [message.timestamp timeIntervalSince1970] * 1000.0L;
+	[code appendFormat:@"%lld", (uint64_t) when];
+	[code appendString:@", "];
+	
+	/* topic */
+	[code appendString:@"decodeURIComponent('"];
+	enc = [self urlEnc:message.topic];
+	[code appendString:enc];
+	[code appendString:@"'),"];
+	
+	/* message str */
+	[code appendString:@"decodeURIComponent('"];
+	enc = [message contentToStr];
+	enc = [self urlEnc:enc];
+	[code appendString:enc];
+	[code appendString:@"'),"];
+	
+	/* raw */
+	[code appendString:@"'"];
+	enc = [message contentToHex];
+	[code appendString:enc];
+	[code appendString:@"'"];
+
+}
+
 
 -(NSString *)urlEnc:(NSString *)v {
 	return [(v ? v : @"") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];

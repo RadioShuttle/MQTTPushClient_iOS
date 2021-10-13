@@ -82,3 +82,22 @@ MQTT.view._parameters = [];
 MQTT.view.getParameters = function() {
 	return MQTT.view._parameters;
 };
+
+MQTT.view._historicalData = [];
+function _addHistDataMsg(receivedDateMillis, topic, payloadStr, payloadHEX) {
+	var msg = new Object();
+	if (!payloadHEX) payloadHEX = '';
+	if (!payloadStr) payloadStr = '';
+	msg.receivedDate = new Date(Number(receivedDateMillis));
+	msg.topic = topic;
+	msg.text = payloadStr;
+	msg.raw = MQTT.hex2buf(payloadHEX);
+	MQTT.view._historicalData.push(msg);
+	while(MQTT.view._historicalData.length > 1000) {
+		MQTT.view._historicalData.shift();
+	}
+}
+
+MQTT.view.getHistoricalData = function() {
+	return MQTT.view._historicalData;
+};

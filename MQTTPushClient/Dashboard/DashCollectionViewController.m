@@ -171,6 +171,11 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				[self.dashboard addNewMessages:dashMessages];
 			}
 			
+			NSDictionary<NSString *, NSArray<DashMessage *> *> *historicalData = [notif.userInfo helDictForKey:@"historicalData"];
+			if (historicalData.count > 0) {
+				[self.dashboard addHistoricalData:historicalData];
+			}
+			
 			if (dashboardUpdate) {
 				/* dashboard update? deliver all messages (cached and new messages) */
 				[self deliverMessages:[NSDate dateWithTimeIntervalSince1970:0L] seqNo:0 notify:NO];
@@ -373,12 +378,16 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if (!self.connection) {
 		self.connection = [[Connection alloc] init];
 	}
-	self.timer = [NSTimer scheduledTimerWithTimeInterval:DASH_TIMER_INTERVAL_SEC repeats:YES block:^(NSTimer * _Nonnull timer) {
-		// NSLog(@"xxxx no of acitve connection %d", [self.connection activeDashboardRequests]);
-		if ([self.connection activeDashboardRequests] == 0) {
-			[self.connection getDashboardForAccount:self.dashboard];
-		}
-	}];
+	if (!self.timer) {
+		[self.connection getDashboardForAccount:self.dashboard];
+		self.timer = [NSTimer scheduledTimerWithTimeInterval:DASH_TIMER_INTERVAL_SEC repeats:YES block:^(NSTimer * _Nonnull timer) {
+			// NSLog(@"xxxx no of acitve connection %d", [self.connection activeDashboardRequests]);
+			if ([self.connection activeDashboardRequests] == 0) {
+				[self.connection getDashboardForAccount:self.dashboard];
+			}
+		}];
+	}
+	
 }
 
 -(void) stopTimer {

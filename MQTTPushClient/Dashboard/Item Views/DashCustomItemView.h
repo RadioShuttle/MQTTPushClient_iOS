@@ -19,7 +19,12 @@
 @property BOOL contentLoaded;
 /* true when used in detail dialog view */
 @property BOOL userInput;
+
 @property DashCustomItem *item;
+/* to keep track of last passed historical message */
+@property DashMessage *lastHistoricalMsg;
+/* last passed historical data by on bind function */
+@property NSArray<DashMessage *> *histData;
 @property DashWebViewHandler *handler;
 @property Account *account;
 

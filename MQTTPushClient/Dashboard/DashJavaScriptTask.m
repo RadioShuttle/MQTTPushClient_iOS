@@ -33,7 +33,7 @@
 	NSError *error = nil;
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.item.script_f];
 	NSObject *raw = [filter arrayBufferFromData:self.message.content];
-	NSDictionary *arg1 = @{@"raw":raw, @"text":[Message msgFromData:self.message.content], @"topic":self.message.topic, @"receivedDate":self.message.timestamp};
+	NSDictionary *arg1 = @{@"raw":raw, @"text":[self.message contentToStr], @"topic":self.message.topic, @"receivedDate":self.message.timestamp};
 	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 	
 	DashViewParameter *viewParameter = [DashViewParameter viewParameterWithItem:self.item context:filter.context account:self.account];
@@ -45,7 +45,7 @@
 	
 	if (error) {
 		/* on error set message content */
-		self.item.content = [DashMessage msgFromData:self.message.content];
+		self.item.content = [self.message contentToStr];
 		self.item.error1 = [Utils isEmpty:[error localizedDescription]] ? @"n/a" : [error localizedDescription];
 		NSLog(@"Javasciprt error: %@", self.item.error1);
 	} else {
