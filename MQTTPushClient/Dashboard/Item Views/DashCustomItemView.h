@@ -17,8 +17,6 @@
 @property BOOL loaded;
 /* indicates if webview.load was called, and document has been loaded */
 @property BOOL contentLoaded;
-/* true when used in detail dialog view */
-@property BOOL userInput;
 
 @property DashCustomItem *item;
 /* to keep track of last passed historical message */

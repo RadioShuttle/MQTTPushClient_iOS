@@ -11,6 +11,8 @@
 @interface DashItemView : UIView
 
 @property UIImageView *backgroundImageView;
+/* indicates if this view is used in detail view */
+@property BOOL detailView;
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context;
 /* call this to add an empty ImageView to this view. this should be called before adding any other elements (beacuase of layering) */

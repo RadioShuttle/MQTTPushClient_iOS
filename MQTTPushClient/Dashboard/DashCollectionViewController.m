@@ -381,7 +381,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if (!self.timer) {
 		[self.connection getDashboardForAccount:self.dashboard];
 		self.timer = [NSTimer scheduledTimerWithTimeInterval:DASH_TIMER_INTERVAL_SEC repeats:YES block:^(NSTimer * _Nonnull timer) {
-			// NSLog(@"xxxx no of acitve connection %d", [self.connection activeDashboardRequests]);
 			if ([self.connection activeDashboardRequests] == 0) {
 				[self.connection getDashboardForAccount:self.dashboard];
 			}
@@ -466,7 +465,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	} else if ([DashOptionItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDoptionItem forIndexPath:indexPath];
 	}
-	cell.dashItem = item;
 	[cell onBind:item context:self.dashboard];
 	
 	return cell;

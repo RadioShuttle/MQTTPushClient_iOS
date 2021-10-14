@@ -11,7 +11,7 @@
 @implementation DashItemView
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	
+
 	int64_t color = item.background;
 	/* background color */
 	if (color == DASH_COLOR_OS_DEFAULT) {

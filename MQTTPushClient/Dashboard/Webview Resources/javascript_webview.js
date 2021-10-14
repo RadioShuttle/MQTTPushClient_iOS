@@ -4,12 +4,15 @@
  * Licensed under the Apache License, Version 2.0
  */
 
+_handlerID = 0;
+
 window.addEventListener('error', function (e) {
   var message = {
     message: e.message,
     url: e.filename,
     line: e.lineno,
     column: e.colno,
+	handlerID: _handlerID,
     error: JSON.stringify(e.error)
   }
   window.webkit.messageHandlers.error.postMessage(message);
@@ -100,4 +103,14 @@ function _addHistDataMsg(receivedDateMillis, topic, payloadStr, payloadHEX) {
 
 MQTT.view.getHistoricalData = function() {
 	return MQTT.view._historicalData;
+};
+
+MQTT.view._background = MQTT.Color.OS_DEFAULT;
+MQTT.view.getBackgroundColor = function() {
+	return MQTT.view._background;
+};
+
+MQTT.view.setBackgroundColor = function(color) {
+	MQTT.view._background = color;
+	window.webkit.messageHandlers.setBackgroundColor.postMessage({handlerID: _handlerID, color: color});
 };

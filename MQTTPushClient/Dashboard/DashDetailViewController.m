@@ -39,13 +39,14 @@
 		self.dashItemView = [[DashSliderItemView alloc] initWithFrame:self.containerView.bounds];
 	}
 
+	self.dashItemView.detailView = YES;
+
 	if (self.dashItemView) {
 		[self.dashItemView onBind:self.dashItem context:self.dashboard];
 		[self.containerView addSubview:self.dashItemView];
 		[self.view bringSubviewToFront:self.containerView];
 	}
 	
-
 }
 
 /*

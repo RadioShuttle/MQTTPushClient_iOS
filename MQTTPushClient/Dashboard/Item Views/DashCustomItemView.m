@@ -7,10 +7,15 @@
 #import "DashCustomItemView.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
+#import "Utils.h"
 #import "NSString+HELUtils.h"
-
+#import "NSDictionary+HelSafeAccessors.h"
+#import "DashCustomItemViewCell.h"
+#import "DashDetailViewController.h"
 
 @implementation DashCustomItemView
+
+static int32_t handlerID = 0;
 
 -(instancetype)initWithCoder:(NSCoder *)coder {
     self = [super initWithCoder:coder];
@@ -73,6 +78,7 @@
 	if (!self.item) { // first call?
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
+		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"setBackgroundColor"];
 		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
 		load = YES;
@@ -80,7 +86,7 @@
 		/* message update */
 	} else {
 		NSLog(@"DashCustomItemView used for diffrent item"); //TODO: remove later
-		//TODO: test if recycling works as intendent
+		//TODO: test if recycling works as intended
 		/* view has been reused */
 		[self.webView.configuration.userContentController removeAllUserScripts];
 		self.contentLoaded = NO;
@@ -101,8 +107,13 @@
 			color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
 		}
 		self.webView.opaque = NO;
-		[self setBackgroundColor:UIColorFromRGB(color)];
 		[self.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+
+		NSURL *colorsScriptURL = [[NSBundle mainBundle] URLForResource:@"javascript_color" withExtension:@"js"];
+		NSString *colorScriptStr = [NSString stringWithContentsOfURL:colorsScriptURL encoding:NSUTF8StringEncoding error:NULL];
+		
+		WKUserScript *colorsSkript = [[WKUserScript alloc] initWithSource:colorScriptStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+		[self.webView.configuration.userContentController addUserScript:colorsSkript];
 		
 		/* add Dash library functions */
 		NSURL *dashLibURL = [[NSBundle mainBundle] URLForResource:@"javascript_webview" withExtension:@"js"];
@@ -110,12 +121,11 @@
 
 		WKUserScript *dashLibSkript = [[WKUserScript alloc] initWithSource:dashLibStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:dashLibSkript];
-
-		NSURL *colorsScriptURL = [[NSBundle mainBundle] URLForResource:@"javascript_color" withExtension:@"js"];
-		NSString *colorScriptStr = [NSString stringWithContentsOfURL:colorsScriptURL encoding:NSUTF8StringEncoding error:NULL];
-
-		WKUserScript *colorsSkript = [[WKUserScript alloc] initWithSource:colorScriptStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-		[self.webView.configuration.userContentController addUserScript:colorsSkript];
+		
+		/* add a unique handler ID */
+		self.item.handlerID = ++handlerID;
+		WKUserScript *handlerIDSkript = [[WKUserScript alloc] initWithSource:[NSString stringWithFormat:@"_handlerID = %d;", handlerID] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+		[self.webView.configuration.userContentController addUserScript:handlerIDSkript];
 
 		NSString *itemDataCode = [self buildItemDataCode];
 		WKUserScript *itemDataSkript = [[WKUserScript alloc] initWithSource:itemDataCode injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
@@ -123,7 +133,6 @@
 
 		[self.webView loadHTMLString:self.item.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
 	} else {
-		/* message update */
 		if (self.contentLoaded) {
 			[self.webView evaluateJavaScript:[self buildOnMqttMessageCode] completionHandler:nil];
 		}
@@ -176,7 +185,7 @@
 	
 	/* detail view ? */
 	[itemDataCode appendString:@"MQTT.view.isDialog = function() { return "];
-	[itemDataCode appendString:(self.userInput ? @"true" : @"false")];
+	[itemDataCode appendString:(self.detailView ? @"true" : @"false")];
 	[itemDataCode appendString:@";}; "];
 	
 	return itemDataCode;
@@ -189,7 +198,6 @@
 		for(int i = 0; i < self.histData.count; i++) {
 			if (!self.lastHistoricalMsg || [self.histData[i] isNewerThan:self.lastHistoricalMsg]) {
 				[self addHistMessageToCode:code message:self.histData[i]];
-				NSLog(@"historical data: %@" , [self.histData[i] contentToStr]);
 			}
 		}
 		self.lastHistoricalMsg = self.histData.lastObject;
@@ -240,7 +248,6 @@
 
 }
 
-
 -(NSString *)urlEnc:(NSString *)v {
 	return [(v ? v : @"") stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
 }
@@ -248,6 +255,7 @@
 -(void)dealloc {
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"error"];
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"log"];
+	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"setBackgroundColor"];
 }
 
 @end
@@ -313,11 +321,70 @@
 
 /* script message handler */
 -(void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
-	NSLog(@"Received message: %@", message.body);
+	if ([message.name isEqualToString:@"error"]) {
+		[self handleWebviewError:message.body];
+	} else if ([message.name isEqualToString:@"log"]) {
+		NSLog(@"%@", message.body);
+	} else if ([message.name isEqualToString:@"setBackgroundColor"]) {
+		if ([message.body isKindOfClass:[NSDictionary class]]) {
+			uint32_t handlerID = [[((NSDictionary *) message.body) helNumberForKey:@"handlerID"] unsignedIntValue];
+			int64_t color =[[((NSDictionary *) message.body) helNumberForKey:@"color"] longLongValue];
+			if (self.dashView.item.handlerID == handlerID) {
+				self.dashView.item.background = color;
+				if (color == DASH_COLOR_OS_DEFAULT) {
+					color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
+				}
+				/* update this views background color */
+				[self.dashView setBackgroundColor:UIColorFromRGB(color)];
+				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+				
+				/* notify observer in case another view needs this info */
+				//TODO: check
+				// [self notifyObserver:@"background"];
+			}
+		}
+	}
 }
 
--(void)dealloc {
-	// NSLog(@"dealloc");
+-(void)handleWebviewError:(NSObject *)errorDict {
+	/* build error object */
+	if ([errorDict isKindOfClass:[NSDictionary class]]) {
+		uint32_t handlerID = [[((NSDictionary *) errorDict) helNumberForKey:@"handlerID"] unsignedIntValue];
+		NSString *message = [((NSDictionary *) errorDict) helStringForKey:@"message"];
+		NSNumber *line = [((NSDictionary *) errorDict) helNumberForKey:@"line"];
+		NSString * errorMsg = [NSString stringWithFormat:@"%@ %d", message, [line intValue]];
+		/* error already reported ?*/
+		if (handlerID == self.dashView.item.handlerID && ![errorMsg isEqualToString:self.dashView.item.error1]) {
+			self.dashView.item.error1 = errorMsg;
+
+			BOOL error1 = ![Utils isEmpty:self.dashView.item.error1];
+			BOOL error2 = ![Utils isEmpty:self.dashView.item.error2];
+
+			//TODO:
+			UIView *parent = [[self.dashView superview] superview];
+			if ([parent isKindOfClass:[DashCollectionViewCell class]]) {
+				[((DashCollectionViewCell *) parent) showErrorInfo:error1 error2:error2];
+			} else if ([parent isKindOfClass:[DashDetailViewController class]]) {
+				
+			}
+			
+			/* notify observer in case another view needs this info */
+			//TODO: check
+			// [self notifyObserver:@"error1"];
+		}
+	}
+}
+
+-(void)notifyObserver:(NSString *)updateProperty {
+	/* notify observer */
+	NSMutableDictionary *userInfo = [NSMutableDictionary new];
+	// [userInfo setObject:[NSNumber numberWithUnsignedLongLong:self.dashView.dashVersion] forKey:@"version"];
+	[userInfo setObject:[NSNumber numberWithUnsignedInt:self.dashView.item.id_] forKey:@"item_id"];
+	[userInfo setObject:[NSNumber numberWithBool:self.dashView.detailView] forKey:@"detail_view"];
+	[userInfo setObject:updateProperty forKey:@"updated_property"];
+	
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DashItemPropertyUpdate" object:nil userInfo:userInfo];
+
 }
 
 @end

@@ -10,7 +10,6 @@
 #import "DashCircleBackroundView.h"
 
 @interface DashCollectionViewCell : UICollectionViewCell
-@property DashItem *dashItem;
 @property UIImageView *errorImageView1;
 @property DashCircleBackroundView *backgroundView1;
 @property UIImageView *errorImageView2;
@@ -21,6 +20,5 @@
 -(void)onBind:(DashItem *)item context:(Dashboard *)context;
 
 -(void)showErrorInfo:(BOOL)error1 error2:(BOOL)error2;
-
 
 @end

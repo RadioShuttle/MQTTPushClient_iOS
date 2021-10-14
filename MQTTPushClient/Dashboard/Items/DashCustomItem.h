@@ -16,5 +16,9 @@
 /* last message received matching dash item's topic */
 @property DashMessage *message;
 
+/* a unique handler id */
+@property int32_t handlerID;
+
 @property NSString *cellReuseID;
+
 @end
