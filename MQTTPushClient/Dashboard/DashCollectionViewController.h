@@ -21,7 +21,7 @@
 @property DashDetailViewController *activeDetailView;
 @property NSOperationQueue *jsOperationQueue;
 @property NSMutableArray<NSInvocationOperation *> *jsTaskQueue;
-@property int registeredCustomViewTypes;
+@property uint32_t registeredCustomViewTypes;
 
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;

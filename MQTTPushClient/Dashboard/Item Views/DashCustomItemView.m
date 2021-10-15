@@ -73,6 +73,16 @@ static int32_t handlerID = 0;
 }
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
+	[super onBind:item context:context];
+	
+	/* background color */
+	int64_t color = item.background;
+	if (color == DASH_COLOR_OS_DEFAULT) {
+		color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
+	}
+	self.webView.opaque = NO;
+	[self.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+
 	BOOL load = NO;
 
 	if (!self.item) { // first call?
@@ -101,14 +111,6 @@ static int32_t handlerID = 0;
 	if (load) {
 		[self showProgressBar];
 		
-		/* background color */
-		int64_t color = item.background;
-		if (color == DASH_COLOR_OS_DEFAULT) {
-			color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
-		}
-		self.webView.opaque = NO;
-		[self.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
-
 		NSURL *colorsScriptURL = [[NSBundle mainBundle] URLForResource:@"javascript_color" withExtension:@"js"];
 		NSString *colorScriptStr = [NSString stringWithContentsOfURL:colorsScriptURL encoding:NSUTF8StringEncoding error:NULL];
 		

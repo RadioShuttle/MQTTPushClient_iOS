@@ -87,21 +87,16 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashGroupItem *groupItem;
 	DashItem *item;
 	
-	// TODO: consider limiting no of registrations (e.g. limit to 20)	
-	/* find dash object */
-	int z = 0;
+	// TODO: rework:
 	for(int i = 0; i < self.dashboard.groups.count; i++) {
 		groupItem = self.dashboard.groups[i];
 		NSArray<DashItem *> *items = self.dashboard.groupItems[@(groupItem.id_)];
 		for(int j = 0; j < items.count; j++) {
 			item = items[j];
 			if ([item class] == [DashCustomItem class]) {
-				((DashCustomItem *) item).cellReuseID = [NSString stringWithFormat:@"%@%d", reuseIDcustomItem, z];
-				if (z == self.registeredCustomViewTypes) {
-					[self.collectionView registerClass:[DashCustomItemViewCell class] forCellWithReuseIdentifier:((DashCustomItem *) item).cellReuseID];
-					self.registeredCustomViewTypes++;
-				}
-				z++;
+				((DashCustomItem *) item).cellReuseID = [NSString stringWithFormat:@"%@%u", reuseIDcustomItem, self.registeredCustomViewTypes];
+				[self.collectionView registerClass:[DashCustomItemViewCell class] forCellWithReuseIdentifier:((DashCustomItem *) item).cellReuseID];
+				self.registeredCustomViewTypes++;
 			}
 		}
 	}
