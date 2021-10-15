@@ -23,7 +23,6 @@
 		self.data = [NSMutableDictionary new];
 		[self.data setObject:[NSNumber numberWithUnsignedLongLong:self.version] forKey:@"version"];
 		[self.data setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
-
 	}
 	return self;
 }
@@ -41,6 +40,7 @@
 	NSString *result = [filter filterMsg:arg1 acc:arg2 viewParameter:viewParameter error:&error];
 	if (result) {
 		self.item.content = result;
+		self.item.lastMsgTimestamp = self.message.timestamp;
 	}
 	
 	if (error) {

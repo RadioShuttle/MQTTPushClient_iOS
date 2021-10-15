@@ -275,6 +275,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 						if ([item class] == [DashCustomItem class]) {
 							((DashCustomItem *) item).message = msg;
 						}
+						item.lastMsgTimestamp = msg.timestamp;
 						item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
 						if (indexPathDict) {
 							NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];

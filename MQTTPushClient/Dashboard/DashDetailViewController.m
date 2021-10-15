@@ -13,6 +13,7 @@
 #import "DashSwitchItemView.h"
 #import "DashSliderItem.h"
 #import "DashSliderItemView.h"
+#import "Utils.h"
 
 @interface DashDetailViewController ()
 
@@ -41,6 +42,7 @@
 	}
 
 	self.dashItemView.detailView = YES;
+	[self updateLabel];
 
 	if (self.dashItemView) {
 		[self.dashItemView onBind:self.dashItem context:self.dashboard];
@@ -99,6 +101,22 @@
 		[navBarBtns addObject:myButton];
 		[self.toolbarNavigationItem setRightBarButtonItems:navBarBtns animated:NO];
 	}
+}
+
+-(void)updateLabel {
+	NSMutableString *label = [NSMutableString new];
+	if (![Utils isEmpty:self.dashItem.label]) {
+		[label appendString:self.dashItem.label];
+	}
+	if (self.dashItem.lastMsgTimestamp) {
+		[label appendString:@" - "];
+		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+		dateFormatter.dateStyle = NSDateFormatterShortStyle;
+		dateFormatter.timeStyle = NSDateFormatterShortStyle;
+		[label appendString:[dateFormatter stringFromDate:self.dashItem.lastMsgTimestamp]];
+	}
+	
+	[self.dashItemLabel setText:label];
 }
 
 @end

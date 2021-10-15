@@ -6,6 +6,7 @@
 
 @import Foundation;
 @import UIKit;
+#import "DashMessage.h"
 
 @interface DashItem : NSObject
 
@@ -23,7 +24,9 @@
 @property NSString *label;
 @property BOOL history;
 
-@property NSString *content; // message content or result of filter script
+/* last message received (timestamp) matching dash item's topic */
+@property NSDate *lastMsgTimestamp;
+@property NSString *content; // == message content or result of filter script
 @property NSString* error1; // filter script errors (input)
 @property NSString* error2; // publish errors (outptut)
 @property NSDictionary* userData; // javascript user data

@@ -24,6 +24,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *errorLabel;
 @property (weak, nonatomic) IBOutlet UIView *containerView;
 @property DashItemView *dashItemView;
+@property (weak, nonatomic) IBOutlet UILabel *dashItemLabel;
 
 /* will be called, if the dashboard has been updated. In this case this view controller is no longer valid */
 -(void)onDashboardUpdate;
