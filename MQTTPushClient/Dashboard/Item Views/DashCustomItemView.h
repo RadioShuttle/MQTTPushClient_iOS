@@ -8,6 +8,10 @@
 #import "DashItemView.h"
 #import "DashCustomItem.h"
 
+@protocol DashCustomViewContainer
+-(void)onUpdate:(DashCustomItem *)item what:(NSString *)what;
+@end
+
 @class DashWebViewHandler;
 @interface DashCustomItemView : DashItemView
 
@@ -26,9 +30,10 @@
 @property DashWebViewHandler *handler;
 @property Account *account;
 
+@property id<DashCustomViewContainer> parentContainer;
+
 -(void)showProgressBar;
 -(void)hideProgressBar;
-
 @end
 
 @interface DashWebViewHandler : NSObject <WKURLSchemeHandler, WKNavigationDelegate, WKScriptMessageHandler>

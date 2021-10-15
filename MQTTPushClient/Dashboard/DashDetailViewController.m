@@ -33,6 +33,7 @@
 
 	} else if ([DashCustomItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashCustomItemView alloc] initWithFrame:self.containerView.bounds];
+		((DashCustomItemView *) self.dashItemView).parentContainer = self;
 	} else if ([DashSwitchItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashSwitchItemView alloc] initWithFrame:self.containerView.bounds];
 	} else if ([DashSliderItem class] == [self.dashItem class]) {
@@ -59,8 +60,13 @@
 }
 */
 
+/* will be called if custom view (webview) has updated data via javascript */
+-(void)onUpdate:(DashCustomItem *)item what:(NSString *)what {
+	//TODO
+}
+
+/* will be called, if the dashboard has been updated. In this case the item data and view is no longer valid */
 -(void)onDashboardUpdate {
-	/* will be called, if the dashboard has been updated. In this case the item data and view is no longer valid */
 	self.invalid = YES;
 	//TODO: display warning
 	NSLog(@"DashDetailViewController: Dashboard has been updated");

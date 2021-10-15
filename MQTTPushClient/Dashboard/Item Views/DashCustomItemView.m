@@ -328,8 +328,8 @@ static int32_t handlerID = 0;
 	} else if ([message.name isEqualToString:@"setBackgroundColor"]) {
 		if ([message.body isKindOfClass:[NSDictionary class]]) {
 			uint32_t handlerID = [[((NSDictionary *) message.body) helNumberForKey:@"handlerID"] unsignedIntValue];
-			int64_t color =[[((NSDictionary *) message.body) helNumberForKey:@"color"] longLongValue];
 			if (self.dashView.item.handlerID == handlerID) {
+				int64_t color =[[((NSDictionary *) message.body) helNumberForKey:@"color"] longLongValue];
 				self.dashView.item.background = color;
 				if (color == DASH_COLOR_OS_DEFAULT) {
 					color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
@@ -337,7 +337,8 @@ static int32_t handlerID = 0;
 				/* update this views background color */
 				[self.dashView setBackgroundColor:UIColorFromRGB(color)];
 				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
-				
+				[self.dashView.parentContainer onUpdate:self.dashView.item what:@"background"];
+
 				/* notify observer in case another view needs this info */
 				//TODO: check
 				// [self notifyObserver:@"background"];
@@ -354,20 +355,10 @@ static int32_t handlerID = 0;
 		NSNumber *line = [((NSDictionary *) errorDict) helNumberForKey:@"line"];
 		NSString * errorMsg = [NSString stringWithFormat:@"%@ %d", message, [line intValue]];
 		/* error already reported ?*/
-		if (handlerID == self.dashView.item.handlerID && ![errorMsg isEqualToString:self.dashView.item.error1]) {
+		if (handlerID == self.dashView.item.handlerID /* && ![errorMsg isEqualToString:self.dashView.item.error1] */) {
 			self.dashView.item.error1 = errorMsg;
+			[self.dashView.parentContainer onUpdate:self.dashView.item what:@"error"];
 
-			BOOL error1 = ![Utils isEmpty:self.dashView.item.error1];
-			BOOL error2 = ![Utils isEmpty:self.dashView.item.error2];
-
-			//TODO:
-			UIView *parent = [[self.dashView superview] superview];
-			if ([parent isKindOfClass:[DashCollectionViewCell class]]) {
-				[((DashCollectionViewCell *) parent) showErrorInfo:error1 error2:error2];
-			} else if ([parent isKindOfClass:[DashDetailViewController class]]) {
-				
-			}
-			
 			/* notify observer in case another view needs this info */
 			//TODO: check
 			// [self notifyObserver:@"error1"];

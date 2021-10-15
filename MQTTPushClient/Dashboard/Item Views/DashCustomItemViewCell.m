@@ -5,12 +5,14 @@
  */
 
 #import "DashCustomItemViewCell.h"
+#import "Utils.h"
 
 @implementation DashCustomItemViewCell
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
 	[super onBind:item context:context];
 	
+	self.webviewContainer.parentContainer = self;
 	if (self.webviewContainer.userInteractionEnabled) {
 		self.webviewContainer.userInteractionEnabled = NO;
 	};
@@ -18,10 +20,6 @@
 
 	/* label */
 	[self.customItemLabel setText:item.label];
-}
-
--(void)prepareForReuse {
-	
 }
 
 -(instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -57,5 +55,12 @@
 	
 }
 
+- (void)onUpdate:(DashCustomItem *)item what:(NSString *)what {
+	if ([what isEqualToString:@"error"]) {
+		BOOL error1 = ![Utils isEmpty:item.error1];
+		BOOL error2 = ![Utils isEmpty:item.error2];
+		[self showErrorInfo:error1 error2:error2];
+	}
+}
 
 @end

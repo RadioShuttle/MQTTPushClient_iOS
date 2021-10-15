@@ -8,8 +8,9 @@
 #import "DashItem.h"
 #import "Dashboard.h"
 #import "DashItemView.h"
+#import "DashCustomItemView.h"
 
-@interface DashDetailViewController : UIViewController
+@interface DashDetailViewController : UIViewController <DashCustomViewContainer>
 
 @property DashItem *dashItem;
 @property Dashboard *dashboard;
