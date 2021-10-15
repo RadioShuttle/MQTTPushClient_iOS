@@ -188,6 +188,12 @@ static int32_t handlerID = 0;
 	[itemDataCode appendString:(self.detailView ? @"true" : @"false")];
 	[itemDataCode appendString:@";}; "];
 	
+	/* subscribed topic */
+	[itemDataCode appendString:@"MQTT.view._subscribedTopic = decodeURIComponent('"];
+	enc = [self urlEnc:self.item.topic_s];
+	[itemDataCode appendString:enc];
+	[itemDataCode appendString:@"');"];
+
 	return itemDataCode;
 }
 

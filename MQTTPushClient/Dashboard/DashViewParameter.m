@@ -14,26 +14,32 @@
 #import "DashOptionItem.h"
 
 @protocol DashJSViewExports <JSExport>
+/* Inherited:
+- (void)setTextColor:(int64_t)color;
+- (void)setBackgroundColor:(int64_t)color;
+- (int64_t)getTextColor;
+- (int64_t)getBackgroundColor;
+*/
 - (void)setTextSize:(int)textsize;
 - (int)getTextSize;
-- (void)setBackgroundColor:(int64_t)color;
-- (int64_t)getBackgroundColor;
 - (void)setBackgroundImage:(NSString *)resourceName;
 - (NSString *)getBackgroundImage;
 - (NSString *)getSubscribedTopic;
-- (NSString *)getPublishedTopic;
+- (NSString *)getPublishTopic;
 - (void)setCtrlColor:(int64_t)color;
 - (int64_t)getCtrlColor;
-- (void)setCtrlBackground:(int64_t)color;
-- (int64_t)getCtrlBackground;
+- (void)setCtrlBackgroundColor:(int64_t)color;
+- (int64_t)getCtrlBackgroundColor;
 - (void)setCtrlImage:(NSString *)resourceName;
 - (NSString *)getCtrlImage;
 - (void)setCtrlColorOff:(int64_t)color;
 - (int64_t)getCtrlColorOff;
-- (void)setBackgroundOff:(int64_t)color;
-- (int64_t)getCtrlBackgroundOff;
+- (void)setCtrlBackgroundColorOff:(int64_t)color;
+- (int64_t)getCtrlBackgroundColorOff;
 - (void)setCtrlImageOff:(NSString *)resourceName;
 - (NSString *)getCtrlImageOff;
+- (void)setTextFieldDefaultValue:(NSString *)defaultInputValue;
+- (NSString *)getTextFieldDefaultValue;
 - (NSDictionary *)getUserData;
 - (void)setUserData:(NSDictionary *)userData;
 
@@ -101,7 +107,6 @@
 - (int64_t)getBackgroundColor {
 	return self.dashItem.background;
 }
-
 - (void)setBackgroundImage:(NSString *)resourceName {
 	@try {
 		self.dashItem.background_uri = [self uriForResourceName:resourceName];
@@ -116,7 +121,7 @@
 	return self.dashItem.topic_s;
 }
 
-- (NSString *)getPublishedTopic {
+- (NSString *)getPublishTopic {
 	return self.dashItem.topic_p;
 }
 
@@ -127,10 +132,10 @@
 	return DASH_COLOR_OS_DEFAULT;
 }
 
-- (void)setCtrlBackground:(int64_t)color {
+- (void)setCtrlBackgroundColor:(int64_t)color {
 }
 
-- (int64_t)getCtrlBackground {
+- (int64_t)getCtrlBackgroundColor {
 	return DASH_COLOR_OS_DEFAULT;
 }
 
@@ -155,18 +160,28 @@
 - (int64_t)getCtrlColorOff {
 	return DASH_COLOR_OS_DEFAULT;
 }
-
-- (void)setBackgroundOff:(int64_t)color {
+- (void)setBackgroundColorOff:(int64_t)color {
+}
+- (int64_t)getBackgroundColorOff {
+	return DASH_COLOR_OS_DEFAULT;
 }
 
-- (int64_t)getCtrlBackgroundOff {
+- (int64_t)getCtrlBackgroundColorOff {
 	return DASH_COLOR_OS_DEFAULT;
+}
+- (void)setCtrlBackgroundColorOff:(int64_t)color {
 }
 
 - (void)setCtrlImageOff:(NSString *)resourceName {
 }
 
 - (NSString *)getCtrlImageOff {
+	return nil;
+}
+
+- (void)setTextFieldDefaultValue:(NSString *)defaultInputValue {
+}
+- (NSString *)getTextFieldDefaultValue {
 	return nil;
 }
 
@@ -230,12 +245,20 @@
 - (int64_t)getCtrlColor {
 	return ((DashSwitchItem *) self.dashItem).color;
 }
-- (void)setCtrlBackground:(int64_t)color {
+- (void)setCtrlBackgroundColor:(int64_t)color {
 	((DashSwitchItem *) self.dashItem).bgcolor = color;
 }
 
-- (int64_t)getCtrlBackground {
+- (int64_t)getCtrlBackgroundColor {
 	return ((DashSwitchItem *) self.dashItem).bgcolor;
+}
+
+- (void)setCtrlBackgroundColorOff:(int64_t)color {
+	((DashSwitchItem *) self.dashItem).bgcolorOff = color;
+}
+
+- (int64_t)getCtrlBackgroundColorOff {
+	return ((DashSwitchItem *) self.dashItem).bgcolorOff;
 }
 
 - (void)setCtrlImage:(NSString *)resourceName {

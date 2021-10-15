@@ -114,3 +114,8 @@ MQTT.view.setBackgroundColor = function(color) {
 	MQTT.view._background = color;
 	window.webkit.messageHandlers.setBackgroundColor.postMessage({handlerID: _handlerID, color: color});
 };
+
+MQTT.view._subscribedTopic = '';
+MQTT.view.getSubscribedTopic = function() {
+	return MQTT.view._subscribedTopic;
+};
