@@ -296,7 +296,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		if ([self.dashboard getItemForID:oid indexPathArr:indexPaths]) {
 			/* notify dash object about update */
 			[self.collectionView reloadItemsAtIndexPaths:indexPaths];
-			//TODO: update detail view dialog
+			if (self.activeDetailView) {
+				[self.activeDetailView onNewMessage];
+			}
 		}
 	}
 }

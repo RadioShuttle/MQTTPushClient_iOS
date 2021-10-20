@@ -26,6 +26,9 @@
 @property DashItemView *dashItemView;
 @property (weak, nonatomic) IBOutlet UILabel *dashItemLabel;
 
+/* 0 = dash view, 1 = error1 info, 2 = error2 info */
+@property int currentView;
+
 /* will be called, if the dashboard has been updated. In this case this view controller is no longer valid */
 -(void)onDashboardUpdate;
 /* will be called, if a new message has arrived that matches dashItem.topic_s */

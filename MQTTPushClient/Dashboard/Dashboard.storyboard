@@ -201,7 +201,7 @@
                                 </connections>
                             </collectionViewCell>
                         </cells>
-                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="groupItemCell" id="khj-gz-Obi" customClass="DashGroupItemViewCell">
+                        <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="groupItemCell" id="khj-gz-Obi" customClass="DashGroupItemViewCell">
                             <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
@@ -333,8 +333,8 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9wY-Re-GLY">
                                 <rect key="frame" x="82" y="96" width="250" height="250"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eej-MX-4T4">
-                                        <rect key="frame" x="104" y="114.5" width="42" height="21"/>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eej-MX-4T4">
+                                        <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -342,10 +342,12 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="eej-MX-4T4" firstAttribute="centerX" secondItem="9wY-Re-GLY" secondAttribute="centerX" id="00N-pf-DBj"/>
                                     <constraint firstAttribute="width" constant="250" id="Bb0-zO-8ph"/>
                                     <constraint firstAttribute="height" constant="250" id="Gii-Hb-hJ2"/>
-                                    <constraint firstItem="eej-MX-4T4" firstAttribute="centerY" secondItem="9wY-Re-GLY" secondAttribute="centerY" id="Hd8-Tj-MRC"/>
+                                    <constraint firstItem="eej-MX-4T4" firstAttribute="top" secondItem="9wY-Re-GLY" secondAttribute="top" id="RaY-jb-HOj"/>
+                                    <constraint firstAttribute="trailing" secondItem="eej-MX-4T4" secondAttribute="trailing" id="d1D-7W-Pxh"/>
+                                    <constraint firstAttribute="bottom" secondItem="eej-MX-4T4" secondAttribute="bottom" id="gmc-39-QuX"/>
+                                    <constraint firstItem="eej-MX-4T4" firstAttribute="leading" secondItem="9wY-Re-GLY" secondAttribute="leading" id="nRg-U1-lKj"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ts-QZ-XNw">

@@ -14,6 +14,7 @@
 #import "DashSliderItem.h"
 #import "DashSliderItemView.h"
 #import "Utils.h"
+#import "DashConsts.h"
 
 @interface DashDetailViewController ()
 
@@ -40,8 +41,13 @@
 		self.dashItemView = [[DashSliderItemView alloc] initWithFrame:self.containerView.bounds];
 	}
 
+	[self.errorView setBackgroundColor:UIColorFromRGB(DASH_DEFAULT_CELL_COLOR)]; //TODO: dark mode
+	self.errorButton1.action = @selector(onErrorButton1Clicked);
+	self.errorButton2.action = @selector(onErrorButton2Clicked);
+
 	self.dashItemView.detailView = YES;
 	[self updateLabel];
+	[self updateErrorButtons];
 
 	if (self.dashItemView) {
 		[self.dashItemView onBind:self.dashItem context:self.dashboard];
@@ -78,6 +84,8 @@
 	if (!self.invalid) {
 		/* update view */
 		[self.dashItemView onBind:self.dashItem context:self.dashboard];
+		[self updateLabel];
+		[self updateErrorButtons];
 	}
 }
 
@@ -116,6 +124,48 @@
 	}
 	
 	[self.dashItemLabel setText:label];
+}
+
+-(void)updateErrorButtons {
+	BOOL error = ![Utils isEmpty:self.dashItem.error1];
+	if (error) {
+		[self showBarButtonItem:self.errorButton1];
+	} else {
+		[self hideBarButtonItem:self.errorButton1];
+	}
+	error = ![Utils isEmpty:self.dashItem.error2];
+	if (error) {
+		[self showBarButtonItem:self.errorButton2];
+	} else {
+		[self hideBarButtonItem:self.errorButton2];
+	}
+}
+
+-(void)onErrorButton1Clicked {
+	UIView *v;
+	if (self.currentView == 1) {
+		self.currentView = 0;
+		v = self.containerView;
+	} else { // if (self.currentView in (0,2))
+		self.currentView = 1;
+		[self.errorLabel setText:self.dashItem.error1];
+		v = self.errorView;
+	}
+	[self.view bringSubviewToFront:v];
+}
+
+-(void)onErrorButton2Clicked {
+	UIView *v;
+	if (self.currentView == 2) {
+		self.currentView = 0;
+		v = self.containerView;
+	} else { // if (self.currentView in (0, 1))
+		self.currentView = 2;
+		[self.errorLabel setText:self.dashItem.error2];
+		v = self.errorView;
+	}
+	[self.view bringSubviewToFront:v];
+
 }
 
 @end
