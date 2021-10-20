@@ -19,6 +19,4 @@
 /* a unique handler id */
 @property int32_t handlerID;
 
-@property NSString *cellReuseID;
-
 @end

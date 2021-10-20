@@ -34,7 +34,6 @@
 
 	} else if ([DashCustomItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashCustomItemView alloc] initWithFrame:self.containerView.bounds];
-		((DashCustomItemView *) self.dashItemView).parentContainer = self;
 	} else if ([DashSwitchItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashSwitchItemView alloc] initWithFrame:self.containerView.bounds];
 	} else if ([DashSliderItem class] == [self.dashItem class]) {

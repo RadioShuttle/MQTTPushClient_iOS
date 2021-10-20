@@ -18,58 +18,58 @@
 static int32_t handlerID = 0;
 
 -(instancetype)initWithCoder:(NSCoder *)coder {
-    self = [super initWithCoder:coder];
-    if (self) {
-        [self initWebView];		
-    }
-    return self;
+	self = [super initWithCoder:coder];
+	if (self) {
+		[self initWebView];
+	}
+	return self;
 }
 
 - (instancetype)initWithFrame:(CGRect)frame {
-    self = [super initWithFrame:frame];
-    if (self) {
-        [self initWebView];
-    }
-    return self;
+	self = [super initWithFrame:frame];
+	if (self) {
+		[self initWebView];
+	}
+	return self;
 }
 
 -(void) initWebView {
-    WKWebViewConfiguration *c = [[WKWebViewConfiguration alloc] init];
+	WKWebViewConfiguration *c = [[WKWebViewConfiguration alloc] init];
 	
 	self.handler = [[DashWebViewHandler alloc] initWithView:self];
 	[c setURLSchemeHandler:self.handler forURLScheme:@"pushapp"];
-
-    self.webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:c];
+	
+	self.webView = [[WKWebView alloc] initWithFrame:self.bounds configuration:c];
 	self.webView.navigationDelegate = self.handler;
-    self.webView.translatesAutoresizingMaskIntoConstraints = NO;
-    [self addSubview:_webView];
-    
-    [self.webView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
-    [self.webView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
-    [self.webView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
-    [self.webView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
+	self.webView.translatesAutoresizingMaskIntoConstraints = NO;
+	[self addSubview:_webView];
+	
+	[self.webView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
+	[self.webView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
+	[self.webView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
+	[self.webView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
 }
 
 - (void)showProgressBar {
-    if (!self.progressBar) {
-        self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 48, 48)];
-        self.progressBar.color = [UIColor blackColor];
-        self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
-        [self.progressBar startAnimating];
-        self.progressBar.layer.zPosition = 100.0f;
-        [self addSubview:self.progressBar];
-        
-        [self.progressBar.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0.0].active = YES;
-        [self.progressBar.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:0.0].active = YES;
-    }
+	if (!self.progressBar) {
+		self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 48, 48)];
+		self.progressBar.color = [UIColor blackColor];
+		self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
+		[self.progressBar startAnimating];
+		self.progressBar.layer.zPosition = 100.0f;
+		[self addSubview:self.progressBar];
+		
+		[self.progressBar.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0.0].active = YES;
+		[self.progressBar.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:0.0].active = YES;
+	}
 }
 
 - (void)hideProgressBar {
-    if (self.progressBar) {
-        [self.progressBar stopAnimating];
-        [self.progressBar removeFromSuperview];
-        self.progressBar = nil;
-    }
+	if (self.progressBar) {
+		[self.progressBar stopAnimating];
+		[self.progressBar removeFromSuperview];
+		self.progressBar = nil;
+	}
 }
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
@@ -82,9 +82,9 @@ static int32_t handlerID = 0;
 	}
 	self.webView.opaque = NO;
 	[self.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
-
+	
 	BOOL load = NO;
-
+	
 	if (!self.item) { // first call?
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
@@ -92,14 +92,15 @@ static int32_t handlerID = 0;
 		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
 		load = YES;
+
 	} else if (item == self.item) {
 		/* message update */
 	} else {
-		NSLog(@"DashCustomItemView used for diffrent item"); //TODO: remove later
-		//TODO: test if recycling works as intended
 		/* view has been reused */
 		[self.webView.configuration.userContentController removeAllUserScripts];
 		self.contentLoaded = NO;
+		self.lastHistoricalMsg = nil;
+		self.histData = nil;
 		load = YES;
 	}
 	
@@ -120,7 +121,7 @@ static int32_t handlerID = 0;
 		/* add Dash library functions */
 		NSURL *dashLibURL = [[NSBundle mainBundle] URLForResource:@"javascript_webview" withExtension:@"js"];
 		NSString *dashLibStr = [NSString stringWithContentsOfURL:dashLibURL encoding:NSUTF8StringEncoding error:NULL];
-
+		
 		WKUserScript *dashLibSkript = [[WKUserScript alloc] initWithSource:dashLibStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:dashLibSkript];
 		
@@ -128,11 +129,11 @@ static int32_t handlerID = 0;
 		self.item.handlerID = ++handlerID;
 		WKUserScript *handlerIDSkript = [[WKUserScript alloc] initWithSource:[NSString stringWithFormat:@"_handlerID = %d;", handlerID] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:handlerIDSkript];
-
+		
 		NSString *itemDataCode = [self buildItemDataCode];
 		WKUserScript *itemDataSkript = [[WKUserScript alloc] initWithSource:itemDataCode injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:itemDataSkript];
-
+		
 		[self.webView loadHTMLString:self.item.html baseURL:[NSURL URLWithString:@"pushapp://pushclient/"]];
 	} else {
 		if (self.contentLoaded) {
@@ -148,11 +149,11 @@ static int32_t handlerID = 0;
 	[code appendString:@","];
 	[code appendString:@"MQTT.view"];
 	[code appendString:@"); "];
-
+	
 	if (self.item.message) {
 		[code appendString:[self buildOnMqttMessageCode]];
 	}
-
+	
 	[self.webView evaluateJavaScript:code completionHandler:nil];
 }
 
@@ -195,13 +196,14 @@ static int32_t handlerID = 0;
 	enc = [self urlEnc:self.item.topic_s];
 	[itemDataCode appendString:enc];
 	[itemDataCode appendString:@"');"];
-
+	
 	return itemDataCode;
 }
 
 -(NSString *)buildOnMqttMessageCode {
 	NSMutableString *code = [NSMutableString new];
 	
+	//TODO: recycle error self.histData
 	if (self.histData) {
 		for(int i = 0; i < self.histData.count; i++) {
 			if (!self.lastHistoricalMsg || [self.histData[i] isNewerThan:self.lastHistoricalMsg]) {
@@ -229,7 +231,7 @@ static int32_t handlerID = 0;
 /* builds "receivedDateMillis, topic, payloadStr, payloadHEX" */
 -(void)appendMessageFuncArgs:(NSMutableString *)code message:(DashMessage *)message {
 	NSString *enc;
-
+	
 	/* message date epoche 1970 ms */
 	NSTimeInterval when = [message.timestamp timeIntervalSince1970] * 1000.0L;
 	[code appendFormat:@"%lld", (uint64_t) when];
@@ -253,7 +255,7 @@ static int32_t handlerID = 0;
 	enc = [message contentToHex];
 	[code appendString:enc];
 	[code appendString:@"'"];
-
+	
 }
 
 -(NSString *)urlEnc:(NSString *)v {
@@ -285,13 +287,13 @@ static int32_t handlerID = 0;
 	if ([path hasPrefix:@"/"]) {
 		path = [path substringFromIndex:1];
 	}
-
+	
 	NSData *data;
 	NSURLResponse *urlResponse;
 	NSString *uri = [DashUtils getResourceURIFromResourceName:path userDataDir:self.userDataDir];
 	if (uri) {
 		NSString *resourceName = [DashUtils getURIPath:uri];
-
+		
 		if ([DashUtils isUserResource:uri]) {
 			NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
 			NSURL *localDir = [DashUtils getUserFilesDir:self.userDataDir];
@@ -345,11 +347,13 @@ static int32_t handlerID = 0;
 				/* update this views background color */
 				[self.dashView setBackgroundColor:UIColorFromRGB(color)];
 				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
-				[self.dashView.parentContainer onUpdate:self.dashView.item what:@"background"];
-
-				/* notify observer in case another view needs this info */
-				//TODO: check
-				// [self notifyObserver:@"background"];
+				if ([[[self.dashView superview] superview] conformsToProtocol:@protocol(DashCustomViewContainer)]) {
+					id<DashCustomViewContainer> p = (id<DashCustomViewContainer>) [[self.dashView superview] superview];
+					[p onUpdate:self.dashView.item what:@"background"];
+					/* notify observer in case another view needs this info */
+					//TODO: check
+					// [self notifyObserver:@"background"];
+				}
 			}
 		}
 	}
@@ -365,11 +369,14 @@ static int32_t handlerID = 0;
 		/* error already reported ?*/
 		if (handlerID == self.dashView.item.handlerID /* && ![errorMsg isEqualToString:self.dashView.item.error1] */) {
 			self.dashView.item.error1 = errorMsg;
-			[self.dashView.parentContainer onUpdate:self.dashView.item what:@"error"];
-
-			/* notify observer in case another view needs this info */
-			//TODO: check
-			// [self notifyObserver:@"error1"];
+			// [self.dashView.parentContainer onUpdate:self.dashView.item what:@"error"]; //TODO
+			if ([[[self.dashView superview] superview] conformsToProtocol:@protocol(DashCustomViewContainer)]) {
+				id<DashCustomViewContainer> p = (id<DashCustomViewContainer>) [[self.dashView superview] superview];
+				[p onUpdate:self.dashView.item what:@"error"];
+				/* notify observer in case another view needs this info */
+				//TODO: check
+				// [self notifyObserver:@"background"];
+			}
 		}
 	}
 }
@@ -383,7 +390,7 @@ static int32_t handlerID = 0;
 	[userInfo setObject:updateProperty forKey:@"updated_property"];
 	
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"DashItemPropertyUpdate" object:nil userInfo:userInfo];
-
+	
 }
 
 @end

@@ -56,7 +56,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 	self.registeredCustomViewTypes = 0;
-	[self registerCustomViewCell];
+	[self.collectionView registerClass:[DashCustomItemViewCell class] forCellWithReuseIdentifier:reuseIDcustomItem];
 	
 	/* java script task executor */
 	self.jsOperationQueue = [[NSOperationQueue alloc] init];
@@ -81,27 +81,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		NSLog(@"prepare for unwind.");
 	}
 }
-
-/* must be called after a new dashboard has been set up */
--(void)registerCustomViewCell {
-	DashGroupItem *groupItem;
-	DashItem *item;
-	
-	// TODO: rework:
-	for(int i = 0; i < self.dashboard.groups.count; i++) {
-		groupItem = self.dashboard.groups[i];
-		NSArray<DashItem *> *items = self.dashboard.groupItems[@(groupItem.id_)];
-		for(int j = 0; j < items.count; j++) {
-			item = items[j];
-			if ([item class] == [DashCustomItem class]) {
-				((DashCustomItem *) item).cellReuseID = [NSString stringWithFormat:@"%@%u", reuseIDcustomItem, self.registeredCustomViewTypes];
-				[self.collectionView registerClass:[DashCustomItemViewCell class] forCellWithReuseIdentifier:((DashCustomItem *) item).cellReuseID];
-				self.registeredCustomViewTypes++;
-			}
-		}
-	}
-}
-
 
 #pragma mark - Timer
 - (void)viewWillAppear:(BOOL)animated {
@@ -148,7 +127,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				// NSLog(@"Dashboard: %@", dashboardJS);
 				
 				NSDictionary * resultInfo = [self.dashboard setDashboard:dashboardJS version:serverVersion];
-				[self registerCustomViewCell];
 				dashboardUpdate = [[resultInfo helNumberForKey:@"dashboard_new"] boolValue];
 				msg = [notif.userInfo helStringForKey:@"dashboard_err"];
 				if (self.activeDetailView) {
@@ -447,11 +425,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
 	
 	if ([DashCustomItem class] == [item class]) {
-		if (((DashCustomItem *) item).cellReuseID) {
-			cell = [collectionView dequeueReusableCellWithReuseIdentifier:((DashCustomItem *) item).cellReuseID forIndexPath:indexPath];
-		} else {
-			cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
-		}
+		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
 	} else if ([DashTextItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];
 	} else if ([DashSwitchItem class] == [item class]) {

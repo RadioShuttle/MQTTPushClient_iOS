@@ -13,4 +13,6 @@
 @property (weak, nonatomic) IBOutlet DashCustomItemView *webviewContainer;
 @property (weak, nonatomic) IBOutlet UILabel *customItemLabel;
 
+@property Dashboard *dashboard;
+
 @end

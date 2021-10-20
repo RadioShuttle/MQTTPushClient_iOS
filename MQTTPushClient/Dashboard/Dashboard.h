@@ -55,6 +55,10 @@
 /* key is DashGroupItem.id_ */
 @property NSDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems;
 
+/* cached webviews */
+@property NSMutableDictionary *cachedCustomViews;
+@property uint64_t cachedCustomViewsVersion;
+
 /* The max item id_ in groups, groupItems*/
 @property int max_id;
 

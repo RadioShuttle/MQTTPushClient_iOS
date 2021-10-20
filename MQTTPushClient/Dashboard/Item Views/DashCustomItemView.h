@@ -30,7 +30,7 @@
 @property DashWebViewHandler *handler;
 @property Account *account;
 
-@property (weak) id<DashCustomViewContainer> parentContainer;
+@property BOOL detached;
 
 -(void)showProgressBar;
 -(void)hideProgressBar;

@@ -34,6 +34,8 @@
 	self.lastReceivedMsgSeqNo = 0;
 	self.lastReceivedMsgs = [NSMutableDictionary new];
 	self.historicalData = [NSMutableDictionary new];
+	self.cachedCustomViews = [NSMutableDictionary new];
+	self.cachedCustomViewsVersion = 0;
 	
 	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.json"];
 	NSError *error;
