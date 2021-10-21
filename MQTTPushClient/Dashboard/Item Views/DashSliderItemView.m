@@ -15,7 +15,7 @@
 {
     self = [super initWithCoder:coder];
     if (self) {
-        [self initViews:NO]; // add view with progress bar
+        [self initViews];
     }
     return self;
 }
@@ -24,13 +24,13 @@
 
     self = [super initWithFrame:frame];
     if (self) {
-        [self initViews:YES]; // add view with slider
+        [self initViews];
     }
     return self;
 
 }
 
--(void) initViews:(BOOL)slider {
+-(void) initViews {
 
     /* label */
     self.valueLabel = [[UILabel alloc] init];
@@ -59,26 +59,49 @@
     [container.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-0].active = YES;
     [container.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0].active = YES;
 
-    UIView *addedView;
-    if (slider) {
-        self.sliderCtrl = [[UISlider alloc] init];
-        self.sliderCtrl.translatesAutoresizingMaskIntoConstraints = NO;
-        addedView = self.sliderCtrl;
-    } else {
-        self.progressView = [[UIProgressView alloc] init];
-        self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
-        
-        self.progressView.transform = CGAffineTransformMakeScale(1.0f, 3.0f);
-        
-        addedView = self.self.progressView;
-    }
-    [container addSubview:addedView];
+	self.progressView = [[UIProgressView alloc] init];
+	self.progressView.translatesAutoresizingMaskIntoConstraints = NO;
+	
+	// self.progressView.transform = CGAffineTransformMakeScale(1.0f, 3.0f);
 
-    [addedView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor constant:16].active = YES;
-    [addedView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor constant:-16].active = YES;
+    [container addSubview:self.progressView];
+
+    [self.progressView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor constant:16].active = YES;
+    [self.progressView.trailingAnchor constraintEqualToAnchor:container.trailingAnchor constant:-16].active = YES;
     
-    [addedView.centerYAnchor constraintEqualToAnchor:container.centerYAnchor constant:0].active = YES;
+    [self.progressView.centerYAnchor constraintEqualToAnchor:container.centerYAnchor constant:0].active = YES;
 
+}
+
+- (void)initInputElements {
+	UIView *container = [self.progressView superview];
+	[self.progressView removeFromSuperview];
+
+	self.sliderCtrl = [[UISlider alloc] init];
+	self.sliderCtrl.translatesAutoresizingMaskIntoConstraints = NO;
+	
+	[container addSubview:self.sliderCtrl];
+	
+	[self.sliderCtrl.leadingAnchor constraintEqualToAnchor:container.leadingAnchor constant:16].active = YES;
+	[self.sliderCtrl.trailingAnchor constraintEqualToAnchor:container.trailingAnchor constant:-16].active = YES;
+	
+	[self.sliderCtrl.centerYAnchor constraintEqualToAnchor:container.centerYAnchor constant:0].active = YES;
+
+	[self.sliderCtrl addTarget:self action:@selector(onSliderTouchedDown:) forControlEvents:UIControlEventTouchDown];
+	[self.sliderCtrl addTarget:self action:@selector(onSliderTouchUpInside:) forControlEvents:UIControlEventTouchUpInside];
+	[self.sliderCtrl addTarget:self action:@selector(onSliderValueChanged:) forControlEvents:UIControlEventValueChanged];
+}
+
+- (void)onSliderTouchedDown:(UISlider *)sliderCtrl {
+	NSLog(@"onSliderClicked");
+}
+
+- (void)onSliderTouchUpInside:(UISlider *)sliderCtrl {
+	NSLog(@"onSliderReleased");
+}
+
+-(void)onSliderValueChanged:(UISlider *)sliderCtrl {
+	NSLog(@"onSliderValueChanged %f",  sliderCtrl.value);
 }
 
 - (void)onBind:(DashItem *)item context:(Dashboard *)context {
@@ -103,7 +126,7 @@
 	[self.valueLabel setText:val];
 	
 	int64_t color = sliderItem.progresscolor;
-	[self.progressView setProgress:progress / 100.0f];
+
 	if (color == DASH_COLOR_OS_DEFAULT) {
 		progressTintColor = nil;
 		trackTintColor = nil;
@@ -113,9 +136,17 @@
 		[progressTintColor getRed:&r green:&g blue:&b alpha:&a];
 		trackTintColor = [UIColor colorWithRed:r green:g blue:b alpha:.3];
 	}
-	[self.progressView setProgressTintColor:progressTintColor];
-	[self.progressView setTrackTintColor:trackTintColor];
-
+	if (self.sliderCtrl) { // implies detailView
+		[self.sliderCtrl setValue:progress / 100.0f];
+		[self.sliderCtrl setThumbTintColor:progressTintColor];
+		[self.sliderCtrl setMinimumTrackTintColor:progressTintColor];
+		[self.sliderCtrl setMaximumTrackTintColor:trackTintColor];
+	} else {
+		[self.progressView setProgress:progress / 100.0f];
+		[self.progressView setProgressTintColor:progressTintColor];
+		[self.progressView setTrackTintColor:trackTintColor];
+	}
+	
 	/* text color */
 	color = sliderItem.textcolor;
 	if (color == DASH_COLOR_OS_DEFAULT) {
