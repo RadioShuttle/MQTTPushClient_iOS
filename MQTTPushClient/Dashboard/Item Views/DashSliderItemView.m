@@ -74,8 +74,8 @@
 }
 
 - (void)initInputElements {
+	self.progressView.hidden = YES;
 	UIView *container = [self.progressView superview];
-	[self.progressView removeFromSuperview];
 
 	self.sliderCtrl = [[UISlider alloc] init];
 	self.sliderCtrl.translatesAutoresizingMaskIntoConstraints = NO;
@@ -136,12 +136,16 @@
 		[progressTintColor getRed:&r green:&g blue:&b alpha:&a];
 		trackTintColor = [UIColor colorWithRed:r green:g blue:b alpha:.3];
 	}
-	if (self.sliderCtrl) { // implies detailView
+	if (self.sliderCtrl && self.publishEnabled) {
+		self.progressView.hidden = YES;
+		self.sliderCtrl.hidden = NO;
 		[self.sliderCtrl setValue:progress / 100.0f];
 		[self.sliderCtrl setThumbTintColor:progressTintColor];
 		[self.sliderCtrl setMinimumTrackTintColor:progressTintColor];
 		[self.sliderCtrl setMaximumTrackTintColor:trackTintColor];
 	} else {
+		self.sliderCtrl.hidden = YES;
+		self.progressView.hidden = NO;
 		[self.progressView setProgress:progress / 100.0f];
 		[self.progressView setProgressTintColor:progressTintColor];
 		[self.progressView setTrackTintColor:trackTintColor];

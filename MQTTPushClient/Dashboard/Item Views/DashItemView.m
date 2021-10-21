@@ -7,6 +7,7 @@
 #import "DashItemView.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
+#import "Utils.h"
 
 @implementation DashItemView
 
@@ -25,6 +26,8 @@
 		UIImage *backgroundImage = [DashUtils loadImageResource:item.background_uri userDataDir:context.account.cacheURL];
 		[self.backgroundImageView setImage:backgroundImage];
 	}
+	
+	self.publishEnabled = !([Utils isEmpty:item.topic_p] && [Utils isEmpty:item.script_p]);
 }
 
 -(void)addBackgroundImageView {

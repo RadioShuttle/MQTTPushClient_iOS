@@ -128,8 +128,7 @@
 	[self.valueLabel setTextColor:textColor];
 
 	if (self.detailView) {
-		BOOL enableInput = !([Utils isEmpty:textItem.topic_p] && [Utils isEmpty:textItem.script_p]);
-		if (enableInput) {
+		if (self.publishEnabled) {
 			[self.submitButton setTintColor:textColor];
 			[self.inputTextField setTextColor:textColor];
 			if (textItem.inputtype == 1) {
