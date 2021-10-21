@@ -365,7 +365,7 @@ static int32_t handlerID = 0;
 		uint32_t handlerID = [[((NSDictionary *) errorDict) helNumberForKey:@"handlerID"] unsignedIntValue];
 		NSString *message = [((NSDictionary *) errorDict) helStringForKey:@"message"];
 		NSNumber *line = [((NSDictionary *) errorDict) helNumberForKey:@"line"];
-		NSString * errorMsg = [NSString stringWithFormat:@"%@ %d", message, [line intValue]];
+		NSString * errorMsg = [NSString stringWithFormat:@"%@, line: %d", message, [line intValue]];
 		/* error already reported ?*/
 		if (handlerID == self.dashView.item.handlerID /* && ![errorMsg isEqualToString:self.dashView.item.error1] */) {
 			self.dashView.item.error1 = errorMsg;
