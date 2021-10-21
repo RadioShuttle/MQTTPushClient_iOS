@@ -8,6 +8,7 @@
 #import "DashSliderItem.h"
 #import "DashUtils.h"
 #import "DashConsts.h"
+#import "Utils.h"
 
 @implementation DashSliderItemView
 
@@ -93,15 +94,18 @@
 }
 
 - (void)onSliderTouchedDown:(UISlider *)sliderCtrl {
-	NSLog(@"onSliderClicked");
+	// NSLog(@"onSliderClicked");
+	self.sliderPressed = YES;
 }
 
 - (void)onSliderTouchUpInside:(UISlider *)sliderCtrl {
-	NSLog(@"onSliderReleased");
+	// NSLog(@"onSliderReleased");
+	self.sliderPressed = NO;
 }
 
 -(void)onSliderValueChanged:(UISlider *)sliderCtrl {
-	NSLog(@"onSliderValueChanged %f",  sliderCtrl.value);
+	self.formattedSliderValue = [self format:sliderCtrl.value * 100.0f percent:self.displayPC];
+	[self updateValueLabel];
 }
 
 - (void)onBind:(DashItem *)item context:(Dashboard *)context {
@@ -114,16 +118,11 @@
 
 	double progress = [DashSliderItem calcProgressInPercent:[sliderItem.content doubleValue] min:sliderItem.range_min max:sliderItem.range_max];
 	
-	NSNumberFormatter *formatter = [[NSNumberFormatter alloc] init];
-	[formatter setMaximumFractionDigits:sliderItem.decimal];
-	[formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
+	self.formatter = [[NSNumberFormatter alloc] init];
+	[self.formatter setMaximumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
+	[self.formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
 	
-	NSString * val = [formatter stringFromNumber:[NSNumber numberWithFloat:progress]];
-	if (sliderItem.percent) {
-		val = [NSString stringWithFormat:@"%@%%", val];
-	}
-	
-	[self.valueLabel setText:val];
+	self.formattedValue = [self format:progress percent:sliderItem.percent];
 	
 	int64_t color = sliderItem.progresscolor;
 
@@ -136,21 +135,23 @@
 		[progressTintColor getRed:&r green:&g blue:&b alpha:&a];
 		trackTintColor = [UIColor colorWithRed:r green:g blue:b alpha:.3];
 	}
-	if (self.sliderCtrl && self.publishEnabled) {
+	if (self.detailView && self.publishEnabled) {
 		self.progressView.hidden = YES;
 		self.sliderCtrl.hidden = NO;
 		[self.sliderCtrl setValue:progress / 100.0f];
 		[self.sliderCtrl setThumbTintColor:progressTintColor];
 		[self.sliderCtrl setMinimumTrackTintColor:progressTintColor];
 		[self.sliderCtrl setMaximumTrackTintColor:trackTintColor];
+		self.formattedSliderValue = [self format:progress percent:sliderItem.percent];
+		self.displayPC = sliderItem.percent;
 	} else {
 		self.sliderCtrl.hidden = YES;
 		self.progressView.hidden = NO;
 		[self.progressView setProgress:progress / 100.0f];
 		[self.progressView setProgressTintColor:progressTintColor];
 		[self.progressView setTrackTintColor:trackTintColor];
-	}
-	
+		self.formattedSliderValue = nil;
+	}	
 	/* text color */
 	color = sliderItem.textcolor;
 	if (color == DASH_COLOR_OS_DEFAULT) {
@@ -163,6 +164,25 @@
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
 	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
 
+	[self updateValueLabel];
+}
+
+-(void)updateValueLabel {
+	NSString *label;
+	if (self.detailView && self.publishEnabled && ![Utils isEmpty:self.formattedSliderValue] ) {
+		label = [NSString stringWithFormat:@"%@ / %@", self.formattedValue, self.formattedSliderValue];
+	} else {
+		label = self.formattedValue;
+	}
+	[self.valueLabel setText:label];
+}
+
+- (NSString *)format:(double)value percent:(BOOL)pc {
+	NSString * formattedValue = [self.formatter stringFromNumber:[NSNumber numberWithDouble:value]];
+	if (pc) {
+		formattedValue = [NSString stringWithFormat:@"%@%%", formattedValue];
+	}
+	return formattedValue;
 }
 
 
