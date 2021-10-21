@@ -75,7 +75,7 @@
 
     /* Add button to stack view */
     self.submitButton = [[UIButton alloc] init];
-    UIImage *btnImage = [UIImage imageNamed:@"send"];
+    UIImage *btnImage = [[UIImage imageNamed:@"send"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     [self.submitButton setImage:btnImage forState:UIControlStateNormal];
     [self.submitButton setContentCompressionResistancePriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
     [self.submitButton setContentHuggingPriority:UILayoutPriorityDefaultHigh forAxis:UILayoutConstraintAxisHorizontal];
@@ -118,13 +118,22 @@
 	}
 	
 	/* text color */
-	int64_t textcolor = textItem.textcolor;
-	if (textcolor == DASH_COLOR_OS_DEFAULT) {
-		UIColor *defaultLabelColor = [UILabel new].textColor;
-		[self.valueLabel setTextColor:defaultLabelColor];
+	UIColor *textColor;
+	if (textItem.textcolor == DASH_COLOR_OS_DEFAULT) {
+		textColor = [UILabel new].textColor;
 	} else {
-		[self.valueLabel setTextColor:UIColorFromRGB(textcolor)];
+		textColor = UIColorFromRGB(textItem.textcolor);
 	}
+	[self.valueLabel setTextColor:textColor];
+
+	if (self.detailView) {
+		[self.submitButton setTintColor:textColor];
+		[self.inputTextField setTextColor:textColor];
+		if (textItem.inputtype == 1) {
+			self.inputTextField.keyboardType = UIKeyboardTypeDecimalPad;
+		}
+	}
+	
 	
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
 	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
