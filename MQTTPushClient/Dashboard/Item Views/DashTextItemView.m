@@ -10,8 +10,8 @@
 #import "DashConsts.h"
 #import "DashUtils.h"
 #import "DashTextItem.h"
+#import "Utils.h"
 
-#
 @implementation DashTextItemView {
     NSLayoutConstraint *labelBottomConstraint;
 }
@@ -89,6 +89,7 @@
     [stackView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margin].active = YES;
     [stackView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margin].active = YES;
     [stackView.heightAnchor constraintEqualToConstant:calcHeight].active = YES;
+	self.inputStackView = stackView;
     
     /* remove constraint, label will shrink because we add an input field and button without increasing height */
     if (labelBottomConstraint.isActive) {
@@ -127,10 +128,17 @@
 	[self.valueLabel setTextColor:textColor];
 
 	if (self.detailView) {
-		[self.submitButton setTintColor:textColor];
-		[self.inputTextField setTextColor:textColor];
-		if (textItem.inputtype == 1) {
-			self.inputTextField.keyboardType = UIKeyboardTypeDecimalPad;
+		BOOL enableInput = !([Utils isEmpty:textItem.topic_p] && [Utils isEmpty:textItem.script_p]);
+		if (enableInput) {
+			[self.submitButton setTintColor:textColor];
+			[self.inputTextField setTextColor:textColor];
+			if (textItem.inputtype == 1) {
+				self.inputTextField.keyboardType = UIKeyboardTypeDecimalPad;
+			}
+		} else if (self.inputStackView) {
+			[self.inputStackView removeFromSuperview];
+			[self.valueLabel.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
+			self.inputStackView = nil;
 		}
 	}
 	
