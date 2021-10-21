@@ -118,4 +118,13 @@
 
 }
 
+- (void)initInputElements {
+	[self.button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchUpInside];
+}
+
+-(void)buttonClicked {
+	//TODO
+	NSLog(@"publish ... ");
+}
+
 @end

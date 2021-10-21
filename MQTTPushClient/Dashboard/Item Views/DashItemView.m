@@ -38,4 +38,7 @@
 	[self.backgroundImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
 }
 
+-(void)initInputElements {	
+}
+
 @end

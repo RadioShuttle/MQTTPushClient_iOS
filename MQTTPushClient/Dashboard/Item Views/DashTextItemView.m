@@ -53,7 +53,7 @@
     labelBottomConstraint.active = YES;
 }
 
-- (void)showInputElements {
+- (void)initInputElements {
     CGFloat margin = 8;
     
     /* Add stack view */

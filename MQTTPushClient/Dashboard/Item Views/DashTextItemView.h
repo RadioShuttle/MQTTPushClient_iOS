@@ -13,6 +13,4 @@
 @property UIButton *submitButton;
 @property UIStackView *inputStackView;
 
--(void) showInputElements; // must be called to show input elements in detail view
-
 @end

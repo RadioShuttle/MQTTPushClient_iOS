@@ -18,4 +18,7 @@
 /* call this to add an empty ImageView to this view. this should be called before adding any other elements (beacuase of layering) */
 -(void)addBackgroundImageView;
 
+/* call this in detail view right after construction */
+-(void)initInputElements;
+
 @end

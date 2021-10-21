@@ -25,14 +25,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
 
-	// [self hideBarButtonItem:self.errorButton1];
-	// self.errorView.layer.zPosition = -1;
-	
-	//TODO: optimize code when all dash items implemented
 	if ([DashTextItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashTextItemView alloc] initWithFrame:self.containerView.bounds];
-		[(DashTextItemView *) self.dashItemView showInputElements];
-
 	} else if ([DashCustomItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashCustomItemView alloc] initWithFrame:self.containerView.bounds];
 	} else if ([DashSwitchItem class] == [self.dashItem class]) {
@@ -45,6 +39,7 @@
 	self.errorButton1.action = @selector(onErrorButton1Clicked);
 	self.errorButton2.action = @selector(onErrorButton2Clicked);
 
+	[self.dashItemView initInputElements];
 	self.dashItemView.detailView = YES;
 	[self updateLabel];
 	[self updateErrorButtons];
