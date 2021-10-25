@@ -6,12 +6,18 @@
 
 #import <UIKit/UIKit.h>
 #import "DashItemView.h"
+#import "DashOptionItem.h"
 
-@interface DashOptionItemView : DashItemView
+@interface DashOptionItemView : DashItemView <UITableViewDataSource>
 
 @property UILabel *valueLabel;
 @property UIImageView *valueImageView;
 @property NSLayoutConstraint *valueLabelTopConstraint;
 @property UITableView *optionListTableView;
+
+@property DashOptionItem *optionItem;
+@property BOOL tableViewInitialized;
+
+@property Dashboard *context;
 
 @end

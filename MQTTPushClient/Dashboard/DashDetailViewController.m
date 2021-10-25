@@ -13,6 +13,8 @@
 #import "DashSwitchItemView.h"
 #import "DashSliderItem.h"
 #import "DashSliderItemView.h"
+#import "DashOptionItem.h"
+#import "DashOptionItemView.h"
 #import "Utils.h"
 #import "DashConsts.h"
 
@@ -26,21 +28,21 @@
     [super viewDidLoad];
 
 	if ([DashTextItem class] == [self.dashItem class]) {
-		self.dashItemView = [[DashTextItemView alloc] initWithFrame:self.containerView.bounds];
+		self.dashItemView = [[DashTextItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
 	} else if ([DashCustomItem class] == [self.dashItem class]) {
-		self.dashItemView = [[DashCustomItemView alloc] initWithFrame:self.containerView.bounds];
+		self.dashItemView = [[DashCustomItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
 	} else if ([DashSwitchItem class] == [self.dashItem class]) {
-		self.dashItemView = [[DashSwitchItemView alloc] initWithFrame:self.containerView.bounds];
+		self.dashItemView = [[DashSwitchItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
 	} else if ([DashSliderItem class] == [self.dashItem class]) {
-		self.dashItemView = [[DashSliderItemView alloc] initWithFrame:self.containerView.bounds];
+		self.dashItemView = [[DashSliderItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
+	} else if ([DashOptionItem class] == [self.dashItem class]) {
+		self.dashItemView = [[DashOptionItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
 	}
 
 	[self.errorView setBackgroundColor:UIColorFromRGB(DASH_DEFAULT_CELL_COLOR)]; //TODO: dark mode
 	self.errorButton1.action = @selector(onErrorButton1Clicked);
 	self.errorButton2.action = @selector(onErrorButton2Clicked);
 
-	[self.dashItemView initInputElements];
-	self.dashItemView.detailView = YES;
 	[self updateLabel];
 	[self updateErrorButtons];
 
@@ -50,6 +52,21 @@
 		[self.view bringSubviewToFront:self.containerView];
 	}
 	
+}
+-(void)viewDidLayoutSubviews {
+	if ([DashOptionItem class] == [self.dashItem class]) {
+		DashOptionItemView *optView = (DashOptionItemView *) self.dashItemView;
+		DashOptionItem *optItem = (DashOptionItem *) self.dashItem;
+		if (![Utils isEmpty:self.dashItem.content]) {
+			for(int i = 0; i < optItem.optionList.count; i++) {
+				if ([self.dashItem.content isEqualToString:optItem.optionList[i].value]) {
+					NSIndexPath *idx = [NSIndexPath indexPathForRow:i inSection:0];
+					[optView.optionListTableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+					break;
+				}
+			}
+		}
+	}
 }
 
 /*
@@ -113,7 +130,11 @@
 	if (self.dashItem.lastMsgTimestamp) {
 		[label appendString:@" - "];
 		NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-		dateFormatter.dateStyle = NSDateFormatterShortStyle;
+		if ([[NSCalendar currentCalendar] isDateInToday:self.dashItem.lastMsgTimestamp]) {
+			dateFormatter.dateStyle = NSDateFormatterNoStyle;
+		} else {
+			dateFormatter.dateStyle = NSDateFormatterShortStyle;
+		}
 		dateFormatter.timeStyle = NSDateFormatterShortStyle;
 		[label appendString:[dateFormatter stringFromDate:self.dashItem.lastMsgTimestamp]];
 	}

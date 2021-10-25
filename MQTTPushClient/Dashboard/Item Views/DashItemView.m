@@ -11,6 +11,12 @@
 
 @implementation DashItemView
 
+- (instancetype)initDetailViewWithFrame:(CGRect)frame {
+	self = [super initWithFrame:frame];
+	self.detailView = YES;
+	return self;
+}
+
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
 
 	int64_t color = item.background;

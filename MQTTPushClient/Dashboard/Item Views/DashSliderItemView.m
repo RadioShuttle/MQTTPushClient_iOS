@@ -31,6 +31,15 @@
 
 }
 
+- (instancetype)initDetailViewWithFrame:(CGRect)frame {
+	self = [super initDetailViewWithFrame:frame];
+	if (self) {
+		[self initViews];
+		[self initInputElements];
+	}
+	return self;
+}
+
 -(void) initViews {
 
     /* label */

@@ -33,6 +33,14 @@ static int32_t handlerID = 0;
 	return self;
 }
 
+- (instancetype)initDetailViewWithFrame:(CGRect)frame {
+	self = [super initDetailViewWithFrame:frame];
+	if (self) {
+		[self initWebView];
+	}
+	return self;
+}
+
 -(void) initWebView {
 	WKWebViewConfiguration *c = [[WKWebViewConfiguration alloc] init];
 	

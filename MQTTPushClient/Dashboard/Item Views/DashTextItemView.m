@@ -34,6 +34,15 @@
     return self;
 }
 
+- (instancetype)initDetailViewWithFrame:(CGRect)frame {
+	self = [super initDetailViewWithFrame:frame];
+	if (self) {
+		[self initTextView];
+		[self initInputElements];
+	}
+	return self;
+}
+
 -(void) initTextView {
 	[super addBackgroundImageView];
     self.valueLabel = [[UILabel alloc] init];

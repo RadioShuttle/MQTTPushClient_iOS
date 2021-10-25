@@ -54,12 +54,17 @@
 	return [[NSFileManager defaultManager] fileExistsAtPath:[fileUrl path]];
 }
 
-+(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir {
++(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir renderingModeAlwaysTemplate:(BOOL)renderingModeAlwaysTemplate {
+
 	UIImage *img;
 	if (![Utils isEmpty:uri]) {
 		NSString *resourceName = [DashUtils getURIPath:uri];
 		if ([self isInternalResource:uri]) {
-			img = [[UIImage imageNamed:resourceName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			if (renderingModeAlwaysTemplate) {
+				img = [[UIImage imageNamed:resourceName] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			} else {
+				img = [UIImage imageNamed:resourceName];
+			}
 		}
 		else if ([self isUserResource:uri]) {
 			NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
@@ -69,6 +74,10 @@
 		}
 	}
 	return img;
+}
+
++(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir {
+	return [self loadImageResource:uri userDataDir:userDataDir renderingModeAlwaysTemplate:YES];
 }
 
 +(NSString *)getResourceURIFromResourceName:(NSString *) resourceName userDataDir:(NSURL *)userDataDir {

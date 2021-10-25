@@ -9,6 +9,7 @@
 #import "Utils.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
+#import "DashOptionTableViewCell.h"
 
 @implementation DashOptionItemView
 
@@ -16,7 +17,7 @@
 {
     self = [super initWithCoder:coder];
     if (self) {
-        [self initTextView]; // cell view
+        [self initTextView];
     }
     return self;
 }
@@ -25,9 +26,18 @@
     
     self = [super initWithFrame:frame];
     if (self) {
-        [self initTableView]; // detail view
+        [self initTextView];
     }
     return self;
+}
+
+- (instancetype)initDetailViewWithFrame:(CGRect)frame {
+	
+	self = [super initDetailViewWithFrame:frame];
+	if (self) {
+		[self initTableView];
+	}
+	return self;
 }
 
 -(void) initTextView {
@@ -61,29 +71,42 @@
 }
 
 -(void) initTableView {
-	//TODO:
-	[super addBackgroundImageView];
-    self.optionListTableView = [[UITableView alloc] init];
+	// [super addBackgroundImageView];
+
+	self.optionListTableView = [[UITableView alloc] init];
     self.optionListTableView.translatesAutoresizingMaskIntoConstraints = NO;
 
-    [self addSubview:_optionListTableView];
+    [self addSubview:self.optionListTableView];
 
     [self.optionListTableView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
     [self.optionListTableView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
     [self.optionListTableView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
     [self.optionListTableView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
+	
+	[self.optionListTableView registerClass:[DashOptionTableViewCell class] forCellReuseIdentifier:@"optionListItemCell"];
+	self.optionListTableView.dataSource = self;
 }
 
 - (void)onBind:(DashItem *)item context:(Dashboard *)context {
 	[super onBind:item context:context];
 	
-	DashOptionItem *optionItem = (DashOptionItem *) item;
+	self.optionItem = (DashOptionItem *) item;
+	if (self.detailView) {
+		self.optionListTableView.backgroundColor = self.backgroundColor;
+		if (!self.tableViewInitialized) {
+			self.context = context;
+			[self.optionListTableView reloadData];
+		}
+	} else {
+		//TODO:
+	}
 	
-	NSString *txt = optionItem.content;
+
+	NSString *txt = self.optionItem.content;
 	DashOptionListItem *e;
 	NSString *imageURI;
-	for(int i = 0; i < optionItem.optionList.count; i++) {
-		e = [optionItem.optionList objectAtIndex:i];
+	for(int i = 0; i < self.optionItem.optionList.count; i++) {
+		e = [self.optionItem.optionList objectAtIndex:i];
 		if ([e.value isEqualToString:txt]) {
 			imageURI = e.imageURI;
 			if ([Utils isEmpty:e.displayValue]) {
@@ -98,7 +121,7 @@
 	UIImage *image;
 	if (imageURI.length > 0) {
 		//TODO: caching
-		image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL];
+		image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL renderingModeAlwaysTemplate:NO];
 	}
 	if (image) {
 		self.valueImageView.contentMode = UIViewContentModeScaleAspectFit;
@@ -125,7 +148,7 @@
 	}
 	
 	/* text color */
-	int64_t color = optionItem.textcolor;
+	int64_t color = self.optionItem.textcolor;
 	if (color == DASH_COLOR_OS_DEFAULT) {
 		UIColor *defaultLabelColor = [UILabel new].textColor;
 		[self.valueLabel setTextColor:defaultLabelColor];
@@ -135,6 +158,25 @@
 	
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
 	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return self.optionItem.optionList.count;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+	DashOptionTableViewCell *cell = (DashOptionTableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"optionListItemCell"];
+	DashOptionListItem *listItem = self.optionItem.optionList[indexPath.row];
+	BOOL selected = self.optionItem.content.length > 0 && [self.optionItem.content isEqualToString:listItem.value];
+	
+	[cell setBackgroundColor:[UIColor clearColor]]; // use cell background
+	
+	[cell onBind:listItem context:self.context selected:selected];
+	return cell;
 }
 
 @end

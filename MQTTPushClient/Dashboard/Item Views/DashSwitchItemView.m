@@ -29,6 +29,15 @@
     return self;
 }
 
+- (instancetype)initDetailViewWithFrame:(CGRect)frame {
+	self = [super initDetailViewWithFrame:frame];
+	if (self) {
+		[self initSwitchView];
+		[self initInputElements];
+	}
+	return self;
+}
+
 -(void) initSwitchView {
 	self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     self.button.translatesAutoresizingMaskIntoConstraints = NO;    
@@ -38,6 +47,10 @@
     [self.button.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16.0].active = YES;
     [self.button.topAnchor constraintEqualToAnchor:self.topAnchor constant:16.0].active = YES;
     [self.button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16.0].active = YES;
+}
+
+- (void)initInputElements {
+	[self.button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
@@ -116,10 +129,6 @@
 	}
 	
 
-}
-
-- (void)initInputElements {
-	[self.button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 
 -(void)buttonClicked {
