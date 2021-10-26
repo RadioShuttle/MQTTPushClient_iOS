@@ -42,11 +42,18 @@
 	self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     self.button.translatesAutoresizingMaskIntoConstraints = NO;    
     [self addSubview:self.button];
+	
+	CGFloat margin;
+	if (self.detailView) {
+		margin = 42.0;
+	} else {
+		margin = 16.0;
+	}
     
-    [self.button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:16.0].active = YES;
-    [self.button.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16.0].active = YES;
-    [self.button.topAnchor constraintEqualToAnchor:self.topAnchor constant:16.0].active = YES;
-    [self.button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-16.0].active = YES;
+    [self.button.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:margin].active = YES;
+    [self.button.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-margin].active = YES;
+    [self.button.topAnchor constraintEqualToAnchor:self.topAnchor constant:margin].active = YES;
+    [self.button.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-margin].active = YES;
 }
 
 - (void)initInputElements {
@@ -76,15 +83,16 @@
 	
 	UIColor *color;
 	
-	if (buttonBGColor == DASH_COLOR_CLEAR) {
-		color = nil;
-	} else if (buttonBGColor == DASH_COLOR_OS_DEFAULT) {
-		UIColor *textColor = [UIButton new].backgroundColor;
-		color = textColor;
+	if (buttonBGColor == DASH_COLOR_CLEAR || buttonBGColor == DASH_COLOR_OS_DEFAULT) {
+		color = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR); //TODO: dark mode;
 	} else {
 		color = UIColorFromRGB(buttonBGColor);
 	}
 	[self.button setBackgroundColor:color];
+	
+	/* set highlight color/image */
+	UIImage *highlightColorImg = [DashUtils imageWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.3f]];
+	[self.button setBackgroundImage:highlightColorImg forState:UIControlStateHighlighted];
 	
 	UIImage *image;
 	if (imageURI.length > 0) {
@@ -117,6 +125,7 @@
 		self.button.imageEdgeInsets = UIEdgeInsetsMake(16,16,16,16);
 		self.button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
 		[self.button setImage:image forState:UIControlStateNormal];
+		
 		self.button.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
 		[self.button setTitle:nil forState:UIControlStateNormal];
 		[self.button setTintColor:color];
