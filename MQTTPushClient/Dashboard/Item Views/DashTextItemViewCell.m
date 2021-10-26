@@ -15,12 +15,9 @@
 @implementation DashTextItemViewCell
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
+	[super onBind:item context:context label:self.textItemLabel];
 	
 	[self.textItemContainer onBind:item context:context];
-
-	/* label */
-	[self.textItemLabel setText:item.label];
 }
 
 @end

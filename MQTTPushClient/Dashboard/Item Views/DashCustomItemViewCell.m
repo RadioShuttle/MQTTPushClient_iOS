@@ -10,7 +10,6 @@
 @implementation DashCustomItemViewCell
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
 	self.dashboard = context;
 	
 	if (context.cachedCustomViewsVersion != context.localVersion) {
@@ -65,8 +64,8 @@
 	};
 	[self.webviewContainer onBind:item context:context];
 
-	/* label */
-	[self.customItemLabel setText:item.label];
+	[super onBind:item context:context label:self.customItemLabel];
+
 }
 
 -(instancetype)initWithCoder:(NSCoder *)aDecoder {
@@ -103,6 +102,7 @@
 	
 	self.webviewContainer = cv;
 	self.customItemLabel = label;
+	self.labelConstraintSet = NO;
 }
 	
 

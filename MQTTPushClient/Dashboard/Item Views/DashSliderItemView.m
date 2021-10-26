@@ -41,6 +41,7 @@
 }
 
 -(void) initViews {
+	[super addBackgroundImageView];
 
     /* label */
     self.valueLabel = [[UILabel alloc] init];

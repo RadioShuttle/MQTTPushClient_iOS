@@ -790,6 +790,7 @@
 		2ADBE454213D7515000664D3 /* MQTTPushClient */ = {
 			isa = PBXGroup;
 			children = (
+				2171417B26E7527700BD7969 /* Utilities */,
 				84F4B46D223294C100197005 /* Scripts */,
 				84095D092190827300CFC1DB /* ca-certificate.der */,
 				2AE87DBB214A5F2B0057935D /* MQTTPushClient.entitlements */,
@@ -869,7 +870,6 @@
 				84F4B4702232955F00197005 /* ExampleSplit.js */,
 				84F4B4742232966100197005 /* ExampleBinary.js */,
 				84F4B476223296C900197005 /* ExampleHexdump.js */,
-				2171417B26E7527700BD7969 /* Utilities */,
 				84F4B47D2232BC5D00197005 /* ExampleScripts.plist */,
 			);
 			path = Scripts;

@@ -47,13 +47,13 @@
 	self.valueImageView.contentMode = UIViewContentModeScaleAspectFit;
 	self.valueImageView.translatesAutoresizingMaskIntoConstraints = NO;
 	[self addSubview:self.valueImageView];
+	
 	[self.valueImageView.leadingAnchor constraintEqualToAnchor:self.leadingAnchor constant:0.0].active = YES;
 	[self.valueImageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
 	[self.valueImageView.topAnchor constraintEqualToAnchor:self.topAnchor constant:0.0].active = YES;
 	[self.valueImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
-	
-	
-    self.valueLabel = [[UILabel alloc] init];
+
+	self.valueLabel = [[UILabel alloc] init];
     // self.valueLabel.textColor = [UIColor blackColor];
     self.valueLabel.lineBreakMode = NSLineBreakByTruncatingTail;
     [self.valueLabel setTextAlignment:NSTextAlignmentCenter];
@@ -92,72 +92,72 @@
 	
 	self.optionItem = (DashOptionItem *) item;
 	if (self.detailView) {
+		/* detail view */
 		self.optionListTableView.backgroundColor = self.backgroundColor;
 		if (!self.tableViewInitialized) {
 			self.context = context;
 			[self.optionListTableView reloadData];
 		}
 	} else {
-		//TODO:
-	}
-	
-
-	NSString *txt = self.optionItem.content;
-	DashOptionListItem *e;
-	NSString *imageURI;
-	for(int i = 0; i < self.optionItem.optionList.count; i++) {
-		e = [self.optionItem.optionList objectAtIndex:i];
-		if ([e.value isEqualToString:txt]) {
-			imageURI = e.imageURI;
-			if ([Utils isEmpty:e.displayValue]) {
-				txt = e.value;
-			} else {
-				txt = e.displayValue;
+		/* collection cell view */
+		
+		NSString *txt = self.optionItem.content;
+		DashOptionListItem *e;
+		NSString *imageURI;
+		for(int i = 0; i < self.optionItem.optionList.count; i++) {
+			e = [self.optionItem.optionList objectAtIndex:i];
+			if ([e.value isEqualToString:txt]) {
+				imageURI = e.imageURI;
+				if ([Utils isEmpty:e.displayValue]) {
+					txt = e.value;
+				} else {
+					txt = e.displayValue;
+				}
+				break;
 			}
-			break;
 		}
-	}
-	
-	UIImage *image;
-	if (imageURI.length > 0) {
-		//TODO: caching
-		image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL renderingModeAlwaysTemplate:NO];
-	}
-	if (image) {
-		self.valueImageView.contentMode = UIViewContentModeScaleAspectFit;
-		[self.valueImageView setImage:image];
-		/* tint internal image with default label color */
-		UIColor *tintColor;
-		if ([DashUtils isInternalResource:imageURI]) {
-			tintColor = [UILabel new].textColor;
+		
+		UIImage *image;
+		if (imageURI.length > 0) {
+			//TODO: caching
+			image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL renderingModeAlwaysTemplate:NO];
+		}
+		if (image) {
+			[self.valueImageView setImage:image];
+			/* tint internal image with default label color */
+			UIColor *tintColor;
+			if ([DashUtils isInternalResource:imageURI]) {
+				tintColor = [UILabel new].textColor;
+			} else {
+				tintColor = nil;
+			}
+			[self.valueImageView setTintColor:tintColor];
+			self.valueLabelTopConstraint.active = NO; // causes value label to be displayed at bottom
 		} else {
-			tintColor = nil;
+			[self.valueImageView setImage:nil];
+			self.valueLabelTopConstraint.active = YES;
 		}
-		[self.valueImageView setTintColor:tintColor];
-		self.valueLabelTopConstraint.active = NO; // causes value label to be displayed at bottom
-	} else {
-		[self.valueImageView setImage:nil];
-		self.valueLabelTopConstraint.active = YES;
+		
+		/* set value text label */
+		if (!txt) {
+			[self.valueLabel setText:@""];
+		} else {
+			[self.valueLabel setText:txt];
+		}
+		
+		/* text color */
+		int64_t color = self.optionItem.textcolor;
+		if (color == DASH_COLOR_OS_DEFAULT) {
+			UIColor *defaultLabelColor = [UILabel new].textColor;
+			[self.valueLabel setTextColor:defaultLabelColor];
+		} else {
+			[self.valueLabel setTextColor:UIColorFromRGB(color)];
+		}
+		
+		CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
+		self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
 	}
 	
-	/* set value text label */
-	if (!txt) {
-		[self.valueLabel setText:@""];
-	} else {
-		[self.valueLabel setText:txt];
-	}
-	
-	/* text color */
-	int64_t color = self.optionItem.textcolor;
-	if (color == DASH_COLOR_OS_DEFAULT) {
-		UIColor *defaultLabelColor = [UILabel new].textColor;
-		[self.valueLabel setTextColor:defaultLabelColor];
-	} else {
-		[self.valueLabel setTextColor:UIColorFromRGB(color)];
-	}
-	
-	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
-	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

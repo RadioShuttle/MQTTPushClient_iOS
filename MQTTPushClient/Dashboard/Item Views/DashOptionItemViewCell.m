@@ -9,11 +9,8 @@
 @implementation DashOptionItemViewCell
 
 - (void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
+	[super onBind:item context:context label:self.itemLabel];
 	
 	[self.itemContainer onBind:item context:context];
-	
-	/* label */
-	[self.itemLabel setText:item.label];
 }
 @end

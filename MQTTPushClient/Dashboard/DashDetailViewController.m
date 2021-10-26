@@ -61,7 +61,7 @@
 			for(int i = 0; i < optItem.optionList.count; i++) {
 				if ([self.dashItem.content isEqualToString:optItem.optionList[i].value]) {
 					NSIndexPath *idx = [NSIndexPath indexPathForRow:i inSection:0];
-					[optView.optionListTableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionMiddle animated:NO];
+					[optView.optionListTableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionTop animated:NO];
 					break;
 				}
 			}

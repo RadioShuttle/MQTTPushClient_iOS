@@ -11,10 +11,25 @@
 @implementation DashCollectionViewCell
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
+	[self onBind:item context:context label:nil];
+}
+
+-(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label {
+
+	if (!self.labelConstraintSet) {
+		/* get the height reserverd for label */
+		CGFloat height = self.bounds.size.height - self.bounds.size.width;
+		// label.translatesAutoresizingMaskIntoConstraints = NO;
+		[label.heightAnchor constraintEqualToConstant:height].active = YES;
+		self.labelConstraintSet = YES;
+	}
+	[label setText:item.label];
+
 	BOOL error1 = ![Utils isEmpty:item.error1];
 	BOOL error2 = ![Utils isEmpty:item.error2];
-
+	
 	[self showErrorInfo:error1 error2:error2];
+
 }
 
 /* Displays one or two error images, indicating java script errors */

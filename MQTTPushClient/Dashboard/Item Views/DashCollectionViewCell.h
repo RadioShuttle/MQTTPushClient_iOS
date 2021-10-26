@@ -14,10 +14,12 @@
 @property DashCircleBackroundView *backgroundView1;
 @property UIImageView *errorImageView2;
 @property DashCircleBackroundView *backgroundView2;
+@property BOOL labelConstraintSet;
 
 @property UIColor *labelColor;
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context;
+-(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label;
 
 -(void)showErrorInfo:(BOOL)error1 error2:(BOOL)error2;
 
