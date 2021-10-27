@@ -17,6 +17,7 @@
 /* holds the current value set with the slider */
 @property NSString *formattedSliderValue;
 @property NSNumberFormatter *formatter;
+@property NSNumberFormatter *formatterUS;
 
 /* similar to item.percent */
 @property BOOL displayPC;

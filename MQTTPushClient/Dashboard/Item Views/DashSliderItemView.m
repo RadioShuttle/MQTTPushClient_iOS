@@ -116,6 +116,15 @@
 -(void)onSliderValueChanged:(UISlider *)sliderCtrl {
 	self.formattedSliderValue = [self format:sliderCtrl.value * 100.0f percent:self.displayPC];
 	[self updateValueLabel];
+
+	DashSliderItem *item = (DashSliderItem *) [self.controller getItem];
+	if (item) {
+		double f = sliderCtrl.value / sliderCtrl.maximumValue;
+		double value = (item.range_max - item.range_min) * f + item.range_min;
+		NSString *formattedVal = [self.formatterUS stringFromNumber:@(value)];
+		NSData * data = [formattedVal dataUsingEncoding:NSUTF8StringEncoding];
+		[self.controller performSend:data queue:YES];
+	}
 }
 
 - (void)onBind:(DashItem *)item context:(Dashboard *)context {
@@ -132,6 +141,11 @@
 	[self.formatter setMaximumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
 	[self.formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
 	
+	self.formatterUS = [[NSNumberFormatter alloc] init];
+	[self.formatterUS setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
+	[self.formatterUS setMaximumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
+	[self.formatterUS setRoundingMode: NSNumberFormatterRoundHalfUp];
+
 	self.formattedValue = [self format:progress percent:sliderItem.percent];
 	
 	int64_t color = sliderItem.progresscolor;

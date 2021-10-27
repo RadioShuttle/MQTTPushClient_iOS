@@ -10,7 +10,7 @@
 #import "DashItemView.h"
 #import "DashCustomItemView.h"
 
-@interface DashDetailViewController : UIViewController <DashCustomViewContainer>
+@interface DashDetailViewController : UIViewController <DashCustomViewContainer, DashPublishController>
 
 @property DashItem *dashItem;
 @property Dashboard *dashboard;

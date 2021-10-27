@@ -190,6 +190,16 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	[tableView deselectRowAtIndexPath:indexPath animated:YES];
+	
+	DashOptionListItem *listItem = self.optionItem.optionList[indexPath.row];
+
+	BOOL selected = self.optionItem.content.length > 0 && [self.optionItem.content isEqualToString:listItem.value];
+	
+	/* if an option is already selected, a click does not deselect */
+	if (!selected) {
+		NSData * data = [(listItem.value == nil ? @"" : listItem.value) dataUsingEncoding:NSUTF8StringEncoding];
+		[self.controller performSend:data queue:NO];
+	}
 }
 
 @end

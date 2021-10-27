@@ -8,6 +8,11 @@
 #import "DashItem.h"
 #import "Dashboard.h"
 
+@protocol DashPublishController
+-(void) performSend:(NSData *)data queue:(BOOL)queue;
+-(DashItem *) getItem;
+@end
+
 @interface DashItemView : UIView
 
 @property UIImageView *backgroundImageView;
@@ -17,11 +22,14 @@
 /* true, if publish topic or script_p is set */
 @property BOOL publishEnabled;
 
+@property id<DashPublishController> controller;
+
 -(void)onBind:(DashItem *)item context:(Dashboard *)context;
 /* call this to add an empty ImageView to this view. this should be called before adding any other elements (beacuase of layering) */
 -(void)addBackgroundImageView;
 
 /* detail view constructor */
 - (instancetype)initDetailViewWithFrame:(CGRect)frame;
+
 
 @end

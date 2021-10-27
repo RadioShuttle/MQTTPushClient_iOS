@@ -108,9 +108,10 @@
     [self.valueLabel.bottomAnchor constraintEqualToAnchor:stackView.topAnchor constant:0.0].active = YES;   
 }
 
-- (void)submitButtonClicked:(UIButton*)button
-{
-    [self.valueLabel setText:self.inputTextField.text];
+- (void)submitButtonClicked:(UIButton*)button {
+    // [self.valueLabel setText:self.inputTextField.text];
+	NSData * data = [self.inputTextField.text dataUsingEncoding:NSUTF8StringEncoding];
+	[self.controller performSend:data queue:NO];
 }
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {

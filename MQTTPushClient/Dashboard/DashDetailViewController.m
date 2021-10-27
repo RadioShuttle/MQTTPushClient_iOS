@@ -47,6 +47,7 @@
 	[self updateErrorButtons];
 
 	if (self.dashItemView) {
+		self.dashItemView.controller = self;
 		[self.dashItemView onBind:self.dashItem context:self.dashboard];
 		[self.containerView addSubview:self.dashItemView];
 		[self.view bringSubviewToFront:self.containerView];
@@ -182,6 +183,15 @@
 	}
 	[self.view bringSubviewToFront:v];
 
+}
+
+-(void)performSend:(NSData *)data queue:(BOOL)queue {
+	NSLog(@"publish for item %@, value: %@", self.dashItem.label, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+	//TODO: implement
+}
+
+- (DashItem *)getItem {
+	return self.dashItem;
 }
 
 @end

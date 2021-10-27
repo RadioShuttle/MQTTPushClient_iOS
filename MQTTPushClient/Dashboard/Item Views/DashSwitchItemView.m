@@ -8,6 +8,7 @@
 #import "DashSwitchItem.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
+#import "Utils.h"
 
 @implementation DashSwitchItemView
 
@@ -141,8 +142,21 @@
 }
 
 -(void)buttonClicked {
-	//TODO
-	NSLog(@"publish ... ");
+	DashSwitchItem *item = (DashSwitchItem *) [self.controller getItem];
+	if (item) {
+		NSString *t;
+		if (![Utils isEmpty:item.valOff]) {
+			if ([item isOnState]) {
+				t = item.valOff;
+			} else {
+				t = item.val;
+			}
+		} else {
+			t = item.val;
+		}
+		NSData * data = [(t == nil ? @"" : t) dataUsingEncoding:NSUTF8StringEncoding];
+		[self.controller performSend:data queue:NO];
+	}
 }
 
 @end
