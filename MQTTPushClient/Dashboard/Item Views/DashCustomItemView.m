@@ -384,9 +384,12 @@ static int32_t handlerID = 0;
 				/* hex */
 				NSString *messageHex = [message.body helStringForKey:@"msg"];
 				payload = [messageHex dataFromHex];
-			} else {
+			}
+			
+			if (payload == nil) {
 				payload = [[NSData alloc] init];
 			}
+			
 			[self.dashView.controller performSend:topic data:payload retain:retain queue:NO];
 						
 			//TODO: remove code lines later:
