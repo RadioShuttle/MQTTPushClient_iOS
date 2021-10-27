@@ -8,7 +8,7 @@
 #import "DashItemView.h"
 #import "DashOptionItem.h"
 
-@interface DashOptionItemView : DashItemView <UITableViewDataSource>
+@interface DashOptionItemView : DashItemView <UITableViewDataSource, UITableViewDelegate>
 
 @property UILabel *valueLabel;
 @property UIImageView *valueImageView;

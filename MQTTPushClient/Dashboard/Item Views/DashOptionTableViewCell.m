@@ -91,21 +91,27 @@
 	[self.itemImageView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-16].active = YES;
 	[self.heightAnchor constraintGreaterThanOrEqualToConstant:40].active = YES;
 	
+	[self setSelectedBackgroundView:[[UIView alloc] init]];
+	[self.selectedBackgroundView setBackgroundColor:[UIColor darkGrayColor]];
+
 	[self bringSubviewToFront:self.label];
 }
 
-- (void)onBind:(DashOptionListItem *) optionListItem context:(Dashboard *)context selected:(BOOL)selected {
+- (void)onBind:(DashOptionListItem *) optionListItem context:(Dashboard *)context selected:(BOOL)selected textColor:(UIColor *)textColor {
 	NSString *displayText = optionListItem.displayValue;
 	if ([Utils isEmpty:optionListItem.imageURI] && [Utils isEmpty:optionListItem.displayValue]) {
 		displayText = optionListItem.value;
 	}
 	self.checkedImageView.hidden = !selected;
 	self.uncheckedImageView.hidden = selected;
+
+	UIColor *highlightColor = [textColor colorWithAlphaComponent:.5];
+	[self.selectedBackgroundView setBackgroundColor:highlightColor];
 	
 	/* text color */
-	UIColor *textColor = [UILabel new].textColor;
 	self.checkedImageView.tintColor = textColor;
 	self.uncheckedImageView.tintColor = textColor;
+	self.label.textColor = textColor;
 	
 	UIImage *image;
 	if (optionListItem.imageURI.length > 0) {

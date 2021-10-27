@@ -20,5 +20,5 @@
 @property NSLayoutConstraint *itemImageHeightCstr;
 @property NSLayoutConstraint *labelTopCstr;
 
-- (void)onBind:(DashOptionListItem *) optionListItem context:(Dashboard *)context selected:(BOOL)selected;
+- (void)onBind:(DashOptionListItem *) optionListItem context:(Dashboard *)context selected:(BOOL)selected textColor:(UIColor *)textColor;
 @end

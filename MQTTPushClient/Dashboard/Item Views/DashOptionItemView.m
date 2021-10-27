@@ -85,6 +85,7 @@
 	
 	[self.optionListTableView registerClass:[DashOptionTableViewCell class] forCellReuseIdentifier:@"optionListItemCell"];
 	self.optionListTableView.dataSource = self;
+	self.optionListTableView.delegate = self;
 }
 
 - (void)onBind:(DashItem *)item context:(Dashboard *)context {
@@ -174,9 +175,21 @@
 	BOOL selected = self.optionItem.content.length > 0 && [self.optionItem.content isEqualToString:listItem.value];
 	
 	[cell setBackgroundColor:[UIColor clearColor]]; // use cell background
+
+	int64_t color = self.optionItem.textcolor;
+	UIColor *textColor;
+	if (color == DASH_COLOR_OS_DEFAULT || color == DASH_COLOR_CLEAR) {
+		textColor = [[UILabel new] textColor];
+	} else {
+		textColor = UIColorFromRGB(color);
+	}
 	
-	[cell onBind:listItem context:self.context selected:selected];
+	[cell onBind:listItem context:self.context selected:selected textColor:textColor];
 	return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	[tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 @end
