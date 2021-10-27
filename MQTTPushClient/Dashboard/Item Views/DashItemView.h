@@ -10,6 +10,7 @@
 
 @protocol DashPublishController
 -(void) performSend:(NSData *)data queue:(BOOL)queue;
+-(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue;
 -(DashItem *) getItem;
 @end
 

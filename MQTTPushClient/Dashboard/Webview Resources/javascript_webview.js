@@ -4,7 +4,12 @@
  * Licensed under the Apache License, Version 2.0
  */
 
-_handlerID = 0;
+if (typeof MQTT === 'undefined') {
+	MQTT = new Object();
+}
+
+MQTT._handlerID = 0;
+MQTT._requestRunning = false;
 
 window.addEventListener('error', function (e) {
   var message = {
@@ -12,15 +17,11 @@ window.addEventListener('error', function (e) {
     url: e.filename,
     line: e.lineno,
     column: e.colno,
-	handlerID: _handlerID,
+    handlerID: MQTT._handlerID,
     error: JSON.stringify(e.error)
-  }
+  };
   window.webkit.messageHandlers.error.postMessage(message);
 });
-
-if (typeof MQTT === 'undefined') {
-	MQTT = new Object();
-}
 
 MQTT.log = function(msg) {
 	window.webkit.messageHandlers.log.postMessage(msg);
@@ -56,16 +57,19 @@ MQTT.hex2buf = function (hex) {
 
 MQTT.publish = function (topic, msg, retain) {
 	var requestStarted = false;
-	//TODO:
-	/*
-	if (typeof msg === 'string') {
-		requestStarted = MQTT._publishStr(topic, msg, retain === true);
-	} else if (msg instanceof ArrayBuffer) {
-		requestStarted = MQTT._publishHex(topic, MQTT.buf2hex(msg), retain === true);
-	} else {
-		throw "MQTT.publish(): arg msg must be of type String or ArrayBuffer";
+	if (!MQTT._requestRunning && topic && topic.length > 0) {
+		if (typeof msg === 'string') {
+			var message = {retain: retain === true, topic: topic, msg_str: msg};
+			window.webkit.messageHandlers.publish.postMessage(message);
+			MQTT._requestRunning = true;
+		} else if (msg instanceof ArrayBuffer) {
+			var message = {retain: retain === true, topic: topic, msg: MQTT.buf2hex(msg)};
+			window.webkit.messageHandlers.publish.postMessage(message);
+			MQTT._requestRunning = true;
+		} else {
+			throw "MQTT.publish(): arg msg must be of type String or ArrayBuffer";
+		}
 	}
-	 */
 	return requestStarted;
 };
 
@@ -112,7 +116,7 @@ MQTT.view.getBackgroundColor = function() {
 
 MQTT.view.setBackgroundColor = function(color) {
 	MQTT.view._background = color;
-	window.webkit.messageHandlers.setBackgroundColor.postMessage({handlerID: _handlerID, color: color});
+	window.webkit.messageHandlers.setBackgroundColor.postMessage({handlerID: MQTT._handlerID, color: color});
 };
 
 MQTT.view._subscribedTopic = '';

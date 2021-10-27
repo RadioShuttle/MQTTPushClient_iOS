@@ -96,6 +96,7 @@ static int32_t handlerID = 0;
 	if (!self.item) { // first call?
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"error"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
+		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"publish"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"setBackgroundColor"];
 		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
@@ -135,7 +136,7 @@ static int32_t handlerID = 0;
 		
 		/* add a unique handler ID */
 		self.item.handlerID = ++handlerID;
-		WKUserScript *handlerIDSkript = [[WKUserScript alloc] initWithSource:[NSString stringWithFormat:@"_handlerID = %d;", handlerID] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+		WKUserScript *handlerIDSkript = [[WKUserScript alloc] initWithSource:[NSString stringWithFormat:@"MQTT._handlerID = %d;", handlerID] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:handlerIDSkript];
 		
 		NSString *itemDataCode = [self buildItemDataCode];
@@ -229,6 +230,10 @@ static int32_t handlerID = 0;
 	return code;
 }
 
+-(NSString *)buildOnRequestFinishedCode {
+	return @"MQTT._requestRunning = false;";
+}
+
 -(void)addHistMessageToCode:(NSMutableString *)code message:(DashMessage *)message {
 	if (message) {
 		[code appendString:@"_addHistDataMsg("];
@@ -273,6 +278,7 @@ static int32_t handlerID = 0;
 -(void)dealloc {
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"error"];
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"log"];
+	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"publish"];
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"setBackgroundColor"];
 }
 
@@ -363,6 +369,31 @@ static int32_t handlerID = 0;
 					// [self notifyObserver:@"background"];
 				}
 			}
+		}
+	} else if ([message.name isEqualToString:@"publish"]) {
+		if ([message.body isKindOfClass:[NSDictionary class]]) {
+			NSString *topic = [message.body helStringForKey:@"topic"];
+			BOOL retain = [[message.body helNumberForKey:@"retain"] boolValue];
+
+			NSData *payload;
+			if ([message.body objectForKey:@"msg_str"]) {
+				NSString *messageStr = [message.body helStringForKey:@"msg_str"];
+				payload = [messageStr dataUsingEncoding:NSUTF8StringEncoding];
+				
+			} else if ([message.body objectForKey:@"msg"]) {
+				/* hex */
+				NSString *messageHex = [message.body helStringForKey:@"msg"];
+				payload = [messageHex dataFromHex];
+			} else {
+				payload = [[NSData alloc] init];
+			}
+			[self.dashView.controller performSend:topic data:payload retain:retain queue:NO];
+						
+			//TODO: remove code lines later:
+			/*
+			NSString *code = [self.dashView buildOnRequestFinishedCode];
+			[self.dashView.webView evaluateJavaScript:code completionHandler:nil];
+			*/
 		}
 	}
 }

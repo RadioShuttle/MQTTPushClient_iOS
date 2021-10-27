@@ -186,7 +186,11 @@
 }
 
 -(void)performSend:(NSData *)data queue:(BOOL)queue {
-	NSLog(@"publish for item %@, value: %@", self.dashItem.label, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
+	[self performSend:self.dashItem.topic_p data:data retain:self.dashItem.retain_ queue:queue];
+}
+
+-(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue {
+	NSLog(@"publish for item %@, topic: %@, retain: %i, payload: %@", self.dashItem.label, topic, retain, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
 	//TODO: implement
 }
 
