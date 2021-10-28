@@ -55,6 +55,7 @@
 		}
 	}
 	// NSLog(@"Item: %@ %p", item.label, self.webviewContainer);
+	self.webviewContainer.container = self;
 	[self.dashboard.cachedCustomViews setObject:self.webviewContainer forKey:@(item.id_)];
 	
 	/* end webview replacement */
@@ -105,7 +106,6 @@
 	self.labelConstraintSet = NO;
 }
 	
-
 - (void)onUpdate:(DashCustomItem *)item what:(NSString *)what {
 	if ([what isEqualToString:@"error"]) {
 		BOOL error1 = ![Utils isEmpty:item.error1];

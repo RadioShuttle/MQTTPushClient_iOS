@@ -31,6 +31,8 @@
 @property Account *account;
 
 @property BOOL detached;
+@property NSNumberFormatter *numberFormatter;
+@property (weak) id<DashCustomViewContainer> container;
 
 -(void)showProgressBar;
 -(void)hideProgressBar;
@@ -39,7 +41,7 @@
 @interface DashWebViewHandler : NSObject <WKURLSchemeHandler, WKNavigationDelegate, WKScriptMessageHandler>
 
 -(instancetype)initWithView:(DashCustomItemView *)view;
-
+- (void)onDashItemPropertyChanged:(NSNotification *)notif;
 @property (weak) DashCustomItemView* dashView;
 @property (weak) NSURL* userDataDir;
 @end

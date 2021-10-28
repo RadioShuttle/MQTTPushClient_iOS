@@ -15,8 +15,6 @@
 
 @implementation DashCustomItemView
 
-static int32_t handlerID = 0;
-
 -(instancetype)initWithCoder:(NSCoder *)coder {
 	self = [super initWithCoder:coder];
 	if (self) {
@@ -42,6 +40,9 @@ static int32_t handlerID = 0;
 }
 
 -(void) initWebView {
+	self.numberFormatter = [[NSNumberFormatter alloc] init];
+	self.numberFormatter.numberStyle = NSNumberFormatterDecimalStyle;
+	
 	WKWebViewConfiguration *c = [[WKWebViewConfiguration alloc] init];
 	
 	self.handler = [[DashWebViewHandler alloc] initWithView:self];
@@ -99,6 +100,9 @@ static int32_t handlerID = 0;
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"publish"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"setBackgroundColor"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"setUserData"];
+		
+		[[NSNotificationCenter defaultCenter] addObserver:self.handler selector:@selector(onDashItemPropertyChanged:) name:@"DashItemPropertyUpdate" object:nil];
+
 		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
 		load = YES;
@@ -106,7 +110,7 @@ static int32_t handlerID = 0;
 	} else if (item == self.item) {
 		/* message update */
 	} else {
-		/* view has been reused */
+		/* view is being reused */
 		[self.webView.configuration.userContentController removeAllUserScripts];
 		self.contentLoaded = NO;
 		self.lastHistoricalMsg = nil;
@@ -135,10 +139,9 @@ static int32_t handlerID = 0;
 		WKUserScript *dashLibSkript = [[WKUserScript alloc] initWithSource:dashLibStr injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
 		[self.webView.configuration.userContentController addUserScript:dashLibSkript];
 		
-		/* add a unique handler ID */
-		self.item.handlerID = ++handlerID;
-		WKUserScript *handlerIDSkript = [[WKUserScript alloc] initWithSource:[NSString stringWithFormat:@"MQTT._handlerID = %d;", handlerID] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
-		[self.webView.configuration.userContentController addUserScript:handlerIDSkript];
+		/* add dashboard version ID */
+		WKUserScript *versionIDSkript = [[WKUserScript alloc] initWithSource:[NSString stringWithFormat:@"MQTT._versionID = '%llu';", context.localVersion] injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
+		[self.webView.configuration.userContentController addUserScript:versionIDSkript];
 		
 		NSString *itemDataCode = [self buildItemDataCode];
 		WKUserScript *itemDataSkript = [[WKUserScript alloc] initWithSource:itemDataCode injectionTime:WKUserScriptInjectionTimeAtDocumentStart forMainFrameOnly:YES];
@@ -294,6 +297,8 @@ static int32_t handlerID = 0;
 }
 
 -(void)dealloc {
+	// [[NSNotificationCenter defaultCenter] removeObserver:self];
+	
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"error"];
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"log"];
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"publish"];
@@ -364,44 +369,46 @@ static int32_t handlerID = 0;
 
 /* script message handler */
 -(void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
-	if ([message.name isEqualToString:@"error"]) {
-		[self handleWebviewError:message.body];
-	} else if ([message.name isEqualToString:@"log"]) {
+	if ([message.name isEqualToString:@"log"]) {
 		NSLog(@"%@", message.body);
-	} else if ([message.name isEqualToString:@"setBackgroundColor"]) {
-		if ([message.body isKindOfClass:[NSDictionary class]]) {
-			uint32_t handlerID = [[((NSDictionary *) message.body) helNumberForKey:@"handlerID"] unsignedIntValue];
-			if (self.dashView.item.handlerID == handlerID) {
-				int64_t color =[[((NSDictionary *) message.body) helNumberForKey:@"color"] longLongValue];
-				self.dashView.item.background = color;
-				if (color == DASH_COLOR_OS_DEFAULT) {
-					color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
-				}
-				/* update this views background color */
-				[self.dashView setBackgroundColor:UIColorFromRGB(color)];
-				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
-				if ([[[self.dashView superview] superview] conformsToProtocol:@protocol(DashCustomViewContainer)]) {
-					id<DashCustomViewContainer> p = (id<DashCustomViewContainer>) [[self.dashView superview] superview];
-					[p onUpdate:self.dashView.item what:@"background"];
-					/* notify observer in case another view needs this info */
-					//TODO: check
-					// [self notifyObserver:@"background"];
-				}
+	} else if ([message.body isKindOfClass:[NSDictionary class]] && [self isValidTarget:(NSDictionary *) message.body]) {
+		NSDictionary * dict = (NSDictionary *) message.body;
+		if ([message.name isEqualToString:@"error"]) {
+			
+			/* handle error */
+			NSString *message = [dict helStringForKey:@"message"];
+			NSNumber *line = [dict helNumberForKey:@"line"];
+			NSString * errorMsg = [NSString stringWithFormat:@"%@, line: %d", message, [line intValue]];
+			/* error already reported ?*/
+			if (![errorMsg isEqualToString:self.dashView.item.error1]) {
+				self.dashView.item.error1 = errorMsg;
+				[self.dashView.container onUpdate:self.dashView.item what:@"error"];
+				[self notifyObserver:@"error"];
 			}
-		}
-	} else if ([message.name isEqualToString:@"publish"]) {
-		if ([message.body isKindOfClass:[NSDictionary class]]) {
-			NSString *topic = [message.body helStringForKey:@"topic"];
-			BOOL retain = [[message.body helNumberForKey:@"retain"] boolValue];
-
+			
+		} else if ([message.name isEqualToString:@"setBackgroundColor"]) {
+			int64_t color =[[dict helNumberForKey:@"color"] longLongValue];
+			self.dashView.item.background = color;
+			if (color == DASH_COLOR_OS_DEFAULT) {
+				color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
+			}
+			/* update this views background color */
+			[self.dashView setBackgroundColor:UIColorFromRGB(color)];
+			[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+			/* notify observer in case another view needs this info */
+			[self notifyObserver:@"background"];
+		} else if ([message.name isEqualToString:@"publish"]) {
+			NSString *topic = [dict helStringForKey:@"topic"];
+			BOOL retain = [[dict helNumberForKey:@"retain"] boolValue];
+			
 			NSData *payload;
-			if ([message.body objectForKey:@"msg_str"]) {
-				NSString *messageStr = [message.body helStringForKey:@"msg_str"];
+			if ([dict objectForKey:@"msg_str"]) {
+				NSString *messageStr = [dict helStringForKey:@"msg_str"];
 				payload = [messageStr dataUsingEncoding:NSUTF8StringEncoding];
 				
 			} else if ([message.body objectForKey:@"msg"]) {
 				/* hex */
-				NSString *messageHex = [message.body helStringForKey:@"msg"];
+				NSString *messageHex = [dict helStringForKey:@"msg"];
 				payload = [messageHex dataFromHex];
 			}
 			
@@ -410,58 +417,71 @@ static int32_t handlerID = 0;
 			}
 			
 			[self.dashView.controller performSend:topic data:payload retain:retain queue:NO];
-						
-			//TODO: remove code lines later:
-			/*
-			NSString *code = [self.dashView buildOnRequestFinishedCode];
-			[self.dashView.webView evaluateJavaScript:code completionHandler:nil];
-			*/
-		}
-	} else if ([message.name isEqualToString:@"setUserData"]) {
-		NSLog(@"user data: %@", message.body);
-		NSMutableDictionary *dict;
-		if (!self.dashView.item.userData) {
-			dict = [NSMutableDictionary new];
-			self.dashView.item.userData = dict;
-		} else {
-			dict = (NSMutableDictionary *) self.dashView.item.userData;
-		}
-		[dict setObject:message.body forKey:@"jsonStr"];
-	}
-}
-
--(void)handleWebviewError:(NSObject *)errorDict {
-	/* build error object */
-	if ([errorDict isKindOfClass:[NSDictionary class]]) {
-		uint32_t handlerID = [[((NSDictionary *) errorDict) helNumberForKey:@"handlerID"] unsignedIntValue];
-		NSString *message = [((NSDictionary *) errorDict) helStringForKey:@"message"];
-		NSNumber *line = [((NSDictionary *) errorDict) helNumberForKey:@"line"];
-		NSString * errorMsg = [NSString stringWithFormat:@"%@, line: %d", message, [line intValue]];
-		/* error already reported ?*/
-		if (handlerID == self.dashView.item.handlerID /* && ![errorMsg isEqualToString:self.dashView.item.error1] */) {
-			self.dashView.item.error1 = errorMsg;
-			// [self.dashView.parentContainer onUpdate:self.dashView.item what:@"error"]; //TODO
-			if ([[[self.dashView superview] superview] conformsToProtocol:@protocol(DashCustomViewContainer)]) {
-				id<DashCustomViewContainer> p = (id<DashCustomViewContainer>) [[self.dashView superview] superview];
-				[p onUpdate:self.dashView.item what:@"error"];
+			
+		} else if ([message.name isEqualToString:@"setUserData"]) {
+			NSString *jsonStr = [dict helStringForKey:@"jsonStr"];
+			if (jsonStr) {
+				NSMutableDictionary *d;
+				if (!self.dashView.item.userData) {
+					d = [NSMutableDictionary new];
+					self.dashView.item.userData = d;
+				} else {
+					d = (NSMutableDictionary *) self.dashView.item.userData;
+				}
+				[d setObject:message.body forKey:@"jsonStr"];
 				/* notify observer in case another view needs this info */
-				//TODO: check
-				// [self notifyObserver:@"background"];
+				[self notifyObserver:@"userdata"];
 			}
 		}
 	}
 }
 
+-(BOOL)isValidTarget:(NSDictionary *)dict {
+	NSString *versionStr = [((NSDictionary *) dict) helStringForKey:@"versionID"];
+	NSNumber *number = [self.dashView.numberFormatter numberFromString:versionStr];
+	uint64_t versionID = [number unsignedLongLongValue];
+	return versionID == self.dashView.dashVersion;
+}
+
 -(void)notifyObserver:(NSString *)updateProperty {
 	/* notify observer */
 	NSMutableDictionary *userInfo = [NSMutableDictionary new];
-	// [userInfo setObject:[NSNumber numberWithUnsignedLongLong:self.dashView.dashVersion] forKey:@"version"];
+	[userInfo setObject:[NSNumber numberWithUnsignedLongLong:self.dashView.dashVersion] forKey:@"versionID"];
 	[userInfo setObject:[NSNumber numberWithUnsignedInt:self.dashView.item.id_] forKey:@"item_id"];
 	[userInfo setObject:[NSNumber numberWithBool:self.dashView.detailView] forKey:@"detail_view"];
 	[userInfo setObject:updateProperty forKey:@"updated_property"];
 	
-	[[NSNotificationCenter defaultCenter] postNotificationName:@"DashItemPropertyUpdate" object:nil userInfo:userInfo];
+	[[NSNotificationCenter defaultCenter] postNotificationName:@"DashItemPropertyUpdate" object:self userInfo:userInfo];
 	
+}
+
+- (void)onDashItemPropertyChanged:(NSNotification *)notif {
+	if (notif.object != self) { // target != source
+		NSString *prop = [notif.userInfo helStringForKey:@"updated_property"];
+		uint64_t version = [[notif.userInfo helNumberForKey:@"versionID"] unsignedLongLongValue];
+		uint32_t id_ = [[notif.userInfo helNumberForKey:@"item_id"] unsignedIntValue];
+		/*
+		 * Example:
+		 * A detail view might change background color or update user data.
+		 * This instance (cell view in collection view) must update its view and item data
+		 * passed to the webview!
+		 */
+		if (version == self.dashView.dashVersion && id_ == self.dashView.item.id_) {
+			NSLog(@"Dash item property changed %@", prop);
+			
+			if ([prop isEqualToString:@"background"]) {
+				uint64_t color = self.dashView.item.background;
+				if (color == DASH_COLOR_OS_DEFAULT) {
+					color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
+				}
+				/* update this views background color */
+				[self.dashView setBackgroundColor:UIColorFromRGB(color)];
+				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+			} else if ([prop isEqualToString:@"error"]) {
+				[self.dashView.container onUpdate:self.dashView.item what:@"error"];
+			}
+		}
+	}
 }
 
 @end

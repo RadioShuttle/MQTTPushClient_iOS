@@ -10,14 +10,14 @@
 #import "DashItemView.h"
 #import "DashCustomItemView.h"
 
-@interface DashDetailViewController : UIViewController <DashCustomViewContainer, DashPublishController>
+@interface DashDetailViewController : UIViewController <DashPublishController, DashCustomViewContainer>
 
 @property DashItem *dashItem;
 @property Dashboard *dashboard;
 
 @property BOOL invalid;
 
-@property (weak, nonatomic) IBOutlet UIBarButtonItem *errorButton1;
+@property (strong, nonatomic) IBOutlet UIBarButtonItem *errorButton1;
 @property (strong, nonatomic) IBOutlet UIBarButtonItem *errorButton2;
 @property (strong, nonatomic) IBOutlet UINavigationItem *toolbarNavigationItem;
 @property (weak, nonatomic) IBOutlet UIView *errorView;

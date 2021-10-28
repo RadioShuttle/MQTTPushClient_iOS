@@ -8,7 +8,7 @@ if (typeof MQTT === 'undefined') {
 	MQTT = new Object();
 }
 
-MQTT._handlerID = 0;
+MQTT._versionID = '0';
 MQTT._requestRunning = false;
 
 window.addEventListener('error', function (e) {
@@ -17,7 +17,7 @@ window.addEventListener('error', function (e) {
     url: e.filename,
     line: e.lineno,
     column: e.colno,
-    handlerID: MQTT._handlerID,
+    versionID: MQTT._versionID,
     error: JSON.stringify(e.error)
   };
   window.webkit.messageHandlers.error.postMessage(message);
@@ -59,12 +59,12 @@ MQTT.publish = function (topic, msg, retain) {
 	var requestStarted = false;
 	if (!MQTT._requestRunning && topic && topic.length > 0) {
 		if (typeof msg === 'string') {
-			var message = {retain: retain === true, topic: topic, msg_str: msg};
+			var message = {retain: retain === true, topic: topic, msg_str: msg, versionID: MQTT._versionID};
 			window.webkit.messageHandlers.publish.postMessage(message);
 			MQTT._requestRunning = true;
 			requestStarted = true;
 		} else if (msg instanceof ArrayBuffer) {
-			var message = {retain: retain === true, topic: topic, msg: MQTT.buf2hex(msg)};
+			var message = {retain: retain === true, topic: topic, msg: MQTT.buf2hex(msg), versionID: MQTT._versionID};
 			window.webkit.messageHandlers.publish.postMessage(message);
 			MQTT._requestRunning = true;
 			requestStarted = true;
@@ -118,7 +118,7 @@ MQTT.view.getBackgroundColor = function() {
 
 MQTT.view.setBackgroundColor = function(color) {
 	MQTT.view._background = color;
-	window.webkit.messageHandlers.setBackgroundColor.postMessage({handlerID: MQTT._handlerID, color: color});
+	window.webkit.messageHandlers.setBackgroundColor.postMessage({versionID: MQTT._versionID, color: color});
 };
 
 MQTT.view._subscribedTopic = '';
@@ -132,7 +132,7 @@ MQTT.view.setUserData = function(data) {
 	if (jsonStr.length > 1048576) {
 		throw "User data is limited to 1 MB.";
 	}
-	window.webkit.messageHandlers.setUserData.postMessage(jsonStr);
+	window.webkit.messageHandlers.setUserData.postMessage({versionID: MQTT._versionID, jsonStr: jsonStr});
 }
 MQTT.view.getUserData = function() {
 	return MQTT.view._userData;

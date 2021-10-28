@@ -32,7 +32,7 @@
 		UIImage *backgroundImage = [DashUtils loadImageResource:item.background_uri userDataDir:context.account.cacheURL];
 		[self.backgroundImageView setImage:backgroundImage];
 	}
-	
+	self.dashVersion = context.localVersion;
 	self.publishEnabled = !([Utils isEmpty:item.topic_p] && [Utils isEmpty:item.script_p]);
 }
 
