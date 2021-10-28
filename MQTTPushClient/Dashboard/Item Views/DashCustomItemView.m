@@ -98,6 +98,7 @@ static int32_t handlerID = 0;
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"log"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"publish"];
 		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"setBackgroundColor"];
+		[self.webView.configuration.userContentController addScriptMessageHandler:self.handler name:@"setUserData"];
 		self.account = context.account;
 		self.handler.userDataDir = context.account.cacheURL;
 		load = YES;
@@ -206,7 +207,24 @@ static int32_t handlerID = 0;
 	[itemDataCode appendString:enc];
 	[itemDataCode appendString:@"');"];
 	
+	/* user data */
+	[itemDataCode appendString:[self buildUserDataCode]];
+
 	return itemDataCode;
+}
+
+-(NSString *)buildUserDataCode {
+	NSString * val = [self.item.userData helStringForKey:@"jsonStr"];
+	if (!val) {
+		val = @"null";
+	}
+	NSMutableString *code = [NSMutableString new];
+	[code appendString:@"MQTT.view._userData = JSON.parse(decodeURIComponent('"];
+	NSString *enc = [self urlEnc:val];
+	[code appendString:enc];
+	[code appendString:@"'));"];
+	
+	return code;
 }
 
 -(NSString *)buildOnMqttMessageCode {
@@ -280,6 +298,7 @@ static int32_t handlerID = 0;
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"log"];
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"publish"];
 	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"setBackgroundColor"];
+	[self.webView.configuration.userContentController removeScriptMessageHandlerForName:@"setUserData"];
 }
 
 @end
@@ -398,6 +417,16 @@ static int32_t handlerID = 0;
 			[self.dashView.webView evaluateJavaScript:code completionHandler:nil];
 			*/
 		}
+	} else if ([message.name isEqualToString:@"setUserData"]) {
+		NSLog(@"user data: %@", message.body);
+		NSMutableDictionary *dict;
+		if (!self.dashView.item.userData) {
+			dict = [NSMutableDictionary new];
+			self.dashView.item.userData = dict;
+		} else {
+			dict = (NSMutableDictionary *) self.dashView.item.userData;
+		}
+		[dict setObject:message.body forKey:@"jsonStr"];
 	}
 }
 

@@ -62,10 +62,12 @@ MQTT.publish = function (topic, msg, retain) {
 			var message = {retain: retain === true, topic: topic, msg_str: msg};
 			window.webkit.messageHandlers.publish.postMessage(message);
 			MQTT._requestRunning = true;
+			requestStarted = true;
 		} else if (msg instanceof ArrayBuffer) {
 			var message = {retain: retain === true, topic: topic, msg: MQTT.buf2hex(msg)};
 			window.webkit.messageHandlers.publish.postMessage(message);
 			MQTT._requestRunning = true;
+			requestStarted = true;
 		} else {
 			throw "MQTT.publish(): arg msg must be of type String or ArrayBuffer";
 		}
@@ -123,3 +125,15 @@ MQTT.view._subscribedTopic = '';
 MQTT.view.getSubscribedTopic = function() {
 	return MQTT.view._subscribedTopic;
 };
+
+MQTT.view._userData = null;
+MQTT.view.setUserData = function(data) {
+	var jsonStr = JSON.stringify(data);
+	if (jsonStr.length > 1048576) {
+		throw "User data is limited to 1 MB.";
+	}
+	window.webkit.messageHandlers.setUserData.postMessage(jsonStr);
+}
+MQTT.view.getUserData = function() {
+	return MQTT.view._userData;
+}
