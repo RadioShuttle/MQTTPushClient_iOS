@@ -428,7 +428,7 @@
 				} else {
 					d = (NSMutableDictionary *) self.dashView.item.userData;
 				}
-				[d setObject:message.body forKey:@"jsonStr"];
+				[d setObject:jsonStr forKey:@"jsonStr"];
 				/* notify observer in case another view needs this info */
 				[self notifyObserver:@"userdata"];
 			}
@@ -479,6 +479,8 @@
 				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
 			} else if ([prop isEqualToString:@"error"]) {
 				[self.dashView.container onUpdate:self.dashView.item what:@"error"];
+			} else if ([prop isEqualToString:@"userdata"]) {
+				[self.dashView.webView evaluateJavaScript:[self.dashView buildUserDataCode] completionHandler:nil];
 			}
 		}
 	}
