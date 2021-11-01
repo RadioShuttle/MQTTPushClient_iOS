@@ -6,17 +6,13 @@
 
 #import "DashCollectionViewController.h"
 #import "MessageListTableViewController.h"
-#import "DashDetailViewController.h"
 #import "Connection.h"
 #import "Utils.h"
 #import "MqttUtils.h"
 #import "DashConsts.h"
 #import "NSDictionary+HelSafeAccessors.h"
-
 #import "DashGroupItemViewCell.h"
-
 #import "DashTextItemViewCell.h"
-
 #import "DashTextItem.h"
 #import "DashCustomItem.h"
 #import "DashSwitchItem.h"
@@ -55,13 +51,13 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
-	self.registeredCustomViewTypes = 0;
 	[self.collectionView registerClass:[DashCustomItemViewCell class] forCellWithReuseIdentifier:reuseIDcustomItem];
 	
 	/* java script task executor */
 	self.jsOperationQueue = [[NSOperationQueue alloc] init];
 	[self.jsOperationQueue setMaxConcurrentOperationCount:DASH_MAX_CONCURRENT_JS_TASKS];
 	self.jsTaskQueue = [NSMutableArray new];
+	self.publishReqIDCounter = 0;
 	
 	/* deliver local stored messages*/
 	[self deliverMessages:[[NSDate alloc]initWithTimeIntervalSince1970:0] seqNo:0 notify:NO];
@@ -156,6 +152,13 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			} else if ([dashMessages count] > 0) {
 				/* deliver new messages */
 				[self deliverMessages:msgsSinceDate seqNo:msgsSinceSeqNo notify:YES];
+			}
+			
+		} else {
+			uint32_t publishRequestID = [[notif.userInfo helNumberForKey:@"publish_request"] unsignedIntValue];
+			if (publishRequestID > 0) {
+				//TODO: handle publish request result
+				NSLog(@"publish request: %d", publishRequestID);
 			}
 			
 		}
@@ -287,20 +290,61 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (void)onJavaScriptTaskFinished:(NSNotification *)notif {
 	uint64_t version = [[notif.userInfo helNumberForKey:@"version"] unsignedLongLongValue];
+	BOOL filterScript = ![[notif.userInfo helNumberForKey:@"output"] boolValue];
 	
 	/* still correct dashboard ? then deliver result */
 	if (version > 0 && version == self.dashboard.localVersion) {
 		uint32_t oid = [[notif.userInfo helNumberForKey:@"id"] unsignedIntValue];
 		
-		NSMutableArray * indexPaths = [NSMutableArray new];
-		if ([self.dashboard getItemForID:oid indexPathArr:indexPaths]) {
-			/* notify dash object about update */
-			[self.collectionView reloadItemsAtIndexPaths:indexPaths];
-			if (self.activeDetailView) {
-				[self.activeDetailView onNewMessage];
+		if (filterScript) {
+			NSMutableArray * indexPaths = [NSMutableArray new];
+			if ([self.dashboard getItemForID:oid indexPathArr:indexPaths]) {
+				/* notify dash object about update */
+				[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+				if (self.activeDetailView) {
+					[self.activeDetailView onNewMessage];
+				}
 			}
+		} else { // outputscript
+			NSLog(@"output javascript");
+			/* if an error occured notify observers */
+			//TODO: item in cell view and dashdetailview
+			
+			//TODO: call publish if no error occred and topic is not empty
+			/*
+			self.connection publishMessageForAccount:self.dashboard.account topic: payload:<#(NSData *)#> retain:<#(BOOL)#> userInfo:<#(NSDictionary *)#>
+			 */
 		}
 	}
+}
+
+
+- (uint32_t)publish:(NSString *)topic payload:(NSData *)payload retain:(BOOL)retain item:(DashItem *)item {
+	self.publishReqIDCounter++;
+	DashMessage *msg = [[DashMessage alloc] init];
+	msg.timestamp = [NSDate date];
+	msg.topic = topic;
+	msg.content = payload;
+	
+	/* If an outputscript exists, javascript must be executed. */
+	if (![Utils isEmpty:item.script_p]) {
+		DashJavaScriptTask *outputJS = [[DashJavaScriptTask alloc]initWithItem:item publishData:msg version:self.dashboard.localVersion account:self.account requestID:self.publishReqIDCounter];
+		
+		/* execute java script output script */
+		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+		dispatch_async(queue, ^{
+			[outputJS execute];
+		});
+	} else {
+		NSMutableDictionary *requestInfo = [NSMutableDictionary new];
+		[requestInfo setObject:[NSNumber numberWithUnsignedInt:self.publishReqIDCounter] forKey:@"publish_request"];
+		[requestInfo setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
+		[requestInfo setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
+		
+		[self.connection publishMessageForAccount:self.dashboard.account topic:topic payload:payload retain:retain userInfo:requestInfo];
+	}
+	
+	return self.publishReqIDCounter;
 }
 
 /* cancel java script tasks, which are in queue for long time*/
@@ -408,6 +452,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashDetailViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"DashDetailViewController"];
 	vc.dashItem = (DashItem *) item;
 	vc.dashboard = self.dashboard;
+	vc.controller = self;
 	self.activeDetailView = vc;
 	
 	vc.modalPresentationStyle = UIModalPresentationPopover;
@@ -453,7 +498,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 -(void)dealloc {
 }
-
 /*
  // Uncomment this method to specify if the specified item should be highlighted during tracking
  - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {

@@ -9,8 +9,9 @@
 #import "Dashboard.h"
 #import "DashItemView.h"
 #import "DashCustomItemView.h"
+#import "DashPublishController.h"
 
-@interface DashDetailViewController : UIViewController <DashPublishController, DashCustomViewContainer>
+@interface DashDetailViewController : UIViewController <DashDetailViewSendController, DashCustomViewContainer>
 
 @property DashItem *dashItem;
 @property Dashboard *dashboard;
@@ -34,4 +35,10 @@
 /* will be called, if a new message has arrived that matches dashItem.topic_s */
 -(void)onNewMessage;
 
+/* the publish id of the currently running request */
+@property uint32_t currentPublishID;
+/* if a publish command is already running a value might be queued until request finished */
+@property NSData *queue;
+
+@property id<DashPublishController> controller;
 @end

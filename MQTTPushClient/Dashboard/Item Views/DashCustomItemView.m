@@ -11,7 +11,6 @@
 #import "NSString+HELUtils.h"
 #import "NSDictionary+HelSafeAccessors.h"
 #import "DashCustomItemViewCell.h"
-#import "DashDetailViewController.h"
 
 @implementation DashCustomItemView
 
@@ -416,7 +415,11 @@
 				payload = [[NSData alloc] init];
 			}
 			
-			[self.dashView.controller performSend:topic data:payload retain:retain queue:NO];
+			if (self.dashView.detailView) {
+				[self.dashView.controller performSend:topic data:payload retain:retain queue:NO];
+			} else {
+				//TODO:
+			}
 			
 		} else if ([message.name isEqualToString:@"setUserData"]) {
 			NSString *jsonStr = [dict helStringForKey:@"jsonStr"];

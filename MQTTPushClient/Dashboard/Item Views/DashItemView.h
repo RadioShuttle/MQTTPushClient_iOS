@@ -8,7 +8,7 @@
 #import "DashItem.h"
 #import "Dashboard.h"
 
-@protocol DashPublishController //TODO: consider moving to own file
+@protocol DashDetailViewSendController //TODO: consider moving to own file
 -(void) performSend:(NSData *)data queue:(BOOL)queue;
 -(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue;
 -(DashItem *) getItem;
@@ -23,7 +23,7 @@
 /* true, if publish topic or script_p is set */
 @property BOOL publishEnabled;
 
-@property (weak) id<DashPublishController> controller;
+@property (weak) id<DashDetailViewSendController> controller;
 
 @property uint64_t dashVersion;
 

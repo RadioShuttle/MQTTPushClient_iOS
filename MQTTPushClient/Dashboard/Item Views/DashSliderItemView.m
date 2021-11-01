@@ -162,11 +162,13 @@
 	if (self.detailView && self.publishEnabled) {
 		self.progressView.hidden = YES;
 		self.sliderCtrl.hidden = NO;
-		[self.sliderCtrl setValue:progress / 100.0f];
+		if (!self.sliderPressed) {
+			[self.sliderCtrl setValue:progress / 100.0f];
+			self.formattedSliderValue = [self format:progress percent:sliderItem.percent];
+		}
 		[self.sliderCtrl setThumbTintColor:progressTintColor];
 		[self.sliderCtrl setMinimumTrackTintColor:progressTintColor];
 		[self.sliderCtrl setMaximumTrackTintColor:trackTintColor];
-		self.formattedSliderValue = [self format:progress percent:sliderItem.percent];
 		self.displayPC = sliderItem.percent;
 	} else {
 		self.sliderCtrl.hidden = YES;

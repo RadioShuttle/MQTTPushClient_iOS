@@ -10,8 +10,9 @@
 #import "Connection.h"
 #import "DashCollectionFlowLayout.h"
 #import "DashDetailViewController.h"
+#import "DashPublishController.h"
 
-@interface DashCollectionViewController : UICollectionViewController
+@interface DashCollectionViewController : UICollectionViewController <DashPublishController>
 
 @property Account *account;
 @property Dashboard *dashboard;
@@ -21,7 +22,7 @@
 @property DashDetailViewController *activeDetailView;
 @property NSOperationQueue *jsOperationQueue;
 @property NSMutableArray<NSInvocationOperation *> *jsTaskQueue;
-@property uint32_t registeredCustomViewTypes;
+@property uint32_t publishReqIDCounter;
 
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;

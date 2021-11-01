@@ -10,24 +10,53 @@
 #import "DashViewParameter.h"
 #import "Utils.h"
 
+@interface DashJavaScriptTask()
+@property BOOL output;
+@end
+
 @implementation DashJavaScriptTask
 
 -(instancetype)initWithItem:(DashItem *)item message:(DashMessage *)msg version:(uint64_t)version account:(Account *)account {
+	return [self initWithItem:item message:msg version:version account:account requestID:0 output:NO];
+}
+
+-(instancetype)initWithItem:(DashItem *)item publishData:(DashMessage *)publishData version:(uint64_t)version account:(Account *)account requestID:(uint32_t)requestID {
+	return [self initWithItem:item message:publishData version:version account:account requestID:requestID output:YES];
+}
+
+-(instancetype)initWithItem:(DashItem *)item message:(DashMessage *)msgOrPublishData version:(uint64_t)version account:(Account *)account requestID:(uint32_t)requestID  output:(BOOL) output{
+
 	if (self = [super init]) {
 		self.timestamp = [NSDate new];
 		self.item = item;
-		self.message = msg;
+		self.message = msgOrPublishData;
 		self.version = version;
 		self.account = account;
+		self.output = output;
 		
 		self.data = [NSMutableDictionary new];
 		[self.data setObject:[NSNumber numberWithUnsignedLongLong:self.version] forKey:@"version"];
 		[self.data setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
+		if (self.output) {
+			[self.data setObject:[NSNumber numberWithUnsignedInt:requestID] forKey:@"publish_request"];
+		}
 	}
 	return self;
 }
 
+
 -(void)execute {
+	if (self.output) {
+		[self executeOutputScript];
+	} else {
+		[self executeFilterScript];
+	}
+	
+	/* notify obervers */
+	[self performSelectorOnMainThread:@selector(postJSTaskFinishedNotification:) withObject:self.data waitUntilDone:NO];
+}
+
+-(void)executeFilterScript {
 	
 	NSError *error = nil;
 	JavaScriptFilter *filter = [[JavaScriptFilter alloc] initWithScript:self.item.script_f];
@@ -51,9 +80,6 @@
 	} else {
 		self.item.error1 = nil;
 	}
-
-	/* notify obervers */
-	[self performSelectorOnMainThread:@selector(postJSTaskFinishedNotification:) withObject:self.data waitUntilDone:NO];
 }
 
 - (void)postJSTaskFinishedNotification:(NSDictionary *)userInfo {
@@ -61,5 +87,10 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"DashJavaScriptTaskNotification" object:self userInfo:userInfo];
 }
 
+-(void)executeOutputScript {
+	NSLog(@"executing output script ...");
+	//TODO: implement
+	
+}
 
 @end

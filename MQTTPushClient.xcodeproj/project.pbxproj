@@ -369,6 +369,7 @@
 		21FC4D8526FC73700013F09D /* DashMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashMessage.m; sourceTree = "<group>"; };
 		21FCE9672701D01B00DBCA42 /* DashCircleBackroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCircleBackroundView.h; sourceTree = "<group>"; };
 		21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashCircleBackroundView.m; sourceTree = "<group>"; };
+		21FE473C272C03600067F60A /* DashPublishController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashPublishController.h; sourceTree = "<group>"; };
 		2A02D7FB218B4EFA005E6934 /* TopicsListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewCell.h; sourceTree = "<group>"; };
 		2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewCell.m; sourceTree = "<group>"; };
 		2A0E8DF1218332780080DF12 /* AddTopicTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AddTopicTableViewController.h; sourceTree = "<group>"; };
@@ -543,6 +544,7 @@
 				21EC25B726F9D5BB003CD109 /* DashCollectionFlowLayout.m */,
 				21EC8E492703355100DE8644 /* DashDetailViewController.h */,
 				21EC8E4A2703355100DE8644 /* DashDetailViewController.m */,
+				21FE473C272C03600067F60A /* DashPublishController.h */,
 				2131928426EF8BF000E65AF0 /* Dashboard.h */,
 				2131928526EF8BF000E65AF0 /* Dashboard.m */,
 				21FC4D8426FC73700013F09D /* DashMessage.h */,

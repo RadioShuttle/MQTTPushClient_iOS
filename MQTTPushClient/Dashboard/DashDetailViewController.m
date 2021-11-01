@@ -188,17 +188,29 @@
 
 }
 
+- (DashItem *)getItem {
+	return self.dashItem;
+}
+
 -(void)performSend:(NSData *)data queue:(BOOL)queue {
 	[self performSend:self.dashItem.topic_p data:data retain:self.dashItem.retain_ queue:queue];
 }
 
 -(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue {
 	NSLog(@"publish for item %@, topic: %@, retain: %i, payload: %@", self.dashItem.label, topic, retain, [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-	//TODO: implement
-}
-
-- (DashItem *)getItem {
-	return self.dashItem;
+	
+	if (self.currentPublishID > 0) {
+		if (!queue) {
+			//TODO: display: Please wait until current request has been finished.
+		} else {
+			self.queue = data;
+		}
+	} else {
+		//TODO: show progess bar
+		[self.controller publish:topic payload:data retain:retain item:self.dashItem];
+		
+	}
+		
 }
 
 @end
