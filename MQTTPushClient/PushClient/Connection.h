@@ -28,5 +28,6 @@
 - (void)deleteActionForAccount:(Account *)account name:(NSString *)name;
 - (void)getDashboardForAccount:(Dashboard *)dashboard;
 -(int)activeDashboardRequests;
+- (void)publishMessageForAccount:(Account *)account topic:(NSString *)topic payload:(NSData *)payload retain:(BOOL)retain userInfo:(NSDictionary *)userInfo;
 
 @end

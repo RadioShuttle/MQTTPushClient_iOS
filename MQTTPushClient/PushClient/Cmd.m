@@ -427,12 +427,15 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSString *)content retainFlag:(BOOL)retainFlag {
+- (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSData *)content retainFlag:(BOOL)retainFlag {
 	if (self.state == CommandStateEnd)
 		return nil;
 	TRACE(@"MQTT PUBLISH request");
 	NSMutableData *data = [self dataFromString:topic encoding:NSUTF8StringEncoding];
-	[data appendData:[self dataFromString:content encoding:NSUTF8StringEncoding]];
+	NSUInteger count = content.length;
+	unsigned char buf[] = {count >> 8, count & 0xff};
+	[data appendBytes:buf length:2];
+	[data appendData:content];
 	unsigned char buffer[1];
 	buffer[0] = retainFlag;
 	[data appendBytes:buffer length:1];

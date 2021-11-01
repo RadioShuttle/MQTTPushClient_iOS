@@ -275,10 +275,12 @@ enum ConnectionState {
 	[self disconnect:account withCommand:command];
 }
 
-- (void)publishMessageAsync:(Account *)account action:(Action *)action {
+- (void)publishMessageAsync:(Account *)account topic:(NSString *)topic payload:(NSData *)payload retain:(BOOL)retain userInfo:(NSDictionary *)userInfo {
 	Cmd *command = [self login:account];
-	[command mqttPublishRequest:0 topic:action.topic content:action.content retainFlag:action.retainFlag];
-	[self disconnect:account withCommand:command];
+	if (!command.rawCmd.error) {
+		[command mqttPublishRequest:0 topic:topic content:payload retainFlag:retain];
+	}
+	[self disconnect:account withCommand:command userInfo:userInfo];
 }
 
 - (void)addActionAsync:(Account *)account action:(Action *)action {
@@ -565,7 +567,8 @@ enum ConnectionState {
 }
 
 - (void)publishMessageForAccount:(Account *)account action:(Action *)action {
-	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account action:action];});
+	NSData *payload = [action.content dataUsingEncoding:NSUTF8StringEncoding];
+	[self publishMessageForAccount:account topic:action.topic payload:payload retain:action.retainFlag userInfo:nil];
 }
 
 - (void)getTopicsForAccount:(Account *)account {
@@ -614,6 +617,10 @@ enum ConnectionState {
 	atomic_fetch_add(&_noOfActiveDashRequests, 1);
 	
 	dispatch_async(self.serialQueue, ^{[self getDashboardAsync:dashboard localVersion:vers timestamp:ts messageID:messageID dashboard:db resourceDir:resourceDir];});
+}
+
+- (void)publishMessageForAccount:(Account *)account topic:(NSString *)topic payload:(NSData *)payload retain:(BOOL)retain userInfo:(NSDictionary *)userInfo {
+	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account topic:topic payload:payload retain:retain userInfo: userInfo];});
 }
 
 -(int)activeDashboardRequests {

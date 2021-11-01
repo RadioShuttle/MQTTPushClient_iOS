@@ -53,7 +53,7 @@ enum ReturnCode {
 				  filterScript:(NSString *)filterScript;
 - (RawCmd *)setDeviceInfo:(int)seqNo clientOS:(NSString *)clientOS osver:(NSString *)osver device:(NSString *)device fcmToken:(NSString *)fcmToken locale:(NSLocale *)locale millisecondsFromGMT:(NSInteger)millisecondsFromGMT extra:(NSString *)extra;
 - (RawCmd *)getActionsRequest:(int)seqNo;
-- (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSString *)content retainFlag:(BOOL)retainFlag;
+- (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSData *)content retainFlag:(BOOL)retainFlag;
 - (RawCmd *)addActionRequest:(int)seqNo action:(Action *)action;
 - (RawCmd *)updateActionRequest:(int)seqNo action:(Action *)action name:(NSString *)name;
 - (RawCmd *)deleteActionRequest:(int)seqNo name:(NSString *)name;
