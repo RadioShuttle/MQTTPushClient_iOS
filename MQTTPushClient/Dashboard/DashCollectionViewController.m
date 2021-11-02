@@ -109,6 +109,33 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 }
 
 - (void)onRequestFinished:(NSNotification *)notif {
+	/* publish request */
+	uint32_t publishRequestID = [[notif.userInfo helNumberForKey:@"publish_request"] unsignedIntValue];
+	if (publishRequestID > 0) {
+		uint64_t version = [[notif.userInfo helNumberForKey:@"version"] unsignedLongLongValue];
+		if (version > 0 && version == self.dashboard.localVersion) {
+			uint32_t item_id = [[notif.userInfo helNumberForKey:@"id"] unsignedIntValue];
+			NSMutableArray *indexPath = [NSMutableArray new];
+			DashItem *item = [self.dashboard getItemForID:item_id indexPathArr:indexPath];
+			if (item) {
+				/* update item error info */
+				if (self.account.error) {
+					item.error2 = self.account.error.localizedDescription;
+				} else {
+					item.error2 = nil;
+				}
+				if (self.activeDetailView) {
+					[self.activeDetailView onPublishRequestFinished:publishRequestID];
+				}
+				//TODO: custom item view must be notified about finished publish request
+				// [self.collectionView reloadItemsAtIndexPaths:indexPath];
+			}
+		}
+		return;
+	}
+
+	/* dashbaord request */
+
 	if (self.account.error) {
 		[self showErrorMessage:self.account.error.localizedDescription];
 	} else {
@@ -152,13 +179,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			} else if ([dashMessages count] > 0) {
 				/* deliver new messages */
 				[self deliverMessages:msgsSinceDate seqNo:msgsSinceSeqNo notify:YES];
-			}
-			
-		} else {
-			uint32_t publishRequestID = [[notif.userInfo helNumberForKey:@"publish_request"] unsignedIntValue];
-			if (publishRequestID > 0) {
-				//TODO: handle publish request result
-				NSLog(@"publish request: %d", publishRequestID);
 			}
 			
 		}
@@ -336,12 +356,14 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			[outputJS execute];
 		});
 	} else {
+
 		NSMutableDictionary *requestInfo = [NSMutableDictionary new];
 		[requestInfo setObject:[NSNumber numberWithUnsignedInt:self.publishReqIDCounter] forKey:@"publish_request"];
 		[requestInfo setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
 		[requestInfo setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
 		
 		[self.connection publishMessageForAccount:self.dashboard.account topic:topic payload:payload retain:retain userInfo:requestInfo];
+
 	}
 	
 	return self.publishReqIDCounter;

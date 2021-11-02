@@ -105,6 +105,15 @@
 	}
 }
 
+-(void)onPublishRequestFinished:(uint32_t) requestID {
+	if (self.currentPublishID == requestID) {
+		self.currentPublishID = 0;
+		[self updateErrorButtons];
+		//TODO: hide progress bar
+		//TODO: notify subview
+	}
+}
+
 -(void) hideBarButtonItem :(UIBarButtonItem *)myButton {
 	// Get the reference to the current toolbar buttons
 	NSMutableArray *navBarBtns = [self.toolbarNavigationItem.rightBarButtonItems mutableCopy];
@@ -207,7 +216,7 @@
 		}
 	} else {
 		//TODO: show progess bar
-		[self.controller publish:topic payload:data retain:retain item:self.dashItem];
+		self.currentPublishID = [self.controller publish:topic payload:data retain:retain item:self.dashItem];
 		
 	}
 		

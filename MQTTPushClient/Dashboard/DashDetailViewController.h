@@ -34,6 +34,8 @@
 -(void)onDashboardUpdate;
 /* will be called, if a new message has arrived that matches dashItem.topic_s */
 -(void)onNewMessage;
+/* will be called , if a publish request has been finished */
+-(void)onPublishRequestFinished:(uint32_t) requestID;
 
 /* the publish id of the currently running request */
 @property uint32_t currentPublishID;
