@@ -111,16 +111,14 @@
 - (void)submitButtonClicked:(UIButton*)button {
     // [self.valueLabel setText:self.inputTextField.text];
 	NSData * data = [self.inputTextField.text dataUsingEncoding:NSUTF8StringEncoding];
-	[self.controller performSend:data queue:NO];
+	[self performSend:data queue:NO];
 }
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
 	[super onBind:item context:context];
 	
-	DashTextItem *textItem = (DashTextItem *) item;
-	
 	/* set value text label */
-	NSString *content = textItem.content;
+	NSString *content = item.content;
 	
 	if (!content) {
 		[self.valueLabel setText:@""];
@@ -130,10 +128,10 @@
 	
 	/* text color */
 	UIColor *textColor;
-	if (textItem.textcolor == DASH_COLOR_OS_DEFAULT) {
+	if (item.textcolor == DASH_COLOR_OS_DEFAULT) {
 		textColor = [UILabel new].textColor;
 	} else {
-		textColor = UIColorFromRGB(textItem.textcolor);
+		textColor = UIColorFromRGB(item.textcolor);
 	}
 	[self.valueLabel setTextColor:textColor];
 
@@ -141,7 +139,7 @@
 		if (self.publishEnabled) {
 			[self.submitButton setTintColor:textColor];
 			[self.inputTextField setTextColor:textColor];
-			if (textItem.inputtype == 1) {
+			if (((DashTextItem*) item).inputtype == 1) {
 				self.inputTextField.keyboardType = UIKeyboardTypeDecimalPad;
 			}
 		} else if (self.inputStackView) {

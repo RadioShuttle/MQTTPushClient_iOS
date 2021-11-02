@@ -474,7 +474,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashDetailViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"DashDetailViewController"];
 	vc.dashItem = (DashItem *) item;
 	vc.dashboard = self.dashboard;
-	vc.controller = self;
+	vc.publishController = self;
 	self.activeDetailView = vc;
 	
 	vc.modalPresentationStyle = UIModalPresentationPopover;
@@ -495,6 +495,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	if ([DashCustomItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDcustomItem forIndexPath:indexPath];
+		((DashCustomItemViewCell *) cell).webviewContainer.publishController = self;
 	} else if ([DashTextItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDtextItem forIndexPath:indexPath];
 	} else if ([DashSwitchItem class] == [item class]) {

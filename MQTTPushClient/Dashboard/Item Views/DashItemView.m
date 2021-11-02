@@ -18,7 +18,8 @@
 }
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
-
+	self.dashItem = item;
+	
 	int64_t color = item.background;
 	/* background color */
 	if (color == DASH_COLOR_OS_DEFAULT) {
@@ -48,6 +49,31 @@
 }
 
 -(void)initInputElements {	
+}
+
+-(void)performSend:(NSData *)data queue:(BOOL)queue {
+	[self performSend:self.dashItem.topic_p data:data retain:self.dashItem.retain_ queue:queue item:self.dashItem];
+}
+
+-(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue item:(DashItem *)item {
+	if (self.currentPublishID > 0) {
+		if (!queue) {
+			//TODO: display: Please wait until current request has been finished.
+		} else {
+			self.queue = data;
+		}
+	} else {
+		self.currentPublishID = [self.publishController publish:topic payload:data retain:retain item:item];
+	}
+}
+
+-(BOOL) onPublishRequestFinished:(uint32_t) requestID {
+	BOOL finished = NO;
+	if (self.currentPublishID == requestID) {
+		self.currentPublishID = 0;
+		finished = YES;
+	}
+	return finished;
 }
 
 @end

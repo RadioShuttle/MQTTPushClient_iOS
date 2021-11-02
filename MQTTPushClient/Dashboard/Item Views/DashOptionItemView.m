@@ -198,7 +198,7 @@
 	/* if an option is already selected, a click does not deselect */
 	if (!selected) {
 		NSData * data = [(listItem.value == nil ? @"" : listItem.value) dataUsingEncoding:NSUTF8StringEncoding];
-		[self.controller performSend:data queue:NO];
+		[self performSend:data queue:NO];
 	}
 }
 

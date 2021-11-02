@@ -254,6 +254,15 @@
 	return @"MQTT._requestRunning = false;";
 }
 
+- (BOOL)onPublishRequestFinished:(uint32_t)requestID {
+	BOOL finshed = [super onPublishRequestFinished:requestID];
+	if (finshed) {
+		[self hideProgressBar];
+		[self.webView evaluateJavaScript:[self buildOnRequestFinishedCode] completionHandler:nil];
+	}
+	return finshed;
+}
+
 -(void)addHistMessageToCode:(NSMutableString *)code message:(DashMessage *)message {
 	if (message) {
 		[code appendString:@"_addHistDataMsg("];
@@ -415,11 +424,8 @@
 				payload = [[NSData alloc] init];
 			}
 			
-			if (self.dashView.detailView) {
-				[self.dashView.controller performSend:topic data:payload retain:retain queue:NO];
-			} else {
-				//TODO:
-			}
+			[self.dashView showProgressBar];
+			[self.dashView performSend:topic data:payload retain:retain queue:NO item:self.dashView.dashItem];
 			
 		} else if ([message.name isEqualToString:@"setUserData"]) {
 			NSString *jsonStr = [dict helStringForKey:@"jsonStr"];

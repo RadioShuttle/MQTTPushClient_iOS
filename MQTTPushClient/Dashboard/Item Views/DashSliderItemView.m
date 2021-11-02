@@ -117,13 +117,13 @@
 	self.formattedSliderValue = [self format:sliderCtrl.value * 100.0f percent:self.displayPC];
 	[self updateValueLabel];
 
-	DashSliderItem *item = (DashSliderItem *) [self.controller getItem];
+	DashSliderItem *item = (DashSliderItem *) self.dashItem;
 	if (item) {
 		double f = sliderCtrl.value / sliderCtrl.maximumValue;
 		double value = (item.range_max - item.range_min) * f + item.range_min;
 		NSString *formattedVal = [self.formatterUS stringFromNumber:@(value)];
 		NSData * data = [formattedVal dataUsingEncoding:NSUTF8StringEncoding];
-		[self.controller performSend:data queue:YES];
+		[self performSend:data queue:YES];
 	}
 }
 

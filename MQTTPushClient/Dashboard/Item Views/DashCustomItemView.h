@@ -7,6 +7,7 @@
 #import <WebKit/WebKit.h>
 #import "DashItemView.h"
 #import "DashCustomItem.h"
+#import "DashPublishController.h"
 
 @protocol DashCustomViewContainer
 -(void)onUpdate:(DashCustomItem *)item what:(NSString *)what;
@@ -32,6 +33,7 @@
 
 @property BOOL detached;
 @property NSNumberFormatter *numberFormatter;
+/* depending on context this is the parent DashCollectionViewCell or DashDetailViewController */
 @property (weak) id<DashCustomViewContainer> container;
 
 -(void)showProgressBar;

@@ -6,6 +6,7 @@
 
 #import <UIKit/UIKit.h>
 #import "DashItemView.h"
+#import "DashTextItem.h"
 
 @interface DashTextItemView : DashItemView
 @property UILabel *valueLabel;

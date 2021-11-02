@@ -142,7 +142,7 @@
 }
 
 -(void)buttonClicked {
-	DashSwitchItem *item = (DashSwitchItem *) [self.controller getItem];
+	DashSwitchItem *item = (DashSwitchItem *) self.dashItem;
 	if (item) {
 		NSString *t;
 		if (![Utils isEmpty:item.valOff]) {
@@ -155,7 +155,7 @@
 			t = item.val;
 		}
 		NSData * data = [(t == nil ? @"" : t) dataUsingEncoding:NSUTF8StringEncoding];
-		[self.controller performSend:data queue:NO];
+		[self performSend:data queue:NO];
 	}
 }
 

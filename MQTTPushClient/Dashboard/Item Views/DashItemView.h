@@ -7,12 +7,7 @@
 #import <UIKit/UIKit.h>
 #import "DashItem.h"
 #import "Dashboard.h"
-
-@protocol DashDetailViewSendController //TODO: consider moving to own file
--(void) performSend:(NSData *)data queue:(BOOL)queue;
--(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue;
--(DashItem *) getItem;
-@end
+#import "DashPublishController.h"
 
 @interface DashItemView : UIView
 
@@ -23,8 +18,6 @@
 /* true, if publish topic or script_p is set */
 @property BOOL publishEnabled;
 
-@property (weak) id<DashDetailViewSendController> controller;
-
 @property uint64_t dashVersion;
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context;
@@ -34,5 +27,18 @@
 /* detail view constructor */
 - (instancetype)initDetailViewWithFrame:(CGRect)frame;
 
+/* the publish id of the currently running request */
+@property uint32_t currentPublishID;
+/* if a publish command is already running a value might be queued until request finished */
+@property NSData *queue;
+
+@property (weak) id<DashPublishController> publishController;
+@property DashItem *dashItem;
+
+-(void) performSend:(NSData *)data queue:(BOOL)queue;
+-(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue item:(DashItem *)item;
+
+/* will be called when a publish request finishes. returns true, if requestID matches */
+-(BOOL) onPublishRequestFinished:(uint32_t) requestID;
 
 @end

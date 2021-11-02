@@ -11,7 +11,7 @@
 #import "DashCustomItemView.h"
 #import "DashPublishController.h"
 
-@interface DashDetailViewController : UIViewController <DashDetailViewSendController, DashCustomViewContainer>
+@interface DashDetailViewController : UIViewController <DashCustomViewContainer>
 
 @property DashItem *dashItem;
 @property Dashboard *dashboard;
@@ -37,10 +37,5 @@
 /* will be called , if a publish request has been finished */
 -(void)onPublishRequestFinished:(uint32_t) requestID;
 
-/* the publish id of the currently running request */
-@property uint32_t currentPublishID;
-/* if a publish command is already running a value might be queued until request finished */
-@property NSData *queue;
-
-@property id<DashPublishController> controller;
+@property id<DashPublishController> publishController;
 @end
