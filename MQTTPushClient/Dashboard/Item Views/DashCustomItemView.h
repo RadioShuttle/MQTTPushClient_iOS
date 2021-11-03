@@ -17,7 +17,6 @@
 @interface DashCustomItemView : DashItemView
 
 @property (strong, nonatomic) WKWebView *webView;
-@property UIActivityIndicatorView *progressBar;
 /* indicates if webeview was already loaded (should be updated before calling onBind) */
 @property BOOL loaded;
 /* indicates if webview.load was called, and document has been loaded */
@@ -36,8 +35,6 @@
 /* depending on context this is the parent DashCollectionViewCell or DashDetailViewController */
 @property (weak) id<DashCustomViewContainer> container;
 
--(void)showProgressBar;
--(void)hideProgressBar;
 @end
 
 @interface DashWebViewHandler : NSObject <WKURLSchemeHandler, WKNavigationDelegate, WKScriptMessageHandler>

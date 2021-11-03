@@ -19,6 +19,7 @@
 @property BOOL publishEnabled;
 
 @property uint64_t dashVersion;
+@property UIActivityIndicatorView *progressBar;
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context;
 /* call this to add an empty ImageView to this view. this should be called before adding any other elements (beacuase of layering) */
@@ -38,6 +39,8 @@
 -(void) performSend:(NSData *)data queue:(BOOL)queue;
 -(void) performSend:(NSString *)topic data:(NSData *)data retain:(BOOL)retain queue:(BOOL)queue item:(DashItem *)item;
 
+- (void)showProgressBar;
+- (void)hideProgressBar;
 /* will be called when a publish request finishes. returns true, if requestID matches */
 -(BOOL) onPublishRequestFinished:(uint32_t) requestID;
 

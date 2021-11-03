@@ -58,28 +58,6 @@
 	[self.webView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
 }
 
-- (void)showProgressBar {
-	if (!self.progressBar) {
-		self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 48, 48)];
-		self.progressBar.color = [UIColor blackColor];
-		self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
-		[self.progressBar startAnimating];
-		self.progressBar.layer.zPosition = 100.0f;
-		[self addSubview:self.progressBar];
-		
-		[self.progressBar.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0.0].active = YES;
-		[self.progressBar.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:0.0].active = YES;
-	}
-}
-
-- (void)hideProgressBar {
-	if (self.progressBar) {
-		[self.progressBar stopAnimating];
-		[self.progressBar removeFromSuperview];
-		self.progressBar = nil;
-	}
-}
-
 -(void)onBind:(DashItem *)item context:(Dashboard *)context {
 	[super onBind:item context:context];
 	
@@ -257,7 +235,6 @@
 - (BOOL)onPublishRequestFinished:(uint32_t)requestID {
 	BOOL finshed = [super onPublishRequestFinished:requestID];
 	if (finshed) {
-		[self hideProgressBar];
 		[self.webView evaluateJavaScript:[self buildOnRequestFinishedCode] completionHandler:nil];
 	}
 	return finshed;
@@ -424,7 +401,6 @@
 				payload = [[NSData alloc] init];
 			}
 			
-			[self.dashView showProgressBar];
 			[self.dashView performSend:topic data:payload retain:retain queue:NO item:self.dashView.dashItem];
 			
 		} else if ([message.name isEqualToString:@"setUserData"]) {

@@ -65,6 +65,30 @@
 	} else {
 		self.currentPublishID = [self.publishController publish:topic payload:data retain:retain item:item];
 	}
+	[self showProgressBar];
+}
+
+- (void)showProgressBar {
+	if (!self.progressBar) {
+		self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 64, 64)];
+		self.progressBar.color = [UIColor blackColor];
+		self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
+		[self.progressBar startAnimating];
+		[self addSubview:self.progressBar];
+		
+		[self.progressBar.centerXAnchor constraintEqualToAnchor:self.centerXAnchor constant:0.0].active = YES;
+		[self.progressBar.centerYAnchor constraintEqualToAnchor:self.centerYAnchor constant:0.0].active = YES;
+		
+		[self bringSubviewToFront:self.progressBar];
+	}
+}
+
+- (void)hideProgressBar {
+	if (self.progressBar) {
+		[self.progressBar stopAnimating];
+		[self.progressBar removeFromSuperview];
+		self.progressBar = nil;
+	}
 }
 
 -(BOOL) onPublishRequestFinished:(uint32_t) requestID {
@@ -72,6 +96,7 @@
 	if (self.currentPublishID == requestID) {
 		self.currentPublishID = 0;
 		finished = YES;
+		[self hideProgressBar];
 	}
 	return finished;
 }
