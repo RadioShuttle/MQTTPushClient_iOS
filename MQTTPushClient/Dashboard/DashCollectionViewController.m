@@ -126,12 +126,25 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				} else {
 					item.error2 = nil;
 				}
+				/*
+				 * Notify view which started the publish request, so progress bar can
+				 * be hidden (in detail view). Also custom item views must be informed when a
+				 * request has been finished, because this info is required in its java
+				 * script environment (a new publish command can only be executed in java
+				 * script, when the previous one has finished. This is to avoid spaming by
+				 * scripts).
+				 */
 				if (self.activeDetailView) {
+					/* vsisible view */
 					[self.activeDetailView onPublishRequestFinished:publishRequestID];
 				}
-				
-				//TODO: custom item view must be notified about finished publish request
-				// [self.collectionView reloadItemsAtIndexPaths:indexPath];
+				if ([item isKindOfClass:[DashCustomItem class]]) {
+					/* special handling for publish requests executed from custom items instances in cell views */
+					DashCustomItemView *customItemView = [self.dashboard.cachedCustomViews objectForKey:@(item_id)];
+					[customItemView onPublishRequestFinished:publishRequestID];
+				}
+				/* update cell view: the output script may have changed view properties */
+				[self.collectionView reloadItemsAtIndexPaths:indexPath];
 
 				/* deliver the message sent (to subscribers). do not wait for next poll request */
 				if (!publishError) {
