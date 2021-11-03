@@ -71,7 +71,11 @@
 - (void)showProgressBar {
 	if (!self.progressBar) {
 		self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 64, 64)];
-		self.progressBar.color = [UIColor blackColor];
+		if (self.dashItem.textcolor == DASH_COLOR_OS_DEFAULT || self.dashItem.textcolor == DASH_COLOR_CLEAR) {
+			self.progressBar.color = [UILabel new].textColor;
+		} else {
+			self.progressBar.color = UIColorFromRGB(self.dashItem.textcolor);
+		}
 		self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
 		[self.progressBar startAnimating];
 		[self addSubview:self.progressBar];
