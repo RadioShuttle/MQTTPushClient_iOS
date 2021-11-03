@@ -118,17 +118,52 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			NSMutableArray *indexPath = [NSMutableArray new];
 			DashItem *item = [self.dashboard getItemForID:item_id indexPathArr:indexPath];
 			if (item) {
+				BOOL publishError = NO;
 				/* update item error info */
 				if (self.account.error) {
 					item.error2 = self.account.error.localizedDescription;
+					publishError = YES;
 				} else {
 					item.error2 = nil;
 				}
 				if (self.activeDetailView) {
 					[self.activeDetailView onPublishRequestFinished:publishRequestID];
 				}
+				
 				//TODO: custom item view must be notified about finished publish request
 				// [self.collectionView reloadItemsAtIndexPaths:indexPath];
+
+				/* deliver the message sent (to subscribers). do not wait for next poll request */
+				if (!publishError) {
+					[self checkJSTasks];
+					NSMutableDictionary<NSNumber *, NSMutableArray<NSInvocationOperation *> *> *dependenciesDict = [NSMutableDictionary new];
+					NSMutableDictionary<NSNumber *, NSIndexPath *> *indexPathDict = [NSMutableDictionary new];
+					DashMessage *msg = [notif.userInfo objectForKey:@"message"];
+					if (msg) {
+						[self onNewMessage:msg indexPathDict:indexPathDict dependencies:dependenciesDict];
+						NSMutableArray<NSInvocationOperation *> *taskArray;
+						for (NSNumber *key in dependenciesDict) {
+							taskArray = [dependenciesDict objectForKey:key];
+							for(int i = 0; i < taskArray.count; i++) {
+								[self.jsTaskQueue addObject:taskArray[i]];
+							}
+						}
+						if (indexPathDict.count > 0) {
+							NSMutableArray<NSIndexPath *> *indexPaths = [NSMutableArray new];
+							NSIndexPath *value;
+							for (NSNumber *key in indexPathDict) {
+								value = [indexPathDict objectForKey:key];
+								[indexPaths addObject:value];
+							}
+							[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+							if (self.activeDetailView) {
+								if ([indexPathDict objectForKey:[NSNumber numberWithUnsignedLong:self.activeDetailView.dashItem.id_]]) {
+									[self.activeDetailView onNewMessage];
+								}
+							}
+						}
+					}
+				}
 			}
 		}
 		return;
@@ -345,10 +380,16 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	msg.timestamp = [NSDate date];
 	msg.topic = topic;
 	msg.content = payload;
+	NSMutableDictionary *requestData = [NSMutableDictionary new];
+	[requestData setObject:[NSNumber numberWithUnsignedInt:self.publishReqIDCounter] forKey:@"publish_request"];
+	[requestData setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
+	[requestData setObject:msg forKey:@"message"];
+	[requestData setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
 	
+
 	/* If an outputscript exists, javascript must be executed. */
 	if (![Utils isEmpty:item.script_p]) {
-		DashJavaScriptTask *outputJS = [[DashJavaScriptTask alloc]initWithItem:item publishData:msg version:self.dashboard.localVersion account:self.account requestID:self.publishReqIDCounter];
+		DashJavaScriptTask *outputJS = [[DashJavaScriptTask alloc]initWithItem:item publishData:msg version:self.dashboard.localVersion account:self.account requestData:requestData];
 		
 		/* execute java script output script */
 		dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
@@ -357,12 +398,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		});
 	} else {
 
-		NSMutableDictionary *requestInfo = [NSMutableDictionary new];
-		[requestInfo setObject:[NSNumber numberWithUnsignedInt:self.publishReqIDCounter] forKey:@"publish_request"];
-		[requestInfo setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
-		[requestInfo setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
-		
-		[self.connection publishMessageForAccount:self.dashboard.account topic:topic payload:payload retain:retain userInfo:requestInfo];
+		[self.connection publishMessageForAccount:self.dashboard.account topic:topic payload:payload retain:retain userInfo:requestData];
 
 	}
 	

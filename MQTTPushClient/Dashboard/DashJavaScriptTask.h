@@ -14,7 +14,7 @@
 /* filter script init */
 -(instancetype)initWithItem:(DashItem *)item message:(DashMessage *)msg version:(uint64_t)version account:(Account *)account;
 /* output script init */
--(instancetype)initWithItem:(DashItem *)item publishData:(DashMessage *)publishData version:(uint64_t)version account:(Account *)account requestID:(uint32_t)requestID;
+-(instancetype)initWithItem:(DashItem *)item publishData:(DashMessage *)publishData version:(uint64_t)version account:(Account *)account requestData:(NSDictionary *)requestData;
 
 /* execute script */
 -(void)execute;

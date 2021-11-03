@@ -17,14 +17,14 @@
 @implementation DashJavaScriptTask
 
 -(instancetype)initWithItem:(DashItem *)item message:(DashMessage *)msg version:(uint64_t)version account:(Account *)account {
-	return [self initWithItem:item message:msg version:version account:account requestID:0 output:NO];
+	return [self initWithItem:item message:msg version:version account:account requestData:nil output:NO];
 }
 
--(instancetype)initWithItem:(DashItem *)item publishData:(DashMessage *)publishData version:(uint64_t)version account:(Account *)account requestID:(uint32_t)requestID {
-	return [self initWithItem:item message:publishData version:version account:account requestID:requestID output:YES];
+-(instancetype)initWithItem:(DashItem *)item publishData:(DashMessage *)publishData version:(uint64_t)version account:(Account *)account requestData:(NSDictionary *)requestData {
+	return [self initWithItem:item message:publishData version:version account:account requestData:requestData output:YES];
 }
 
--(instancetype)initWithItem:(DashItem *)item message:(DashMessage *)msgOrPublishData version:(uint64_t)version account:(Account *)account requestID:(uint32_t)requestID  output:(BOOL) output{
+-(instancetype)initWithItem:(DashItem *)item message:(DashMessage *)msgOrPublishData version:(uint64_t)version account:(Account *)account requestData:(NSDictionary *)requestData  output:(BOOL) output{
 
 	if (self = [super init]) {
 		self.timestamp = [NSDate new];
@@ -38,7 +38,7 @@
 		[self.data setObject:[NSNumber numberWithUnsignedLongLong:self.version] forKey:@"version"];
 		[self.data setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
 		if (self.output) {
-			[self.data setObject:[NSNumber numberWithUnsignedInt:requestID] forKey:@"publish_request"];
+			[self.data setObject:requestData forKey:@"request_data"];
 		}
 	}
 	return self;
