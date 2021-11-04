@@ -8,10 +8,12 @@
 #import "DashItemView.h"
 #import "DashTextItem.h"
 
-@interface DashTextItemView : DashItemView
+@interface DashTextItemView : DashItemView <UITextFieldDelegate>
 @property UILabel *valueLabel;
 @property UITextField *inputTextField;
 @property UIButton *submitButton;
 @property UIStackView *inputStackView;
 
+/* once the user entered an input value, the textFieldDefaultValue will no longer set (via onbind) */
+@property BOOL defValueDisabled;
 @end

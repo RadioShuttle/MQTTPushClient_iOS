@@ -236,6 +236,14 @@
 - (int)getTextSize {
 	return self.dashItem.textsize;
 }
+
+- (void)setTextFieldDefaultValue:(NSString *)defaultInputValue {
+	((DashTextItem *) self.dashItem).defaultValue = defaultInputValue;
+}
+- (NSString *)getTextFieldDefaultValue {
+	return ((DashTextItem *) self.dashItem).defaultValue;
+}
+
 @end
 
 @implementation DashSwitchItemViewParameter : DashViewParameter

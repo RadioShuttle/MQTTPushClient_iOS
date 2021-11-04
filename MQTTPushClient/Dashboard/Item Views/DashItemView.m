@@ -48,9 +48,6 @@
 	[self.backgroundImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:0.0].active = YES;
 }
 
--(void)initInputElements {	
-}
-
 -(void)performSend:(NSData *)data queue:(BOOL)queue {
 	[self performSend:self.dashItem.topic_p data:data retain:self.dashItem.retain_ queue:queue item:self.dashItem];
 }

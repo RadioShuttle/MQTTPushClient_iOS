@@ -75,6 +75,7 @@
     
     /* Add input field to stack view*/
     self.inputTextField = [[UITextField alloc] init];
+	self.inputTextField.delegate = self;
     self.inputTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     self.inputTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.inputTextField setBorderStyle:UITextBorderStyleBezel];
@@ -108,6 +109,12 @@
     [self.valueLabel.bottomAnchor constraintEqualToAnchor:stackView.topAnchor constant:0.0].active = YES;   
 }
 
+-(void)textFieldDidBeginEditing:(UITextField *)textField {
+	if ([self.dashItem isKindOfClass:[DashTextItem class]]) {
+		self.defValueDisabled = YES;
+	}
+}
+
 - (void)submitButtonClicked:(UIButton*)button {
     // [self.valueLabel setText:self.inputTextField.text];
 	NSData * data = [self.inputTextField.text dataUsingEncoding:NSUTF8StringEncoding];
@@ -139,8 +146,12 @@
 		if (self.publishEnabled) {
 			[self.submitButton setTintColor:textColor];
 			[self.inputTextField setTextColor:textColor];
-			if (((DashTextItem*) item).inputtype == 1) {
+			DashTextItem *textItem = (DashTextItem *) item;
+			if (textItem.inputtype == 1) {
 				self.inputTextField.keyboardType = UIKeyboardTypeDecimalPad;
+			}
+			if (!self.defValueDisabled) {
+				self.inputTextField.text = textItem.defaultValue;
 			}
 		} else if (self.inputStackView) {
 			[self.inputStackView removeFromSuperview];

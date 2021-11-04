@@ -8,4 +8,7 @@
 
 @interface DashTextItem : DashItem
 @property int inputtype;
+
+/* will be shown in items input field in detail view, when set via filter script */
+@property NSString *defaultValue;
 @end
