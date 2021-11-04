@@ -23,4 +23,7 @@
 @property BOOL displayPC;
 /* true, when user is currently using the slider (touch event and not released) */
 @property BOOL sliderPressed;
+
+/* indicates, that progress bar will no longer be updated by new arriving messages */
+@property BOOL updateProgressBarDisabled;
 @end

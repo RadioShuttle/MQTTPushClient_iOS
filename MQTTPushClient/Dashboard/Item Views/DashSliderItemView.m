@@ -106,6 +106,7 @@
 - (void)onSliderTouchedDown:(UISlider *)sliderCtrl {
 	// NSLog(@"onSliderClicked");
 	self.sliderPressed = YES;
+	self.updateProgressBarDisabled = YES;
 }
 
 - (void)onSliderTouchUpInside:(UISlider *)sliderCtrl {
@@ -162,7 +163,7 @@
 	if (self.detailView && self.publishEnabled) {
 		self.progressView.hidden = YES;
 		self.sliderCtrl.hidden = NO;
-		if (!self.sliderPressed) {
+		if (!self.updateProgressBarDisabled) {
 			[self.sliderCtrl setValue:progress / 100.0f];
 			self.formattedSliderValue = [self format:progress percent:sliderItem.percent];
 		}
