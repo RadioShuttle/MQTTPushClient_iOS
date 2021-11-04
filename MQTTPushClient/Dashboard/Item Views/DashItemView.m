@@ -57,6 +57,10 @@
 		if (!queue) {
 			//TODO: display: Please wait until current request has been finished.
 		} else {
+			/* If queueing is enabled, put the request in "queue".
+			 * When the current running publish request has been finished,
+			 * the data stored in queue will be sent.
+			 */
 			self.queue = data;
 		}
 	} else {
@@ -95,9 +99,15 @@
 -(BOOL) onPublishRequestFinished:(uint32_t) requestID {
 	BOOL finished = NO;
 	if (self.currentPublishID == requestID) {
-		self.currentPublishID = 0;
-		finished = YES;
-		[self hideProgressBar];
+		if (self.queue) {
+			/* this wont work with custom items (topic and retain parameter can be freely choosen in html java script), but queueing is not enbaled in custom item views */
+			self.currentPublishID = [self.publishController publish:self.dashItem.topic_p payload:self.queue retain:self.dashItem.retain_ item:self.dashItem];
+			self.queue = nil;
+		} else {
+			self.currentPublishID = 0;
+			[self hideProgressBar];
+		}
+		finished = YES; // the current request has been finished
 	}
 	return finished;
 }
