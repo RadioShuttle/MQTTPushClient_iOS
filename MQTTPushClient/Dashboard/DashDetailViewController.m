@@ -19,7 +19,7 @@
 #import "DashConsts.h"
 
 @interface DashDetailViewController ()
-
+@property BOOL optionItemInit;
 @end
 
 @implementation DashDetailViewController
@@ -56,9 +56,11 @@
 	
 }
 -(void)viewDidLayoutSubviews {
-	if ([DashOptionItem class] == [self.dashItem class]) {
+	/* option item: scroll to selected entry (but only once after init) */
+	if ([self.dashItem isKindOfClass:[DashOptionItem class]] && !self.optionItemInit) {
 		DashOptionItemView *optView = (DashOptionItemView *) self.dashItemView;
 		DashOptionItem *optItem = (DashOptionItem *) self.dashItem;
+		self.optionItemInit = YES;
 		if (![Utils isEmpty:self.dashItem.content]) {
 			for(int i = 0; i < optItem.optionList.count; i++) {
 				if ([self.dashItem.content isEqualToString:optItem.optionList[i].value]) {

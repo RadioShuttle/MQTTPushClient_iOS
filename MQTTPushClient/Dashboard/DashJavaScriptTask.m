@@ -7,8 +7,11 @@
 #import "DashJavaScriptTask.h"
 #import "DashItem.h"
 #import "JavaScriptFilter.h"
+#import "DashJavaScriptOutput.h"
 #import "DashViewParameter.h"
 #import "Utils.h"
+#import "NSString+HELUtils.h"
+#import "NSDictionary+HelSafeAccessors.h"
 
 @interface DashJavaScriptTask()
 @property BOOL output;
@@ -33,12 +36,15 @@
 		self.version = version;
 		self.account = account;
 		self.output = output;
-		
-		self.data = [NSMutableDictionary new];
+		if (requestData) {
+			self.data = [requestData mutableCopy];
+		} else {
+			self.data = [NSMutableDictionary new];
+		}
 		[self.data setObject:[NSNumber numberWithUnsignedLongLong:self.version] forKey:@"version"];
 		[self.data setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
 		if (self.output) {
-			[self.data setObject:requestData forKey:@"request_data"];
+			[self.data setObject:[NSNumber numberWithBool:output] forKey:@"output"];
 		}
 	}
 	return self;
@@ -53,7 +59,7 @@
 	}
 	
 	/* notify obervers */
-	[self performSelectorOnMainThread:@selector(postJSTaskFinishedNotification:) withObject:self.data waitUntilDone:NO];
+	[self performSelectorOnMainThread:@selector(postJSTaskFinishedNotification:) withObject:self.data waitUntilDone:YES];
 }
 
 -(void)executeFilterScript {
@@ -74,6 +80,7 @@
 	
 	if (error) {
 		/* on error set message content */
+		[self.data setObject:error forKey:@"error"];
 		self.item.content = [self.message contentToStr];
 		self.item.error1 = [Utils isEmpty:[error localizedDescription]] ? @"n/a" : [error localizedDescription];
 		NSLog(@"Javasciprt error: %@", self.item.error1);
@@ -88,9 +95,37 @@
 }
 
 -(void)executeOutputScript {
-	NSLog(@"executing output script ...");
-	//TODO: implement
+	NSError *error = nil;
+	DashJavaScriptOutput *outputScript = [[DashJavaScriptOutput alloc] initWithScript:self.item.script_p];
+	NSString *input = [self.message contentToStr];
+	NSObject *raw = [NSNull null];
+	NSDictionary *arg1 = @{@"raw":raw, @"text":[self.message contentToStr], @"topic":self.message.topic, @"receivedDate":self.message.timestamp};
+	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 	
+	DashViewParameter *viewParameter = [DashViewParameter viewParameterWithItem:self.item context:outputScript.context account:self.account];
+	
+	NSDictionary *result = [outputScript formatOutput:input msg:arg1 acc:arg2 viewParameter:viewParameter error:&error];
+
+	if (error) {
+		[self.data setObject:error forKey:@"error"];
+		self.item.error2 = [Utils isEmpty:[error localizedDescription]] ? @"n/a" : [error localizedDescription];
+		NSLog(@"Javascript error: %@", self.item.error2);
+	} else {
+		self.item.error2 = nil;
+		
+		DashMessage *msg = [self.data objectForKey:@"message"];
+		/* update the message's content with the result from javascript */
+		if (msg) {
+			NSData *resultData = [[result helStringForKey:@"rawHex"] dataFromHex]; // raw data has precedence
+			if (!resultData) {
+				resultData = [[result helStringForKey:@"text"] dataUsingEncoding:NSUTF8StringEncoding];
+				if (!resultData) {
+					resultData = [NSData data];
+				}
+			}
+			msg.content = resultData;
+		}
+	}
 }
 
 @end

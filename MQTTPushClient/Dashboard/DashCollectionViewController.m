@@ -143,8 +143,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 					DashCustomItemView *customItemView = [self.dashboard.cachedCustomViews objectForKey:@(item_id)];
 					[customItemView onPublishRequestFinished:publishRequestID];
 				}
-				/* update cell view: the output script may have changed view properties */
-				[self.collectionView reloadItemsAtIndexPaths:indexPath];
 
 				/* deliver the message sent (to subscribers). do not wait for next poll request */
 				if (!publishError) {
@@ -363,25 +361,39 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	/* still correct dashboard ? then deliver result */
 	if (version > 0 && version == self.dashboard.localVersion) {
 		uint32_t oid = [[notif.userInfo helNumberForKey:@"id"] unsignedIntValue];
-		
-		if (filterScript) {
-			NSMutableArray * indexPaths = [NSMutableArray new];
-			if ([self.dashboard getItemForID:oid indexPathArr:indexPaths]) {
+		NSMutableArray * indexPaths = [NSMutableArray new];
+		DashItem *item = [self.dashboard getItemForID:oid indexPathArr:indexPaths];
+
+		if (item) {
+			BOOL notify = NO;
+			if (filterScript) {
+				/* notify dash object about update */
+				notify = YES;
+			} else { // outputscript
+				/* if an error occured, do not call publish but notify observers  */
+				NSError *error = [notif.userInfo objectForKey:@"error"];
+				if (error) {
+					notify = YES;
+				} else {
+					/* no topic? only javascript was executed. notify observers */
+					if ([Utils isEmpty:item.topic_p]) {
+						notify = YES;
+					} else {
+						DashMessage *msg = [notif.userInfo objectForKey:@"message"];
+						if (msg) {
+							/* publish */
+							[self.connection publishMessageForAccount:self.dashboard.account topic:msg.topic payload:msg.content retain:item.retain_ userInfo:notif.userInfo];
+						}
+					}
+				}
+			}
+			if (notify) {
 				/* notify dash object about update */
 				[self.collectionView reloadItemsAtIndexPaths:indexPaths];
 				if (self.activeDetailView) {
 					[self.activeDetailView onNewMessage];
 				}
 			}
-		} else { // outputscript
-			NSLog(@"output javascript");
-			/* if an error occured notify observers */
-			//TODO: item in cell view and dashdetailview
-			
-			//TODO: call publish if no error occred and topic is not empty
-			/*
-			self.connection publishMessageForAccount:self.dashboard.account topic: payload:<#(NSData *)#> retain:<#(BOOL)#> userInfo:<#(NSDictionary *)#>
-			 */
 		}
 	}
 }
