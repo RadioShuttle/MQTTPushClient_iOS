@@ -102,7 +102,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		NSMutableDictionary * prefs = [self.preferences mutableCopy];
 		[prefs setObject:[NSNumber numberWithInt:self.dashCollectionFlowLayout.zoomLevel] forKey:@"zoom_level"];
 		[prefs setObject:[NSNumber numberWithBool:YES] forKey:@"showDashboard"];
-		NSLog(@"-prop- DashCollectionViewController"); //TODO: remove
 		[Dashboard saveDashboardSettings:self.account settings:prefs];
 		
 		/* save last received messages */
