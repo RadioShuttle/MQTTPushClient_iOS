@@ -37,10 +37,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	self.preferences = [Dashboard setPreferredViewDashboard:YES forAccount:self.account];
-	
 	// Uncomment the following line to preserve selection between presentations
 	// self.clearsSelectionOnViewWillAppear = NO;
+	
+	self.preferences = [Dashboard loadDashboardSettings:self.account];
 	
 	/* calc label height and pass it to layout object. IMPORTANT: specify correct font and size (see storyboard) */
 	NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:@"Dummy" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0]}];
@@ -101,6 +101,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		/* save preferneces */
 		NSMutableDictionary * prefs = [self.preferences mutableCopy];
 		[prefs setObject:[NSNumber numberWithInt:self.dashCollectionFlowLayout.zoomLevel] forKey:@"zoom_level"];
+		[prefs setObject:[NSNumber numberWithBool:YES] forKey:@"showDashboard"];
+		NSLog(@"-prop- DashCollectionViewController"); //TODO: remove
 		[Dashboard saveDashboardSettings:self.account settings:prefs];
 		
 		/* save last received messages */

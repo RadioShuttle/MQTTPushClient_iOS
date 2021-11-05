@@ -79,7 +79,6 @@
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
-	[Dashboard setPreferredViewDashboard:NO forAccount:self.account];
 	self.tableView.refreshControl = [[UIRefreshControl alloc] init];
 	self.tableView.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Updating Message List" attributes:nil];
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccount) forControlEvents:UIControlEventValueChanged];
@@ -137,6 +136,7 @@
 	[super viewWillDisappear:animated];
 	[self.account.cdaccount markMessagesRead];
 	[[NSNotificationCenter defaultCenter] removeObserver:self];
+	[Dashboard setPreferredViewDashboard:NO forAccount:self.account];
 }
 
 #pragma mark - Table view data source
