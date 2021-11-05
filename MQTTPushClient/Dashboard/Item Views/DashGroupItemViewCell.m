@@ -7,21 +7,43 @@
 #import "DashGroupItemViewCell.h"
 #import "DashConsts.h"
 
+@interface DashGroupItemViewCell()
+@property BOOL showAccountInfo;
+@end
+
 @implementation DashGroupItemViewCell
 
 - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
 
+	CGFloat labelheight =  (self.showAccountInfo ? self.layoutInfo.accountLabelHeight : 0);
+	BOOL updateConstraints = NO;
+	 
+	 if (self.accountLabelHeightConstraint.constant != labelheight) {
+		 self.accountLabelHeightConstraint.constant = labelheight;
+		 updateConstraints = YES;
+	 }
+	
     if (self.layoutInfo && self.groupViewLeadingConstraint.constant != self.layoutInfo.marginLR) {
         self.groupViewLeadingConstraint.constant = self.layoutInfo.marginLR;
-        self.groupViewTrailingConstraint.constant = -self.layoutInfo.marginLR;
-        [self.groupViewContainer setNeedsUpdateConstraints];
+        self.groupViewTrailingConstraint.constant = self.layoutInfo.marginLR;
+		updateConstraints = YES;
     }
-    
+	
+	if (updateConstraints) {
+		[self.headerViewContainer setNeedsUpdateConstraints];
+	}
+
     return layoutAttributes;
 }
 
--(void)onBind:(DashItem *)item layoutInfo:(DashCollectionViewLayoutInfo *)layoutInfo {
+-(void)onBind:(DashItem *)item layoutInfo:(DashCollectionViewLayoutInfo *)layoutInfo firstGroupEntry:(BOOL) firstGroupEntry account:(Account *)account {
 	self.layoutInfo = layoutInfo;
+	self.showAccountInfo = firstGroupEntry;
+	if (!self.showAccountInfo) {
+		self.accountLabel.text = nil;
+	} else {
+		self.accountLabel.text = account.accountDescription;
+	}
 	
 	int64_t bg = item.background;
 	if (bg == DASH_COLOR_OS_DEFAULT) {
@@ -37,8 +59,8 @@
 	}
 	
 	[self.groupViewContainer setBackgroundColor:UIColorFromRGB(bg)];
-	[self.groupViewLabel setTextColor:textColor];
-	[self.groupViewLabel setText:item.label];
+	[self.groupLabel setTextColor:textColor];
+	[self.groupLabel setText:item.label];
 	
 }
 

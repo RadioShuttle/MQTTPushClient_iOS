@@ -45,6 +45,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	/* calc label height and pass it to layout object. IMPORTANT: specify correct font and size (see storyboard) */
 	NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:@"Dummy" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0]}];
 	CGRect cellRect = [labelString boundingRectWithSize:CGSizeMake(100.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
+	
 	// sets height to DASH_ZOOM_X + cellRect.size.height
 	self.dashCollectionFlowLayout.labelHeight = cellRect.size.height;
 	self.dashCollectionFlowLayout.zoomLevel = [[self.preferences helNumberForKey:@"zoom_level"] intValue];
@@ -577,8 +578,22 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
 	
 	// layout info needed in layout pass (only for header)
-	[v onBind:group layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo];
+	[v onBind:group layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo firstGroupEntry:indexPath.section == 0 account:self.account];
 	return v;
+}
+
+- (CGSize)collectionView:(UICollectionView *)collectionView
+				  layout:(UICollectionViewLayout *)collectionViewLayout
+referenceSizeForHeaderInSection:(NSInteger)section {
+	
+	DashCollectionFlowLayout *layout = (DashCollectionFlowLayout *) collectionViewLayout;
+	CGSize size;
+	if (section == 0) {
+		size = CGSizeMake(layout.headerReferenceSize.width, layout.headerReferenceSize.height + layout.layoutInfo.accountLabelHeight);
+	} else {
+		size = layout.headerReferenceSize;
+	}
+	return size;
 }
 
 -(void)dealloc {

@@ -8,6 +8,7 @@
 
 @interface DashCollectionViewLayoutInfo : NSObject
 @property CGFloat marginLR;
+@property CGFloat accountLabelHeight;
 @end
 
 @interface DashCollectionFlowLayout : UICollectionViewFlowLayout

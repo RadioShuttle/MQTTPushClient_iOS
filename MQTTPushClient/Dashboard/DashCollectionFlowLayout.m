@@ -22,6 +22,7 @@
 -(instancetype)initWithCoder:(NSCoder *)aDecoder {
     if (self = [super initWithCoder:aDecoder]) {
         self.layoutInfo = [DashCollectionViewLayoutInfo new];
+		self.layoutInfo.accountLabelHeight = 24.0f;
     }
     return self;
 }
@@ -64,7 +65,6 @@
         CGFloat addToMarginLR = (w2 - (spanCount * a + (spanCount - 1) * minIntSpacing)) / 2.0f;
         
         self.minimumInteritemSpacing = minIntSpacing;
-        
         //t, l, b, r
         self.layoutInfo.marginLR = addToMarginLR + minMarginLR;
         self.sectionInset = UIEdgeInsetsMake(10.0f, self.layoutInfo.marginLR, 10.0f, self.layoutInfo.marginLR);

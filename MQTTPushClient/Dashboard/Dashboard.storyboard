@@ -205,34 +205,62 @@
                             <rect key="frame" x="0.0" y="0.0" width="414" height="50"/>
                             <autoresizingMask key="autoresizingMask"/>
                             <subviews>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nhG-q8-NYH">
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nhG-q8-NYH" userLabel="Header Container">
                                     <rect key="frame" x="16" y="0.0" width="382" height="50"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nbp-Hs-pHf">
-                                            <rect key="frame" x="170" y="14.5" width="42" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7w-QL-p3J" userLabel="Account Info">
+                                            <rect key="frame" x="0.0" y="0.0" width="382" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="d5I-xd-YfT"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DVT-nZ-6Tu" userLabel="Group Container">
+                                            <rect key="frame" x="-16" y="24" width="414" height="26"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nbp-Hs-pHf">
+                                                    <rect key="frame" x="186" y="3" width="42" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerY" secondItem="DVT-nZ-6Tu" secondAttribute="centerY" id="E93-fu-Nh3"/>
+                                                <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerX" secondItem="DVT-nZ-6Tu" secondAttribute="centerX" id="NXr-Sg-5UC"/>
+                                                <constraint firstAttribute="height" constant="26" id="hlf-oQ-uZC"/>
+                                            </constraints>
+                                        </view>
                                     </subviews>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerX" secondItem="nhG-q8-NYH" secondAttribute="centerX" id="EYd-ct-wll"/>
-                                        <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerY" secondItem="nhG-q8-NYH" secondAttribute="centerY" id="io5-HD-QWS"/>
+                                        <constraint firstItem="DVT-nZ-6Tu" firstAttribute="top" secondItem="C7w-QL-p3J" secondAttribute="bottom" id="1ki-vk-Bwz"/>
+                                        <constraint firstItem="C7w-QL-p3J" firstAttribute="top" secondItem="nhG-q8-NYH" secondAttribute="top" id="XM7-d8-LnN"/>
+                                        <constraint firstItem="C7w-QL-p3J" firstAttribute="leading" secondItem="nhG-q8-NYH" secondAttribute="leading" id="Xak-AQ-MkS"/>
+                                        <constraint firstAttribute="trailing" secondItem="C7w-QL-p3J" secondAttribute="trailing" id="bTl-XY-wyx"/>
+                                        <constraint firstAttribute="bottom" secondItem="DVT-nZ-6Tu" secondAttribute="bottom" id="u93-lo-LnX"/>
                                     </constraints>
                                 </view>
                             </subviews>
                             <constraints>
-                                <constraint firstItem="nhG-q8-NYH" firstAttribute="trailing" secondItem="khj-gz-Obi" secondAttribute="trailing" constant="-16" id="6pY-IB-D7u"/>
-                                <constraint firstItem="nhG-q8-NYH" firstAttribute="leading" secondItem="khj-gz-Obi" secondAttribute="leading" constant="16" id="6xe-tG-aFc"/>
-                                <constraint firstAttribute="bottom" secondItem="nhG-q8-NYH" secondAttribute="bottom" id="LjJ-Sp-vUU"/>
-                                <constraint firstItem="nhG-q8-NYH" firstAttribute="top" secondItem="khj-gz-Obi" secondAttribute="top" id="cbE-iP-LwQ"/>
+                                <constraint firstAttribute="trailing" secondItem="DVT-nZ-6Tu" secondAttribute="trailing" id="8Oo-Zo-kRv"/>
+                                <constraint firstItem="DVT-nZ-6Tu" firstAttribute="leading" secondItem="khj-gz-Obi" secondAttribute="leading" id="EJM-vF-cui"/>
+                                <constraint firstAttribute="trailing" secondItem="nhG-q8-NYH" secondAttribute="trailing" constant="16" id="G3p-fj-dLm"/>
+                                <constraint firstItem="nhG-q8-NYH" firstAttribute="leading" secondItem="khj-gz-Obi" secondAttribute="leading" constant="16" id="cGw-9j-L6c"/>
+                                <constraint firstItem="nhG-q8-NYH" firstAttribute="top" secondItem="khj-gz-Obi" secondAttribute="top" id="nqP-aE-aVW"/>
+                                <constraint firstAttribute="bottom" secondItem="nhG-q8-NYH" secondAttribute="bottom" id="vPS-o1-ItR"/>
                             </constraints>
                             <connections>
-                                <outlet property="groupViewContainer" destination="nhG-q8-NYH" id="PEl-H8-7GW"/>
-                                <outlet property="groupViewLabel" destination="nbp-Hs-pHf" id="6gu-aP-8iD"/>
-                                <outlet property="groupViewLeadingConstraint" destination="6xe-tG-aFc" id="4H3-8Z-Zpl"/>
-                                <outlet property="groupViewTrailingConstraint" destination="6pY-IB-D7u" id="QhB-EJ-c3p"/>
+                                <outlet property="accountLabel" destination="C7w-QL-p3J" id="Y2s-9H-avh"/>
+                                <outlet property="accountLabelHeightConstraint" destination="d5I-xd-YfT" id="TgD-7Y-AUV"/>
+                                <outlet property="groupLabel" destination="nbp-Hs-pHf" id="6gu-aP-8iD"/>
+                                <outlet property="groupViewContainer" destination="DVT-nZ-6Tu" id="QVe-xb-KY1"/>
+                                <outlet property="groupViewLeadingConstraint" destination="EJM-vF-cui" id="Gti-KQ-DEu"/>
+                                <outlet property="groupViewTrailingConstraint" destination="8Oo-Zo-kRv" id="Hm5-lz-VeT"/>
+                                <outlet property="headerViewContainer" destination="nhG-q8-NYH" id="PEl-H8-7GW"/>
                             </connections>
                         </collectionReusableView>
                         <connections>
