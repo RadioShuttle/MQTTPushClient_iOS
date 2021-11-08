@@ -196,10 +196,15 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				/* received a new dashboard */
 				NSString *dashboardJS = [notif.userInfo helStringForKey:@"dashboardJS"];
 				// NSLog(@"Dashboard: %@", dashboardJS);
+				// msg = [notif.userInfo helStringForKey:@"dashboard_err"];
+				BOOL externalUpdate = self.dashboard.localVersion != 0;
+				if (externalUpdate) {
+					//TODO: save dashboard: only display message, if update was not caused by own save
+					msg = @"Dashboard has been updated.";
+				}
 				
 				NSDictionary * resultInfo = [self.dashboard setDashboard:dashboardJS version:serverVersion];
 				dashboardUpdate = [[resultInfo helNumberForKey:@"dashboard_new"] boolValue];
-				msg = [notif.userInfo helStringForKey:@"dashboard_err"];
 				if (self.activeDetailView) {
 					/* notify detail view about change */
 					[self.activeDetailView onDashboardUpdate];

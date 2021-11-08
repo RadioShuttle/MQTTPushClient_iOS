@@ -6,6 +6,7 @@
 
 #import "DashGroupItemViewCell.h"
 #import "DashConsts.h"
+#import "DashUtils.h"
 
 @interface DashGroupItemViewCell()
 @property BOOL showAccountInfo;
@@ -62,6 +63,8 @@
 	[self.groupLabel setTextColor:textColor];
 	[self.groupLabel setText:item.label];
 	
+	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
+	self.groupLabel.font = [self.groupLabel.font fontWithSize:labelFontSize];
 }
 
 @end
