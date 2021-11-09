@@ -27,5 +27,6 @@
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;
 @property (weak, nonatomic) IBOutlet UILabel *statusBarLabel;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *listViewButtonItem;
 
 @end

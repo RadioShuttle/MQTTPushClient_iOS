@@ -319,6 +319,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="dashCollectionFlowLayout" destination="jX3-IZ-LVW" id="tfP-8c-eLo"/>
+                        <outlet property="listViewButtonItem" destination="rbh-YV-M6z" id="srU-ET-yGs"/>
                         <outlet property="statusBarLabel" destination="1ny-lx-5gl" id="bvC-Zz-amo"/>
                     </connections>
                 </collectionViewController>

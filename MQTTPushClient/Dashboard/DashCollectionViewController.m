@@ -24,6 +24,11 @@
 
 @interface DashCollectionViewController ()
 @property NSDate *statusBarUpdateTime;
+@property NSArray<UIBarButtonItem *> *buttonItemsNonEditMode;
+@property NSArray<UIBarButtonItem *> *buttonItemsEditMode;
+@property NSArray<UIBarButtonItem *> *buttonItemsToolbarEditMode;
+@property NSArray<UIBarButtonItem *> *buttonItemsToolbarNonEditMode;
+
 @end
 
 @implementation DashCollectionViewController
@@ -514,7 +519,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (IBAction)actionMore:(id)sender {
 	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	[alert addAction:[UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onEditMenuItemClicked];
 	}]];
 
 	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -533,6 +538,60 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (IBAction)actionAdd:(id)sender {
 
+}
+
+/* this function is called from action sheet edit - so edit mode is always turned on */
+-(void)onEditMenuItemClicked {
+	/* update toolbar: hide all menu items and add context related menu items */
+
+	if (!self.buttonItemsNonEditMode) {
+		self.buttonItemsNonEditMode = self.navigationItem.rightBarButtonItems;
+	}
+	if (!self.buttonItemsEditMode) {
+		self.editButtonItem.target = self;
+		self.editButtonItem.action = @selector(onEditDashboardButtonClicked);
+		NSMutableArray *buttons = [NSMutableArray new];
+		[buttons addObject:self.editButtonItem];
+		
+		/* create delete and edit item button */
+		UIBarButtonItem *delButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"Delete"] style:UIBarButtonItemStylePlain target:self action:@selector(onDeleteDashItemButtonClicked)];
+		UIBarButtonItem *editButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"Edit"] style:UIBarButtonItemStylePlain target:self action:@selector(onEditDashItemButtonClicked)];
+		[buttons addObject:delButton];
+		[buttons addObject:editButton];
+		self.buttonItemsEditMode = buttons;
+	}
+	if (!self.buttonItemsToolbarEditMode) {
+		self.buttonItemsToolbarEditMode = self.toolbarItems;
+	}
+	if (!self.buttonItemsToolbarNonEditMode) {
+		NSMutableArray * buttons = [self.toolbarItems mutableCopy];
+		[buttons removeObject:self.listViewButtonItem];
+		self.buttonItemsToolbarNonEditMode = buttons;
+	}
+	self.toolbarItems = self.buttonItemsToolbarNonEditMode;
+
+	
+	self.editing = YES;
+	[self.navigationItem setHidesBackButton:YES animated:NO];
+	self.navigationItem.rightBarButtonItems = self.buttonItemsEditMode;
+	
+}
+
+-(void)onEditDashboardButtonClicked {
+	if (self.editing) {
+		/* back to non-edit mode: restore standard toolbar */
+		[self.navigationItem setHidesBackButton:NO animated:NO];
+		self.navigationItem.rightBarButtonItems = self.buttonItemsNonEditMode;
+		self.toolbarItems = self.buttonItemsToolbarEditMode;
+	}
+}
+
+-(void)onEditDashItemButtonClicked {
+	
+}
+
+-(void)onDeleteDashItemButtonClicked {
+	
 }
 
 #pragma mark <UICollectionViewDataSource>
