@@ -512,6 +512,29 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[self.dashCollectionFlowLayout zoom];
 }
 
+- (IBAction)actionMore:(id)sender {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+
+	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Reload" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	
+	alert.popoverPresentationController.barButtonItem = self.navigationController.navigationItem.rightBarButtonItems.firstObject;
+	[self presentViewController:alert animated:TRUE completion:nil];
+}
+
+- (IBAction)actionAdd:(id)sender {
+
+}
+
 #pragma mark <UICollectionViewDataSource>
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
