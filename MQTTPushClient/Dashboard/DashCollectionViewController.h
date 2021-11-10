@@ -11,8 +11,9 @@
 #import "DashCollectionFlowLayout.h"
 #import "DashDetailViewController.h"
 #import "DashPublishController.h"
+#import "DashGroupItemViewCell.h"
 
-@interface DashCollectionViewController : UICollectionViewController <DashPublishController>
+@interface DashCollectionViewController : UICollectionViewController <DashPublishController, DashGroupSelectionHandler>
 
 @property Account *account;
 @property Dashboard *dashboard;
@@ -23,6 +24,9 @@
 @property NSOperationQueue *jsOperationQueue;
 @property NSMutableArray<NSInvocationOperation *> *jsTaskQueue;
 @property uint32_t publishReqIDCounter;
+@property BOOL editMode;
+/* selected items */
+@property NSMutableSet *selectedItems;
 
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;

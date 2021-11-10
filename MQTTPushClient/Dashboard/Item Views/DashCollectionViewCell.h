@@ -15,12 +15,18 @@
 @property UIImageView *errorImageView2;
 @property DashCircleBackroundView *backgroundView2;
 @property BOOL labelConstraintSet;
+@property UIView *checkmarkView;
 
 @property UIColor *labelColor;
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context;
--(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label;
+-(void)onBind:(DashItem *)item context:(Dashboard *)context selected:(BOOL)selected;
+-(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label selected:(BOOL)selected;
+
+-(void)showCheckmark;
+-(void)hideCheckmark;
 
 -(void)showErrorInfo:(BOOL)error1 error2:(BOOL)error2;
+
++(UIView *) createCheckmarkView:(UIView *)container yOffset:(int) yOffset;
 
 @end

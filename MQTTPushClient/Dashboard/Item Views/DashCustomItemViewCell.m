@@ -9,7 +9,7 @@
 
 @implementation DashCustomItemViewCell
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context {
+-(void)onBind:(DashItem *)item context:(Dashboard *)context selected:(BOOL)selected {
 	self.dashboard = context;
 	
 	if (context.cachedCustomViewsVersion != context.localVersion) {
@@ -65,7 +65,7 @@
 	};
 	[self.webviewContainer onBind:item context:context];
 
-	[super onBind:item context:context label:self.customItemLabel];
+	[super onBind:item context:context label:self.customItemLabel selected:selected];
 
 }
 

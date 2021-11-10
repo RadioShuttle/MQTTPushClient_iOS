@@ -24,10 +24,10 @@
 
 @interface DashCollectionViewController ()
 @property NSDate *statusBarUpdateTime;
-@property NSArray<UIBarButtonItem *> *buttonItemsNonEditMode;
-@property NSArray<UIBarButtonItem *> *buttonItemsEditMode;
-@property NSArray<UIBarButtonItem *> *buttonItemsToolbarEditMode;
-@property NSArray<UIBarButtonItem *> *buttonItemsToolbarNonEditMode;
+@property NSArray<UIBarButtonItem *> *buttonItemsHeaderNonEditMode;
+@property NSArray<UIBarButtonItem *> *buttonItemsHeaderEditMode;
+@property NSArray<UIBarButtonItem *> *buttonItemsFooterEditMode;
+@property NSArray<UIBarButtonItem *> *buttonItemsFooterNonEditMode;
 
 @end
 
@@ -42,6 +42,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (void)viewDidLoad {
 	[super viewDidLoad];
+	
 	// Uncomment the following line to preserve selection between presentations
 	// self.clearsSelectionOnViewWillAppear = NO;
 	
@@ -58,6 +59,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 	[self.collectionView registerClass:[DashCustomItemViewCell class] forCellWithReuseIdentifier:reuseIDcustomItem];
+	self.selectedItems = [NSMutableSet new];
 	
 	/* java script task executor */
 	self.jsOperationQueue = [[NSOperationQueue alloc] init];
@@ -536,54 +538,83 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[self presentViewController:alert animated:TRUE completion:nil];
 }
 
-- (IBAction)actionAdd:(id)sender {
-
-}
-
 /* this function is called from action sheet edit - so edit mode is always turned on */
 -(void)onEditMenuItemClicked {
 	/* update toolbar: hide all menu items and add context related menu items */
 
-	if (!self.buttonItemsNonEditMode) {
-		self.buttonItemsNonEditMode = self.navigationItem.rightBarButtonItems;
+	if (!self.buttonItemsHeaderNonEditMode) {
+		self.buttonItemsHeaderNonEditMode = self.navigationItem.rightBarButtonItems;
 	}
-	if (!self.buttonItemsEditMode) {
-		self.editButtonItem.target = self;
-		self.editButtonItem.action = @selector(onEditDashboardButtonClicked);
+	if (!self.buttonItemsHeaderEditMode) {
 		NSMutableArray *buttons = [NSMutableArray new];
-		[buttons addObject:self.editButtonItem];
 		
 		/* create delete and edit item button */
-		UIBarButtonItem *delButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"Delete"] style:UIBarButtonItemStylePlain target:self action:@selector(onDeleteDashItemButtonClicked)];
 		UIBarButtonItem *editButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"Edit"] style:UIBarButtonItemStylePlain target:self action:@selector(onEditDashItemButtonClicked)];
-		[buttons addObject:delButton];
+		UIBarButtonItem *addButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"Add"] style:UIBarButtonItemStylePlain target:self action:@selector(onAddDashItemButtonClicked)];
 		[buttons addObject:editButton];
-		self.buttonItemsEditMode = buttons;
+		[buttons addObject:addButton];
+		self.buttonItemsHeaderEditMode = buttons;
 	}
-	if (!self.buttonItemsToolbarEditMode) {
-		self.buttonItemsToolbarEditMode = self.toolbarItems;
+	if (!self.buttonItemsFooterEditMode) {
+		self.buttonItemsFooterEditMode = self.toolbarItems;
 	}
-	if (!self.buttonItemsToolbarNonEditMode) {
+	if (!self.buttonItemsFooterNonEditMode) {
 		NSMutableArray * buttons = [self.toolbarItems mutableCopy];
 		[buttons removeObject:self.listViewButtonItem];
-		self.buttonItemsToolbarNonEditMode = buttons;
-	}
-	self.toolbarItems = self.buttonItemsToolbarNonEditMode;
+		UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStylePlain target:self action:@selector(onEditDoneButtonClicked)];
+		[buttons addObject:doneButton];
+		
+		UIBarButtonItem *delButton = [[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemTrash target:self action:@selector(onDeleteDashItemButtonClicked)];
+		[buttons insertObject:delButton atIndex:0];
 
+		
+		self.buttonItemsFooterNonEditMode = buttons;
+	}
+	self.toolbarItems = self.buttonItemsFooterNonEditMode;
 	
-	self.editing = YES;
 	[self.navigationItem setHidesBackButton:YES animated:NO];
-	self.navigationItem.rightBarButtonItems = self.buttonItemsEditMode;
+	self.navigationItem.rightBarButtonItems = self.buttonItemsHeaderEditMode;
+	
+	self.editMode = YES;
+}
+
+-(void)onEditDoneButtonClicked {
+	/* back to non-edit mode: restore standard toolbar */
+	self.editMode = NO;
+	[self.navigationItem setHidesBackButton:NO animated:NO];
+	self.navigationItem.rightBarButtonItems = self.buttonItemsHeaderNonEditMode;
+	self.toolbarItems = self.buttonItemsFooterEditMode;
+	/* clear selection */
+	if (self.selectedItems.count > 0) {
+		NSMutableArray *selectedItems = [NSMutableArray new];
+		NSMutableArray *selectedGroups = [NSMutableArray new];
+		for(NSObject *o in self.selectedItems) {
+			if ([o isKindOfClass:[NSIndexPath class]]) {
+				[selectedItems addObject:o];
+			} else if ([o isKindOfClass:[NSNumber class]]) {
+				NSNumber * n = (NSNumber *) o;
+				[selectedGroups addObject:[NSIndexPath indexPathForRow:0 inSection:[n integerValue]]];
+			}
+		}
+		[self.selectedItems removeAllObjects];
+		[self.collectionView reloadItemsAtIndexPaths:selectedItems];
+		
+		DashGroupItemViewCell *groupView;
+		DashGroupItem *groupItem;
+		for(NSIndexPath *idx in selectedGroups) {
+			groupView = (DashGroupItemViewCell *) [self.collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader atIndexPath:idx];
+			if (groupView) {
+				groupItem = [self.dashboard.groups objectAtIndex:idx.section];
+				[groupView onBind:groupItem layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo pos:idx account:self.account selected:NO];
+			}
+			
+		}
+	}
 	
 }
 
--(void)onEditDashboardButtonClicked {
-	if (self.editing) {
-		/* back to non-edit mode: restore standard toolbar */
-		[self.navigationItem setHidesBackButton:NO animated:NO];
-		self.navigationItem.rightBarButtonItems = self.buttonItemsNonEditMode;
-		self.toolbarItems = self.buttonItemsToolbarEditMode;
-	}
+-(void)onAddDashItemButtonClicked {
+	
 }
 
 -(void)onEditDashItemButtonClicked {
@@ -613,27 +644,55 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 #pragma mark <UICollectionViewDelegate>
 
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-	
-	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
-	NSNumber *key = [NSNumber numberWithUnsignedInt:group.id_];
-	DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
-	
-	CGRect sourceRect = [collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
-	
-	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
-	DashDetailViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"DashDetailViewController"];
-	vc.dashItem = (DashItem *) item;
-	vc.dashboard = self.dashboard;
-	vc.publishController = self;
-	self.activeDetailView = vc;
-	
-	vc.modalPresentationStyle = UIModalPresentationPopover;
-	
-	
-	vc.popoverPresentationController.sourceView = collectionView;
-	vc.popoverPresentationController.sourceRect = sourceRect;
-	
-	[self presentViewController:vc animated:YES completion:nil];
+	if (self.editMode) {
+		if ([self.selectedItems containsObject:indexPath]) {
+			[self.selectedItems removeObject:indexPath];
+		} else {
+			[self.selectedItems addObject:indexPath];
+		}
+		NSMutableArray *p = [NSMutableArray new];
+		[p addObject:indexPath];
+		[collectionView reloadItemsAtIndexPaths:p];
+	} else {
+		DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
+		NSNumber *key = [NSNumber numberWithUnsignedInt:group.id_];
+		DashItem *item = [(NSArray *) [self.dashboard.groupItems objectForKey:key] objectAtIndex:[indexPath row]];
+		
+		CGRect sourceRect = [collectionView layoutAttributesForItemAtIndexPath:indexPath].frame;
+		
+		UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
+		DashDetailViewController* vc = [storyboard instantiateViewControllerWithIdentifier:@"DashDetailViewController"];
+		vc.dashItem = (DashItem *) item;
+		vc.dashboard = self.dashboard;
+		vc.publishController = self;
+		self.activeDetailView = vc;
+		
+		vc.modalPresentationStyle = UIModalPresentationPopover;
+		
+		vc.popoverPresentationController.sourceView = collectionView;
+		vc.popoverPresentationController.sourceRect = sourceRect;
+		
+		[self presentViewController:vc animated:YES completion:nil];
+	}
+}
+
+-(void)onGroupItemSelected:(NSInteger) section {
+	if (self.editMode) {
+		NSNumber *g = [NSNumber numberWithInteger:section];
+		BOOL selected;
+		if ([self.selectedItems containsObject:g]) {
+			[self.selectedItems removeObject:g];
+			selected = NO;
+		} else {
+			[self.selectedItems addObject:g];
+			selected = YES;
+		}
+		DashGroupItem *groupItem = [self.dashboard.groups objectAtIndex:section];
+		NSIndexPath *idx = [NSIndexPath indexPathForRow:0 inSection:g.integerValue];
+		DashGroupItemViewCell *groupView = (DashGroupItemViewCell *) [self.collectionView supplementaryViewForElementKind:UICollectionElementKindSectionHeader atIndexPath:idx];
+		
+		[groupView onBind:groupItem layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo pos:[NSIndexPath indexPathForRow:0 inSection:section] account:self.account selected:selected];
+	}
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -655,17 +714,23 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	} else if ([DashOptionItem class] == [item class]) {
 		cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIDoptionItem forIndexPath:indexPath];
 	}
-	[cell onBind:item context:self.dashboard];
+	
+	BOOL selected = [self.selectedItems containsObject:indexPath];
+	[cell onBind:item context:self.dashboard selected:selected];
 	
 	return cell;
 }
 
 - (UICollectionReusableView *)collectionView:(UICollectionView *)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
 	DashGroupItemViewCell *v = [collectionView dequeueReusableSupplementaryViewOfKind:kind withReuseIdentifier:reuseIGroupItem forIndexPath:indexPath];
+	v.groupSelectionHandler = self;
 	DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
 	
+	NSNumber *idx = [NSNumber numberWithInteger:indexPath.section];
+	BOOL selected = [self.selectedItems containsObject:idx];
 	// layout info needed in layout pass (only for header)
-	[v onBind:group layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo firstGroupEntry:indexPath.section == 0 account:self.account];
+	[v onBind:group layoutInfo:((DashCollectionFlowLayout *) self.collectionViewLayout).layoutInfo pos:indexPath account:self.account selected:selected];
+	
 	return v;
 }
 

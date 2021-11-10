@@ -14,8 +14,8 @@
 
 @implementation DashTextItemViewCell
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context label:self.textItemLabel];
+-(void)onBind:(DashItem *)item context:(Dashboard *)context selected:(BOOL)selected {
+	[super onBind:item context:context label:self.textItemLabel selected:selected];
 	
 	[self.textItemContainer onBind:item context:context];
 }

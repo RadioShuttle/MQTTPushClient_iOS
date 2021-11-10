@@ -7,6 +7,7 @@
 #import "DashGroupItemViewCell.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
+#import "DashCollectionViewCell.h"
 
 @interface DashGroupItemViewCell()
 @property BOOL showAccountInfo;
@@ -37,9 +38,10 @@
     return layoutAttributes;
 }
 
--(void)onBind:(DashItem *)item layoutInfo:(DashCollectionViewLayoutInfo *)layoutInfo firstGroupEntry:(BOOL) firstGroupEntry account:(Account *)account {
+-(void)onBind:(DashItem *)item layoutInfo:(DashCollectionViewLayoutInfo *)layoutInfo pos:(NSIndexPath *) pos account:(Account *)account selected:(BOOL)selected {
+	self.pos = pos;
 	self.layoutInfo = layoutInfo;
-	self.showAccountInfo = firstGroupEntry;
+	self.showAccountInfo = pos.section == 0;
 	if (!self.showAccountInfo) {
 		self.accountLabel.text = nil;
 	} else {
@@ -65,6 +67,38 @@
 	
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
 	self.groupLabel.font = [self.groupLabel.font fontWithSize:labelFontSize];
+	
+	if (!self.tagGestureRecognizer) {
+		self.tagGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onGroupViewLabelClicked)];
+		self.tagGestureRecognizer.delaysTouchesBegan = YES;
+		self.tagGestureRecognizer.numberOfTapsRequired = 1;
+		[self addGestureRecognizer:self.tagGestureRecognizer];
+	}
+	
+	if (selected) {
+		[self showCheckmark];
+	} else {
+		[self hideCheckmark];
+	}
+}
+
+-(void)onGroupViewLabelClicked {
+	[self.groupSelectionHandler onGroupItemSelected:self.pos.section];
+}
+
+-(void)showCheckmark {
+	if (!self.checkmarkView) {
+		self.checkmarkView = [DashCollectionViewCell createCheckmarkView:self.groupViewContainer yOffset:0];
+	}
+	self.checkmarkView.hidden = NO;
+	[self bringSubviewToFront:self.checkmarkView];
+}
+
+-(void)hideCheckmark {
+	if (self.checkmarkView) {
+		self.checkmarkView.hidden = YES;
+		[self sendSubviewToBack:self.checkmarkView];
+	}
 }
 
 @end

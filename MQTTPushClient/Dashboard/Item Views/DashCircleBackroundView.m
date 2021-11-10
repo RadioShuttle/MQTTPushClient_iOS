@@ -10,27 +10,32 @@
 @implementation DashCircleBackroundView
 
 - (instancetype)init {
+	return [self initWithColor:[UIColor whiteColor]];
+}
+
+- (instancetype)initWithColor:(UIColor*) color {
 	if (self = [super init]) {
 		[self setBackgroundColor:[UIColor clearColor]];
-		//TODO: dark mode
-		self.fillColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
+		self.fillColor = color;
+		self.padding = 2;
 	}
 	return self;
 }
+
 - (void)drawRect:(CGRect)rect {
 	CGRect r2;
 	float a = MIN(rect.size.height, rect.size.width);
-	r2.origin.x = rect.origin.x + 2.0f;
+	r2.origin.x = rect.origin.x + self.padding;
 	if (rect.size.width > a) {
-		r2.origin.x += (rect.size.width - a) / 2.0f;
+		r2.origin.x += (rect.size.width - a) / self.padding;
 	}
-	r2.origin.y = rect.origin.y + 2.0f;
+	r2.origin.y = rect.origin.y + self.padding;
 	if (rect.size.height > a) {
-		r2.origin.y += (rect.size.height - a) / 2.0f;
+		r2.origin.y += (rect.size.height - a) / self.padding;
 	}
 	
-	r2.size.height = a - 4.0f;
-	r2.size.width = a - 4.0f;
+	r2.size.height = a - self.padding * 2;
+	r2.size.width = a - self.padding * 2;
 	
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	CGContextAddEllipseInRect(ctx, r2);

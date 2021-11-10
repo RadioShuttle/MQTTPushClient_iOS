@@ -309,11 +309,6 @@
                                     <action selector="actionZoom:" destination="F7T-nj-EyB" id="GIz-dY-PmH"/>
                                 </connections>
                             </barButtonItem>
-                            <barButtonItem title="Add" image="Add" id="Szd-Hw-UwF">
-                                <connections>
-                                    <action selector="actionAdd:" destination="F7T-nj-EyB" id="Gf0-De-a5x"/>
-                                </connections>
-                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
@@ -425,7 +420,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Add" width="24" height="24"/>
         <image name="Error-Info" width="24" height="24"/>
         <image name="List" width="24" height="24"/>
         <image name="More" width="24" height="24"/>

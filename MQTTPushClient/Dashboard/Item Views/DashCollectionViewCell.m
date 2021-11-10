@@ -10,11 +10,11 @@
 
 @implementation DashCollectionViewCell
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[self onBind:item context:context label:nil];
+-(void)onBind:(DashItem *)item context:(Dashboard *)context selected:(BOOL)selected {
+	[self onBind:item context:context label:nil selected:selected];
 }
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label {
+-(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label selected:(BOOL)selected {
 
 	if (!self.labelConstraintSet) {
 		/* get the height reserverd for label */
@@ -29,7 +29,12 @@
 	BOOL error2 = ![Utils isEmpty:item.error2];
 	
 	[self showErrorInfo:error1 error2:error2];
-
+	
+	if (selected) {
+		[self showCheckmark];
+	} else {
+		[self hideCheckmark];
+	}
 }
 
 /* Displays one or two error images, indicating java script errors */
@@ -82,4 +87,42 @@
 	self.backgroundView2.hidden = self.errorImageView2.hidden;
 
 }
+
+-(void)showCheckmark {
+	if (!self.checkmarkView) {
+		self.checkmarkView = [DashCollectionViewCell createCheckmarkView:self yOffset:-12];
+	}
+	self.checkmarkView.hidden = NO;
+	[self bringSubviewToFront:self.checkmarkView];
+}
+
+-(void)hideCheckmark {
+	if (self.checkmarkView) {
+		self.checkmarkView.hidden = YES;
+		[self sendSubviewToBack:self.checkmarkView];
+	}
+}
+
++(UIView *) createCheckmarkView:(UIView *)container yOffset:(int) yOffset {
+	UIView *checkmarkView = [[DashCircleBackroundView alloc] initWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
+	((DashCircleBackroundView *) checkmarkView).padding = 0;
+	checkmarkView.translatesAutoresizingMaskIntoConstraints = NO;
+	[container addSubview:checkmarkView];
+	
+	[checkmarkView.heightAnchor constraintEqualToConstant:24].active = YES;
+	[checkmarkView.widthAnchor constraintEqualToConstant:24].active = YES;
+	[checkmarkView.leadingAnchor constraintEqualToAnchor:container.leadingAnchor constant:4].active = YES;
+	[checkmarkView.centerYAnchor constraintEqualToAnchor:container.centerYAnchor constant:yOffset].active = YES;
+	
+	UIImage *image = [[UIImage imageNamed:@"Checkmark"] imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+	
+	UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
+	[imageView setTintColor:[UIColor whiteColor]];
+	imageView.translatesAutoresizingMaskIntoConstraints = NO;
+	[checkmarkView addSubview:imageView];
+	[imageView.heightAnchor constraintEqualToConstant:24].active = YES;
+	[imageView.widthAnchor constraintEqualToConstant:24].active = YES;
+	return checkmarkView;
+}
+
 @end
