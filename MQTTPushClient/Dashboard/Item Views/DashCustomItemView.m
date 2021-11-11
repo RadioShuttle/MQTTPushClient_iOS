@@ -84,10 +84,11 @@
 		self.handler.userDataDir = context.account.cacheURL;
 		load = YES;
 
-	} else if (item == self.item) {
+	} else if (item == self.item && !((DashCustomItem *) item).reloadRequested) {
 		/* message update */
 	} else {
 		/* view is being reused */
+		((DashCustomItem *) item).reloadRequested = NO;
 		[self.webView.configuration.userContentController removeAllUserScripts];
 		self.contentLoaded = NO;
 		self.lastHistoricalMsg = nil;

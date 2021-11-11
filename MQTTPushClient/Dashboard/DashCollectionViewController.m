@@ -525,7 +525,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Reload" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	[alert addAction:[UIAlertAction actionWithTitle:@"Reload" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onReloadMenuItemClicked];
 	}]];
 	
 	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
@@ -635,6 +635,29 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationController.navigationItem.rightBarButtonItems.firstObject;
 	[self presentViewController:alert animated:TRUE completion:nil];
+}
+
+-(void)onReloadMenuItemClicked {
+	
+	// NSMutableArray *list = [NSMutableArray new];
+	/* set reload flag for custom items */
+	DashGroupItem *groupItem;
+	NSIndexPath *p;
+	for(int i = 0; i < self.dashboard.groups.count; i++) {
+		groupItem = self.dashboard.groups[i];
+		NSArray<DashItem *> *items = self.dashboard.groupItems[@(groupItem.id_)];
+		for(int j = 0; j < items.count; j++) {
+			if ([items[j] isKindOfClass:[DashCustomItem class]]) {
+				((DashCustomItem *) items[j]).reloadRequested = YES;
+				p = [NSIndexPath indexPathForRow:j inSection:i];
+				/* only add if no cached message exist to prevent multiple notificateions */
+				// [list addObject:p];
+			}
+		}
+	}
+	/* deliver local stored messages*/
+	[self deliverMessages:[[NSDate alloc]initWithTimeIntervalSince1970:0] seqNo:0 notify:NO];
+	[self.collectionView reloadData];
 }
 
 -(void)onEditDashItemButtonClicked {

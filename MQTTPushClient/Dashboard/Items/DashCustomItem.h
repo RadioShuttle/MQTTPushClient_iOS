@@ -16,4 +16,5 @@
 /* last message received matching dash item's topic */
 @property DashMessage *message;
 
+@property BOOL reloadRequested;
 @end
