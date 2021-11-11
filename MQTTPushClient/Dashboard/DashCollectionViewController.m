@@ -28,7 +28,6 @@
 @property NSArray<UIBarButtonItem *> *buttonItemsHeaderEditMode;
 @property NSArray<UIBarButtonItem *> *buttonItemsFooterEditMode;
 @property NSArray<UIBarButtonItem *> *buttonItemsFooterNonEditMode;
-
 @end
 
 @implementation DashCollectionViewController
@@ -521,7 +520,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 - (IBAction)actionMore:(id)sender {
 	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onEditMenuItemClicked];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Edit Dashboard" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onEditMenuItemClicked];
 	}]];
 
 	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -574,6 +573,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	[self.navigationItem setHidesBackButton:YES animated:NO];
 	self.navigationItem.rightBarButtonItems = self.buttonItemsHeaderEditMode;
+	[self.navigationItem setTitle:@"Edit Dashboard"];
 	
 	self.editMode = YES;
 }
@@ -610,11 +610,31 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			
 		}
 	}
-	
+	[self.navigationItem setTitle:@"Dashboard"];
 }
 
 -(void)onAddDashItemButtonClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Add Dash" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Text View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Button/Switch" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Progress Bar/Slider" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Option List" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Group View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Custom View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	}]];
 	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	
+	alert.popoverPresentationController.barButtonItem = self.navigationController.navigationItem.rightBarButtonItems.firstObject;
+	[self presentViewController:alert animated:TRUE completion:nil];
 }
 
 -(void)onEditDashItemButtonClicked {
