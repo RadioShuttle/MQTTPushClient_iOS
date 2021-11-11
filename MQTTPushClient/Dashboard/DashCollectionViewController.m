@@ -533,7 +533,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
-	alert.popoverPresentationController.barButtonItem = self.navigationController.navigationItem.rightBarButtonItems.firstObject;
+	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
 	[self presentViewController:alert animated:TRUE completion:nil];
 }
 
@@ -633,7 +633,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
-	alert.popoverPresentationController.barButtonItem = self.navigationController.navigationItem.rightBarButtonItems.firstObject;
+	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
 	[self presentViewController:alert animated:TRUE completion:nil];
 }
 
