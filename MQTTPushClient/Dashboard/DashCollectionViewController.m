@@ -633,7 +633,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
-	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
+	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.lastObject;
 	[self presentViewController:alert animated:TRUE completion:nil];
 }
 
