@@ -98,6 +98,24 @@
 		if (!self.tableViewInitialized) {
 			self.context = context;
 			[self.optionListTableView reloadData];
+			self.tableViewInitialized = YES;
+		} else {
+			/* update selection */
+			NSIndexPath *sel;
+			for(int i = 0; i < self.optionItem.optionList.count; i++) {
+				if (self.optionItem.content.length > 0 && [self.optionItem.content isEqualToString:self.optionItem.optionList[i].value]) {
+					sel = [NSIndexPath indexPathForRow:i inSection:0];
+					break;
+				}
+			}
+			NSMutableArray *upd = [NSMutableArray new];
+			if (sel) {
+				[upd addObject:sel];
+				if (self.currentSelection && ![sel isEqual:self.currentSelection]) {
+					[upd addObject:self.currentSelection];
+				}
+				[self.optionListTableView reloadRowsAtIndexPaths:upd withRowAnimation:NO];
+			}
 		}
 	} else {
 		/* collection cell view */
@@ -173,7 +191,9 @@
 	DashOptionTableViewCell *cell = (DashOptionTableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"optionListItemCell"];
 	DashOptionListItem *listItem = self.optionItem.optionList[indexPath.row];
 	BOOL selected = self.optionItem.content.length > 0 && [self.optionItem.content isEqualToString:listItem.value];
-	
+	if (selected) {
+		self.currentSelection = indexPath;
+	}
 	[cell setBackgroundColor:[UIColor clearColor]]; // use cell background
 
 	int64_t color = self.optionItem.textcolor;

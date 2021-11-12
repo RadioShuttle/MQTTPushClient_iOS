@@ -17,6 +17,7 @@
 
 @property DashOptionItem *optionItem;
 @property BOOL tableViewInitialized;
+@property NSIndexPath *currentSelection;
 
 @property Dashboard *context;
 
