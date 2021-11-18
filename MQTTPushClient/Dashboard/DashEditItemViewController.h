@@ -29,6 +29,8 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet DashCircleViewButton *textColorButton;
 @property IBOutlet UILabel *textSizeLabel;
 @property IBOutlet UIButton *textSizeDropDownButton;
+
+/* background */
 @property IBOutlet DashCircleViewButton *backgroundColorButton;
 @property IBOutlet UIButton *backgroundImageButton;
 

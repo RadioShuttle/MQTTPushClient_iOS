@@ -10,6 +10,7 @@
 #import "DashOptionItem.h"
 #import "DashCustomItem.h"
 #import "DashConsts.h"
+#import "DashUtils.h"
 
 #import "DashEditItemViewController.h"
 
@@ -109,6 +110,8 @@
 	[self.textSizeLabel addGestureRecognizer:tapGestureRecognizer];
 	[self.textSizeDropDownButton addTarget:self action:@selector(onTextSizeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 	
+	/* 2. background section */
+	
 	/* background color */
 	if (self.item.background == DASH_COLOR_OS_DEFAULT || self.item.background == DASH_COLOR_CLEAR) {
 		color = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR);
@@ -117,10 +120,44 @@
 	}
 	[self.backgroundColorButton setTitle:nil forState:UIControlStateNormal];
 	[self.backgroundColorButton setFillColor:color];
+	
+	/* background image */
+	UIImage *highlightColorImg = [DashUtils imageWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5f]];
+	[self.backgroundImageButton setBackgroundImage:highlightColorImg forState:UIControlStateHighlighted];
+	[self.backgroundImageButton addTarget:self action:@selector(onBackgroundImageButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 
+	UIImage *backgroundImage = [DashUtils loadImageResource:self.item.background_uri userDataDir:self.dashboard.account.cacheURL];
+	[self setBackgroundImage:backgroundImage];
+}
+
+-(void)setBackgroundImage:(UIImage *)backgroundImage {
+	[self.backgroundImageButton setBackgroundColor:self.backgroundColorButton.fillColor];
+	if (backgroundImage) {
+		[self.backgroundImageButton setTitle:nil forState:UIControlStateNormal];
+		[[self.backgroundImageButton imageView] setContentMode: UIViewContentModeScaleAspectFit];
+		[self.backgroundImageButton setImage:backgroundImage forState:UIControlStateNormal];
+		self.backgroundImageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
+	} else {
+		[self.backgroundImageButton setTitle:@"None" forState:UIControlStateNormal];
+	}
+
+	UIColor *color;
+	CGFloat a,r,g,b;
+	if (self.item.textcolor == DASH_COLOR_OS_DEFAULT || self.item.textcolor == DASH_COLOR_CLEAR) {
+		color = self.labelTextField.textColor;
+		[color getRed:&r green:&g blue:&b alpha:&a];
+		color = [UIColor colorWithRed:r green:g blue:b alpha:a];
+	} else {
+		color = UIColorFromRGB(self.item.textcolor);
+	}
+
+	[self.backgroundImageButton setTitleColor:color forState:UIControlStateNormal];
 }
 
 #pragma mark - click handler
+-(void)onBackgroundImageButtonClicked {
+	//TODO: open image chooser
+}
 
 -(void)onPosButtonClicked {
 	NSMutableArray *posDisplayValues = [NSMutableArray new];
@@ -175,7 +212,7 @@
 			[alert addAction:[UIAlertAction actionWithTitle:posDisplayValues[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				if (self.selGroupIdx != i) {
 					self.selGroupIdx = i;
-					self.groupLabel.text = self.dashboard.groups[i].label ? self.dashboard.groups[i].label : @"";
+					self.groupLabel.text = self.dashboard.groups[i].label;
 					self.selPosIdx = [self getNoOfItemsInGroup:i]; // last position in new group
 					self.posLabel.text = [@(self.selPosIdx + 1) stringValue];
 				}
