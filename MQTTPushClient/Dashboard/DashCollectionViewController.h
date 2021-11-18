@@ -26,7 +26,7 @@
 @property uint32_t publishReqIDCounter;
 @property BOOL editMode;
 /* selected items */
-@property NSMutableSet *selectedItems;
+@property NSMutableArray *selectedItems;
 
 @property (weak, nonatomic) IBOutlet DashCollectionFlowLayout *dashCollectionFlowLayout;
 @property NSTimer* timer;

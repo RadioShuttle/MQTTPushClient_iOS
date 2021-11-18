@@ -19,6 +19,7 @@
 #import "DashSliderItem.h"
 #import "DashOptionItem.h"
 #import "DashCustomItemViewCell.h"
+#import "DashEditItemViewController.h"
 
 #import "DashJavaScriptTask.h"
 
@@ -28,6 +29,8 @@
 @property NSArray<UIBarButtonItem *> *buttonItemsHeaderEditMode;
 @property NSArray<UIBarButtonItem *> *buttonItemsFooterEditMode;
 @property NSArray<UIBarButtonItem *> *buttonItemsFooterNonEditMode;
+@property Mode argEditMode;
+@property DashItem *argEditItem;
 @end
 
 @implementation DashCollectionViewController
@@ -58,7 +61,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	/* init Dashboard */
 	self.dashboard = [[Dashboard alloc] initWithAccount:self.account];
 	[self.collectionView registerClass:[DashCustomItemViewCell class] forCellWithReuseIdentifier:reuseIDcustomItem];
-	self.selectedItems = [NSMutableSet new];
+	self.selectedItems = [NSMutableArray new];
 	
 	/* java script task executor */
 	self.jsOperationQueue = [[NSOperationQueue alloc] init];
@@ -75,6 +78,11 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if ([identifier isEqualToString:@"IDShowMessageList"]) {
 		MessageListTableViewController *vc = segue.destinationViewController;
 		vc.account = self.dashboard.account;
+	} else if ([segue.destinationViewController isKindOfClass:[DashEditItemViewController class]]) {
+		DashEditItemViewController *vc = segue.destinationViewController;
+		vc.mode = self.argEditMode;
+		vc.item = self.argEditItem;
+		vc.dashboard = self.dashboard;
 	}
 }
 
@@ -615,19 +623,19 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 -(void)onAddDashItemButtonClicked {
 	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Add Dash" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Text View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	[alert addAction:[UIAlertAction actionWithTitle:@"Text View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashTextItem new]];
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Button/Switch" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	[alert addAction:[UIAlertAction actionWithTitle:@"Button/Switch" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashSwitchItem new]];
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Progress Bar/Slider" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	[alert addAction:[UIAlertAction actionWithTitle:@"Progress Bar/Slider" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashSliderItem new]];
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Option List" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	[alert addAction:[UIAlertAction actionWithTitle:@"Option List" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashOptionItem new]];
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Group View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	[alert addAction:[UIAlertAction actionWithTitle:@"Group View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashGroupItem new]];
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Custom View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+	[alert addAction:[UIAlertAction actionWithTitle:@"Custom View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashCustomItem new]];
 	}]];
-	
+
 	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 	}]];
 	
@@ -635,6 +643,17 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.lastObject;
 	[self presentViewController:alert animated:TRUE completion:nil];
+}
+-(void)showDashItemEditor:(Mode) mode item:(DashItem *) item {
+	self.argEditMode = mode;
+	self.argEditItem = item;
+	if ([item isKindOfClass:[DashGroupItem class]]) {
+		[self performSegueWithIdentifier:@"IDShowEditGroupItemView" sender:self];
+	} else if ([item isKindOfClass:[DashTextItem class]]) {
+		[self performSegueWithIdentifier:@"IDShowEditTextItemView" sender:self];
+	} else { //TODO
+		[self performSegueWithIdentifier:@"IDShowDashEditItemView" sender:self];
+	}
 }
 
 -(void)onReloadMenuItemClicked {
@@ -661,7 +680,21 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 }
 
 -(void)onEditDashItemButtonClicked {
-	
+	if (self.selectedItems.count > 0) {
+		NSObject *e = self.selectedItems.lastObject;
+		DashItem *item;
+		if ([e isKindOfClass:[NSNumber class]]) {
+			uint32_t groupIdx = [((NSNumber *) e)unsignedIntValue];
+			item = [self.dashboard.groups objectAtIndex:groupIdx];
+		} else { // implies
+			NSIndexPath *p = (NSIndexPath *) e;
+			DashGroupItem *groupItem = [self.dashboard.groups objectAtIndex:p.section];
+			NSArray *items = [self.dashboard.groupItems objectForKey:[NSNumber numberWithUnsignedInt:groupItem.id_]];
+			item = [items objectAtIndex:p.row];
+
+		}
+		[self showDashItemEditor:Edit item:item];
+	}
 }
 
 -(void)onDeleteDashItemButtonClicked {

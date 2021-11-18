@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		210B9A3C26E653740071E876 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 210B9A3B26E653740071E876 /* Dashboard.storyboard */; };
 		2111DDBA2733CBC6002BA4EF /* utils.js in Resources */ = {isa = PBXBuildFile; fileRef = 2111DDB92733CBC6002BA4EF /* utils.js */; };
+		211394632744F24900BA3B6E /* DashCircleViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 211394622744F24900BA3B6E /* DashCircleViewButton.m */; };
+		211C470F273EB2FD00C9350A /* DashEditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 211C470E273EB2FD00C9350A /* DashEditItemViewController.m */; };
 		2131927C26EF6E0700E65AF0 /* DashTextItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927026EF6E0600E65AF0 /* DashTextItem.m */; };
 		2131927D26EF6E0700E65AF0 /* DashOptionListItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927126EF6E0600E65AF0 /* DashOptionListItem.m */; };
 		2131927E26EF6E0700E65AF0 /* DashCustomItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 2131927326EF6E0600E65AF0 /* DashCustomItem.m */; };
@@ -222,6 +224,10 @@
 		0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.release.xcconfig"; sourceTree = "<group>"; };
 		210B9A3B26E653740071E876 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		2111DDB92733CBC6002BA4EF /* utils.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = utils.js; sourceTree = "<group>"; };
+		211394612744F24900BA3B6E /* DashCircleViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashCircleViewButton.h; sourceTree = "<group>"; };
+		211394622744F24900BA3B6E /* DashCircleViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashCircleViewButton.m; sourceTree = "<group>"; };
+		211C470D273EB2FD00C9350A /* DashEditItemViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashEditItemViewController.h; sourceTree = "<group>"; };
+		211C470E273EB2FD00C9350A /* DashEditItemViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashEditItemViewController.m; sourceTree = "<group>"; };
 		2131926E26EF6E0600E65AF0 /* DashOptionListItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashOptionListItem.h; sourceTree = "<group>"; };
 		2131927026EF6E0600E65AF0 /* DashTextItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashTextItem.m; sourceTree = "<group>"; };
 		2131927126EF6E0600E65AF0 /* DashOptionListItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashOptionListItem.m; sourceTree = "<group>"; };
@@ -550,6 +556,8 @@
 				21EC8E492703355100DE8644 /* DashDetailViewController.h */,
 				21EC8E4A2703355100DE8644 /* DashDetailViewController.m */,
 				21FE473C272C03600067F60A /* DashPublishController.h */,
+				211C470D273EB2FD00C9350A /* DashEditItemViewController.h */,
+				211C470E273EB2FD00C9350A /* DashEditItemViewController.m */,
 				2131928426EF8BF000E65AF0 /* Dashboard.h */,
 				2131928526EF8BF000E65AF0 /* Dashboard.m */,
 				21FC4D8426FC73700013F09D /* DashMessage.h */,
@@ -613,6 +621,8 @@
 				21EC25D426F9D779003CD109 /* DashOptionTableViewCell.m */,
 				21FCE9672701D01B00DBCA42 /* DashCircleBackroundView.h */,
 				21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */,
+				211394612744F24900BA3B6E /* DashCircleViewButton.h */,
+				211394622744F24900BA3B6E /* DashCircleViewButton.m */,
 			);
 			path = "Item Views";
 			sourceTree = "<group>";
@@ -1141,6 +1151,7 @@
 				2131928226EF6E0700E65AF0 /* DashOptionItem.m in Sources */,
 				843E778721B9634A0071A6E8 /* UIAlertController+Window.m in Sources */,
 				84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */,
+				211394632744F24900BA3B6E /* DashCircleViewButton.m in Sources */,
 				84A7CFD32238003100E17D03 /* ScriptViewSectionHeader.m in Sources */,
 				2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */,
 				21EC25E126F9D779003CD109 /* DashOptionTableViewCell.m in Sources */,
@@ -1164,6 +1175,7 @@
 				2AEB225C2237E959008E2BC0 /* JavaScriptFilter.m in Sources */,
 				843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */,
 				2ADBE457213D7515000664D3 /* AppDelegate.m in Sources */,
+				211C470F273EB2FD00C9350A /* DashEditItemViewController.m in Sources */,
 				21EC8E4B2703355100DE8644 /* DashDetailViewController.m in Sources */,
 				21EC25DA26F9D779003CD109 /* DashTextItemView.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,

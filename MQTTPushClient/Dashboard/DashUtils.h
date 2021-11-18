@@ -30,4 +30,5 @@
 +(CGFloat)getLabelFontSize:(int)itemSize;
 
 +(UIImage *)imageWithColor:(UIColor *)color;
+
 @end
