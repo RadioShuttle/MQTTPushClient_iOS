@@ -102,6 +102,12 @@
 	} else {
 		self.textSizeLabel.text = self.textSizeDisplayValues[1]; // default medium
 	}
+	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTextSizeButtonClicked)];
+	tapGestureRecognizer.delaysTouchesBegan = YES;
+	tapGestureRecognizer.numberOfTapsRequired = 1;
+	self.textSizeLabel.userInteractionEnabled = YES;
+	[self.textSizeLabel addGestureRecognizer:tapGestureRecognizer];
+	[self.textSizeDropDownButton addTarget:self action:@selector(onTextSizeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 	
 	/* background color */
 	if (self.item.background == DASH_COLOR_OS_DEFAULT || self.item.background == DASH_COLOR_CLEAR) {
@@ -139,8 +145,10 @@
 	}
 	if (posDisplayValues.count > 0) {
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set Position:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-		for(NSString* s in posDisplayValues) {
-			[alert addAction:[UIAlertAction actionWithTitle:s style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		for(int i = 0; i < posDisplayValues.count; i++) {
+			[alert addAction:[UIAlertAction actionWithTitle:posDisplayValues[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				self.selPosIdx = i;
+				self.posLabel.text = [@(self.selPosIdx + 1) stringValue];
 			}]];
 		}
 		
@@ -163,8 +171,14 @@
 	}
 	if (posDisplayValues.count > 0) {
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set Group:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-		for(NSString* s in posDisplayValues) {
-			[alert addAction:[UIAlertAction actionWithTitle:s style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		for(int i = 0; i < posDisplayValues.count; i++) {
+			[alert addAction:[UIAlertAction actionWithTitle:posDisplayValues[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+				if (self.selGroupIdx != i) {
+					self.selGroupIdx = i;
+					self.groupLabel.text = self.dashboard.groups[i].label ? self.dashboard.groups[i].label : @"";
+					self.selPosIdx = [self getNoOfItemsInGroup:i]; // last position in new group
+					self.posLabel.text = [@(self.selPosIdx + 1) stringValue];
+				}
 			}]];
 		}
 		
@@ -179,6 +193,20 @@
 }
 
 -(void)onTextSizeButtonClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set Text Size:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for(NSString *s in self.textSizeDisplayValues) {
+		[alert addAction:[UIAlertAction actionWithTitle:s style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {self.textSizeLabel.text = s;
+		}]];
+	}
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	alert.popoverPresentationController.sourceView = self.textSizeDropDownButton;
+	alert.popoverPresentationController.sourceRect = self.textSizeDropDownButton.bounds;
+	[self presentViewController:alert animated:TRUE completion:nil];
+
 }
 
 #pragma mark - helper
