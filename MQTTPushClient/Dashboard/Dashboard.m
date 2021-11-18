@@ -225,7 +225,7 @@
 			[lockedResources addObject:resourcesArrayJSON[i]];
 		}
 
-		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *allItems = [NSMutableDictionary new];
+		NSMutableDictionary<NSNumber *, DashItem *> *allItems = [NSMutableDictionary new];
 		NSMutableArray<DashGroupItem *> *groups = [NSMutableArray new];
 		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [NSMutableDictionary new];
 

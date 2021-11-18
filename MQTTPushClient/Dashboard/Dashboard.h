@@ -58,7 +58,7 @@
 /* key is DashGroupItem.id_ */
 @property NSDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems;
 /* all items (including groups) unmodified. */
-@property NSDictionary<NSNumber *, NSArray<DashItem *> *> *unmodifiedItems;
+@property NSDictionary<NSNumber *, DashItem *> *unmodifiedItems;
 
 /* cached webviews */
 @property NSMutableDictionary *cachedCustomViews;
