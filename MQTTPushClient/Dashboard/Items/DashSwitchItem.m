@@ -56,4 +56,18 @@
 	return [self.valOff length] == 0 || [self.val isEqualToString:self.content];
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+	DashSwitchItem *clone = [super copyWithZone:zone];
+	clone.val = self.val;
+	clone.color = self.color;
+	clone.bgcolor = self.bgcolor;
+	clone.uri = self.uri;
+	
+	clone.valOff = self.valOff;
+	clone.colorOff = self.colorOff;
+	clone.bgcolorOff = self.bgcolorOff;
+	clone.uriOff = self.uriOff;
+
+	return clone;
+}
 @end

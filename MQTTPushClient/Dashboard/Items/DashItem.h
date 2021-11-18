@@ -8,7 +8,7 @@
 @import UIKit;
 #import "DashMessage.h"
 
-@interface DashItem : NSObject
+@interface DashItem : NSObject <NSCopying>
 
 @property uint32_t id_;
 @property int64_t textcolor;

@@ -225,6 +225,7 @@
 			[lockedResources addObject:resourcesArrayJSON[i]];
 		}
 
+		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *allItems = [NSMutableDictionary new];
 		NSMutableArray<DashGroupItem *> *groups = [NSMutableArray new];
 		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [NSMutableDictionary new];
 
@@ -241,6 +242,7 @@
 				max_id = item.id_;
 			}
 			[groups addObject:(DashGroupItem *)item];
+			[allItems setObject:[item copy] forKey:@(item.id_)];
 			NSMutableArray<DashItem *> *itemArray = [NSMutableArray new];
 			[groupItems setObject:itemArray forKey:[NSNumber numberWithInt:item.id_]];
 			NSArray *itemArrayJSON = [groupJSON helArrayForKey:@"items"];
@@ -254,11 +256,13 @@
 					max_id = item.id_;
 				}
 				[itemArray addObject:item];
+				[allItems setObject:[item copy] forKey:@(item.id_)];
 			}
 		}
 		self.max_id = max_id;
 		self.groups = groups;
 		self.groupItems = groupItems;
+		self.unmodifiedItems = allItems;
 	}
 	return YES;
 }
@@ -285,6 +289,10 @@
 		}
 	}
 	return foundItem;
+}
+
+-(DashItem *)getUnmodifiedItemForID:(uint32_t) itemID {
+	return [[self.unmodifiedItems objectForKey:@(itemID)] copy];
 }
 
 #pragma mark - Dashboard view preferrences

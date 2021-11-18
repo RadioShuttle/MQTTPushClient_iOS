@@ -693,6 +693,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			item = [items objectAtIndex:p.row];
 
 		}
+		item = [self.dashboard getUnmodifiedItemForID:item.id_];
 		[self showDashItemEditor:Edit item:item];
 	}
 }

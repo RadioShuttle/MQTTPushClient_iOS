@@ -49,4 +49,13 @@
     }
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+	DashSliderItem *clone = [super copyWithZone:zone];
+	clone.range_min = self.range_min;
+	clone.range_max = self.range_max;
+	clone.decimal = self.decimal;
+	clone.progresscolor = self.progresscolor;
+	clone.percent = self.percent;
+	return clone;
+}
 @end

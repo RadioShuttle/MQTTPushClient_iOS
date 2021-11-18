@@ -24,4 +24,14 @@
 	return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+	DashOptionListItem *clone = [[[self class] alloc] init];
+	
+	clone.value = self.value;
+	clone.displayValue = self.displayValue;
+	clone.imageURI = self.imageURI;
+	
+	return clone;
+}
+
 @end

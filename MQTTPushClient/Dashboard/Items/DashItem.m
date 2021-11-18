@@ -79,4 +79,21 @@
 	return item;
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+	DashItem *clone = [[[self class] alloc] init];
+	clone.id_ = self.id_;
+	clone.textcolor = self.textcolor;
+	clone.background = self.background;
+	clone.textsize = self.textsize;
+	clone.topic_s = self.topic_s;
+	clone.script_f = self.script_f;
+	clone.background_uri = self.background_uri;
+	clone.topic_p = self.topic_p;
+	clone.script_p = self.script_p;
+	clone.retain_ = self.retain_;
+	clone.label = self.label;
+	clone.history = self.history;
+	return clone;
+}
+
 @end

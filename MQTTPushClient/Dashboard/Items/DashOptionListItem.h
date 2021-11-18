@@ -6,7 +6,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DashOptionListItem : NSObject
+@interface DashOptionListItem : NSObject <NSCopying>
 @property NSString *value;
 @property NSString *displayValue;
 @property NSString *imageURI;

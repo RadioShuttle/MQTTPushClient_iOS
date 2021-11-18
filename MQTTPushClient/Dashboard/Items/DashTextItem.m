@@ -15,4 +15,9 @@
 	return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+	DashTextItem *clone = [super copyWithZone:zone];
+	clone.inputtype = self.inputtype;
+	return clone;
+}
 @end

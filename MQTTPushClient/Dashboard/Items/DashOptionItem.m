@@ -31,4 +31,17 @@
 	return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+	DashOptionItem *clone = [super copyWithZone:zone];
+	clone.optionList = [NSMutableArray new];
+	
+	DashOptionListItem *clonedItem;
+	for(DashOptionListItem *listItem in self.optionList) {
+		clonedItem = [listItem copy];
+		[(NSMutableArray *) clone.optionList addObject:listItem];
+	}
+	
+	return clone;
+}
+
 @end

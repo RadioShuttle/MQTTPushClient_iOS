@@ -38,6 +38,9 @@
 /* returns dashitem for the given item id and returns item position in indexPathArr  */
 -(DashItem *)getItemForID:(uint32_t) itemID indexPathArr:(NSMutableArray *)indexPathArr;
 
+/* returns an unmodified item clone for the given id , e.g. for editing */
+-(DashItem *)getUnmodifiedItemForID:(uint32_t) itemID;
+
 /* last received message date and sequence no */
 @property NSDate *lastReceivedMsgDate;
 @property int lastReceivedMsgSeqNo;
@@ -54,6 +57,8 @@
 @property NSArray<DashGroupItem *> *groups;
 /* key is DashGroupItem.id_ */
 @property NSDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems;
+/* all items (including groups) unmodified. */
+@property NSDictionary<NSNumber *, NSArray<DashItem *> *> *unmodifiedItems;
 
 /* cached webviews */
 @property NSMutableDictionary *cachedCustomViews;
