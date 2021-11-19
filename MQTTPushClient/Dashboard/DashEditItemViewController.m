@@ -3,6 +3,7 @@
  * 30827 Garbsen (Hannover) Germany
  * Licensed under the Apache License, Version 2.0
  */
+
 #import "DashTextItem.h"
 #import "DashGroupItem.h"
 #import "DashSwitchItem.h"
@@ -11,11 +12,13 @@
 #import "DashCustomItem.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
+#import "Utils.h"
 
 #import "DashEditItemViewController.h"
 
 @interface DashEditItemViewController ()
-@property NSMutableArray *textSizeDisplayValues;
+@property NSMutableArray<NSString *> *textSizeDisplayValues;
+@property NSMutableArray<NSString *> *inputTypeDisplayValues;
 @end
 
 @implementation DashEditItemViewController
@@ -26,14 +29,16 @@
 	/* add prefix to title */
 	NSString *prefix = (self.mode == Add ? @"Add" : @"Edit");
 	self.navigationItem.title = [NSString stringWithFormat:@"%@ %@", prefix,self.navigationItem.title];
+	self.orgItem = [self.item copy];
 	
 	self.tableView.separatorColor = [UIColor clearColor];
 	self.tableView.allowsSelection = NO;
-
+	
 	/* 1. General section */
 
 	/* label */
 	self.labelTextField.text = self.item.label;
+	self.labelDefaultColor = self.labelTextField.textColor;
 	
 	/* group */
 	if (self.mode == Add) {
@@ -81,17 +86,9 @@
 	[self.posDropDownButton addTarget:self action:@selector(onPosButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 	
 	/* text color */
-	UIColor *color;
-	CGFloat a,r,g,b;
-	if (self.item.textcolor == DASH_COLOR_OS_DEFAULT || self.item.textcolor == DASH_COLOR_CLEAR) {
-		color = self.labelTextField.textColor;
-		[color getRed:&r green:&g blue:&b alpha:&a];
-		color = [UIColor colorWithRed:r green:g blue:b alpha:a];
-	} else {
-		color = UIColorFromRGB(self.item.textcolor);
-	}
 	[self.textColorButton setTitle:nil forState:UIControlStateNormal];
-	[self.textColorButton setFillColor:color];
+	[self.textColorButton addTarget:self action:@selector(onTextColorButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self onColorChanged:self.textColorButton color:self.item.textcolor];
 	
 	/* text size */
 	self.textSizeDisplayValues = [NSMutableArray new];
@@ -113,50 +110,158 @@
 	/* 2. background section */
 	
 	/* background color */
-	if (self.item.background == DASH_COLOR_OS_DEFAULT || self.item.background == DASH_COLOR_CLEAR) {
-		color = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR);
-	} else {
-		color = UIColorFromRGB(self.item.background);
-	}
 	[self.backgroundColorButton setTitle:nil forState:UIControlStateNormal];
-	[self.backgroundColorButton setFillColor:color];
+	[self.backgroundColorButton addTarget:self action:@selector(onBackgroundColorButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self onColorChanged:self.backgroundColorButton color:self.item.background];
 	
 	/* background image */
 	UIImage *highlightColorImg = [DashUtils imageWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5f]];
 	[self.backgroundImageButton setBackgroundImage:highlightColorImg forState:UIControlStateHighlighted];
+	[[self.backgroundImageButton imageView] setContentMode: UIViewContentModeScaleAspectFit];
+	self.backgroundImageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
 	[self.backgroundImageButton addTarget:self action:@selector(onBackgroundImageButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self onImageSelected:self.backgroundImageButton imageURI:self.item.background_uri];
 
-	UIImage *backgroundImage = [DashUtils loadImageResource:self.item.background_uri userDataDir:self.dashboard.account.cacheURL];
-	[self setBackgroundImage:backgroundImage];
-}
+	/* 3. Subscribe section */
+	
+	self.topicSubTextField.text = self.item.topic_s;
+	[self.filterSciptButton addTarget:self action:@selector(onFilterScriptButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self onFilterScriptContentUpdated:self.item.script_f];
+	[self.filterSciptModifiedLabel setTextColor:UIColorFromRGB(DASH_COLOR_RED)]; //TODO: dark mode
 
--(void)setBackgroundImage:(UIImage *)backgroundImage {
-	[self.backgroundImageButton setBackgroundColor:self.backgroundColorButton.fillColor];
-	if (backgroundImage) {
-		[self.backgroundImageButton setTitle:nil forState:UIControlStateNormal];
-		[[self.backgroundImageButton imageView] setContentMode: UIViewContentModeScaleAspectFit];
-		[self.backgroundImageButton setImage:backgroundImage forState:UIControlStateNormal];
-		self.backgroundImageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
-	} else {
-		[self.backgroundImageButton setTitle:@"None" forState:UIControlStateNormal];
+	/* 4. Publish section */
+	
+	self.topicPubTextField.text = self.item.topic_p;
+	self.retainSwitch.on = self.item.retain_;
+	
+	/* input type */
+	self.inputTypeDisplayValues = [NSMutableArray new];
+	[self.inputTypeDisplayValues addObject:@"Text"];
+	[self.inputTypeDisplayValues addObject:@"Number"];
+	if ([self.item isKindOfClass:[DashTextItem class]]) {
+		DashTextItem *textItem = (DashTextItem *) self.item;
+		if (textItem.inputtype >= 0 && textItem.inputtype < self.inputTypeDisplayValues.count) {
+			self.inputTypeLabel.text = self.inputTypeDisplayValues[textItem.inputtype];
+		} else {
+			self.inputTypeLabel.text = self.inputTypeDisplayValues[0]; // default text
+		}
 	}
+	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onInputTypeButtonClicked)];
+	tapGestureRecognizer.delaysTouchesBegan = YES;
+	tapGestureRecognizer.numberOfTapsRequired = 1;
+	self.inputTypeLabel.userInteractionEnabled = YES;
+	[self.inputTypeLabel addGestureRecognizer:tapGestureRecognizer];
+	[self.inputTypeDropDownButton addTarget:self action:@selector(onInputTypeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 
-	UIColor *color;
-	CGFloat a,r,g,b;
-	if (self.item.textcolor == DASH_COLOR_OS_DEFAULT || self.item.textcolor == DASH_COLOR_CLEAR) {
-		color = self.labelTextField.textColor;
-		[color getRed:&r green:&g blue:&b alpha:&a];
-		color = [UIColor colorWithRed:r green:g blue:b alpha:a];
-	} else {
-		color = UIColorFromRGB(self.item.textcolor);
-	}
+	/* output script button */
+	[self.outputSciptButton addTarget:self action:@selector(onOutputScriptButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self onOutputScriptContentUpdated:self.item.script_p];
+	[self.outputSciptModifiedLabel setTextColor:UIColorFromRGB(DASH_COLOR_RED)]; //TODO: dark mode
 
-	[self.backgroundImageButton setTitleColor:color forState:UIControlStateNormal];
 }
 
 #pragma mark - click handler
 -(void)onBackgroundImageButtonClicked {
 	//TODO: open image chooser
+	[self onImageSelected:self.backgroundImageButton imageURI:@"res://internal/lock_open"];  //TODO: remove test code
+}
+
+-(void)onTextColorButtonClicked {
+	//TODO: open color chooser
+	[self onColorChanged:self.textColorButton color:DASH_COLOR_RED ]; //TODO: remove test code
+}
+
+-(void)onBackgroundColorButtonClicked {
+	//TODO: open color chooser
+	[self onColorChanged:self.backgroundColorButton color:DASH_COLOR_YELLOW ]; //TODO: remove test code
+
+}
+
+-(void)onFilterScriptButtonClicked {
+	//TODO: open script editor
+	[self onFilterScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
+}
+
+-(void)onOutputScriptButtonClicked {
+	//TODO: open script editor
+	[self onOutputScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
+}
+
+-(void)onFilterScriptContentUpdated:(NSString *)content {
+	self.filterSciptModifiedLabel.hidden = [self.orgItem.script_f isEqual:content];
+	self.item.script_f = content;
+	if ([Utils isEmpty:content]) {
+		[self.filterSciptButton setTitle:@"Add" forState:UIControlStateNormal];
+	} else {
+		[self.filterSciptButton setTitle:@"Edit" forState:UIControlStateNormal];
+	}
+	
+}
+
+-(void)onOutputScriptContentUpdated:(NSString *)content {
+	self.outputSciptModifiedLabel.hidden = [self.orgItem.script_p isEqual:content];
+	self.item.script_p = content;
+	if ([Utils isEmpty:content]) {
+		[self.outputSciptButton setTitle:@"Add" forState:UIControlStateNormal];
+	} else {
+		[self.outputSciptButton setTitle:@"Edit" forState:UIControlStateNormal];
+	}
+}
+
+-(void)onImageSelected:(UIButton *)src imageURI:(NSString *)imageURI {
+	UIImage *image = nil;
+	if (imageURI) {
+		/* ignonre button tint color for background images -> set renderingModeAlwaysTemplate*/
+		BOOL mode = (src != self.backgroundImageButton);
+		image = [DashUtils loadImageResource:imageURI userDataDir:self.dashboard.account.cacheURL renderingModeAlwaysTemplate:mode];
+	}
+	if (image) {
+		[src setTitle:nil forState:UIControlStateNormal];
+		[src setImage:image forState:UIControlStateNormal];
+		
+		if (src != self.backgroundImageButton) {
+			//TODO: tint button images (switch)
+			/* tint background internal images with label default color*/
+			/*
+			if ([DashUtils isInternalResource:imageURI]) {
+				[src setTintColor:self.labelDefaultColor];
+			} else {
+				// [src setTintColor:nil];
+				[src setTintColor:self.labelDefaultColor]; //TODO: raus
+			}
+			 */
+		}
+	} else {
+		[src setImage:nil forState:UIControlStateNormal];
+		[src setTitle:@"None" forState:UIControlStateNormal];
+	}
+}
+
+-(void)onColorChanged:(DashCircleViewButton *)src color:(uint64_t)color {
+	UIColor *uicolor;
+	CGFloat a,r,g,b;
+	if (color == DASH_COLOR_OS_DEFAULT || color == DASH_COLOR_CLEAR) {
+		if (src == self.textColorButton) {
+			uicolor = self.labelDefaultColor; // use label color as default color
+		} else {
+			uicolor = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR); //TODO: default color
+		}
+		[uicolor getRed:&r green:&g blue:&b alpha:&a]; // convert cs
+		uicolor = [UIColor colorWithRed:r green:g blue:b alpha:a];
+	} else {
+		uicolor = UIColorFromRGB(color);
+	}
+	[src setFillColor:uicolor];
+	[src setNeedsDisplay];
+	
+	/* update related views */
+	if (src == self.textColorButton) {
+		[self.backgroundImageButton setTitleColor:uicolor forState:UIControlStateNormal];
+	} else if (src == self.backgroundColorButton) {
+		[self.backgroundImageButton setBackgroundColor:uicolor];
+	}
+	
+
 }
 
 -(void)onPosButtonClicked {
@@ -245,6 +350,23 @@
 	[self presentViewController:alert animated:TRUE completion:nil];
 
 }
+
+-(void)onInputTypeButtonClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set Input Type:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	for(NSString *s in self.inputTypeDisplayValues) {
+		[alert addAction:[UIAlertAction actionWithTitle:s style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {self.inputTypeLabel.text = s;
+		}]];
+	}
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	alert.popoverPresentationController.sourceView = self.inputTypeDropDownButton;
+	alert.popoverPresentationController.sourceRect = self.inputTypeDropDownButton.bounds;
+	[self presentViewController:alert animated:TRUE completion:nil];
+}
+
 
 #pragma mark - helper
 

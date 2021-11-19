@@ -18,6 +18,9 @@ typedef enum {Add, Edit} Mode;
 @property DashItem *item;
 @property Dashboard *dashboard;
 
+/* the data before editing started */
+@property DashItem *orgItem;
+
 /* General section */
 @property (weak, nonatomic) IBOutlet UITextField *labelTextField;
 @property IBOutlet UILabel *groupLabel;
@@ -33,5 +36,22 @@ typedef enum {Add, Edit} Mode;
 /* background */
 @property IBOutlet DashCircleViewButton *backgroundColorButton;
 @property IBOutlet UIButton *backgroundImageButton;
+
+/* subscribe */
+@property (weak, nonatomic) IBOutlet UITextField *topicSubTextField;
+@property IBOutlet UIButton *filterSciptButton;
+@property IBOutlet UILabel *filterSciptModifiedLabel;
+
+/* publish */
+@property (weak, nonatomic) IBOutlet UITextField *topicPubTextField;
+@property (weak, nonatomic) IBOutlet UISwitch *retainSwitch;
+@property IBOutlet UILabel *inputTypeLabel;
+@property IBOutlet UIButton *inputTypeDropDownButton;
+@property int selInputTypeIdx;
+@property IBOutlet UIButton *outputSciptButton;
+@property IBOutlet UILabel *outputSciptModifiedLabel;
+
+/* misc */
+@property UIColor *labelDefaultColor;
 
 @end
