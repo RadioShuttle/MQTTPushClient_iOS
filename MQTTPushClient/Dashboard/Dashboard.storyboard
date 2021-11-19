@@ -104,32 +104,29 @@
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="ne1-sM-Afk">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="4Zx-QG-XiZ">
                                         <rect key="frame" x="0.0" y="160" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ne1-sM-Afk" id="ont-lC-8aB">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="4Zx-QG-XiZ" id="HVy-Se-tWt">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gBM-xg-4Id">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fQH-TI-T1u">
                                                     <rect key="frame" x="27" y="11" width="74" height="21"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5xy-z3-jMw">
-                                                    <rect key="frame" x="182" y="9" width="24" height="24"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4vJ-bE-845">
+                                                    <rect key="frame" x="120" y="8" width="194" height="29"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="DropDown"/>
-                                                </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Medium" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="erh-wj-Ca1">
-                                                    <rect key="frame" x="122" y="13" width="52" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <segments>
+                                                        <segment title="Small"/>
+                                                        <segment title="Medium"/>
+                                                        <segment title="Large"/>
+                                                    </segments>
+                                                </segmentedControl>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -178,8 +175,7 @@
                         <outlet property="posDropDownButton" destination="OOt-bu-ceh" id="Gma-Em-CQS"/>
                         <outlet property="posLabel" destination="uCx-ku-ud1" id="vh8-Z4-rj5"/>
                         <outlet property="textColorButton" destination="sug-Ix-uhM" id="zhR-oU-z51"/>
-                        <outlet property="textSizeDropDownButton" destination="5xy-z3-jMw" id="lmL-NJ-fR3"/>
-                        <outlet property="textSizeLabel" destination="erh-wj-Ca1" id="Jci-jd-mjX"/>
+                        <outlet property="textSizeSegmentedCtrl" destination="4vJ-bE-845" id="637-3F-vVJ"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ety-3q-Jqh" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -315,18 +311,15 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yKa-Ll-QAU">
-                                                    <rect key="frame" x="182" y="9" width="24" height="24"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="D8x-4r-IIZ">
+                                                    <rect key="frame" x="120" y="8" width="194" height="29"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" image="DropDown"/>
-                                                </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Medium" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B4f-rc-YBH">
-                                                    <rect key="frame" x="122" y="13" width="52" height="17"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
+                                                    <segments>
+                                                        <segment title="Small"/>
+                                                        <segment title="Medium"/>
+                                                        <segment title="Large"/>
+                                                    </segments>
+                                                </segmentedControl>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -501,18 +494,14 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ESJ-qV-k0r">
-                                                    <rect key="frame" x="121" y="13" width="52" height="17"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Dno-mb-Qea">
+                                                    <rect key="frame" x="121" y="7" width="128" height="29"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JHM-8g-anb">
-                                                    <rect key="frame" x="181" y="9" width="24" height="24"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <state key="normal" title="Button" image="DropDown"/>
-                                                </button>
+                                                    <segments>
+                                                        <segment title="Text"/>
+                                                        <segment title="Number"/>
+                                                    </segments>
+                                                </segmentedControl>
                                             </subviews>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -563,8 +552,7 @@
                         <outlet property="filterSciptModifiedLabel" destination="hFb-hH-izg" id="fog-8E-tbg"/>
                         <outlet property="groupDropDownButon" destination="J1h-mC-zMt" id="XOd-tL-Yf1"/>
                         <outlet property="groupLabel" destination="hUA-aB-kke" id="Z3z-8b-14g"/>
-                        <outlet property="inputTypeDropDownButton" destination="JHM-8g-anb" id="iK7-uO-ste"/>
-                        <outlet property="inputTypeLabel" destination="ESJ-qV-k0r" id="Hsl-x1-dfC"/>
+                        <outlet property="inputTypeSegmentedCtrl" destination="Dno-mb-Qea" id="xl9-WN-80t"/>
                         <outlet property="labelTextField" destination="Dsr-Px-gDG" id="VcH-vI-h4n"/>
                         <outlet property="outputSciptButton" destination="MC8-Xy-QHi" id="ufC-py-0yx"/>
                         <outlet property="outputSciptModifiedLabel" destination="Hba-7c-wru" id="zvA-qp-CBo"/>
@@ -572,8 +560,7 @@
                         <outlet property="posLabel" destination="cOH-1D-gH3" id="UxJ-5R-Zx3"/>
                         <outlet property="retainSwitch" destination="zPy-H8-td4" id="cG8-45-aAh"/>
                         <outlet property="textColorButton" destination="3Hc-v3-Qed" id="cul-E5-PgX"/>
-                        <outlet property="textSizeDropDownButton" destination="yKa-Ll-QAU" id="Ddc-PP-ynS"/>
-                        <outlet property="textSizeLabel" destination="B4f-rc-YBH" id="z1M-Pn-yUh"/>
+                        <outlet property="textSizeSegmentedCtrl" destination="D8x-4r-IIZ" id="hlO-5h-IBP"/>
                         <outlet property="topicPubTextField" destination="4gK-Ug-XU3" id="4LZ-4Q-3F8"/>
                         <outlet property="topicSubTextField" destination="kG0-WZ-QaO" id="D5n-2u-wCo"/>
                     </connections>

@@ -30,8 +30,7 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet UIButton *posDropDownButton;
 @property int selPosIdx;
 @property IBOutlet DashCircleViewButton *textColorButton;
-@property IBOutlet UILabel *textSizeLabel;
-@property IBOutlet UIButton *textSizeDropDownButton;
+@property IBOutlet UISegmentedControl *textSizeSegmentedCtrl;
 
 /* background */
 @property IBOutlet DashCircleViewButton *backgroundColorButton;
@@ -45,9 +44,7 @@ typedef enum {Add, Edit} Mode;
 /* publish */
 @property (weak, nonatomic) IBOutlet UITextField *topicPubTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *retainSwitch;
-@property IBOutlet UILabel *inputTypeLabel;
-@property IBOutlet UIButton *inputTypeDropDownButton;
-@property int selInputTypeIdx;
+@property IBOutlet UISegmentedControl *inputTypeSegmentedCtrl;
 @property IBOutlet UIButton *outputSciptButton;
 @property IBOutlet UILabel *outputSciptModifiedLabel;
 

@@ -17,7 +17,6 @@
 #import "DashEditItemViewController.h"
 
 @interface DashEditItemViewController ()
-@property NSMutableArray<NSString *> *textSizeDisplayValues;
 @property NSMutableArray<NSString *> *inputTypeDisplayValues;
 @end
 
@@ -91,21 +90,11 @@
 	[self onColorChanged:self.textColorButton color:self.item.textcolor];
 	
 	/* text size */
-	self.textSizeDisplayValues = [NSMutableArray new];
-	[self.textSizeDisplayValues addObject:@"Small"];
-	[self.textSizeDisplayValues addObject:@"Medium"];
-	[self.textSizeDisplayValues addObject:@"Large"];
 	if (self.item.textsize >= 1 && self.item.textsize <= 3) {
-		self.textSizeLabel.text = self.textSizeDisplayValues[self.item.textsize - 1];
+		self.textSizeSegmentedCtrl.selectedSegmentIndex = self.item.textsize - 1;
 	} else {
-		self.textSizeLabel.text = self.textSizeDisplayValues[1]; // default medium
+		self.textSizeSegmentedCtrl.selectedSegmentIndex = 1; // default medium
 	}
-	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onTextSizeButtonClicked)];
-	tapGestureRecognizer.delaysTouchesBegan = YES;
-	tapGestureRecognizer.numberOfTapsRequired = 1;
-	self.textSizeLabel.userInteractionEnabled = YES;
-	[self.textSizeLabel addGestureRecognizer:tapGestureRecognizer];
-	[self.textSizeDropDownButton addTarget:self action:@selector(onTextSizeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 	
 	/* 2. background section */
 	
@@ -135,23 +124,14 @@
 	self.retainSwitch.on = self.item.retain_;
 	
 	/* input type */
-	self.inputTypeDisplayValues = [NSMutableArray new];
-	[self.inputTypeDisplayValues addObject:@"Text"];
-	[self.inputTypeDisplayValues addObject:@"Number"];
 	if ([self.item isKindOfClass:[DashTextItem class]]) {
 		DashTextItem *textItem = (DashTextItem *) self.item;
-		if (textItem.inputtype >= 0 && textItem.inputtype < self.inputTypeDisplayValues.count) {
-			self.inputTypeLabel.text = self.inputTypeDisplayValues[textItem.inputtype];
+		if (textItem.inputtype >= 0 && textItem.inputtype < 2) {
+			self.inputTypeSegmentedCtrl.selectedSegmentIndex = textItem.inputtype;
 		} else {
-			self.inputTypeLabel.text = self.inputTypeDisplayValues[0]; // default text
+			self.inputTypeSegmentedCtrl.selectedSegmentIndex = 0; // default text
 		}
 	}
-	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onInputTypeButtonClicked)];
-	tapGestureRecognizer.delaysTouchesBegan = YES;
-	tapGestureRecognizer.numberOfTapsRequired = 1;
-	self.inputTypeLabel.userInteractionEnabled = YES;
-	[self.inputTypeLabel addGestureRecognizer:tapGestureRecognizer];
-	[self.inputTypeDropDownButton addTarget:self action:@selector(onInputTypeButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 
 	/* output script button */
 	[self.outputSciptButton addTarget:self action:@selector(onOutputScriptButtonClicked) forControlEvents:UIControlEventTouchUpInside];
@@ -333,40 +313,6 @@
 		[self presentViewController:alert animated:TRUE completion:nil];
 	}
 }
-
--(void)onTextSizeButtonClicked {
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set Text Size:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-	for(NSString *s in self.textSizeDisplayValues) {
-		[alert addAction:[UIAlertAction actionWithTitle:s style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {self.textSizeLabel.text = s;
-		}]];
-	}
-	
-	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-	}]];
-	
-	[alert setModalPresentationStyle:UIModalPresentationPopover];
-	alert.popoverPresentationController.sourceView = self.textSizeDropDownButton;
-	alert.popoverPresentationController.sourceRect = self.textSizeDropDownButton.bounds;
-	[self presentViewController:alert animated:TRUE completion:nil];
-
-}
-
--(void)onInputTypeButtonClicked {
-	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Set Input Type:" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-	for(NSString *s in self.inputTypeDisplayValues) {
-		[alert addAction:[UIAlertAction actionWithTitle:s style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {self.inputTypeLabel.text = s;
-		}]];
-	}
-	
-	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-	}]];
-	
-	[alert setModalPresentationStyle:UIModalPresentationPopover];
-	alert.popoverPresentationController.sourceView = self.inputTypeDropDownButton;
-	alert.popoverPresentationController.sourceRect = self.inputTypeDropDownButton.bounds;
-	[self presentViewController:alert animated:TRUE completion:nil];
-}
-
 
 #pragma mark - helper
 
