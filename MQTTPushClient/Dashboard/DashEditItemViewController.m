@@ -13,11 +13,19 @@
 #import "DashConsts.h"
 #import "DashUtils.h"
 #import "Utils.h"
-
 #import "DashEditItemViewController.h"
+#import "DashEditorOptionTableViewCell.h"
 
+
+@class OptionListHandler;
 @interface DashEditItemViewController ()
 @property NSMutableArray<NSString *> *inputTypeDisplayValues;
+@property OptionListHandler *optionListHandler;
+@end
+
+@interface OptionListHandler : NSObject <UITableViewDataSource, UITableViewDelegate>
+@property DashOptionItem *item;
+@property (weak) DashEditItemViewController *vc;
 @end
 
 @implementation DashEditItemViewController
@@ -138,9 +146,60 @@
 	[self onOutputScriptContentUpdated:self.item.script_p];
 	[self.outputSciptModifiedLabel setTextColor:UIColorFromRGB(DASH_COLOR_RED)]; //TODO: dark mode
 
+	/* Option List */
+	if ([self.item isKindOfClass:[DashOptionItem class]]) {
+		self.optionListHandler = [OptionListHandler new];
+		self.optionListHandler.item = (DashOptionItem *) self.item;
+		self.optionListHandler.vc = self;
+		self.optionListAddButton.hidden = YES;
+		[self.optionListAddButton addTarget:self action:@selector(onOptionListAddButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+		self.optionListTableView.allowsSelectionDuringEditing = YES;
+		// [self onOptionListSizeChanged];
+		[self.optionListEditButton addTarget:self action:@selector(onOptionListEditButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+		self.optionListTableView.dataSource = self.optionListHandler;
+		self.optionListTableView.delegate = self.optionListHandler;
+	}
+	
 }
 
 #pragma mark - click handler
+-(void)onOptionListEditButtonClicked {
+	if (self.optionListTableView.isEditing) {
+		[self.optionListEditButton setTitle:@"Edit" forState:UIControlStateNormal];
+		self.optionListAddButton.hidden = YES;
+	} else {
+		[self.optionListEditButton setTitle:@"Done" forState:UIControlStateNormal];
+		self.optionListAddButton.hidden = NO;
+	}
+	[self.optionListTableView setEditing:!self.optionListTableView.isEditing];
+}
+
+-(void)onOptionListSizeChanged {
+	[self.tableView beginUpdates];
+	[self.tableView endUpdates];
+}
+
+-(void)onOptionListAddButtonClicked {
+	//TODO: open add dialog
+	DashOptionListItem *li = [DashOptionListItem new];
+	li.value = @"uk";
+	li.displayValue = @"United Kingdom";
+	if (![self.optionListHandler.item.optionList isKindOfClass:[NSMutableArray class]]) {
+		self.optionListHandler.item = [self.optionListHandler.item.optionList mutableCopy];
+	}
+	[((NSMutableArray *) self.optionListHandler.item.optionList) addObject:li];
+	NSMutableArray *indexPathArr = [NSMutableArray new];
+	[indexPathArr addObject:[NSIndexPath indexPathForRow:(self.optionListHandler.item.optionList.count - 1) inSection:0]];
+	[self.optionListTableView insertRowsAtIndexPaths:indexPathArr withRowAnimation:YES];
+	[self onOptionListSizeChanged];
+}
+
+-(void)onOptionListEditItemClicked:(NSIndexPath *)indexPath {
+	DashOptionListItem *li = ((DashOptionItem *) self.item).optionList[indexPath.row];
+	NSLog(@"Edit option item: %@", li.value);
+	//TODO: open edit option list item dialog
+}
+
 -(void)onBackgroundImageButtonClicked {
 	//TODO: open image chooser
 	[self onImageSelected:self.backgroundImageButton imageURI:@"res://internal/lock_open"];  //TODO: remove test code
@@ -346,4 +405,83 @@
 	return n;
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+	if ([self.item isKindOfClass:[DashOptionItem class]] && indexPath.section == 2 && indexPath.row == 1) {
+		CGFloat th = 44 * ((DashOptionItem *) self.item).optionList.count;
+		return th == 0 ? 44 : th;
+	}
+	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
+}
+
 @end
+
+@implementation OptionListHandler
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+	return 1;
+}
+
+- (nonnull UITableViewCell *)tableView:(nonnull UITableView *)tableView cellForRowAtIndexPath:(nonnull NSIndexPath *)indexPath {
+	DashEditorOptionTableViewCell *cell = (DashEditorOptionTableViewCell *) [tableView dequeueReusableCellWithIdentifier:@"optionListItem1"];
+	DashOptionListItem *li = self.item.optionList[indexPath.row];
+	NSString *p1 = li.value;
+	NSString *p2 = li.displayValue;
+	p1 = p1 ? p1 : @"";
+	p2 = p2 ? p2 : @"";
+
+	NSString *msg = [NSString stringWithFormat:@"%@ - %@",p1,p2];
+	cell.label.text = msg;
+	if (![Utils isEmpty:li.imageURI]) {
+		UIImage *img = [DashUtils loadImageResource:li.imageURI userDataDir:self.vc.dashboard.account.cacheURL];
+		[cell.optionImageView setImage:img];
+	} else {
+		[cell.optionImageView setImage:nil];
+	}
+	
+	return cell;
+}
+
+
+- (NSInteger)tableView:(nonnull UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+	return self.item.optionList.count;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+	return YES;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+	DashOptionListItem *tmp = self.item.optionList[sourceIndexPath.row];
+	if (![self.item.optionList isKindOfClass:[NSMutableArray class]]) {
+		self.item.optionList = [self.item.optionList mutableCopy];
+	}
+	
+	NSMutableArray *m = (NSMutableArray *) self.item.optionList;
+	[m removeObjectAtIndex:sourceIndexPath.row];
+	[m insertObject:tmp atIndex:destinationIndexPath.row];
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+
+	if (![self.item.optionList isKindOfClass:[NSMutableArray class]]) {
+		self.item.optionList = [self.item.optionList mutableCopy];
+	}
+
+	if (editingStyle == UITableViewCellEditingStyleDelete) {
+		NSMutableArray *m = (NSMutableArray *) self.item.optionList;
+		[m removeObjectAtIndex:indexPath.row];
+		NSMutableArray *a = [NSMutableArray new];
+		[a addObject:indexPath];
+		[self.vc.optionListTableView deleteRowsAtIndexPaths:a withRowAnimation:YES];
+		[self.vc onOptionListSizeChanged];
+	}
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.vc.optionListTableView.isEditing) {
+		[self.vc onOptionListEditItemClicked:indexPath];
+	}
+}
+
+@end
+
+

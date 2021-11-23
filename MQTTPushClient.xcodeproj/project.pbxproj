@@ -47,6 +47,7 @@
 		21EDECB42716C65C0045E808 /* NSData+Conversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EDECB32716C65C0045E808 /* NSData+Conversion.m */; };
 		21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC426F1DEE40019C488 /* DashUtils.m */; };
 		21EF4EC826F1E6280019C488 /* NSString+HELUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EF4EC726F1E6270019C488 /* NSString+HELUtils.m */; };
+		21F2708E274BD5EB00164A79 /* DashEditorOptionTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21F2708D274BD5EB00164A79 /* DashEditorOptionTableViewCell.m */; };
 		21F32091270AEEC400C89DCF /* clear.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21F32044270AEEBE00C89DCF /* clear.svg */; };
 		21F32092270AEEC400C89DCF /* visibility_off.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21F32045270AEEBE00C89DCF /* visibility_off.svg */; };
 		21F32093270AEEC400C89DCF /* replay_5.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21F32046270AEEBE00C89DCF /* replay_5.svg */; };
@@ -299,6 +300,8 @@
 		21EF4EC426F1DEE40019C488 /* DashUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashUtils.m; sourceTree = "<group>"; };
 		21EF4EC626F1E6270019C488 /* NSString+HELUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+HELUtils.h"; sourceTree = "<group>"; };
 		21EF4EC726F1E6270019C488 /* NSString+HELUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+HELUtils.m"; sourceTree = "<group>"; };
+		21F2708C274BD5EB00164A79 /* DashEditorOptionTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashEditorOptionTableViewCell.h; sourceTree = "<group>"; };
+		21F2708D274BD5EB00164A79 /* DashEditorOptionTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashEditorOptionTableViewCell.m; sourceTree = "<group>"; };
 		21F32044270AEEBE00C89DCF /* clear.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = clear.svg; sourceTree = "<group>"; };
 		21F32045270AEEBE00C89DCF /* visibility_off.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = visibility_off.svg; sourceTree = "<group>"; };
 		21F32046270AEEBE00C89DCF /* replay_5.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = replay_5.svg; sourceTree = "<group>"; };
@@ -623,6 +626,8 @@
 				21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */,
 				211394612744F24900BA3B6E /* DashCircleViewButton.h */,
 				211394622744F24900BA3B6E /* DashCircleViewButton.m */,
+				21F2708C274BD5EB00164A79 /* DashEditorOptionTableViewCell.h */,
+				21F2708D274BD5EB00164A79 /* DashEditorOptionTableViewCell.m */,
 			);
 			path = "Item Views";
 			sourceTree = "<group>";
@@ -1153,6 +1158,7 @@
 				84C0F73221BAA4D200AB4EB1 /* TrustHandler.m in Sources */,
 				211394632744F24900BA3B6E /* DashCircleViewButton.m in Sources */,
 				84A7CFD32238003100E17D03 /* ScriptViewSectionHeader.m in Sources */,
+				21F2708E274BD5EB00164A79 /* DashEditorOptionTableViewCell.m in Sources */,
 				2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */,
 				21EC25E126F9D779003CD109 /* DashOptionTableViewCell.m in Sources */,
 				2131927D26EF6E0700E65AF0 /* DashOptionListItem.m in Sources */,

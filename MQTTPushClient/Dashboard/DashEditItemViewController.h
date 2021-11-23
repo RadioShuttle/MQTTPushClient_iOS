@@ -32,21 +32,26 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet DashCircleViewButton *textColorButton;
 @property IBOutlet UISegmentedControl *textSizeSegmentedCtrl;
 
-/* background */
+/* Background */
 @property IBOutlet DashCircleViewButton *backgroundColorButton;
 @property IBOutlet UIButton *backgroundImageButton;
 
-/* subscribe */
+/* Subscribe */
 @property (weak, nonatomic) IBOutlet UITextField *topicSubTextField;
 @property IBOutlet UIButton *filterSciptButton;
 @property IBOutlet UILabel *filterSciptModifiedLabel;
 
-/* publish */
+/* Publish */
 @property (weak, nonatomic) IBOutlet UITextField *topicPubTextField;
 @property (weak, nonatomic) IBOutlet UISwitch *retainSwitch;
 @property IBOutlet UISegmentedControl *inputTypeSegmentedCtrl;
 @property IBOutlet UIButton *outputSciptButton;
 @property IBOutlet UILabel *outputSciptModifiedLabel;
+
+/* Option List */
+@property IBOutlet UITableView *optionListTableView;
+@property IBOutlet UIButton *optionListEditButton;
+@property IBOutlet UIButton *optionListAddButton;
 
 /* misc */
 @property UIColor *labelDefaultColor;
