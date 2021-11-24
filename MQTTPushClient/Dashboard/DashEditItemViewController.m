@@ -160,6 +160,15 @@
 		self.optionListTableView.delegate = self.optionListHandler;
 	}
 	
+	/* Parameters and HTML */
+	if ([self.item isKindOfClass:[DashCustomItem class]]) {
+		DashCustomItem * customItem = (DashCustomItem *) self.item;
+		self.paramter1TextField.text = customItem.parameter.count > 0 ? customItem.parameter[0] : nil;
+		self.paramter2TextField.text = customItem.parameter.count > 1 ? customItem.parameter[1] : nil;
+		self.paramter3TextField.text = customItem.parameter.count > 2 ? customItem.parameter[2] : nil;
+		self.htmlTextView.text = customItem.html;
+	}
+	
 }
 
 #pragma mark - click handler

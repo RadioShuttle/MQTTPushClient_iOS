@@ -58,7 +58,7 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet UITextField *paramter1TextField;
 @property IBOutlet UITextField *paramter2TextField;
 @property IBOutlet UITextField *paramter3TextField;
-@property IBOutlet UITextField *htmlTextField;
+@property IBOutlet UITextView *htmlTextView;
 
 /* misc */
 @property UIColor *labelDefaultColor;

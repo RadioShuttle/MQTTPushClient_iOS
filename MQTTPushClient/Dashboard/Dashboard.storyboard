@@ -1238,14 +1238,27 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <textField opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9av-EM-Isz">
-                                                    <rect key="frame" x="43" y="6" width="273" height="30"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="15"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" text="Lorem ipsum" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="5yM-m1-gnN">
+                                                    <rect key="frame" x="20" y="6" width="374" height="31.5"/>
+                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="200" id="ixV-4f-1xe"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
-                                                </textField>
+                                                    <variation key="default">
+                                                        <mask key="constraints">
+                                                            <exclude reference="ixV-4f-1xe"/>
+                                                        </mask>
+                                                    </variation>
+                                                </textView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="5yM-m1-gnN" secondAttribute="bottom" constant="6" id="Qy3-X3-V4f"/>
+                                                <constraint firstItem="5yM-m1-gnN" firstAttribute="top" secondItem="tKS-8H-17f" secondAttribute="top" constant="6" id="YOb-0Y-05v"/>
+                                                <constraint firstItem="5yM-m1-gnN" firstAttribute="leading" secondItem="tKS-8H-17f" secondAttribute="leading" constant="20" id="aCI-xd-EQu"/>
+                                                <constraint firstAttribute="trailing" secondItem="5yM-m1-gnN" secondAttribute="trailing" constant="20" id="kR4-EL-O2b"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -1263,7 +1276,7 @@
                         <outlet property="backgroundColorButton" destination="gcC-Ai-sQ3" id="cUx-XV-0p7"/>
                         <outlet property="groupDropDownButon" destination="SgO-Mq-lUC" id="fqR-u1-dcY"/>
                         <outlet property="groupLabel" destination="C27-jQ-M3m" id="XLh-7z-yrI"/>
-                        <outlet property="htmlTextField" destination="9av-EM-Isz" id="A5U-AM-eMz"/>
+                        <outlet property="htmlTextView" destination="5yM-m1-gnN" id="GGp-7K-XrH"/>
                         <outlet property="labelTextField" destination="Cq4-Dg-acw" id="dh0-GV-9XY"/>
                         <outlet property="paramter1TextField" destination="ErR-8w-CdS" id="TAL-4d-jKY"/>
                         <outlet property="paramter2TextField" destination="MmO-cy-AZp" id="z34-vy-WeB"/>

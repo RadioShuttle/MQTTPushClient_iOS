@@ -30,4 +30,13 @@
 	return self;
 }
 
+-(id)copyWithZone:(NSZone *)zone {
+	DashCustomItem *clone = [super copyWithZone:zone];
+	clone.parameter = [self.parameter copy];
+	clone.html = self.html;
+	
+	return clone;
+}
+
+
 @end
