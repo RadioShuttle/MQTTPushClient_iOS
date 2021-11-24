@@ -38,6 +38,7 @@ typedef enum {Add, Edit} Mode;
 
 /* Subscribe */
 @property (weak, nonatomic) IBOutlet UITextField *topicSubTextField;
+@property IBOutlet UISwitch *provideHistDataSwitch;
 @property IBOutlet UIButton *filterSciptButton;
 @property IBOutlet UILabel *filterSciptModifiedLabel;
 
@@ -52,6 +53,12 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet UITableView *optionListTableView;
 @property IBOutlet UIButton *optionListEditButton;
 @property IBOutlet UIButton *optionListAddButton;
+
+/* Paramters and HTML */
+@property IBOutlet UITextField *paramter1TextField;
+@property IBOutlet UITextField *paramter2TextField;
+@property IBOutlet UITextField *paramter3TextField;
+@property IBOutlet UITextField *htmlTextField;
 
 /* misc */
 @property UIColor *labelDefaultColor;

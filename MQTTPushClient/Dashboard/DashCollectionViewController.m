@@ -653,6 +653,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		[self performSegueWithIdentifier:@"IDShowEditTextItemView" sender:self];
 	} else if ([item isKindOfClass:[DashOptionItem class]]) {
 		[self performSegueWithIdentifier:@"IDShowEditOptionItemView" sender:self];
+	} else if ([item isKindOfClass:[DashCustomItem class]]) {
+		[self performSegueWithIdentifier:@"IDShowEditCustomItemView" sender:self];
 	} else { //TODO
 		[self performSegueWithIdentifier:@"IDShowDashEditItemView" sender:self];
 	}

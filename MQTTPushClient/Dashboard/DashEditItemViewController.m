@@ -182,7 +182,7 @@
 -(void)onOptionListAddButtonClicked {
 	//TODO: open add dialog
 	DashOptionListItem *li = [DashOptionListItem new];
-	li.value = @"uk";
+	li.value = @"uk"; //TODO: remove test code
 	li.displayValue = @"United Kingdom";
 	if (![self.optionListHandler.item.optionList isKindOfClass:[NSMutableArray class]]) {
 		self.optionListHandler.item = [self.optionListHandler.item.optionList mutableCopy];
