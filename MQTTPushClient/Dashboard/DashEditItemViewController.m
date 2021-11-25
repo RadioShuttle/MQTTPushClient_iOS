@@ -16,16 +16,24 @@
 #import "DashEditItemViewController.h"
 #import "DashEditorOptionTableViewCell.h"
 
+@import SafariServices;
 
 @class OptionListHandler;
+@class CustomItemHandler;
 @interface DashEditItemViewController ()
 @property NSMutableArray<NSString *> *inputTypeDisplayValues;
 @property OptionListHandler *optionListHandler;
+@property CustomItemHandler *customItemHandler;
 @end
 
 @interface OptionListHandler : NSObject <UITableViewDataSource, UITableViewDelegate>
 @property DashOptionItem *item;
 @property (weak) DashEditItemViewController *vc;
+@end
+
+@interface CustomItemHandler : NSObject <UITextViewDelegate>
+@property (weak) DashEditItemViewController *vc;
+- (void)keyboardNotification:(NSNotification*)notification;
 @end
 
 @implementation DashEditItemViewController
@@ -167,11 +175,106 @@
 		self.paramter2TextField.text = customItem.parameter.count > 1 ? customItem.parameter[1] : nil;
 		self.paramter3TextField.text = customItem.parameter.count > 2 ? customItem.parameter[2] : nil;
 		self.htmlTextView.text = customItem.html;
+		
+		self.moreButtonItem.target = self;
+		self.moreButtonItem.action = @selector(onMoreButtonItemClicked);
+
+		self.customItemHandler = [CustomItemHandler new];
+		self.customItemHandler.vc = self;
+		self.htmlTextView.delegate = self.customItemHandler;
+		[[NSNotificationCenter defaultCenter] addObserver:self.customItemHandler selector:@selector(keyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
 	}
 	
 }
 
 #pragma mark - click handler
+-(void)onMoreButtonItemClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Clear" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onClearClicked];
+	}]];
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Insert Example" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onInsertExampleClicked];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Help" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onHelpClicked];
+	}]];
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	
+	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
+	[self presentViewController:alert animated:TRUE completion:nil];
+}
+
+-(void)onInsertExampleClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"Insert Example" preferredStyle:UIAlertControllerStyleActionSheet];
+	NSMutableArray *titles = [NSMutableArray new];
+	[titles addObject:@"Basic HTML"];
+	[titles addObject:@"Color Picker"];
+	[titles addObject:@"Gauge"];
+	[titles addObject:@"Clock"];
+	[titles addObject:@"Light Switch With Color Picker"];
+	[titles addObject:@"Thermometer"];
+	[titles addObject:@"Line Graph"];
+	NSMutableArray *examples = [NSMutableArray new];
+	[examples addObject:@"empty"];
+	[examples addObject:@"color_picker"];
+	[examples addObject:@"gauge"];
+	[examples addObject:@"clock"];
+	[examples addObject:@"light_switch_with_color_chooser"];
+	[examples addObject:@"termometer"];
+	[examples addObject:@"line_graph"];
+
+	for(int i = 0; i < titles.count; i++) {
+		[alert addAction:[UIAlertAction actionWithTitle:titles[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self insertExample:examples[i]];
+		}]];
+	}
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	
+	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
+	[self presentViewController:alert animated:TRUE completion:nil];
+
+}
+
+-(void)insertExample:(NSString *)resourceName {
+	NSURL *fileURL = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@"html"];
+	NSString *resouce = [NSString stringWithContentsOfURL:fileURL
+												 encoding:NSUTF8StringEncoding error:NULL];
+	if (resouce.length > 0) {
+		NSMutableString *t = [NSMutableString new];
+		if (self.htmlTextView.text) {
+			[t appendString:[self.htmlTextView.text copy]];
+			if (![self.htmlTextView.text hasSuffix:@"\n"]) {
+				[t appendString:@"\n"];
+			}
+		}
+		[t appendString:resouce];
+		self.htmlTextView.text = t;
+		NSLog(@"insert example %@, size: %d" , resourceName, self.htmlTextView.text.length);
+		[self.customItemHandler textViewDidChange:self.htmlTextView];
+	}
+}
+
+-(void)onClearClicked {
+	if (![Utils isEmpty:self.htmlTextView.text]) {
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:@"Clear HTML content?" preferredStyle:UIAlertControllerStyleAlert];
+		[alert addAction:[UIAlertAction actionWithTitle:@"Clear" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {self.htmlTextView.text = nil; [self.customItemHandler textViewDidChange:self.htmlTextView];
+		}]];
+		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		}]];
+		[self presentViewController:alert animated:TRUE completion:nil];
+	}
+}
+
+-(void)onHelpClicked {
+	[self showCustomViewHelp];
+}
+
 -(void)onOptionListEditButtonClicked {
 	if (self.optionListTableView.isEditing) {
 		[self.optionListEditButton setTitle:@"Edit" forState:UIControlStateNormal];
@@ -308,8 +411,6 @@
 	} else if (src == self.backgroundColorButton) {
 		[self.backgroundImageButton setBackgroundColor:uicolor];
 	}
-	
-
 }
 
 -(void)onPosButtonClicked {
@@ -380,6 +481,18 @@
 		alert.popoverPresentationController.sourceRect = self.groupDropDownButon.bounds;
 		[self presentViewController:alert animated:TRUE completion:nil];
 	}
+}
+
+- (void)showCustomViewHelp {
+	//TODO: set correct hyperlinks once the documentation has been published
+	NSString *urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/filter-scripts.html";
+	if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
+		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/filter-scripts.html";
+	}
+	NSURL *url = [NSURL URLWithString:urlString];
+	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+	[self presentViewController:safariViewController animated:YES completion:^{}];
+	
 }
 
 #pragma mark - helper
@@ -493,4 +606,48 @@
 
 @end
 
+@implementation CustomItemHandler
+
+- (void)textViewDidChange:(UITextView *)textView {
+	[UIView setAnimationsEnabled:NO];
+	[self.vc.tableView beginUpdates];
+	[self.vc.tableView endUpdates];
+	[UIView setAnimationsEnabled:YES];
+}
+
+- (void)keyboardNotification:(NSNotification*)notification {
+	if (self.vc.htmlTextView.isFirstResponder) {
+		[self scrollToInsertionPointOf:self.vc.htmlTextView];
+	}
+}
+
+-(void)textViewDidChangeSelection:(UITextView *)textView {
+	[self scrollToInsertionPointOf:textView];
+}
+
+// Scroll table view – if necessary – to make the current insertion point
+// (caret) of the text field visible.
+- (void)scrollToInsertionPointOf:(UITextView *)textView {
+	if (textView.isFirstResponder) {
+		UITextRange *range = textView.selectedTextRange;
+		if (range != nil) {
+			// Workaround from https://stackoverflow.com/a/26280994 :
+			dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)),
+						   dispatch_get_main_queue(), ^{
+							   UITextPosition *pos = range.end;
+							   UITextPosition *start = textView.beginningOfDocument;
+							   UITextPosition *end = textView.endOfDocument;
+							   if ([textView comparePosition:start toPosition: pos] != NSOrderedDescending
+								   && [textView comparePosition:pos toPosition: end] != NSOrderedDescending) {
+								   
+								   CGRect r1 = [textView caretRectForPosition:range.end];
+								   CGRect r2 = [textView convertRect:r1 toView:self.vc.tableView];
+								   [self.vc.tableView scrollRectToVisible:r2 animated:NO];
+							   }
+						   });
+		}
+	}
+}
+
+@end
 

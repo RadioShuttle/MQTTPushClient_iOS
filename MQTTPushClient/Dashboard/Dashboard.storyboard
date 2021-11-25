@@ -1173,7 +1173,7 @@
                                                     <rect key="frame" x="43" y="6" width="273" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -1197,7 +1197,7 @@
                                                     <rect key="frame" x="41" y="7" width="275" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -1221,7 +1221,7 @@
                                                     <rect key="frame" x="43" y="6" width="273" height="30"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                             </subviews>
@@ -1245,7 +1245,7 @@
                                                         <constraint firstAttribute="height" constant="200" id="ixV-4f-1xe"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="alphabet" smartDashesType="no" smartInsertDeleteType="no" smartQuotesType="no"/>
                                                     <variation key="default">
                                                         <mask key="constraints">
                                                             <exclude reference="ixV-4f-1xe"/>
@@ -1270,7 +1270,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Custom View" id="NHu-Ia-FBb">
-                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="aWm-u6-Pby"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="More" image="More" id="crE-MT-jWN"/>
+                            <barButtonItem title="Save" image="Save" id="aWm-u6-Pby"/>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="backgroundColorButton" destination="gcC-Ai-sQ3" id="cUx-XV-0p7"/>
@@ -1278,6 +1281,7 @@
                         <outlet property="groupLabel" destination="C27-jQ-M3m" id="XLh-7z-yrI"/>
                         <outlet property="htmlTextView" destination="5yM-m1-gnN" id="GGp-7K-XrH"/>
                         <outlet property="labelTextField" destination="Cq4-Dg-acw" id="dh0-GV-9XY"/>
+                        <outlet property="moreButtonItem" destination="crE-MT-jWN" id="Cl5-7K-8o1"/>
                         <outlet property="paramter1TextField" destination="ErR-8w-CdS" id="TAL-4d-jKY"/>
                         <outlet property="paramter2TextField" destination="MmO-cy-AZp" id="z34-vy-WeB"/>
                         <outlet property="paramter3TextField" destination="jkL-Ui-m2F" id="ZXD-td-RIk"/>

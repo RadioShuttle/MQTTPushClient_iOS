@@ -28,6 +28,13 @@
 		21BADEA9270C89FF00B2E59F /* DashJavaScriptTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */; };
 		21CC56EB26FDF9DF00E9E7D6 /* MqttUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */; };
 		21D92693270DB1300062FAAE /* DashViewParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D92692270DB1300062FAAE /* DashViewParameter.m */; };
+		21E908C5274E896300078C7F /* light_switch_with_color_chooser.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908BE274E896300078C7F /* light_switch_with_color_chooser.html */; };
+		21E908C6274E896300078C7F /* clock.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908BF274E896300078C7F /* clock.html */; };
+		21E908C7274E896300078C7F /* line_graph.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908C0274E896300078C7F /* line_graph.html */; };
+		21E908C8274E896300078C7F /* thermometer.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908C1274E896300078C7F /* thermometer.html */; };
+		21E908C9274E896300078C7F /* color_picker.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908C2274E896300078C7F /* color_picker.html */; };
+		21E908CA274E896300078C7F /* empty.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908C3274E896300078C7F /* empty.html */; };
+		21E908CB274E896300078C7F /* gauge.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908C4274E896300078C7F /* gauge.html */; };
 		21EC25B926F9D5BB003CD109 /* DashCollectionFlowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25B726F9D5BB003CD109 /* DashCollectionFlowLayout.m */; };
 		21EC25D526F9D779003CD109 /* DashSwitchItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25BD26F9D778003CD109 /* DashSwitchItemView.m */; };
 		21EC25D626F9D779003CD109 /* DashTextItemViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21EC25BE26F9D778003CD109 /* DashTextItemViewCell.m */; };
@@ -263,6 +270,13 @@
 		21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MqttUtils.m; sourceTree = "<group>"; };
 		21D92691270DB1300062FAAE /* DashViewParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashViewParameter.h; sourceTree = "<group>"; };
 		21D92692270DB1300062FAAE /* DashViewParameter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashViewParameter.m; sourceTree = "<group>"; };
+		21E908BE274E896300078C7F /* light_switch_with_color_chooser.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = light_switch_with_color_chooser.html; sourceTree = "<group>"; };
+		21E908BF274E896300078C7F /* clock.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = clock.html; sourceTree = "<group>"; };
+		21E908C0274E896300078C7F /* line_graph.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = line_graph.html; sourceTree = "<group>"; };
+		21E908C1274E896300078C7F /* thermometer.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = thermometer.html; sourceTree = "<group>"; };
+		21E908C2274E896300078C7F /* color_picker.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = color_picker.html; sourceTree = "<group>"; };
+		21E908C3274E896300078C7F /* empty.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = empty.html; sourceTree = "<group>"; };
+		21E908C4274E896300078C7F /* gauge.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = gauge.html; sourceTree = "<group>"; };
 		21EC25B726F9D5BB003CD109 /* DashCollectionFlowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashCollectionFlowLayout.m; sourceTree = "<group>"; };
 		21EC25B826F9D5BB003CD109 /* DashCollectionFlowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashCollectionFlowLayout.h; sourceTree = "<group>"; };
 		21EC25BB26F9D778003CD109 /* DashTextItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashTextItemView.h; sourceTree = "<group>"; };
@@ -587,6 +601,13 @@
 			isa = PBXGroup;
 			children = (
 				2160A6A327142FFA00CA7468 /* javascript_webview.js */,
+				21E908BF274E896300078C7F /* clock.html */,
+				21E908C2274E896300078C7F /* color_picker.html */,
+				21E908C3274E896300078C7F /* empty.html */,
+				21E908C4274E896300078C7F /* gauge.html */,
+				21E908BE274E896300078C7F /* light_switch_with_color_chooser.html */,
+				21E908C0274E896300078C7F /* line_graph.html */,
+				21E908C1274E896300078C7F /* thermometer.html */,
 			);
 			path = "Webview Resources";
 			sourceTree = "<group>";
@@ -1019,8 +1040,10 @@
 				21F320D9270AEEC400C89DCF /* vpn_key.svg in Resources */,
 				21F3209C270AEEC400C89DCF /* signal_wifi_off.svg in Resources */,
 				21F320D2270AEEC400C89DCF /* notification_important.svg in Resources */,
+				21E908C6274E896300078C7F /* clock.html in Resources */,
 				21F320BE270AEEC400C89DCF /* security.svg in Resources */,
 				21F320A0270AEEC400C89DCF /* wifi_off.svg in Resources */,
+				21E908C5274E896300078C7F /* light_switch_with_color_chooser.html in Resources */,
 				2ADBE45F213D7516000664D3 /* Assets.xcassets in Resources */,
 				21F32097270AEEC400C89DCF /* notifications_paused.svg in Resources */,
 				841E1EED24585D3D00E6E0CD /* javascript_color.js in Resources */,
@@ -1040,7 +1063,9 @@
 				210B9A3C26E653740071E876 /* Dashboard.storyboard in Resources */,
 				21F320DB270AEEC400C89DCF /* alarm_on.svg in Resources */,
 				2ADBE45D213D7515000664D3 /* Main.storyboard in Resources */,
+				21E908C9274E896300078C7F /* color_picker.html in Resources */,
 				21F3209F270AEEC400C89DCF /* notifications.svg in Resources */,
+				21E908C7274E896300078C7F /* line_graph.html in Resources */,
 				21F320CE270AEEC400C89DCF /* sentiment_satisfied.svg in Resources */,
 				21F320CB270AEEC400C89DCF /* radio_button_unchecked.svg in Resources */,
 				21F320B2270AEEC400C89DCF /* lock_open.svg in Resources */,
@@ -1070,11 +1095,13 @@
 				21F320C4270AEEC400C89DCF /* forward_30.svg in Resources */,
 				21F320AE270AEEC400C89DCF /* update.svg in Resources */,
 				21F320D1270AEEC400C89DCF /* volume_up.svg in Resources */,
+				21E908CB274E896300078C7F /* gauge.html in Resources */,
 				84A7CFD52238006900E17D03 /* ScriptViewSectionHeader.xib in Resources */,
 				21F320A3270AEEC400C89DCF /* airplanemode_inactive.svg in Resources */,
 				84F4B477223296C900197005 /* ExampleHexdump.js in Resources */,
 				21F320C0270AEEC400C89DCF /* sentiment_very_satisfied.svg in Resources */,
 				21F320DA270AEEC400C89DCF /* wb_incandescent.svg in Resources */,
+				21E908CA274E896300078C7F /* empty.html in Resources */,
 				21F320C5270AEEC400C89DCF /* radio_button_checked.svg in Resources */,
 				84F4B4752232966100197005 /* ExampleBinary.js in Resources */,
 				21F320D8270AEEC400C89DCF /* rss_feed.svg in Resources */,
@@ -1092,6 +1119,7 @@
 				84F4B46F2232950F00197005 /* ExampleJSON.js in Resources */,
 				21F320D7270AEEC400C89DCF /* ac_unit.svg in Resources */,
 				84F4B4712232955F00197005 /* ExampleSplit.js in Resources */,
+				21E908C8274E896300078C7F /* thermometer.html in Resources */,
 				21F320A5270AEEC400C89DCF /* send.svg in Resources */,
 				84F4B47E2232BC5D00197005 /* ExampleScripts.plist in Resources */,
 				21F320BC270AEEC400C89DCF /* not_interested.svg in Resources */,
