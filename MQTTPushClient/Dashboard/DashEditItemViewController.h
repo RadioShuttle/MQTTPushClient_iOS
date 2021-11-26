@@ -78,6 +78,8 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet DashCircleViewButton *switchOffBackgroundColorButton;
 @property IBOutlet UIButton *switchOffImageButton;
 
+- (IBAction) unwindEditOptionListItem:(UIStoryboardSegue*)unwindSegue;
+
 /* misc */
 @property UIColor *labelDefaultColor;
 

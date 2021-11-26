@@ -22,6 +22,7 @@
 		2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171417D26E752CC00BD7969 /* SwitchViewSegue.m */; };
 		2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2171418026E7573100BD7969 /* DashCollectionViewController.m */; };
 		21787D522703611A0004FF9D /* DashItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21787D512703611A0004FF9D /* DashItemView.m */; };
+		21934BBC2750DE3F0085787D /* DashEditOptionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 21934BBB2750DE3F0085787D /* DashEditOptionViewController.m */; };
 		21A3C7912732C9020012CD21 /* DashJavaScriptOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = 21A3C78F2732C9010012CD21 /* DashJavaScriptOutput.m */; };
 		21ACFBAB26F4996E00737875 /* DashGroupItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAA26F4996E00737875 /* DashGroupItem.m */; };
 		21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 21ACFBAC26F4A3E300737875 /* DashSliderItem.m */; };
@@ -258,6 +259,8 @@
 		2171418026E7573100BD7969 /* DashCollectionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashCollectionViewController.m; sourceTree = "<group>"; };
 		21787D502703611A0004FF9D /* DashItemView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashItemView.h; sourceTree = "<group>"; };
 		21787D512703611A0004FF9D /* DashItemView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashItemView.m; sourceTree = "<group>"; };
+		21934BBA2750DE3F0085787D /* DashEditOptionViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashEditOptionViewController.h; sourceTree = "<group>"; };
+		21934BBB2750DE3F0085787D /* DashEditOptionViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashEditOptionViewController.m; sourceTree = "<group>"; };
 		21A3C78F2732C9010012CD21 /* DashJavaScriptOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashJavaScriptOutput.m; sourceTree = "<group>"; };
 		21A3C7902732C9020012CD21 /* DashJavaScriptOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashJavaScriptOutput.h; sourceTree = "<group>"; };
 		21ACFBA926F4996E00737875 /* DashGroupItem.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashGroupItem.h; sourceTree = "<group>"; };
@@ -575,6 +578,8 @@
 				21FE473C272C03600067F60A /* DashPublishController.h */,
 				211C470D273EB2FD00C9350A /* DashEditItemViewController.h */,
 				211C470E273EB2FD00C9350A /* DashEditItemViewController.m */,
+				21934BBA2750DE3F0085787D /* DashEditOptionViewController.h */,
+				21934BBB2750DE3F0085787D /* DashEditOptionViewController.m */,
 				2131928426EF8BF000E65AF0 /* Dashboard.h */,
 				2131928526EF8BF000E65AF0 /* Dashboard.m */,
 				21FC4D8426FC73700013F09D /* DashMessage.h */,
@@ -1214,6 +1219,7 @@
 				21EC25DA26F9D779003CD109 /* DashTextItemView.m in Sources */,
 				2AE87DBE214AA9AB0057935D /* FCMData.m in Sources */,
 				21EC25D926F9D779003CD109 /* DashSwitchItemViewCell.m in Sources */,
+				21934BBC2750DE3F0085787D /* DashEditOptionViewController.m in Sources */,
 				21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
 				21EDECB42716C65C0045E808 /* NSData+Conversion.m in Sources */,

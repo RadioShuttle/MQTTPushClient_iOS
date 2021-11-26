@@ -15,6 +15,7 @@
 #import "Utils.h"
 #import "DashEditItemViewController.h"
 #import "DashEditorOptionTableViewCell.h"
+#import "DashEditOptionViewController.h"
 
 @import SafariServices;
 
@@ -24,6 +25,11 @@
 @property NSMutableArray<NSString *> *inputTypeDisplayValues;
 @property OptionListHandler *optionListHandler;
 @property CustomItemHandler *customItemHandler;
+
+@property Mode argOptionListEditMode;
+@property DashOptionListItem *argOptionListItem;
+@property int argOptionListPos;
+@property int argOptionListItemCnt;
 @end
 
 @interface OptionListHandler : NSObject <UITableViewDataSource, UITableViewDelegate>
@@ -233,6 +239,18 @@
 	}
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+	NSString *identifier = segue.identifier;
+	if ([identifier isEqualToString:@"IDShowEditOptionListItemView"]) {
+		DashEditOptionViewController *vc = segue.destinationViewController;
+		vc.mode = self.argOptionListEditMode;
+		vc.item = self.argOptionListItem;
+		vc.pos = self.argOptionListPos;
+		vc.itemCount = self.argOptionListItemCnt;
+		vc.context = self.dashboard;
+	}
+}
+
 #pragma mark - click handler
 -(void)onMoreButtonItemClicked {
 	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
@@ -337,9 +355,15 @@
 }
 
 -(void)onOptionListAddButtonClicked {
-	//TODO: open add dialog
+	self.argOptionListEditMode = Add;
+	self.argOptionListItem = nil;
+	self.argOptionListPos = (int) ((DashOptionItem *) self.item).optionList.count;
+	self.argOptionListItemCnt = self.argOptionListPos;
+	[self performSegueWithIdentifier:@"IDShowEditOptionListItemView" sender:self];
+	
+	//TODO: remove test code below:
 	DashOptionListItem *li = [DashOptionListItem new];
-	li.value = @"uk"; //TODO: remove test code
+	li.value = @"uk";
 	li.displayValue = @"United Kingdom";
 	if (![self.optionListHandler.item.optionList isKindOfClass:[NSMutableArray class]]) {
 		self.optionListHandler.item = [self.optionListHandler.item.optionList mutableCopy];
@@ -352,9 +376,16 @@
 }
 
 -(void)onOptionListEditItemClicked:(NSIndexPath *)indexPath {
-	DashOptionListItem *li = ((DashOptionItem *) self.item).optionList[indexPath.row];
-	NSLog(@"Edit option item: %@", li.value);
-	//TODO: open edit option list item dialog
+	DashOptionListItem *item = ((DashOptionItem *) self.item).optionList[indexPath.row];
+	self.argOptionListEditMode = Edit;
+	self.argOptionListItem = item;
+	self.argOptionListPos = (int) indexPath.row;
+	self.argOptionListItemCnt = (int) ((DashOptionItem *) self.item).optionList.count;
+	[self performSegueWithIdentifier:@"IDShowEditOptionListItemView" sender:self];
+}
+
+-(void)onOptionListeEditItemUpdated:(Mode)mode item:(DashOptionListItem *)item pos:(int)pos {
+	//TODO: update data
 }
 
 -(void)onColorButtonClicked:(DashCircleViewButton *)src {
@@ -581,6 +612,10 @@
 	return [super tableView:tableView heightForRowAtIndexPath:indexPath];
 }
 
+- (IBAction) unwindEditOptionListItem:(UIStoryboardSegue*)unwindSegue {
+	
+}
+
 @end
 
 @implementation OptionListHandler
@@ -595,11 +630,13 @@
 	NSString *p2 = li.displayValue;
 	p1 = p1 ? p1 : @"";
 	p2 = p2 ? p2 : @"";
+	[cell.optionImageView setTintColor:self.vc.labelDefaultColor];
 
 	NSString *msg = [NSString stringWithFormat:@"%@ - %@",p1,p2];
 	cell.label.text = msg;
 	if (![Utils isEmpty:li.imageURI]) {
-		UIImage *img = [DashUtils loadImageResource:li.imageURI userDataDir:self.vc.dashboard.account.cacheURL];
+		BOOL modeTemplate = [DashUtils isInternalResource:li.imageURI];
+		UIImage *img = [DashUtils loadImageResource:li.imageURI userDataDir:self.vc.dashboard.account.cacheURL renderingModeAlwaysTemplate:modeTemplate];
 		[cell.optionImageView setImage:img];
 	} else {
 		[cell.optionImageView setImage:nil];
@@ -643,6 +680,7 @@
 		[self.vc onOptionListSizeChanged];
 	}
 }
+
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.vc.optionListTableView.isEditing) {
