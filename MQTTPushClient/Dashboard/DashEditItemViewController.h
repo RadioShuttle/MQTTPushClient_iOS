@@ -61,6 +61,23 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet UITextView *htmlTextView;
 @property IBOutlet UIBarButtonItem *moreButtonItem;
 
+/* Progress Bar/Slider */
+@property IBOutlet UITextField *rangeLBTextField;
+@property IBOutlet UITextField *rangeUBTextField;
+@property IBOutlet UITextField *decimalTextField;
+@property IBOutlet UISwitch *displayInPercentSwitch;
+@property IBOutlet DashCircleViewButton *progressColorButton;
+
+/* Button/Switch */
+@property IBOutlet UITextField *switchOnValueTextField;
+@property IBOutlet DashCircleViewButton *switchOnColorButton;
+@property IBOutlet DashCircleViewButton *switchOnBackgroundColorButton;
+@property IBOutlet UIButton *switchOnImageButton;
+@property IBOutlet UITextField *switchOffValueTextField;
+@property IBOutlet DashCircleViewButton *switchOffColorButton;
+@property IBOutlet DashCircleViewButton *switchOffBackgroundColorButton;
+@property IBOutlet UIButton *switchOffImageButton;
+
 /* misc */
 @property UIColor *labelDefaultColor;
 

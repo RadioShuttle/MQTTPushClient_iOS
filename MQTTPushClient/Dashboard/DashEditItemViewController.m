@@ -102,7 +102,7 @@
 	
 	/* text color */
 	[self.textColorButton setTitle:nil forState:UIControlStateNormal];
-	[self.textColorButton addTarget:self action:@selector(onTextColorButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self.textColorButton addTarget:self action:@selector(onColorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	[self onColorChanged:self.textColorButton color:self.item.textcolor];
 	
 	/* text size */
@@ -116,7 +116,7 @@
 	
 	/* background color */
 	[self.backgroundColorButton setTitle:nil forState:UIControlStateNormal];
-	[self.backgroundColorButton addTarget:self action:@selector(onBackgroundColorButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self.backgroundColorButton addTarget:self action:@selector(onColorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 	[self onColorChanged:self.backgroundColorButton color:self.item.background];
 	
 	/* background image */
@@ -124,7 +124,7 @@
 	[self.backgroundImageButton setBackgroundImage:highlightColorImg forState:UIControlStateHighlighted];
 	[[self.backgroundImageButton imageView] setContentMode: UIViewContentModeScaleAspectFit];
 	self.backgroundImageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
-	[self.backgroundImageButton addTarget:self action:@selector(onBackgroundImageButtonClicked) forControlEvents:UIControlEventTouchUpInside];
+	[self.backgroundImageButton addTarget:self action:@selector(onSelectImageButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
 	[self onImageSelected:self.backgroundImageButton imageURI:self.item.background_uri];
 
 	/* 3. Subscribe section */
@@ -185,6 +185,52 @@
 		[[NSNotificationCenter defaultCenter] addObserver:self.customItemHandler selector:@selector(keyboardNotification:) name:UIKeyboardDidShowNotification object:nil];
 	}
 	
+	/* Progress Bar/Slider */
+	if ([self.item isKindOfClass:[DashSliderItem class]]) {
+		DashSliderItem *sliderItem = (DashSliderItem *) self.item;
+		self.rangeLBTextField.text = [@(sliderItem.range_min) stringValue];
+		self.rangeUBTextField.text = [@(sliderItem.range_max) stringValue];
+		self.decimalTextField.text = [@(sliderItem.decimal) stringValue];
+		self.displayInPercentSwitch.on = sliderItem.percent;
+		[self.progressColorButton setTitle:nil forState:UIControlStateNormal];
+		[self onColorChanged:self.progressColorButton color:sliderItem.progresscolor];
+	}
+	
+	/* Button/Switch */
+	if ([self.item isKindOfClass:[DashSwitchItem class]]) {
+		DashSwitchItem *switchItem = (DashSwitchItem *) self.item;
+		self.switchOnValueTextField.text = switchItem.val;
+		
+		[self.switchOnColorButton setTitle:nil forState:UIControlStateNormal];
+		[self onColorChanged:self.switchOnColorButton color:switchItem.color];
+		[self.switchOnColorButton addTarget:self action:@selector(onColorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+		[self.switchOnBackgroundColorButton setTitle:nil forState:UIControlStateNormal];
+		[self onColorChanged:self.switchOnBackgroundColorButton color:switchItem.bgcolor];
+		[self.switchOnBackgroundColorButton addTarget:self action:@selector(onColorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+		[self.switchOnImageButton setBackgroundImage:highlightColorImg forState:UIControlStateHighlighted];
+		[[self.switchOnImageButton imageView] setContentMode: UIViewContentModeScaleAspectFit];
+		self.switchOnImageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
+		[self.switchOnImageButton addTarget:self action:@selector(onSelectImageButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
+		[self onImageSelected:self.switchOnImageButton imageURI:switchItem.uri];
+		
+		self.switchOffValueTextField.text = switchItem.valOff;
+
+		[self.switchOffColorButton setTitle:nil forState:UIControlStateNormal];
+		[self onColorChanged:self.switchOffColorButton color:switchItem.colorOff];
+		[self.switchOffColorButton addTarget:self action:@selector(onColorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+		[self.switchOffBackgroundColorButton setTitle:nil forState:UIControlStateNormal];
+		[self onColorChanged:self.switchOffBackgroundColorButton color:switchItem.bgcolorOff];
+		[self.switchOffBackgroundColorButton addTarget:self action:@selector(onColorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
+
+		[self.switchOffImageButton setBackgroundImage:highlightColorImg forState:UIControlStateHighlighted];
+		[[self.switchOffImageButton imageView] setContentMode: UIViewContentModeScaleAspectFit];
+		self.switchOffImageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
+		[self.switchOffImageButton addTarget:self action:@selector(onSelectImageButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
+		[self onImageSelected:self.switchOffImageButton imageURI:switchItem.uriOff];
+	}
 }
 
 #pragma mark - click handler
@@ -255,7 +301,6 @@
 		}
 		[t appendString:resouce];
 		self.htmlTextView.text = t;
-		NSLog(@"insert example %@, size: %d" , resourceName, self.htmlTextView.text.length);
 		[self.customItemHandler textViewDidChange:self.htmlTextView];
 	}
 }
@@ -312,20 +357,20 @@
 	//TODO: open edit option list item dialog
 }
 
--(void)onBackgroundImageButtonClicked {
+-(void)onColorButtonClicked:(DashCircleViewButton *)src {
 	//TODO: open image chooser
-	[self onImageSelected:self.backgroundImageButton imageURI:@"res://internal/lock_open"];  //TODO: remove test code
+	int64_t testData;  //TODO: remove test code below
+	if (src == _switchOnColorButton || src == _switchOffColorButton) {
+		testData = DASH_COLOR_RED;
+	} else {
+		testData = DASH_COLOR_YELLOW;
+	}
+	[self onColorChanged:src color:testData];
 }
 
--(void)onTextColorButtonClicked {
-	//TODO: open color chooser
-	[self onColorChanged:self.textColorButton color:DASH_COLOR_RED ]; //TODO: remove test code
-}
-
--(void)onBackgroundColorButtonClicked {
-	//TODO: open color chooser
-	[self onColorChanged:self.backgroundColorButton color:DASH_COLOR_YELLOW ]; //TODO: remove test code
-
+-(void)onSelectImageButtonCLicked:(UIButton *)src {
+	//TODO: open image chooser
+	[self onImageSelected:src imageURI:@"res://internal/lock_open"];  //TODO: remove test code
 }
 
 -(void)onFilterScriptButtonClicked {
@@ -369,31 +414,22 @@
 	if (image) {
 		[src setTitle:nil forState:UIControlStateNormal];
 		[src setImage:image forState:UIControlStateNormal];
-		
-		if (src != self.backgroundImageButton) {
-			//TODO: tint button images (switch)
-			/* tint background internal images with label default color*/
-			/*
-			if ([DashUtils isInternalResource:imageURI]) {
-				[src setTintColor:self.labelDefaultColor];
-			} else {
-				// [src setTintColor:nil];
-				[src setTintColor:self.labelDefaultColor]; //TODO: raus
-			}
-			 */
-		}
 	} else {
 		[src setImage:nil forState:UIControlStateNormal];
 		[src setTitle:@"None" forState:UIControlStateNormal];
 	}
 }
 
--(void)onColorChanged:(DashCircleViewButton *)src color:(uint64_t)color {
+-(void)onColorChanged:(DashCircleViewButton *)src color:(int64_t)color {
 	UIColor *uicolor;
 	CGFloat a,r,g,b;
 	if (color == DASH_COLOR_OS_DEFAULT || color == DASH_COLOR_CLEAR) {
 		if (src == self.textColorButton) {
 			uicolor = self.labelDefaultColor; // use label color as default color
+		} else if (src == self.progressColorButton) {
+			uicolor = self.view.tintColor; // use default tint color
+		} else if (src == self.switchOnColorButton || src == self.switchOffColorButton) {
+			uicolor = self.labelDefaultColor;
 		} else {
 			uicolor = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR); //TODO: default color
 		}
@@ -410,6 +446,16 @@
 		[self.backgroundImageButton setTitleColor:uicolor forState:UIControlStateNormal];
 	} else if (src == self.backgroundColorButton) {
 		[self.backgroundImageButton setBackgroundColor:uicolor];
+	} else if (src == self.switchOnColorButton) {
+		[self.switchOnImageButton setTitleColor:uicolor forState:UIControlStateNormal];
+		[self.switchOnImageButton setTintColor:uicolor];
+	} else if (src == self.switchOffColorButton) {
+		[self.switchOffImageButton setTitleColor:uicolor forState:UIControlStateNormal];
+		[self.switchOffImageButton setTintColor:uicolor];
+	} else if (src == self.switchOnBackgroundColorButton) {
+		[self.switchOnImageButton setBackgroundColor:uicolor];
+	} else if (src == self.switchOffBackgroundColorButton) {
+		[self.switchOffImageButton setBackgroundColor:uicolor];
 	}
 }
 
