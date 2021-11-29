@@ -10,4 +10,5 @@
 
 @property UIColor *fillColor;
 @property UIColor *borderColor;
+@property BOOL clearColor;
 @end

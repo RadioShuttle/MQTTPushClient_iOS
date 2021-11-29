@@ -56,8 +56,19 @@
     CGContextSetFillColor(ctx, CGColorGetComponents([self.fillColor CGColor]));
     CGContextSetStrokeColor(ctx, CGColorGetComponents([self.borderColor CGColor]));
     CGContextSetLineWidth(ctx, 1.0f);
-    // CGContextFillPath(ctx);
     CGContextDrawPath(ctx, kCGPathFillStroke);
+
+	if (self.clearColor) { // draw an "X" to indicate clear color
+		int p = 8;
+		CGContextMoveToPoint(ctx, r2.origin.x + p, r2.origin.y + p);
+		CGContextAddLineToPoint(ctx, r2.origin.x + r2.size.width - p, r2.origin.y + r2.size.height - p);
+		
+		CGContextMoveToPoint(ctx, r2.origin.x + p, r2.origin.y + r2.size.height - p);
+		CGContextAddLineToPoint(ctx, r2.origin.x + r2.size.width - p, r2.origin.y + p);
+		
+		CGContextSetLineWidth(ctx, 3.0f);
+		CGContextDrawPath(ctx, kCGPathStroke);
+	}
 }
 
 @end

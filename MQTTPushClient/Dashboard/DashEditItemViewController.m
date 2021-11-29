@@ -467,7 +467,10 @@
 -(void)onColorChanged:(DashCircleViewButton *)src color:(int64_t)color {
 	UIColor *uicolor;
 	CGFloat a,r,g,b;
-	if (color == DASH_COLOR_OS_DEFAULT || color == DASH_COLOR_CLEAR) {
+	if (color == DASH_COLOR_CLEAR) {
+		uicolor = [UIColor clearColor];
+		src.clearColor = YES;
+	} else if (color == DASH_COLOR_OS_DEFAULT) {
 		if (src == self.textColorButton) {
 			uicolor = self.labelDefaultColor; // use label color as default color
 		} else if (src == self.progressColorButton) {
@@ -479,8 +482,10 @@
 		}
 		[uicolor getRed:&r green:&g blue:&b alpha:&a]; // convert cs
 		uicolor = [UIColor colorWithRed:r green:g blue:b alpha:a];
+		src.clearColor = NO;
 	} else {
 		uicolor = UIColorFromRGB(color);
+		src.clearColor = NO;
 	}
 	[src setFillColor:uicolor];
 	[src setNeedsDisplay];
