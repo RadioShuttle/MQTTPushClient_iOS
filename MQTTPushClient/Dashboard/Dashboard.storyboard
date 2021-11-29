@@ -815,7 +815,7 @@
                                                                         </constraints>
                                                                     </imageView>
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1k-c0-apd">
-                                                                        <rect key="frame" x="48" y="0.0" width="318" height="43.5"/>
+                                                                        <rect key="frame" x="48" y="0.0" width="504" height="43.5"/>
                                                                         <constraints>
                                                                             <constraint firstAttribute="height" constant="43.5" id="F1x-lP-y03"/>
                                                                         </constraints>
@@ -993,7 +993,7 @@
                                                     </constraints>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1026,7 +1026,7 @@
                                                     </constraints>
                                                     <nil key="textColor"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1138,6 +1138,7 @@
                         <outlet property="labelTextField" destination="yiI-Qc-fuo" id="mw1-hU-cNy"/>
                         <outlet property="posDropDownButton" destination="ymQ-ii-iY3" id="20L-H0-N4W"/>
                         <outlet property="posLabel" destination="WAU-W2-NMk" id="4l2-QL-qA0"/>
+                        <outlet property="saveButton" destination="eMo-a9-t2V" id="dhY-FU-Zcr"/>
                         <outlet property="valueTextField" destination="Fau-ri-uyE" id="7v7-4z-ljv"/>
                         <segue destination="Tuq-Hb-atM" kind="unwind" identifier="IDExitEditOption" unwindAction="unwindEditOptionListItem:" id="ZeU-nj-Eb2"/>
                     </connections>
@@ -2377,7 +2378,7 @@
                                         <rect key="frame" x="0.0" y="872" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kTk-Ef-hUW" id="EH8-h7-DMX">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Retain:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="csP-iB-qu2">
@@ -2398,7 +2399,7 @@
                                         <rect key="frame" x="0.0" y="916" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wBB-Nl-Yxo" id="T3m-nI-R6X">
-                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Script:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fxn-y2-GhS">
@@ -2793,7 +2794,11 @@
                                 <items>
                                     <navigationItem id="tYO-XU-O2Y">
                                         <rightBarButtonItems>
-                                            <barButtonItem title="Close" image="NotificationDisabled" id="0eh-a8-kQ5"/>
+                                            <barButtonItem title="Close" image="NotificationDisabled" id="0eh-a8-kQ5">
+                                                <connections>
+                                                    <segue destination="da2-Gs-Vz5" kind="unwind" unwindAction="prepareForUnwind:" id="8zz-fv-GDx"/>
+                                                </connections>
+                                            </barButtonItem>
                                             <barButtonItem title="Error1" image="Error-Info" id="v63-f5-KMu"/>
                                             <barButtonItem title="Item" image="Error-Info" id="87V-1k-rcr"/>
                                         </rightBarButtonItems>
@@ -2861,6 +2866,7 @@
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qGM-rT-vMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="da2-Gs-Vz5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="822" y="-826"/>
         </scene>

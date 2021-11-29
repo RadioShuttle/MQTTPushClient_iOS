@@ -14,7 +14,7 @@
 @property DashOptionListItem *editItem;
 @property int pos;
 @property int itemCount;
-@property Dashboard *context;
+@property DashEditItemViewController *parentController;
 
 @property IBOutlet UITextField *valueTextField;
 @property IBOutlet UITextField *labelTextField;
@@ -23,5 +23,6 @@
 @property IBOutlet UIButton *posDropDownButton;
 @property int selPosIdx;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
 @end

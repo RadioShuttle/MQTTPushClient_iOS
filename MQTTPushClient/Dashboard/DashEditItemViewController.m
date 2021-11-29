@@ -247,7 +247,7 @@
 		vc.item = self.argOptionListItem;
 		vc.pos = self.argOptionListPos;
 		vc.itemCount = self.argOptionListItemCnt;
-		vc.context = self.dashboard;
+		vc.parentController = self;
 	}
 }
 
@@ -360,19 +360,6 @@
 	self.argOptionListPos = (int) ((DashOptionItem *) self.item).optionList.count;
 	self.argOptionListItemCnt = self.argOptionListPos;
 	[self performSegueWithIdentifier:@"IDShowEditOptionListItemView" sender:self];
-	
-	//TODO: remove test code below:
-	DashOptionListItem *li = [DashOptionListItem new];
-	li.value = @"uk";
-	li.displayValue = @"United Kingdom";
-	if (![self.optionListHandler.item.optionList isKindOfClass:[NSMutableArray class]]) {
-		self.optionListHandler.item = [self.optionListHandler.item.optionList mutableCopy];
-	}
-	[((NSMutableArray *) self.optionListHandler.item.optionList) addObject:li];
-	NSMutableArray *indexPathArr = [NSMutableArray new];
-	[indexPathArr addObject:[NSIndexPath indexPathForRow:(self.optionListHandler.item.optionList.count - 1) inSection:0]];
-	[self.optionListTableView insertRowsAtIndexPaths:indexPathArr withRowAnimation:YES];
-	[self onOptionListSizeChanged];
 }
 
 -(void)onOptionListEditItemClicked:(NSIndexPath *)indexPath {
@@ -384,8 +371,34 @@
 	[self performSegueWithIdentifier:@"IDShowEditOptionListItemView" sender:self];
 }
 
--(void)onOptionListeEditItemUpdated:(Mode)mode item:(DashOptionListItem *)item pos:(int)pos {
-	//TODO: update data
+- (void)onOptionListItemUpdated:(Mode)mode item:(DashOptionListItem *)item oldPos:(int)oldPos newPos:(int)newPos {
+	DashOptionItem *optItem = (DashOptionItem *) self.item;
+	if (![self.optionListHandler.item.optionList isKindOfClass:[NSMutableArray class]]) {
+		self.optionListHandler.item = [self.optionListHandler.item.optionList mutableCopy];
+	}
+	NSMutableArray *indexPathArr = [NSMutableArray new];
+	
+	if (mode == Add) {
+		[((NSMutableArray *) optItem.optionList) insertObject:item atIndex:newPos];
+		[indexPathArr addObject:[NSIndexPath indexPathForRow:newPos inSection:0]];
+		[self.optionListTableView insertRowsAtIndexPaths:indexPathArr withRowAnimation:YES];
+	} else {
+		if (oldPos == newPos) {
+			[((NSMutableArray *) optItem.optionList) setObject:item atIndexedSubscript:(NSUInteger)newPos];
+			[indexPathArr addObject:[NSIndexPath indexPathForRow:newPos inSection:0]];
+			[self.optionListTableView reloadRowsAtIndexPaths:indexPathArr withRowAnimation:YES];
+		} else {
+			[((NSMutableArray *) optItem.optionList) removeObjectAtIndex:oldPos];
+			[indexPathArr addObject:[NSIndexPath indexPathForRow:oldPos inSection:0]];
+			[self.optionListTableView deleteRowsAtIndexPaths:indexPathArr withRowAnimation:YES];
+
+			[indexPathArr removeAllObjects];
+			[((NSMutableArray *) optItem.optionList) insertObject:item atIndex:newPos];
+			[indexPathArr addObject:[NSIndexPath indexPathForRow:newPos inSection:0]];
+			[self.optionListTableView insertRowsAtIndexPaths:indexPathArr withRowAnimation:YES];
+		}
+	}
+	[self onOptionListSizeChanged];
 }
 
 -(void)onColorButtonClicked:(DashCircleViewButton *)src {

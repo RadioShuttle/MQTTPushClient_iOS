@@ -21,6 +21,9 @@
 	/* add prefix to title */
 	NSString *prefix = (self.mode == Edit ? @"Edit" : @"Add");
 	self.navigationItem.title = [NSString stringWithFormat:@"%@ %@", prefix, self.navigationItem.title];
+	if (!self.item) {
+		self.item = [DashOptionListItem new];
+	}
 	self.editItem = [self.item copy];
 
 	self.tableView.separatorColor = [UIColor clearColor];
@@ -45,12 +48,13 @@
 	self.cancelButton.target = self;
 	self.cancelButton.action = @selector(onCancelButtonClicked);
 	
-	if (self.item) {
-		self.valueTextField.text = self.item.value;
-		self.labelTextField.text = self.item.displayValue;
-		if (![Utils isEmpty:self.item.imageURI]) {
-			[self onImageSelected:self.item.imageURI];
-		}
+	self.saveButton.target = self;
+	self.saveButton.action = @selector(onSaveButtonClicked);
+	
+	self.valueTextField.text = self.item.value;
+	self.labelTextField.text = self.item.displayValue;
+	if (![Utils isEmpty:self.item.imageURI]) {
+		[self onImageSelected:self.item.imageURI];
 	}
 	self.posLabel.text = [@(self.pos + 1) stringValue];
 	self.selPosIdx = self.pos;
@@ -61,9 +65,16 @@
 	[self onImageSelected:@"res://internal/lock_open"];  //TODO: remove test code
 }
 
+-(void)onSaveButtonClicked {
+	self.editItem.value = self.valueTextField.text;
+	self.editItem.displayValue = self.labelTextField.text;
+	
+	[self.parentController onOptionListItemUpdated:self.mode item:self.editItem oldPos:self.pos newPos:self.selPosIdx];
+	[self performSegueWithIdentifier:@"IDExitEditOption" sender:self];
+}
+
 -(void)onCancelButtonClicked {
-	BOOL modifed = YES; //TODO:
-	if (modifed) {
+	if ([self dataModified]) {
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Go back without saving?" message:@"Data has been modified." preferredStyle:UIAlertControllerStyleAlert];
 		
 		[alert addAction:[UIAlertAction actionWithTitle:@"Back" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -73,14 +84,15 @@
 		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
 		[self presentViewController:alert animated:TRUE completion:nil];
+	} else {
+		[self performSegueWithIdentifier:@"IDExitEditOption" sender:self];
 	}
 }
 
 -(BOOL)dataModified {
-	//TODO:
 	self.editItem.value = self.valueTextField.text;
 	self.editItem.displayValue = self.labelTextField.text;
-	return [self.editItem isEqual:self.item] && self.pos == self.selPosIdx;
+	return !([self.editItem isEqual:self.item] && self.pos == self.selPosIdx);
 }
 
 -(void)onPosButtonClicked {
@@ -107,10 +119,11 @@
 }
 
 -(void)onImageSelected:(NSString *)imageURI {
+	self.editItem.imageURI = imageURI;
 	UIImage *image = nil;
 	if (imageURI) {
 		BOOL modeTemplate = [DashUtils isInternalResource:imageURI];
-		image = [DashUtils loadImageResource:imageURI userDataDir:self.context.account.cacheURL renderingModeAlwaysTemplate:modeTemplate];
+		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentController.dashboard.account.cacheURL renderingModeAlwaysTemplate:modeTemplate];
 	}
 	if (image) {
 		[self.imageButton setTitle:nil forState:UIControlStateNormal];

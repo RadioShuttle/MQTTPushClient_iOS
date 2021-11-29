@@ -8,6 +8,7 @@
 #import "DashItem.h"
 #import "DashCircleViewButton.h"
 #import "Dashboard.h"
+#import "DashOptionListItem.h"
 
 @interface DashEditItemViewController : UITableViewController
 
@@ -79,6 +80,7 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet UIButton *switchOffImageButton;
 
 - (IBAction) unwindEditOptionListItem:(UIStoryboardSegue*)unwindSegue;
+- (void)onOptionListItemUpdated:(Mode)mode item:(DashOptionListItem *)item oldPos:(int)oldPos newPos:(int)newPos;
 
 /* misc */
 @property UIColor *labelDefaultColor;

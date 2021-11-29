@@ -6,6 +6,7 @@
 
 #import "DashOptionListItem.h"
 #import "NSDictionary+HelSafeAccessors.h"
+#import "Utils.h"
 
 @implementation DashOptionListItem
 
@@ -32,6 +33,19 @@
 	clone.imageURI = self.imageURI;
 	
 	return clone;
+}
+
+- (BOOL)isEqual:(id)object {
+	BOOL eq = NO;
+	if (self == object) {
+		eq = YES;
+	} else if ([object isKindOfClass:[DashOptionListItem class]]) {
+		if (!eq) {
+			DashOptionListItem *obj = (DashOptionListItem *) object;
+			eq = [Utils areEqual:self.value s2:obj.value] && [Utils areEqual:self.displayValue s2:obj.displayValue] && [Utils areEqual:self.imageURI s2:obj.imageURI];
+		}
+	}
+	return eq;
 }
 
 @end

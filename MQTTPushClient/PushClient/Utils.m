@@ -43,4 +43,7 @@
 	return convertedValue;
 }
 
++(BOOL) areEqual:(NSString *)s1 s2:(NSString *)s2 {
+	return [(s1 ? s1 : @"") isEqualToString:(s2 ? s2 : @"")];
+}
 @end
