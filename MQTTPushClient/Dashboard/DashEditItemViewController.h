@@ -81,6 +81,7 @@ typedef enum {Add, Edit} Mode;
 
 - (IBAction) unwindEditOptionListItem:(UIStoryboardSegue*)unwindSegue;
 - (void)onOptionListItemUpdated:(Mode)mode item:(DashOptionListItem *)item oldPos:(int)oldPos newPos:(int)newPos;
+-(void)onColorChanged:(DashCircleViewButton *)src color:(int64_t)color;
 
 /* misc */
 @property UIColor *labelDefaultColor;

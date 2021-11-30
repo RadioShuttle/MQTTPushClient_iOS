@@ -16,6 +16,7 @@
 #import "DashEditItemViewController.h"
 #import "DashEditorOptionTableViewCell.h"
 #import "DashEditOptionViewController.h"
+#import "DashColorChooser.h"
 
 @import SafariServices;
 
@@ -199,6 +200,7 @@
 		self.decimalTextField.text = [@(sliderItem.decimal) stringValue];
 		self.displayInPercentSwitch.on = sliderItem.percent;
 		[self.progressColorButton setTitle:nil forState:UIControlStateNormal];
+		[self.progressColorButton addTarget:self action:@selector(onColorButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
 		[self onColorChanged:self.progressColorButton color:sliderItem.progresscolor];
 	}
 	
@@ -402,14 +404,36 @@
 }
 
 -(void)onColorButtonClicked:(DashCircleViewButton *)src {
-	//TODO: open image chooser
-	int64_t testData;  //TODO: remove test code below
-	if (src == _switchOnColorButton || src == _switchOffColorButton) {
-		testData = DASH_COLOR_RED;
+	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
+	DashColorChooser* vc = [storyboard instantiateViewControllerWithIdentifier:@"DashColorChooser"];
+	vc.parentCtrl = self;
+	vc.srcButton = src;
+	vc.showClearColor = (src == self.switchOnColorButton || src == self.switchOffColorButton);
+	
+	/* default color */
+	if (src == self.textColorButton) {
+		vc.defaultColor = self.labelDefaultColor; // use label color as default color
+	} else if (src == self.progressColorButton) {
+		vc.defaultColor = self.view.tintColor; // use default tint color
+	} else if (src == self.switchOnColorButton || src == self.switchOffColorButton) {
+		vc.defaultColor = self.labelDefaultColor;
 	} else {
-		testData = DASH_COLOR_YELLOW;
+		vc.defaultColor = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR); //TODO: default color
 	}
-	[self onColorChanged:src color:testData];
+	CGFloat r,g,b,a;
+	[vc.defaultColor getRed:&r green:&g blue:&b alpha:&a]; // convert cs
+	vc.defaultColor = [UIColor colorWithRed:r green:g blue:b alpha:a];
+
+	UINavigationController *nc =
+	[[UINavigationController alloc] initWithRootViewController:vc];
+	
+	nc.modalPresentationStyle = UIModalPresentationPopover;
+	
+	nc.popoverPresentationController.sourceView = src;
+	nc.popoverPresentationController.sourceRect = src.bounds;
+	
+	[self presentViewController:nc animated:YES completion:nil];
+	// [self onColorChanged:src color:testData];
 }
 
 -(void)onSelectImageButtonCLicked:(UIButton *)src {
@@ -496,11 +520,23 @@
 	} else if (src == self.backgroundColorButton) {
 		[self.backgroundImageButton setBackgroundColor:uicolor];
 	} else if (src == self.switchOnColorButton) {
-		[self.switchOnImageButton setTitleColor:uicolor forState:UIControlStateNormal];
-		[self.switchOnImageButton setTintColor:uicolor];
+		// if color is clear color, use default color for text label, nil for tint color (internal images will be tinted with default color)
+		if (src.clearColor) {
+			[self.switchOnImageButton setTitleColor:self.labelDefaultColor forState:UIControlStateNormal];
+			[self.switchOnImageButton setTintColor:nil]; //TODO: make sure internal images are not tinted with default/blue. update, when image selection is implemented.
+		} else {
+			[self.switchOnImageButton setTitleColor:uicolor forState:UIControlStateNormal];
+			[self.switchOnImageButton setTintColor:uicolor];
+		}
 	} else if (src == self.switchOffColorButton) {
-		[self.switchOffImageButton setTitleColor:uicolor forState:UIControlStateNormal];
-		[self.switchOffImageButton setTintColor:uicolor];
+		// if color is clear color, use default color for text label, nil for tint color
+		if (src.clearColor) {
+			[self.switchOffImageButton setTitleColor:self.labelDefaultColor forState:UIControlStateNormal];
+			[self.switchOffImageButton setTintColor:nil]; //TODO: make sure internal images are not tinted with default/blue. update, when image selection is implemented.
+		} else {
+			[self.switchOffImageButton setTitleColor:uicolor forState:UIControlStateNormal];
+			[self.switchOffImageButton setTintColor:uicolor];
+		}
 	} else if (src == self.switchOnBackgroundColorButton) {
 		[self.switchOnImageButton setBackgroundColor:uicolor];
 	} else if (src == self.switchOffBackgroundColorButton) {
@@ -631,6 +667,10 @@
 }
 
 - (IBAction) unwindEditOptionListItem:(UIStoryboardSegue*)unwindSegue {
+	
+}
+
+- (IBAction) unwindColorChooser:(UIStoryboardSegue*)unwindSegue {
 	
 }
 

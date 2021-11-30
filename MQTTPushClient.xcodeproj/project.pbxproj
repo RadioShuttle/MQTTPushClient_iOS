@@ -29,6 +29,8 @@
 		21BADEA9270C89FF00B2E59F /* DashJavaScriptTask.m in Sources */ = {isa = PBXBuildFile; fileRef = 21BADEA8270C89FF00B2E59F /* DashJavaScriptTask.m */; };
 		21CC56EB26FDF9DF00E9E7D6 /* MqttUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */; };
 		21D92693270DB1300062FAAE /* DashViewParameter.m in Sources */ = {isa = PBXBuildFile; fileRef = 21D92692270DB1300062FAAE /* DashViewParameter.m */; };
+		21E8E17E27550D2C00749832 /* DashColorChooser.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E8E17D27550D2C00749832 /* DashColorChooser.m */; };
+		21E8E1812755291D00749832 /* DashColorCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21E8E1802755291D00749832 /* DashColorCell.m */; };
 		21E908C5274E896300078C7F /* light_switch_with_color_chooser.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908BE274E896300078C7F /* light_switch_with_color_chooser.html */; };
 		21E908C6274E896300078C7F /* clock.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908BF274E896300078C7F /* clock.html */; };
 		21E908C7274E896300078C7F /* line_graph.html in Resources */ = {isa = PBXBuildFile; fileRef = 21E908C0274E896300078C7F /* line_graph.html */; };
@@ -273,6 +275,10 @@
 		21CC56EA26FDF9DF00E9E7D6 /* MqttUtils.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MqttUtils.m; sourceTree = "<group>"; };
 		21D92691270DB1300062FAAE /* DashViewParameter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashViewParameter.h; sourceTree = "<group>"; };
 		21D92692270DB1300062FAAE /* DashViewParameter.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashViewParameter.m; sourceTree = "<group>"; };
+		21E8E17C27550D2C00749832 /* DashColorChooser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashColorChooser.h; sourceTree = "<group>"; };
+		21E8E17D27550D2C00749832 /* DashColorChooser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashColorChooser.m; sourceTree = "<group>"; };
+		21E8E17F2755291D00749832 /* DashColorCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashColorCell.h; sourceTree = "<group>"; };
+		21E8E1802755291D00749832 /* DashColorCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashColorCell.m; sourceTree = "<group>"; };
 		21E908BE274E896300078C7F /* light_switch_with_color_chooser.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = light_switch_with_color_chooser.html; sourceTree = "<group>"; };
 		21E908BF274E896300078C7F /* clock.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = clock.html; sourceTree = "<group>"; };
 		21E908C0274E896300078C7F /* line_graph.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = line_graph.html; sourceTree = "<group>"; };
@@ -578,6 +584,10 @@
 				21FE473C272C03600067F60A /* DashPublishController.h */,
 				211C470D273EB2FD00C9350A /* DashEditItemViewController.h */,
 				211C470E273EB2FD00C9350A /* DashEditItemViewController.m */,
+				21E8E17C27550D2C00749832 /* DashColorChooser.h */,
+				21E8E17D27550D2C00749832 /* DashColorChooser.m */,
+				21E8E17F2755291D00749832 /* DashColorCell.h */,
+				21E8E1802755291D00749832 /* DashColorCell.m */,
 				21934BBA2750DE3F0085787D /* DashEditOptionViewController.h */,
 				21934BBB2750DE3F0085787D /* DashEditOptionViewController.m */,
 				2131928426EF8BF000E65AF0 /* Dashboard.h */,
@@ -1172,6 +1182,7 @@
 				2AEAF64021634F23001528E6 /* ServerListTableViewCell.m in Sources */,
 				2AFBCDCA222D29A50070C98C /* ScriptViewController.m in Sources */,
 				847874E2217760F00059881B /* Account.m in Sources */,
+				21E8E17E27550D2C00749832 /* DashColorChooser.m in Sources */,
 				21A3C7912732C9020012CD21 /* DashJavaScriptOutput.m in Sources */,
 				2131927F26EF6E0700E65AF0 /* DashSwitchItem.m in Sources */,
 				2131927C26EF6E0700E65AF0 /* DashTextItem.m in Sources */,
@@ -1221,6 +1232,7 @@
 				21EC25D926F9D779003CD109 /* DashSwitchItemViewCell.m in Sources */,
 				21934BBC2750DE3F0085787D /* DashEditOptionViewController.m in Sources */,
 				21EF4EC526F1DEE40019C488 /* DashUtils.m in Sources */,
+				21E8E1812755291D00749832 /* DashColorCell.m in Sources */,
 				2A2859CE2142A02800CFA5DC /* GCDAsyncSocket.m in Sources */,
 				21EDECB42716C65C0045E808 /* NSData+Conversion.m in Sources */,
 				21EC25DC26F9D779003CD109 /* DashOptionItemViewCell.m in Sources */,

@@ -59,7 +59,7 @@
     CGContextDrawPath(ctx, kCGPathFillStroke);
 
 	if (self.clearColor) { // draw an "X" to indicate clear color
-		int p = 8;
+		CGFloat p = 2.0f / 7.0f * r2.size.height;
 		CGContextMoveToPoint(ctx, r2.origin.x + p, r2.origin.y + p);
 		CGContextAddLineToPoint(ctx, r2.origin.x + r2.size.width - p, r2.origin.y + r2.size.height - p);
 		
