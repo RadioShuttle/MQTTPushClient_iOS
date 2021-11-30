@@ -40,6 +40,8 @@
 }
 
 -(void) initSwitchView {
+	[super addBackgroundImageView];
+
 	self.button = [UIButton buttonWithType:UIButtonTypeCustom];
     self.button.translatesAutoresizingMaskIntoConstraints = NO;    
     [self addSubview:self.button];
@@ -99,20 +101,21 @@
 	if (imageURI.length > 0) {
 		//TODO: caching
 		image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL];
+		image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]; // enable tint
 	}
 	
 	if (buttonTintColor == DASH_COLOR_CLEAR) {
 		color = nil;
 		if ([DashUtils isInternalResource:imageURI] || !image) {
-			/* internal resource? use default label color (as we do not want blue buttons. Same for buttons without images too. */
+			/* internal resource? tint with default label color */
+			// image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 			color = [UILabel new].textColor;
-		} else {
-			color = nil;
 		}
+		/* disable tint for user pic */
+		image =  [image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+		
 	} else if (buttonTintColor == DASH_COLOR_OS_DEFAULT) {
-		if ([DashUtils isUserResource:imageURI]) {
-			image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
-		}
+		image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 		color = [UILabel new].textColor;
 	} else {
 		if ([DashUtils isUserResource:imageURI]) {

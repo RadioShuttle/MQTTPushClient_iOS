@@ -433,12 +433,13 @@
 	nc.popoverPresentationController.sourceRect = src.bounds;
 	
 	[self presentViewController:nc animated:YES completion:nil];
-	// [self onColorChanged:src color:testData];
 }
 
 -(void)onSelectImageButtonCLicked:(UIButton *)src {
 	//TODO: open image chooser
-	[self onImageSelected:src imageURI:@"res://internal/lock_open"];  //TODO: remove test code
+	// [self onImageSelected:src imageURI:@"res://internal/lock_open"];  //TODO: remove test code
+	// [self onImageSelected:src imageURI:@"res://user/winter-sunset"];  //TODO: remove test code
+	[self onImageSelected:src imageURI:@""];  //TODO: remove test code
 }
 
 -(void)onFilterScriptButtonClicked {
@@ -473,11 +474,37 @@
 }
 
 -(void)onImageSelected:(UIButton *)src imageURI:(NSString *)imageURI {
+	if (src == self.backgroundImageButton) {
+		self.item.background_uri = imageURI;
+	} else if (src == self.switchOnImageButton) {
+		((DashSwitchItem *) self.item).uri = imageURI;
+	} else if (src == self.switchOffImageButton) {
+		((DashSwitchItem *) self.item).uriOff = imageURI;
+	}
+	
 	UIImage *image = nil;
 	if (imageURI) {
-		/* ignonre button tint color for background images -> set renderingModeAlwaysTemplate*/
-		BOOL mode = (src != self.backgroundImageButton);
-		image = [DashUtils loadImageResource:imageURI userDataDir:self.dashboard.account.cacheURL renderingModeAlwaysTemplate:mode];
+		image = [DashUtils loadImageResource:imageURI userDataDir:self.dashboard.account.cacheURL];
+		
+		if (src == self.switchOnImageButton) {
+			if (self.switchOnColorButton.clearColor) {
+				if ([DashUtils isInternalResource:imageURI]) {
+					[src setTintColor:self.labelDefaultColor];
+					image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+				}
+			} else {
+				image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			}
+		} else if (src == self.switchOffImageButton) {
+			if (self.switchOffColorButton.clearColor) {
+				if ([DashUtils isInternalResource:imageURI]) {
+					[src setTintColor:self.labelDefaultColor];
+					image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+				}
+			} else {
+				image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			}
+		}
 	}
 	if (image) {
 		[src setTitle:nil forState:UIControlStateNormal];
@@ -486,6 +513,7 @@
 		[src setImage:nil forState:UIControlStateNormal];
 		[src setTitle:@"None" forState:UIControlStateNormal];
 	}
+	
 }
 
 -(void)onColorChanged:(DashCircleViewButton *)src color:(int64_t)color {
@@ -520,22 +548,55 @@
 	} else if (src == self.backgroundColorButton) {
 		[self.backgroundImageButton setBackgroundColor:uicolor];
 	} else if (src == self.switchOnColorButton) {
-		// if color is clear color, use default color for text label, nil for tint color (internal images will be tinted with default color)
+		UIColor *titleColor;
+		UIColor *imageColor;
 		if (src.clearColor) {
-			[self.switchOnImageButton setTitleColor:self.labelDefaultColor forState:UIControlStateNormal];
-			[self.switchOnImageButton setTintColor:nil]; //TODO: make sure internal images are not tinted with default/blue. update, when image selection is implemented.
+			titleColor = self.labelDefaultColor;
+			if ([DashUtils isInternalResource:((DashSwitchItem *) self.item).uri]) {
+				/* avoid tinting with blue/default system color of internal images */
+				imageColor = self.labelDefaultColor;
+			}
 		} else {
-			[self.switchOnImageButton setTitleColor:uicolor forState:UIControlStateNormal];
-			[self.switchOnImageButton setTintColor:uicolor];
+			titleColor = uicolor;
+			imageColor = uicolor;
 		}
-	} else if (src == self.switchOffColorButton) {
-		// if color is clear color, use default color for text label, nil for tint color
-		if (src.clearColor) {
-			[self.switchOffImageButton setTitleColor:self.labelDefaultColor forState:UIControlStateNormal];
-			[self.switchOffImageButton setTintColor:nil]; //TODO: make sure internal images are not tinted with default/blue. update, when image selection is implemented.
+		[self.switchOnImageButton setTitleColor:titleColor forState:UIControlStateNormal];
+		if (imageColor) {
+			if (self.switchOnImageButton.imageView.image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+				self.switchOnImageButton.imageView.image = [self.switchOnImageButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			}
+			[self.switchOnImageButton setTintColor:imageColor];
 		} else {
-			[self.switchOffImageButton setTitleColor:uicolor forState:UIControlStateNormal];
-			[self.switchOffImageButton setTintColor:uicolor];
+			if (self.switchOnImageButton.imageView.image.renderingMode != UIImageRenderingModeAlwaysOriginal) {
+				self.switchOnImageButton.imageView.image = [self.switchOnImageButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+			}
+			// [self.switchOnImageButton setTintColor:nil];
+		}
+
+	} else if (src == self.switchOffColorButton) {
+		UIColor *titleColor;
+		UIColor *imageColor;
+		if (src.clearColor) {
+			titleColor = self.labelDefaultColor;
+			if ([DashUtils isInternalResource:((DashSwitchItem *) self.item).uriOff]) {
+				/* avoid tinting with blue/default system color of internal images */
+				imageColor = self.labelDefaultColor;
+			}
+		} else {
+			titleColor = uicolor;
+			imageColor = uicolor;
+		}
+		[self.switchOffImageButton setTitleColor:titleColor forState:UIControlStateNormal];
+		if (imageColor) {
+			if (self.switchOffImageButton.imageView.image.renderingMode != UIImageRenderingModeAlwaysTemplate) {
+				self.switchOffImageButton.imageView.image = [self.switchOffImageButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+			}
+			[self.switchOffImageButton setTintColor:imageColor];
+		} else {
+			if (self.switchOffImageButton.imageView.image.renderingMode != UIImageRenderingModeAlwaysOriginal) {
+				self.switchOffImageButton.imageView.image = [self.switchOffImageButton.imageView.image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+			}
+			// [self.switchOnImageButton setTintColor:nil];
 		}
 	} else if (src == self.switchOnBackgroundColorButton) {
 		[self.switchOnImageButton setBackgroundColor:uicolor];
@@ -693,8 +754,7 @@
 	NSString *msg = [NSString stringWithFormat:@"%@ - %@",p1,p2];
 	cell.label.text = msg;
 	if (![Utils isEmpty:li.imageURI]) {
-		BOOL modeTemplate = [DashUtils isInternalResource:li.imageURI];
-		UIImage *img = [DashUtils loadImageResource:li.imageURI userDataDir:self.vc.dashboard.account.cacheURL renderingModeAlwaysTemplate:modeTemplate];
+		UIImage *img = [DashUtils loadImageResource:li.imageURI userDataDir:self.vc.dashboard.account.cacheURL];
 		[cell.optionImageView setImage:img];
 	} else {
 		[cell.optionImageView setImage:nil];

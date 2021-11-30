@@ -115,7 +115,7 @@
 	
 	UIImage *image;
 	if (optionListItem.imageURI.length > 0) {
-		image = [DashUtils loadImageResource:optionListItem.imageURI userDataDir:context.account.cacheURL renderingModeAlwaysTemplate:NO];
+		image = [DashUtils loadImageResource:optionListItem.imageURI userDataDir:context.account.cacheURL];
 		[self.itemImageView setImage:image];
 		self.itemImageWidthCstr.active = YES;
 		self.itemImageHeightCstr.active = YES;

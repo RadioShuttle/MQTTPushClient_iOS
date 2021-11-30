@@ -122,8 +122,7 @@
 	self.editItem.imageURI = imageURI;
 	UIImage *image = nil;
 	if (imageURI) {
-		BOOL modeTemplate = [DashUtils isInternalResource:imageURI];
-		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentController.dashboard.account.cacheURL renderingModeAlwaysTemplate:modeTemplate];
+		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentController.dashboard.account.cacheURL];
 	}
 	if (image) {
 		[self.imageButton setTitle:nil forState:UIControlStateNormal];

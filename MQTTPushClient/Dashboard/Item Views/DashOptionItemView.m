@@ -139,7 +139,7 @@
 		UIImage *image;
 		if (imageURI.length > 0) {
 			//TODO: caching
-			image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL renderingModeAlwaysTemplate:NO];
+			image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL];
 		}
 		if (image) {
 			[self.valueImageView setImage:image];
