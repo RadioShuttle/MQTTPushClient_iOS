@@ -29,6 +29,7 @@ typedef enum {Add, Edit} Mode;
 @property int selGroupIdx;
 @property IBOutlet UILabel *posLabel;
 @property IBOutlet UIButton *posDropDownButton;
+@property IBOutlet UITextField *posDummy;
 @property int selPosIdx;
 @property IBOutlet DashCircleViewButton *textColorButton;
 @property IBOutlet UISegmentedControl *textSizeSegmentedCtrl;
