@@ -429,7 +429,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	NSMutableDictionary *requestData = [NSMutableDictionary new];
 	[requestData setObject:[NSNumber numberWithUnsignedInt:self.publishReqIDCounter] forKey:@"publish_request"];
 	[requestData setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
-	[requestData setObject:msg forKey:@"message"];
 	[requestData setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
 	
 

@@ -83,6 +83,12 @@ typedef enum {Add, Edit} Mode;
 - (void)onOptionListItemUpdated:(Mode)mode item:(DashOptionListItem *)item oldPos:(int)oldPos newPos:(int)newPos;
 -(void)onColorChanged:(DashCircleViewButton *)src color:(int64_t)color;
 
+-(void)onFilterScriptContentUpdated:(NSString *)content;
+-(void)onOutputScriptContentUpdated:(NSString *)content;
+
+/* returns the dash item with the current input*/
+-(DashItem *)getDashItem;
+
 /* misc */
 @property UIColor *labelDefaultColor;
 

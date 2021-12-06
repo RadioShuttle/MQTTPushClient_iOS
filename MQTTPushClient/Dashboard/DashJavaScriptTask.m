@@ -46,6 +46,9 @@
 		if (self.output) {
 			[self.data setObject:[NSNumber numberWithBool:output] forKey:@"output"];
 		}
+		if (msgOrPublishData) {
+			[self.data setObject:msgOrPublishData forKey:@"message"];
+		}
 	}
 	return self;
 }
@@ -76,6 +79,7 @@
 	if (result) {
 		self.item.content = result;
 		self.item.lastMsgTimestamp = self.message.timestamp;
+		[self.data setObject:result forKey:@"filterMsgResult"];
 	}
 	
 	if (error) {
@@ -98,7 +102,7 @@
 	NSError *error = nil;
 	DashJavaScriptOutput *outputScript = [[DashJavaScriptOutput alloc] initWithScript:self.item.script_p];
 	NSString *input = [self.message contentToStr];
-	NSObject *raw = [NSNull null];
+	NSObject *raw = [NSNull null];	
 	NSDictionary *arg1 = @{@"raw":raw, @"text":[self.message contentToStr], @"topic":self.message.topic, @"receivedDate":self.message.timestamp};
 	NSDictionary *arg2 = @{@"user":self.account.mqttUser, @"mqttServer":self.account.mqttHost, @"pushServer":self.account.host};
 	

@@ -17,6 +17,7 @@
 #import "DashEditorOptionTableViewCell.h"
 #import "DashEditOptionViewController.h"
 #import "DashColorChooser.h"
+#import "DashScriptViewController.h"
 
 @import SafariServices;
 
@@ -241,6 +242,65 @@
 	}
 }
 
+-(DashItem *)getDashItem {
+	self.item.label = self.labelTextField.text;
+
+	NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
+	f.numberStyle = NSNumberFormatterDecimalStyle;
+	NSNumber *num;
+	
+	BOOL hasTextSize = NO;
+	if ([self.item isKindOfClass:[DashGroupItem class]]) {
+		hasTextSize = YES;
+	} else if ([self.item isKindOfClass:[DashSliderItem class]]) {
+		hasTextSize = YES;
+		DashSliderItem *sliderItem = (DashSliderItem *)self.item;
+		num = [f numberFromString:self.rangeLBTextField.text];
+		if (num) {
+			sliderItem.range_min = [num doubleValue];
+		} //TODO: error message if no a number?
+		num = [f numberFromString:self.rangeUBTextField.text];
+		if (num) {
+			sliderItem.range_max = [num doubleValue];
+		} //TODO: error message if no a number?
+		num = [f numberFromString:self.decimalTextField.text];
+		if (num) {
+			sliderItem.decimal = [num intValue];
+		} //TODO: error message if no a number?
+		sliderItem.percent = self.displayInPercentSwitch.on;
+	} else if ([self.item isKindOfClass:[DashTextItem class]]) {
+		hasTextSize = YES;
+	} else if ([self.item isKindOfClass:[DashOptionItem class]]) {
+		hasTextSize = YES;
+		// DashOptionItem *optionItem = (DashOptionItem *) self.item;
+	} else if ([self.item isKindOfClass:[DashSwitchItem class]]) {
+		DashSwitchItem *switchItem = (DashSwitchItem *) self.item;
+		switchItem.val = self.switchOnValueTextField.text;
+		switchItem.valOff = self.switchOffValueTextField.text;
+	} else if ([self.item isKindOfClass:[DashCustomItem class]]) {
+		DashCustomItem *customItem = (DashCustomItem *) self.item;
+		customItem.history = self.provideHistDataSwitch.on;
+		NSMutableArray *paras = (NSMutableArray *) customItem.parameter;
+		NSString *p = self.paramter1TextField.text;
+		[paras addObject:(p ? p : @"")];
+		p = self.paramter2TextField.text;
+		[paras addObject:(p ? p : @"")];
+		p = self.paramter3TextField.text;
+		[paras addObject:(p ? p : @"")];
+		customItem.html = self.htmlTextView.text;
+	}
+	self.item.topic_p = self.topicPubTextField.text;
+	self.item.topic_s = self.topicSubTextField.text;
+	if (hasTextSize) {
+		int textSize = (int) [self.textSizeSegmentedCtrl selectedSegmentIndex];
+		if (self.item.textsize == 0 && textSize != 1) {
+			self.item.textsize = textSize + 1;
+		}
+	}
+	
+	return self.item;
+}
+
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
 	NSString *identifier = segue.identifier;
 	if ([identifier isEqualToString:@"IDShowEditOptionListItemView"]) {
@@ -438,18 +498,29 @@
 -(void)onSelectImageButtonCLicked:(UIButton *)src {
 	//TODO: open image chooser
 	// [self onImageSelected:src imageURI:@"res://internal/lock_open"];  //TODO: remove test code
-	// [self onImageSelected:src imageURI:@"res://user/winter-sunset"];  //TODO: remove test code
-	[self onImageSelected:src imageURI:@""];  //TODO: remove test code
+	[self onImageSelected:src imageURI:@"res://user/winter-sunset"];  //TODO: remove test code
+	// [self onImageSelected:src imageURI:@""];  //TODO: remove test code
 }
 
 -(void)onFilterScriptButtonClicked {
-	//TODO: open script editor
-	[self onFilterScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
+	[self openScriptEditor:YES]; //open editor in filter script mode
+	// [self onFilterScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
 }
 
 -(void)onOutputScriptButtonClicked {
-	//TODO: open script editor
-	[self onOutputScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
+	[self openScriptEditor:NO]; //open editor in output script mode
+	// [self onOutputScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
+}
+
+-(void)openScriptEditor:(BOOL)filterScriptMode {
+	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
+	DashScriptViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DashScriptEditor"];
+
+	vc.filterScriptMode = filterScriptMode;
+	vc.parentCtrl = self;
+	
+	[self.navigationController pushViewController:vc animated:YES];
+
 }
 
 -(void)onFilterScriptContentUpdated:(NSString *)content {
@@ -541,6 +612,22 @@
 	}
 	[src setFillColor:uicolor];
 	[src setNeedsDisplay];
+	
+	/* update item */
+	if (src == self.textColorButton) {
+		self.item.textcolor = color;
+	} else if (src == self.backgroundColorButton) {
+		self.item.background = color;
+	} else if (src == self.progressColorButton) {
+		DashSliderItem *sliderItem = (DashSliderItem *) self.item;
+		sliderItem.progresscolor = color;
+	} else if (src == self.switchOnColorButton) {
+		DashSwitchItem *switchItem = (DashSwitchItem *) self.item;
+		switchItem.color = color;
+	} else if (src == self.switchOffColorButton) {
+		DashSwitchItem *switchItem = (DashSwitchItem *) self.item;
+		switchItem.colorOff = color;
+	}
 	
 	/* update related views */
 	if (src == self.textColorButton) {

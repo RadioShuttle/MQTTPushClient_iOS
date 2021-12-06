@@ -108,7 +108,6 @@
 		color = nil;
 		if ([DashUtils isInternalResource:imageURI] || !image) {
 			/* internal resource? tint with default label color */
-			// image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
 			color = [UILabel new].textColor;
 		}
 		/* disable tint for user pic */
