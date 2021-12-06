@@ -70,13 +70,13 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pos:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wpD-G8-J8g">
-                                                    <rect key="frame" x="25" y="9.5" width="33" height="21"/>
+                                                    <rect key="frame" x="25" y="13.5" width="33" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00" textAlignment="natural" lineBreakMode="clip" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uCx-ku-ud1">
-                                                    <rect key="frame" x="120" y="12" width="17.5" height="17"/>
+                                                    <rect key="frame" x="120" y="16" width="17.5" height="11.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -89,23 +89,15 @@
                                                     </constraints>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
-                                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="9HQ-Gr-uSQ" userLabel="dummy">
-                                                    <rect key="frame" x="169.5" y="6" width="25" height="30"/>
-                                                    <nil key="textColor"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
-                                                </textField>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="9HQ-Gr-uSQ" firstAttribute="leading" secondItem="OOt-bu-ceh" secondAttribute="trailing" id="6QN-p3-6Fd"/>
                                                 <constraint firstItem="OOt-bu-ceh" firstAttribute="centerY" secondItem="lcs-LL-pqV" secondAttribute="centerY" id="6d0-DA-hjt"/>
-                                                <constraint firstItem="9HQ-Gr-uSQ" firstAttribute="top" secondItem="lcs-LL-pqV" secondAttribute="top" constant="6" id="Bjp-KH-Pk7"/>
-                                                <constraint firstAttribute="bottom" secondItem="9HQ-Gr-uSQ" secondAttribute="bottom" constant="7.5" id="DN1-Zs-Jop"/>
                                                 <constraint firstItem="OOt-bu-ceh" firstAttribute="leading" secondItem="uCx-ku-ud1" secondAttribute="trailing" id="F9X-IC-zVn"/>
-                                                <constraint firstItem="uCx-ku-ud1" firstAttribute="firstBaseline" secondItem="9HQ-Gr-uSQ" secondAttribute="firstBaseline" id="NN7-Lc-OXQ"/>
                                                 <constraint firstItem="uCx-ku-ud1" firstAttribute="leading" secondItem="lcs-LL-pqV" secondAttribute="leading" constant="120" id="bnc-ju-wsP"/>
                                                 <constraint firstItem="wpD-G8-J8g" firstAttribute="firstBaseline" secondItem="uCx-ku-ud1" secondAttribute="firstBaseline" id="boF-Ab-jSq"/>
                                                 <constraint firstItem="wpD-G8-J8g" firstAttribute="leading" secondItem="lcs-LL-pqV" secondAttribute="leading" constant="25" id="hAi-AF-htU"/>
+                                                <constraint firstAttribute="bottom" secondItem="uCx-ku-ud1" secondAttribute="bottom" constant="16" id="mmw-Uy-ptj"/>
+                                                <constraint firstItem="uCx-ku-ud1" firstAttribute="top" secondItem="lcs-LL-pqV" secondAttribute="top" constant="16" id="sSf-DI-QJP"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -224,7 +216,6 @@
                         <outlet property="backgroundColorButton" destination="PKB-fc-Kqh" id="xWT-Kn-E2R"/>
                         <outlet property="labelTextField" destination="yEK-fJ-iDe" id="JoI-fT-dwc"/>
                         <outlet property="posDropDownButton" destination="OOt-bu-ceh" id="Gma-Em-CQS"/>
-                        <outlet property="posDummy" destination="9HQ-Gr-uSQ" id="awf-Ob-z5c"/>
                         <outlet property="posLabel" destination="uCx-ku-ud1" id="vh8-Z4-rj5"/>
                         <outlet property="textColorButton" destination="sug-Ix-uhM" id="zhR-oU-z51"/>
                         <outlet property="textSizeSegmentedCtrl" destination="4vJ-bE-845" id="637-3F-vVJ"/>

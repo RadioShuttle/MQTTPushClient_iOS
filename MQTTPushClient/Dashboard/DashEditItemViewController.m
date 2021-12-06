@@ -62,7 +62,6 @@
 	/* label */
 	self.labelTextField.text = self.item.label;
 	self.labelDefaultColor = self.labelTextField.textColor;
-	self.posDummy.hidden = YES;
 	
 	/* group */
 	if (self.mode == Add) {
