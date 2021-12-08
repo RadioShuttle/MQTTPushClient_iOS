@@ -2,3 +2,6 @@
 - Do not wait for JavaScript to finish on main UI thread (see: JavaScriptFilter.filterMsg)
 - Connection: handle MQTT error codes (these error codes indicate errors with MQTT servers and should be reported to user in app)
 - Edit Javascript (Main storyboard and ScriptViewController): test message textview bound twice (and test data label not bound)
+
+Dashboard:
+- Images are not displayed in UIButton on physical devices (image chooser button). Without constraints it works. Check!
