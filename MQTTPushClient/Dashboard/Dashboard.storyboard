@@ -480,38 +480,26 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="dhI-WW-nGz">
                                         <rect key="frame" x="0.0" y="320" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dhI-WW-nGz" id="xqf-BL-oR1">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dhI-WW-nGz" id="xqf-BL-oR1">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Image:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7q-FD-whk">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" fixedFrame="YES" text="Image:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C7q-FD-whk">
                                                     <rect key="frame" x="20" y="13.5" width="96" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="dly-X5-O70"/>
-                                                    </constraints>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUB-Fl-w7X">
+                                                <button opaque="NO" contentMode="scaleAspectFit" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XUB-Fl-w7X">
                                                     <rect key="frame" x="120" y="6.5" width="52" height="36"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="52" id="lZ9-Fg-xKo"/>
-                                                        <constraint firstAttribute="height" constant="36" id="zNB-y8-BMX"/>
-                                                    </constraints>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="None">
                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     </state>
                                                 </button>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="XUB-Fl-w7X" firstAttribute="leading" secondItem="C7q-FD-whk" secondAttribute="trailing" constant="4" id="96a-kj-Ghc"/>
-                                                <constraint firstAttribute="bottom" secondItem="XUB-Fl-w7X" secondAttribute="bottom" constant="12" id="Hq6-qh-ZQa"/>
-                                                <constraint firstItem="XUB-Fl-w7X" firstAttribute="top" secondItem="xqf-BL-oR1" secondAttribute="top" constant="6" id="QJI-JE-BdM"/>
-                                                <constraint firstItem="C7q-FD-whk" firstAttribute="firstBaseline" secondItem="XUB-Fl-w7X" secondAttribute="firstBaseline" id="WvR-sr-E1k"/>
-                                                <constraint firstItem="C7q-FD-whk" firstAttribute="leading" secondItem="xqf-BL-oR1" secondAttribute="leadingMargin" id="sr9-fB-UTl"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
