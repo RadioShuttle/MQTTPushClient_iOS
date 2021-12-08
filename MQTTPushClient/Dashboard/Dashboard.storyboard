@@ -157,7 +157,7 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4vJ-bE-845">
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="4vJ-bE-845">
                                                     <rect key="frame" x="120" y="6" width="191" height="26.5"/>
                                                     <segments>
                                                         <segment title="Small"/>
@@ -172,6 +172,7 @@
                                                 <constraint firstItem="fQH-TI-T1u" firstAttribute="leading" secondItem="HVy-Se-tWt" secondAttribute="leadingMargin" id="Srs-HZ-cLb"/>
                                                 <constraint firstAttribute="bottom" secondItem="4vJ-bE-845" secondAttribute="bottom" constant="12" id="cKb-OO-e2E"/>
                                                 <constraint firstItem="4vJ-bE-845" firstAttribute="leading" secondItem="fQH-TI-T1u" secondAttribute="trailing" constant="4" id="s1v-gL-fF0"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="4vJ-bE-845" secondAttribute="trailing" priority="999" id="tvU-t8-JHR"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -403,24 +404,24 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="WIT-FT-8Ps">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Xcc-r8-oni">
                                         <rect key="frame" x="0.0" y="204" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="WIT-FT-8Ps" id="NSd-b4-ESX">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Xcc-r8-oni" id="6Bj-TD-otf">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zZw-41-Z3I">
-                                                    <rect key="frame" x="25" y="8" width="96" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Znw-dm-UIJ">
+                                                    <rect key="frame" x="20" y="8" width="96" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="Rte-fK-2Q5"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="gIy-Ns-Uct"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="LWx-TM-Yq7">
-                                                    <rect key="frame" x="125" y="6" width="191" height="26.5"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Kem-FY-K80">
+                                                    <rect key="frame" x="120" y="6" width="191" height="26.5"/>
                                                     <segments>
                                                         <segment title="Small"/>
                                                         <segment title="Medium"/>
@@ -429,11 +430,12 @@
                                                 </segmentedControl>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="LWx-TM-Yq7" firstAttribute="top" secondItem="NSd-b4-ESX" secondAttribute="top" constant="6" id="0gK-Sy-Dba"/>
-                                                <constraint firstItem="zZw-41-Z3I" firstAttribute="firstBaseline" secondItem="LWx-TM-Yq7" secondAttribute="firstBaseline" id="NBU-bl-d9R"/>
-                                                <constraint firstItem="zZw-41-Z3I" firstAttribute="leading" secondItem="NSd-b4-ESX" secondAttribute="leading" constant="25" id="W15-rs-efg"/>
-                                                <constraint firstItem="LWx-TM-Yq7" firstAttribute="leading" secondItem="zZw-41-Z3I" secondAttribute="trailing" constant="4" id="g0W-zG-4ys"/>
-                                                <constraint firstAttribute="bottom" secondItem="LWx-TM-Yq7" secondAttribute="bottom" constant="12" id="iCQ-FE-Hg0"/>
+                                                <constraint firstAttribute="bottom" secondItem="Kem-FY-K80" secondAttribute="bottom" constant="12" id="Rdh-18-5cw"/>
+                                                <constraint firstItem="Kem-FY-K80" firstAttribute="top" secondItem="6Bj-TD-otf" secondAttribute="top" constant="6" id="Unc-fO-GzF"/>
+                                                <constraint firstItem="Znw-dm-UIJ" firstAttribute="firstBaseline" secondItem="Kem-FY-K80" secondAttribute="firstBaseline" id="j1o-Dx-QwS"/>
+                                                <constraint firstItem="Znw-dm-UIJ" firstAttribute="leading" secondItem="6Bj-TD-otf" secondAttribute="leadingMargin" id="jhY-or-YP6"/>
+                                                <constraint firstItem="Kem-FY-K80" firstAttribute="leading" secondItem="Znw-dm-UIJ" secondAttribute="trailing" constant="4" id="s3x-lH-2b5"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Kem-FY-K80" secondAttribute="trailing" priority="999" id="zvh-i1-pD0"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -753,7 +755,7 @@
                         <outlet property="posLabel" destination="HXc-Zi-rTD" id="rsT-F4-KSA"/>
                         <outlet property="retainSwitch" destination="zPy-H8-td4" id="cG8-45-aAh"/>
                         <outlet property="textColorButton" destination="cff-jt-Ufv" id="uUw-Rs-5Yt"/>
-                        <outlet property="textSizeSegmentedCtrl" destination="LWx-TM-Yq7" id="o8v-Qx-wt1"/>
+                        <outlet property="textSizeSegmentedCtrl" destination="Kem-FY-K80" id="Y1w-z0-kXn"/>
                         <outlet property="topicPubTextField" destination="4gK-Ug-XU3" id="4LZ-4Q-3F8"/>
                         <outlet property="topicSubTextField" destination="kG0-WZ-QaO" id="D5n-2u-wCo"/>
                     </connections>
@@ -926,24 +928,24 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="cPB-Y1-3F2">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="vPm-NZ-17P">
                                         <rect key="frame" x="0.0" y="204" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="cPB-Y1-3F2" id="AS2-cb-Rwd">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vPm-NZ-17P" id="GRb-AM-Bbe">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rpT-ho-nZf">
-                                                    <rect key="frame" x="25" y="8" width="96" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f4w-nx-x7z">
+                                                    <rect key="frame" x="20" y="8" width="96" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="7yH-SP-c1g"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="dnJ-dN-w8D"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="wsB-W4-V3Q">
-                                                    <rect key="frame" x="125" y="6" width="191" height="26.5"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="PH6-tu-vlX">
+                                                    <rect key="frame" x="120" y="6" width="191" height="26.5"/>
                                                     <segments>
                                                         <segment title="Small"/>
                                                         <segment title="Medium"/>
@@ -952,11 +954,12 @@
                                                 </segmentedControl>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="rpT-ho-nZf" firstAttribute="leading" secondItem="AS2-cb-Rwd" secondAttribute="leading" constant="25" id="3vL-LL-MxL"/>
-                                                <constraint firstItem="wsB-W4-V3Q" firstAttribute="top" secondItem="AS2-cb-Rwd" secondAttribute="top" constant="6" id="Ocw-PS-CHt"/>
-                                                <constraint firstAttribute="bottom" secondItem="wsB-W4-V3Q" secondAttribute="bottom" constant="12" id="SGq-rU-ZfL"/>
-                                                <constraint firstItem="rpT-ho-nZf" firstAttribute="firstBaseline" secondItem="wsB-W4-V3Q" secondAttribute="firstBaseline" id="U35-yv-xgX"/>
-                                                <constraint firstItem="wsB-W4-V3Q" firstAttribute="leading" secondItem="rpT-ho-nZf" secondAttribute="trailing" constant="4" id="Y5r-Mz-dX3"/>
+                                                <constraint firstItem="f4w-nx-x7z" firstAttribute="leading" secondItem="GRb-AM-Bbe" secondAttribute="leadingMargin" id="Dr9-Tg-bqQ"/>
+                                                <constraint firstItem="f4w-nx-x7z" firstAttribute="firstBaseline" secondItem="PH6-tu-vlX" secondAttribute="firstBaseline" id="GTs-nR-p46"/>
+                                                <constraint firstItem="PH6-tu-vlX" firstAttribute="top" secondItem="GRb-AM-Bbe" secondAttribute="top" constant="6" id="GhM-TL-tyX"/>
+                                                <constraint firstAttribute="bottom" secondItem="PH6-tu-vlX" secondAttribute="bottom" constant="12" id="YpB-Y9-zrz"/>
+                                                <constraint firstItem="PH6-tu-vlX" firstAttribute="leading" secondItem="f4w-nx-x7z" secondAttribute="trailing" constant="4" id="pOl-pN-mcn"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="PH6-tu-vlX" secondAttribute="trailing" priority="999" id="zGe-B1-i6X"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1332,7 +1335,7 @@
                         <outlet property="posLabel" destination="Zb6-GU-1sZ" id="reW-GA-JNs"/>
                         <outlet property="retainSwitch" destination="AD2-bR-q3y" id="JvU-gZ-g0F"/>
                         <outlet property="textColorButton" destination="ccZ-QE-4EB" id="xkG-3t-Xn7"/>
-                        <outlet property="textSizeSegmentedCtrl" destination="wsB-W4-V3Q" id="Wdz-e3-T9L"/>
+                        <outlet property="textSizeSegmentedCtrl" destination="PH6-tu-vlX" id="S7v-NG-7B0"/>
                         <outlet property="topicPubTextField" destination="lug-H3-sKr" id="U5E-Ej-Vfy"/>
                         <outlet property="topicSubTextField" destination="Xbw-I7-Kfc" id="J3r-TF-npT"/>
                         <segue destination="S2k-qd-fpP" kind="show" identifier="IDShowEditOptionListItemView" id="YOc-AG-cgC"/>
@@ -2171,24 +2174,24 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="811-qR-Gmi">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="bRF-ax-l1g">
                                         <rect key="frame" x="0.0" y="204" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="811-qR-Gmi" id="fEP-SY-Zvc">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="bRF-ax-l1g" id="PjY-aJ-Cvt">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CO1-rd-owm">
-                                                    <rect key="frame" x="25" y="8" width="96" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Size:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vcf-DW-LAH">
+                                                    <rect key="frame" x="20" y="8" width="96" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="7xf-UY-TAO"/>
+                                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="bgR-Lu-kyu"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="mwM-lj-OE8">
-                                                    <rect key="frame" x="125" y="6" width="191" height="26.5"/>
+                                                <segmentedControl opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="IbB-Yu-ayA">
+                                                    <rect key="frame" x="120" y="6" width="191" height="26.5"/>
                                                     <segments>
                                                         <segment title="Small"/>
                                                         <segment title="Medium"/>
@@ -2197,11 +2200,12 @@
                                                 </segmentedControl>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="CO1-rd-owm" firstAttribute="firstBaseline" secondItem="mwM-lj-OE8" secondAttribute="firstBaseline" id="G1f-dq-vRw"/>
-                                                <constraint firstAttribute="bottom" secondItem="mwM-lj-OE8" secondAttribute="bottom" constant="12" id="Luf-Ff-gzY"/>
-                                                <constraint firstItem="mwM-lj-OE8" firstAttribute="leading" secondItem="CO1-rd-owm" secondAttribute="trailing" constant="4" id="QCD-sq-TfP"/>
-                                                <constraint firstItem="CO1-rd-owm" firstAttribute="leading" secondItem="fEP-SY-Zvc" secondAttribute="leading" constant="25" id="SkA-rp-aX4"/>
-                                                <constraint firstItem="mwM-lj-OE8" firstAttribute="top" secondItem="fEP-SY-Zvc" secondAttribute="top" constant="6" id="a5C-HV-vos"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="IbB-Yu-ayA" secondAttribute="trailing" priority="999" id="Dow-lh-C16"/>
+                                                <constraint firstItem="Vcf-DW-LAH" firstAttribute="leading" secondItem="PjY-aJ-Cvt" secondAttribute="leadingMargin" id="Hbx-hk-RDP"/>
+                                                <constraint firstAttribute="bottom" secondItem="IbB-Yu-ayA" secondAttribute="bottom" constant="12" id="gDW-DI-jki"/>
+                                                <constraint firstItem="IbB-Yu-ayA" firstAttribute="top" secondItem="PjY-aJ-Cvt" secondAttribute="top" constant="6" id="i0M-v4-veq"/>
+                                                <constraint firstItem="Vcf-DW-LAH" firstAttribute="firstBaseline" secondItem="IbB-Yu-ayA" secondAttribute="firstBaseline" id="nhP-XZ-CJQ"/>
+                                                <constraint firstItem="IbB-Yu-ayA" firstAttribute="leading" secondItem="Vcf-DW-LAH" secondAttribute="trailing" constant="4" id="vCM-Ju-C9y"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -2639,7 +2643,7 @@
                         <outlet property="rangeUBTextField" destination="hAs-1I-K8f" id="xD5-v2-mO3"/>
                         <outlet property="retainSwitch" destination="gal-AF-2Yi" id="zOa-qS-UZU"/>
                         <outlet property="textColorButton" destination="Xtz-EW-mmE" id="tYc-ri-34v"/>
-                        <outlet property="textSizeSegmentedCtrl" destination="mwM-lj-OE8" id="Idb-uK-Yht"/>
+                        <outlet property="textSizeSegmentedCtrl" destination="IbB-Yu-ayA" id="NSs-Ib-Pjd"/>
                         <outlet property="topicPubTextField" destination="6ly-YX-gyy" id="BHc-vm-41m"/>
                         <outlet property="topicSubTextField" destination="Vun-0p-Cwh" id="uOX-a2-oIl"/>
                     </connections>
