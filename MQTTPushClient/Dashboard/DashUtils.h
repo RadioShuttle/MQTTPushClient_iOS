@@ -27,4 +27,6 @@
 
 +(UIImage *)imageWithColor:(UIColor *)color;
 
++(NSString *)buildResourceURI:(NSString *)type resourceName:(NSString *)name;
+
 @end

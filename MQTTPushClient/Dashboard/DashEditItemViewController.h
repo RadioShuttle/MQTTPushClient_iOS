@@ -86,6 +86,8 @@ typedef enum {Add, Edit} Mode;
 -(void)onFilterScriptContentUpdated:(NSString *)content;
 -(void)onOutputScriptContentUpdated:(NSString *)content;
 
+-(void)onImageSelected:(UIButton *)src imageURI:(NSString *)imageURI;
+
 /* returns the dash item with the current input*/
 -(DashItem *)getDashItem;
 

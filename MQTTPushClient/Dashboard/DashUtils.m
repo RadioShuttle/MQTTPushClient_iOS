@@ -68,6 +68,7 @@
 			NSURL *fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
 			img = [UIImage imageWithContentsOfFile:[fileURL path]];
 		}
+		//TODO: handle imported files
 	}
 	return img;
 }
@@ -94,18 +95,21 @@
 		NSURL *localDir = [DashUtils getUserFilesDir:userDataDir];
 		NSURL *fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
 		if ([DashUtils fileExists:fileURL]) {
-			NSString *pc = [resourceName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
-			uri = [NSString stringWithFormat:@"res://user/%@", pc];
+			uri = [DashUtils buildResourceURI:@"user" resourceName:resourceName];
 		}
 	}
 	if ([Utils isEmpty:uri]) {
 		NSURL *svgImageURL = [[NSBundle mainBundle] URLForResource:resourceName withExtension:@"svg"];
 		if ([DashUtils fileExists:svgImageURL]) {
-			NSString *pc = [resourceName stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
-			uri = [NSString stringWithFormat:@"res://internal/%@", pc];
+			uri = [DashUtils buildResourceURI:@"internal" resourceName:resourceName];
 		}
 	}
 	return uri;
+}
+
++(NSString *)buildResourceURI:(NSString *)type resourceName:(NSString *)name {
+	NSString *pc = [name stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLPathAllowedCharacterSet]];
+	return [NSString stringWithFormat:@"res://%@/%@",type, pc];
 }
 
 +(CGFloat)getLabelFontSize:(int)itemSize {

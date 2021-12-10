@@ -136,6 +136,7 @@
 		21F320DB270AEEC400C89DCF /* alarm_on.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21F3208E270AEEC300C89DCF /* alarm_on.svg */; };
 		21F320DC270AEEC400C89DCF /* warning.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21F3208F270AEEC300C89DCF /* warning.svg */; };
 		21F320DD270AEEC400C89DCF /* emoji_objects.svg in Resources */ = {isa = PBXBuildFile; fileRef = 21F32090270AEEC300C89DCF /* emoji_objects.svg */; };
+		21F5BC072762025E00903694 /* DashImageChooserTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 21F5BC062762025E00903694 /* DashImageChooserTab.m */; };
 		21FC4D8626FC73700013F09D /* DashMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FC4D8526FC73700013F09D /* DashMessage.m */; };
 		21FCE9692701D01B00DBCA42 /* DashCircleBackroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */; };
 		2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */; };
@@ -405,6 +406,8 @@
 		21F3208E270AEEC300C89DCF /* alarm_on.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = alarm_on.svg; sourceTree = "<group>"; };
 		21F3208F270AEEC300C89DCF /* warning.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = warning.svg; sourceTree = "<group>"; };
 		21F32090270AEEC300C89DCF /* emoji_objects.svg */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = emoji_objects.svg; sourceTree = "<group>"; };
+		21F5BC052762025E00903694 /* DashImageChooserTab.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashImageChooserTab.h; sourceTree = "<group>"; };
+		21F5BC062762025E00903694 /* DashImageChooserTab.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashImageChooserTab.m; sourceTree = "<group>"; };
 		21FC4D8426FC73700013F09D /* DashMessage.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashMessage.h; sourceTree = "<group>"; };
 		21FC4D8526FC73700013F09D /* DashMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashMessage.m; sourceTree = "<group>"; };
 		21FCE9672701D01B00DBCA42 /* DashCircleBackroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCircleBackroundView.h; sourceTree = "<group>"; };
@@ -587,6 +590,8 @@
 				21FE473C272C03600067F60A /* DashPublishController.h */,
 				211C470D273EB2FD00C9350A /* DashEditItemViewController.h */,
 				211C470E273EB2FD00C9350A /* DashEditItemViewController.m */,
+				21F5BC052762025E00903694 /* DashImageChooserTab.h */,
+				21F5BC062762025E00903694 /* DashImageChooserTab.m */,
 				21E8E17C27550D2C00749832 /* DashColorChooser.h */,
 				21E8E17D27550D2C00749832 /* DashColorChooser.m */,
 				21E8E17F2755291D00749832 /* DashColorCell.h */,
@@ -1208,6 +1213,7 @@
 				211394632744F24900BA3B6E /* DashCircleViewButton.m in Sources */,
 				84A7CFD32238003100E17D03 /* ScriptViewSectionHeader.m in Sources */,
 				21F2708E274BD5EB00164A79 /* DashEditorOptionTableViewCell.m in Sources */,
+				21F5BC072762025E00903694 /* DashImageChooserTab.m in Sources */,
 				2AE045892191EC920010C027 /* AddActionTableViewController.m in Sources */,
 				21EC25E126F9D779003CD109 /* DashOptionTableViewCell.m in Sources */,
 				2131927D26EF6E0700E65AF0 /* DashOptionListItem.m in Sources */,

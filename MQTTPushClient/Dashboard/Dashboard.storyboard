@@ -1602,6 +1602,109 @@
             </objects>
             <point key="canvasLocation" x="747.82608695652175" y="1261.6071428571429"/>
         </scene>
+        <!--Dash Image Chooser-->
+        <scene sceneID="9Pm-oU-qtx">
+            <objects>
+                <tabBarController storyboardIdentifier="DashImageChooser" title="Select an Image" id="nFp-0b-S4i" userLabel="Dash Image Chooser" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="qMX-V2-lPl">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Vp7-ak-cw5" kind="relationship" relationship="viewControllers" id="4Eo-IX-PEx"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GHB-W2-tzs" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1445" y="1264"/>
+        </scene>
+        <!--Dash Image Chooser Tab Scene-->
+        <scene sceneID="beN-nb-hh0">
+            <objects>
+                <collectionViewController storyboardIdentifier="DashImageChooserTab" id="Vp7-ak-cw5" userLabel="Dash Image Chooser Tab Scene" customClass="DashImageChooserTab" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="JlG-aE-pyp">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="20S-cc-gkH">
+                            <size key="itemSize" width="100" height="100"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="16" minY="4" maxX="16" maxY="16"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="noneCell" id="DTx-cO-SDc">
+                                <rect key="frame" x="16" y="4" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="None" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7qw-E1-BTY">
+                                            <rect key="frame" x="29.5" y="39.5" width="41" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="7qw-E1-BTY" firstAttribute="centerX" secondItem="DTx-cO-SDc" secondAttribute="centerX" id="aCI-eG-rAv"/>
+                                    <constraint firstItem="7qw-E1-BTY" firstAttribute="centerY" secondItem="DTx-cO-SDc" secondAttribute="centerY" id="rsw-x8-fGD"/>
+                                </constraints>
+                            </collectionViewCell>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="dLr-8p-Pl4" customClass="DashImageChooserCell">
+                                <rect key="frame" x="157" y="4" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="tvt-Tv-h2g">
+                                            <rect key="frame" x="20" y="0.0" width="60" height="60"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="60" id="4hB-EX-nxZ" userLabel="width = 60"/>
+                                                <constraint firstAttribute="height" constant="60" id="g2F-au-nRJ" userLabel="height = 60"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="128-Rc-YiX">
+                                            <rect key="frame" x="0.0" y="64" width="100" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="128-Rc-YiX" secondAttribute="trailing" id="N6q-V1-Ivm"/>
+                                    <constraint firstItem="tvt-Tv-h2g" firstAttribute="top" secondItem="dLr-8p-Pl4" secondAttribute="top" id="Uqv-MP-u44"/>
+                                    <constraint firstItem="128-Rc-YiX" firstAttribute="leading" secondItem="dLr-8p-Pl4" secondAttribute="leading" id="nnc-p4-9a6"/>
+                                    <constraint firstItem="128-Rc-YiX" firstAttribute="top" secondItem="tvt-Tv-h2g" secondAttribute="bottom" constant="4" id="oC6-ck-UY7"/>
+                                    <constraint firstItem="tvt-Tv-h2g" firstAttribute="centerX" secondItem="dLr-8p-Pl4" secondAttribute="centerX" id="qxM-Uz-Tbb"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="tvt-Tv-h2g" id="QU0-Po-bBx"/>
+                                    <outlet property="label" destination="128-Rc-YiX" id="gsv-kw-5yK"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="Vp7-ak-cw5" id="U6j-9H-4ij"/>
+                            <outlet property="delegate" destination="Vp7-ak-cw5" id="w1c-4F-6sV"/>
+                        </connections>
+                    </collectionView>
+                    <tabBarItem key="tabBarItem" title="Internal" image="Manage Images" id="FYc-ZM-FKE"/>
+                    <connections>
+                        <segue destination="0Vi-Fg-Neq" kind="unwind" identifier="IDExitImageChooser" unwindAction="unwindImageChooser:" id="lDS-LX-Tyd"/>
+                        <segue destination="0Vi-Fg-Neq" kind="unwind" identifier="IDExitImageChooserOptionItem" unwindAction="unwindImageChooserOptionItem:" id="9ZY-PE-0ky"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="buV-tD-pWG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="0Vi-Fg-Neq" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="2320" y="1002"/>
+        </scene>
         <!--Dash Edit Custom Item-->
         <scene sceneID="aIy-iB-DA2">
             <objects>
@@ -3967,6 +4070,7 @@
         <image name="DropDown" width="24" height="24"/>
         <image name="Error-Info" width="24" height="24"/>
         <image name="List" width="24" height="24"/>
+        <image name="Manage Images" width="24" height="24"/>
         <image name="More" width="24" height="24"/>
         <image name="NotificationDisabled" width="18" height="18"/>
         <image name="Save" width="24" height="24"/>

@@ -18,6 +18,7 @@
 #import "DashEditOptionViewController.h"
 #import "DashColorChooser.h"
 #import "DashScriptViewController.h"
+#import "DashImageChooserTab.h"
 
 @import SafariServices;
 
@@ -496,20 +497,40 @@
 }
 
 -(void)onSelectImageButtonCLicked:(UIButton *)src {
-	//TODO: open image chooser
-	// [self onImageSelected:src imageURI:@"res://internal/lock_open"];  //TODO: remove test code
-	[self onImageSelected:src imageURI:@"res://user/winter-sunset"];  //TODO: remove test code
-	// [self onImageSelected:src imageURI:@""];  //TODO: remove test code
+	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
+	UITabBarController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DashImageChooser"];
+	
+	/* Use the tab ctrl for internal images from storyboard for user images */
+	DashImageChooserTab *userImagesVC = [storyboard instantiateViewControllerWithIdentifier:@"DashImageChooserTab"];
+	userImagesVC.tabBarItem.title = @"User";
+	NSMutableArray *vcs = [vc.viewControllers mutableCopy];
+	[vcs addObject:userImagesVC];
+	vc.viewControllers = vcs;
+	
+	/* pass args directly to tab view controllers */
+	if (vc.viewControllers.count > 1) {
+		if ([vc.viewControllers[0] isKindOfClass:[DashImageChooserTab class]]) {
+			((DashImageChooserTab *) vc.viewControllers[0]).editor = self;
+			((DashImageChooserTab *) vc.viewControllers[0]).sourceButton = src;
+			((DashImageChooserTab *) vc.viewControllers[0]).context = self.dashboard;
+		}
+		if ([vc.viewControllers[1] isKindOfClass:[DashImageChooserTab class]]) {
+			((DashImageChooserTab *) vc.viewControllers[1]).editor = self;
+			((DashImageChooserTab *) vc.viewControllers[1]).sourceButton = src;
+			((DashImageChooserTab *) vc.viewControllers[1]).context = self.dashboard;
+		}
+	}
+	vc.hidesBottomBarWhenPushed = YES;
+	
+	[self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)onFilterScriptButtonClicked {
 	[self openScriptEditor:YES]; //open editor in filter script mode
-	// [self onFilterScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
 }
 
 -(void)onOutputScriptButtonClicked {
 	[self openScriptEditor:NO]; //open editor in output script mode
-	// [self onOutputScriptContentUpdated:@"var i = 0;"];  //TODO: remove test code
 }
 
 -(void)openScriptEditor:(BOOL)filterScriptMode {
@@ -821,6 +842,11 @@
 - (IBAction) unwindColorChooser:(UIStoryboardSegue*)unwindSegue {
 	
 }
+
+- (IBAction) unwindImageChooser:(UIStoryboardSegue*)unwindSegue {
+	
+}
+
 
 @end
 

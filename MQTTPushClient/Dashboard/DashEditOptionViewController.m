@@ -8,6 +8,7 @@
 #import "DashUtils.h"
 #import "Utils.h"
 #import "DashConsts.h"
+#import "DashImageChooserTab.h"
 
 @interface DashEditOptionViewController ()
 
@@ -61,8 +62,32 @@
 }
 
 -(void)onSelectImageButtonCLicked {
-	//TODO: call image chooser dialog
-	[self onImageSelected:@"res://internal/lock_open"];  //TODO: remove test code
+	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
+	UITabBarController *vc = [storyboard instantiateViewControllerWithIdentifier:@"DashImageChooser"];
+	
+	/* Use the tab ctrl for internal images from storyboard for user images */
+	DashImageChooserTab *userImagesVC = [storyboard instantiateViewControllerWithIdentifier:@"DashImageChooserTab"];
+	userImagesVC.tabBarItem.title = @"User";
+	NSMutableArray *vcs = [vc.viewControllers mutableCopy];
+	[vcs addObject:userImagesVC];
+	vc.viewControllers = vcs;
+	
+	/* pass args directly to tab view controllers */
+	if (vc.viewControllers.count > 1) {
+		if ([vc.viewControllers[0] isKindOfClass:[DashImageChooserTab class]]) {
+			((DashImageChooserTab *) vc.viewControllers[0]).editor = self;
+			((DashImageChooserTab *) vc.viewControllers[0]).sourceButton = self.imageButton;
+			((DashImageChooserTab *) vc.viewControllers[0]).context = self.parentController.dashboard;
+		}
+		if ([vc.viewControllers[1] isKindOfClass:[DashImageChooserTab class]]) {
+			((DashImageChooserTab *) vc.viewControllers[1]).editor = self;
+			((DashImageChooserTab *) vc.viewControllers[1]).sourceButton = self.imageButton;
+			((DashImageChooserTab *) vc.viewControllers[1]).context = self.parentController.dashboard;
+		}
+	}
+	vc.hidesBottomBarWhenPushed = YES;
+	
+	[self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)onSaveButtonClicked {
@@ -132,5 +157,10 @@
 		[self.imageButton setTitle:@"None" forState:UIControlStateNormal];
 	}
 }
+
+- (IBAction) unwindImageChooserOptionItem:(UIStoryboardSegue*)unwindSegue {
+	
+}
+
 
 @end

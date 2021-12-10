@@ -25,4 +25,6 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 
+-(void)onImageSelected:(NSString *)imageURI;
+
 @end
