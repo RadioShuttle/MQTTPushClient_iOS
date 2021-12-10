@@ -3046,12 +3046,12 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="vjh-EH-mo0">
                                         <rect key="frame" x="0.0" y="392" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vjh-EH-mo0" id="7Pg-9o-SIl">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vjh-EH-mo0" id="7Pg-9o-SIl">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Background:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aZa-XW-tr1">
-                                                    <rect key="frame" x="20" y="14" width="97" height="21"/>
+                                                    <rect key="frame" x="20" y="11.5" width="97" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="gOi-Mq-g5U"/>
                                                     </constraints>
@@ -3060,7 +3060,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Sjt-LC-NAy" customClass="DashCircleViewButton">
-                                                    <rect key="frame" x="121" y="6.5" width="36" height="36"/>
+                                                    <rect key="frame" x="121" y="4" width="36" height="36"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="36" id="FpF-K2-Il0"/>
                                                         <constraint firstAttribute="width" constant="36" id="IxW-h0-Ik7"/>
@@ -3069,10 +3069,9 @@
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstAttribute="bottom" secondItem="Sjt-LC-NAy" secondAttribute="bottom" constant="6" id="34V-EF-Jts"/>
                                                 <constraint firstItem="Sjt-LC-NAy" firstAttribute="leading" secondItem="aZa-XW-tr1" secondAttribute="trailing" constant="4" id="JDk-cU-dBZ"/>
                                                 <constraint firstItem="aZa-XW-tr1" firstAttribute="leading" secondItem="7Pg-9o-SIl" secondAttribute="leadingMargin" id="ajJ-J4-Uxi"/>
-                                                <constraint firstItem="Sjt-LC-NAy" firstAttribute="top" secondItem="7Pg-9o-SIl" secondAttribute="top" constant="6" id="eTX-xl-dRu"/>
+                                                <constraint firstItem="Sjt-LC-NAy" firstAttribute="centerY" secondItem="7Pg-9o-SIl" secondAttribute="centerY" id="ewO-gG-Bry"/>
                                                 <constraint firstItem="aZa-XW-tr1" firstAttribute="centerY" secondItem="Sjt-LC-NAy" secondAttribute="centerY" id="fHN-Ko-2so"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3191,12 +3190,12 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="buP-9q-hbh">
                                         <rect key="frame" x="0.0" y="596" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="buP-9q-hbh" id="eEh-eD-NOe">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="buP-9q-hbh" id="eEh-eD-NOe">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Background:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tmx-8y-Zlk">
-                                                    <rect key="frame" x="20" y="14" width="97" height="21"/>
+                                                    <rect key="frame" x="20" y="13.5" width="97" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="97" id="Uwi-3E-yoa"/>
                                                     </constraints>
@@ -3205,7 +3204,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uYX-Uq-Vzm" customClass="DashCircleViewButton">
-                                                    <rect key="frame" x="121" y="6.5" width="36" height="36"/>
+                                                    <rect key="frame" x="121" y="6" width="36" height="36"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="36" id="4JV-yy-LVa"/>
                                                         <constraint firstAttribute="height" constant="36" id="tDS-dg-u9H"/>
@@ -3217,7 +3216,6 @@
                                                 <constraint firstItem="uYX-Uq-Vzm" firstAttribute="leading" secondItem="tmx-8y-Zlk" secondAttribute="trailing" constant="4" id="H9v-NB-ff6"/>
                                                 <constraint firstItem="tmx-8y-Zlk" firstAttribute="centerY" secondItem="uYX-Uq-Vzm" secondAttribute="centerY" id="HTd-nW-D8K"/>
                                                 <constraint firstItem="tmx-8y-Zlk" firstAttribute="leading" secondItem="eEh-eD-NOe" secondAttribute="leadingMargin" id="N9a-YC-aHQ"/>
-                                                <constraint firstAttribute="bottom" secondItem="uYX-Uq-Vzm" secondAttribute="bottom" constant="6" id="biW-Z5-yvR"/>
                                                 <constraint firstItem="uYX-Uq-Vzm" firstAttribute="top" secondItem="eEh-eD-NOe" secondAttribute="top" constant="6" id="dJd-60-YfE"/>
                                             </constraints>
                                         </tableViewCellContentView>

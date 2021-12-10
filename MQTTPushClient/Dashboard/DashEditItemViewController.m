@@ -601,6 +601,9 @@
 	if (image) {
 		[src setTitle:nil forState:UIControlStateNormal];
 		[src setImage:image forState:UIControlStateNormal];
+		if (src == self.backgroundImageButton) {
+			[self.backgroundImageButton setNeedsDisplay]; //TODO: remove
+		}
 	} else {
 		[src setImage:nil forState:UIControlStateNormal];
 		[src setTitle:@"None" forState:UIControlStateNormal];
