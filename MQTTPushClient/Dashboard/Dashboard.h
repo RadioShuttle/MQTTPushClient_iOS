@@ -59,6 +59,7 @@
 @property NSDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems;
 /* all items (including groups) unmodified. */
 @property NSDictionary<NSNumber *, DashItem *> *unmodifiedItems;
+@property NSArray<NSString *> *resources;
 
 /* cached webviews */
 @property NSMutableDictionary *cachedCustomViews;

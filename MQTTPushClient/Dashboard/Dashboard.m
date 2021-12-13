@@ -263,6 +263,7 @@
 		self.groups = groups;
 		self.groupItems = groupItems;
 		self.unmodifiedItems = allItems;
+		self.resources = lockedResources;
 	}
 	return YES;
 }
