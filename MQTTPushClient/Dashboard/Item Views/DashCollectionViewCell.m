@@ -63,7 +63,6 @@
 		self.backgroundView2 = [[DashCircleBackroundView alloc] init];
 		self.backgroundView2.translatesAutoresizingMaskIntoConstraints = NO;
 		[self addSubview:self.backgroundView2];
-		[self.backgroundView2.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-4.0].active = YES;
 		[self.backgroundView2.trailingAnchor constraintEqualToAnchor:self.errorImageView1.leadingAnchor constant:-4.0].active = YES;
 		[self.backgroundView2.topAnchor constraintEqualToAnchor:self.topAnchor constant:4.0].active = YES;
 		
