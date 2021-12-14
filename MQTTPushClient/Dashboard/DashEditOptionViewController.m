@@ -151,9 +151,13 @@
 	}
 	if (image) {
 		[self.imageButton setTitle:nil forState:UIControlStateNormal];
-		[self.imageButton setImage:image forState:UIControlStateNormal];
+		self.imageButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+		self.imageButton.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
+		[self.imageButton setImage:image forState:UIControlStateNormal];		
 	} else {
 		[self.imageButton setImage:nil forState:UIControlStateNormal];
+		self.imageButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+		self.imageButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		[self.imageButton setTitle:@"None" forState:UIControlStateNormal];
 	}
 }
