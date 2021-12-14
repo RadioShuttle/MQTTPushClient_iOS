@@ -600,8 +600,12 @@
 	}
 	if (image) {
 		[src setTitle:nil forState:UIControlStateNormal];
+		src.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
+		src.contentVerticalAlignment = UIControlContentVerticalAlignmentFill;
 		[src setImage:image forState:UIControlStateNormal];
 	} else {
+		src.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+		src.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		[src setImage:nil forState:UIControlStateNormal];
 		[src setTitle:@"None" forState:UIControlStateNormal];
 	}
