@@ -3697,7 +3697,7 @@
                                             <constraints>
                                                 <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerY" secondItem="DVT-nZ-6Tu" secondAttribute="centerY" id="E93-fu-Nh3"/>
                                                 <constraint firstItem="nbp-Hs-pHf" firstAttribute="centerX" secondItem="DVT-nZ-6Tu" secondAttribute="centerX" id="NXr-Sg-5UC"/>
-                                                <constraint firstAttribute="height" constant="26" id="hlf-oQ-uZC"/>
+                                                <constraint firstAttribute="height" priority="999" constant="26" id="hlf-oQ-uZC"/>
                                             </constraints>
                                         </view>
                                     </subviews>
