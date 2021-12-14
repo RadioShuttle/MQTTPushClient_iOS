@@ -125,7 +125,7 @@
 	
 	if (image) {
 		self.button.imageView.contentMode = UIViewContentModeScaleAspectFit;
-		self.button.imageEdgeInsets = UIEdgeInsetsMake(16,16,16,16);
+		self.button.imageEdgeInsets = UIEdgeInsetsMake(12,12,12,12);
 		self.button.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
 		[self.button setImage:image forState:UIControlStateNormal];
 		

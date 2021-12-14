@@ -14,7 +14,6 @@
 @property DashCircleBackroundView *backgroundView1;
 @property UIImageView *errorImageView2;
 @property DashCircleBackroundView *backgroundView2;
-@property BOOL labelConstraintSet;
 @property UIView *checkmarkView;
 
 @property UIColor *labelColor;

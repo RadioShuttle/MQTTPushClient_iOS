@@ -16,13 +16,6 @@
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label selected:(BOOL)selected {
 
-	if (!self.labelConstraintSet) {
-		/* get the height reserverd for label */
-		CGFloat height = self.bounds.size.height - self.bounds.size.width;
-		// label.translatesAutoresizingMaskIntoConstraints = NO;
-		[label.heightAnchor constraintEqualToConstant:height].active = YES;
-		self.labelConstraintSet = YES;
-	}
 	[label setText:item.label];
 
 	BOOL error1 = ![Utils isEmpty:item.error1];

@@ -103,7 +103,6 @@
 	
 	self.webviewContainer = cv;
 	self.customItemLabel = label;
-	self.labelConstraintSet = NO;
 }
 	
 - (void)onUpdate:(DashCustomItem *)item what:(NSString *)what {
