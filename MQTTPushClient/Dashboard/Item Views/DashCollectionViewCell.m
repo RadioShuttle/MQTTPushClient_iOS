@@ -19,9 +19,8 @@
 	if (!self.labelConstraintSet) {
 		/* get the height reserverd for label */
 		CGFloat height = self.bounds.size.height - self.bounds.size.width;
-		NSLayoutConstraint *cstr = [label.heightAnchor constraintEqualToConstant:height];
-		cstr.priority = 999;
-		cstr.active = YES;
+		// label.translatesAutoresizingMaskIntoConstraints = NO;
+		[label.heightAnchor constraintEqualToConstant:height].active = YES;
 		self.labelConstraintSet = YES;
 	}
 	[label setText:item.label];
