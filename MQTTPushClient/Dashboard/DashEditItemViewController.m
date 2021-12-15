@@ -618,6 +618,8 @@
 	if (color == DASH_COLOR_CLEAR) {
 		uicolor = [UIColor clearColor];
 		src.clearColor = YES;
+		[uicolor getRed:&r green:&g blue:&b alpha:&a]; // convert cs
+		uicolor = [UIColor colorWithRed:r green:g blue:b alpha:a];
 	} else if (color == DASH_COLOR_OS_DEFAULT) {
 		if (src == self.textColorButton) {
 			uicolor = self.labelDefaultColor; // use label color as default color

@@ -185,7 +185,14 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 		}
 	}
 	if ([self.editor isKindOfClass:[DashEditItemViewController class]]) {
-		[(DashEditItemViewController *) self.editor onImageSelected:self.sourceButton imageURI:uri];
+		DashEditItemViewController *vc = (DashEditItemViewController *) self.editor;
+		[vc onImageSelected:self.sourceButton imageURI:uri];
+		/* if image target is switch component, set clear color, otherwise image will be tinted with the current set color*/
+		if (vc.switchOnImageButton == self.sourceButton || vc.switchOffImageButton == self.sourceButton) {
+			DashCircleViewButton *colorButton = (vc.switchOnImageButton == self.sourceButton ? vc.switchOnColorButton : vc.switchOffColorButton);
+			[vc onColorChanged:colorButton color:DASH_COLOR_CLEAR];
+		}
+		
 		[self performSegueWithIdentifier:@"IDExitImageChooser" sender:self];
 	} else if ([self.editor isKindOfClass:[DashEditOptionViewController class]]) {
 		[(DashEditOptionViewController *) self.editor onImageSelected:uri];
