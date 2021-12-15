@@ -510,7 +510,7 @@ enum ConnectionState {
 			while ((resName = [enumerator nextObject])) {
 				NSLog(@"mssing resource: %@", resName);
 				[command getResourceRequest:0 name:resName type:DASH512_PNG];
-				if (command.rawCmd.error) {
+				if (command.rawCmd.error || command.rawCmd.rc != RC_OK) {
 					break;
 				}else {
 					p = (unsigned char *)command.rawCmd.data.bytes;
