@@ -330,7 +330,15 @@
 				[groups insertObject:(DashGroupItem *) self.item atIndex:self.selPosIdx];
 				[groupItems setObject:[NSArray new] forKey:@(self.item.id_)];
 			} else {
-				group = groups[self.selGroupIdx];
+				if (self.selGroupIdx == -1) { // first item in dashboard? add group
+					group = [DashGroupItem new];
+					group.id_ = self.item.id_ + 1;
+					group.label = @"New Group";
+					[groups addObject:group];
+					[groupItems setObject:[NSMutableArray new] forKey:@(group.id_)];
+				} else {
+					group = groups[self.selGroupIdx];
+				}				
 				items = (NSMutableArray *) [groupItems objectForKey:@(group.id_)];
 				[items insertObject:self.item atIndex:self.selPosIdx];
 			}
