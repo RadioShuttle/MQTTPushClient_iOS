@@ -14,6 +14,8 @@
 #import "DashSliderItem.h"
 #import "DashOptionItem.h"
 #import "DashCustomItem.h"
+#import "Utils.h"
+#import "DashUtils.h"
 
 @implementation DashItem
 
@@ -94,6 +96,19 @@
 	clone.label = self.label;
 	clone.history = self.history;
 	return clone;
+}
+
+- (BOOL)isEqual:(id)other {
+	BOOL eq = NO;
+	if ([other isKindOfClass:[DashItem class]]) {
+		if (self == other) {
+			eq = YES;
+		} else {
+			DashItem *o = (DashItem *)other;
+			eq = self.id_ == o.id_ && [DashUtils cmpColor:self.textcolor color:o.textcolor] && [DashUtils cmpColor:self.background color:o.background] && self.textsize == o.textsize && self.retain_ == o.retain_ && self.history == o.history && [Utils areEqual:self.topic_s s2:o.topic_s] && [Utils areEqual:self.script_f s2:o.script_f] && [Utils areEqual:self.background_uri s2:o.background_uri] && [Utils areEqual:self.topic_p s2:o.topic_p] && [Utils areEqual:self.script_p s2:o.script_p] && [Utils areEqual:self.label s2:o.label];
+		}
+	}
+	return eq;
 }
 
 @end

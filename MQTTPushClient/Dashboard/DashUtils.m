@@ -140,4 +140,14 @@
 	return image;
 }
 
++(BOOL)cmpColor:(int64_t)c color:(int64_t)c2 {
+	if (c != DASH_COLOR_OS_DEFAULT && c != DASH_COLOR_CLEAR) {
+		c = c & 0xFFFFFFFFL;
+	}
+	if (c2 != DASH_COLOR_OS_DEFAULT && c2 != DASH_COLOR_CLEAR) {
+		c2 = c2 & 0xFFFFFFFFL;
+	}
+	return c == c2;
+}
+
 @end

@@ -21,6 +21,8 @@ typedef enum {Add, Edit} Mode;
 
 /* the data before editing started */
 @property DashItem *orgItem;
+@property int orgSelGroupIdx;
+@property int orgSelPosIdx;
 
 /* General section */
 @property (weak, nonatomic) IBOutlet UITextField *labelTextField;
@@ -78,6 +80,8 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet DashCircleViewButton *switchOffColorButton;
 @property IBOutlet DashCircleViewButton *switchOffBackgroundColorButton;
 @property IBOutlet UIButton *switchOffImageButton;
+
+- (IBAction)onSaveButtonClicked:(id)sender;
 
 - (IBAction) unwindEditOptionListItem:(UIStoryboardSegue*)unwindSegue;
 - (void)onOptionListItemUpdated:(Mode)mode item:(DashOptionListItem *)item oldPos:(int)oldPos newPos:(int)newPos;

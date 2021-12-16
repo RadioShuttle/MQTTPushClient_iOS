@@ -7,7 +7,7 @@
 #import "DashSliderItem.h"
 #import "DashConsts.h"
 #import "NSDictionary+HelSafeAccessors.h"
-
+#import "DashUtils.h"
 
 @implementation DashSliderItem
 
@@ -58,4 +58,15 @@
 	clone.percent = self.percent;
 	return clone;
 }
+
+- (BOOL)isEqual:(id)other {
+	BOOL eq = [super isEqual:other];
+	if (eq) {
+		DashSliderItem *o = (DashSliderItem *) other;
+		
+		eq = self.range_min == o.range_min && self.range_max == self.range_max && self.decimal == o.decimal && [DashUtils cmpColor:self.progresscolor color:o.progresscolor] && self.percent == o.percent;
+	}
+	return eq;
+}
+
 @end

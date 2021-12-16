@@ -44,4 +44,21 @@
 	return clone;
 }
 
+- (BOOL)isEqual:(id)other {
+	BOOL eq = [super isEqual:other];
+	if (eq) {
+		DashOptionItem *o = (DashOptionItem *) other;
+		eq = self.optionList.count == o.optionList.count;
+		if (eq) {
+			for(int i = 0; i < self.optionList.count; i++) {
+				if (![self.optionList[i] isEqual:o.optionList[i]]) {
+					eq = NO;
+					break;
+				}
+			}
+		}
+	}
+	return eq;
+}
+
 @end

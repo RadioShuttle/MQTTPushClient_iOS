@@ -6,6 +6,7 @@
 
 #import "DashCustomItem.h"
 #import "NSDictionary+HelSafeAccessors.h"
+#import "Utils.h"
 
 @implementation DashCustomItem
 
@@ -38,5 +39,23 @@
 	return clone;
 }
 
+- (BOOL)isEqual:(id)other {
+	BOOL eq = [super isEqual:other];
+	if (eq) {
+		DashCustomItem *o = (DashCustomItem *) other;
+		// treat list with empty strings as count 0
+		int count = (int) MAX(self.parameter.count, o.parameter.count);
+		NSString *s1, *s2;
+		for(int i = 0; i < count; i++) {
+			s1 = i < self.parameter.count ? self.parameter[i] : nil;
+			s2 = i < o.parameter.count ? o.parameter[i] : nil;
+			if (![Utils areEqual:s1 s2:s2]) {
+				eq = NO;
+				break;
+			}
+		}
+	}
+	return eq;
+}
 
 @end

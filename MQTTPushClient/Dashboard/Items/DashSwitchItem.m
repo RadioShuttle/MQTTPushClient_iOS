@@ -7,6 +7,8 @@
 #import "DashSwitchItem.h"
 #import "DashConsts.h"
 #import "NSDictionary+HelSafeAccessors.h"
+#import "Utils.h"
+#import "DashUtils.h"
 
 @implementation DashSwitchItem
 
@@ -70,4 +72,15 @@
 
 	return clone;
 }
+
+- (BOOL)isEqual:(id)other {
+	BOOL eq = [super isEqual:other];
+	if (eq) {
+		DashSwitchItem *o = (DashSwitchItem *) other;
+		
+		eq = [Utils areEqual:self.val s2:o.val] && [DashUtils cmpColor:self.color color:o.color] && [DashUtils cmpColor:self.bgcolor color:o.bgcolor] && [Utils areEqual:self.uri s2:o.uri] && [Utils areEqual:self.valOff s2:o.valOff] && [DashUtils cmpColor:self.colorOff color:o.colorOff] && [DashUtils cmpColor:self.bgcolorOff color:o.bgcolorOff] && [Utils areEqual:self.uriOff s2:o.uriOff];
+	}
+	return eq;
+}
+
 @end

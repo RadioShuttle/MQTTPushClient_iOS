@@ -29,6 +29,9 @@
 @property OptionListHandler *optionListHandler;
 @property CustomItemHandler *customItemHandler;
 
+@property UILabel *statusLabel;
+@property NSTimer *statusMsgTimer;
+
 @property Mode argOptionListEditMode;
 @property DashOptionListItem *argOptionListItem;
 @property int argOptionListPos;
@@ -78,6 +81,8 @@
 			self.groupLabel.text = self.dashboard.groups[self.selGroupIdx].label;
 		}
 	}
+	self.orgSelGroupIdx = self.selGroupIdx;
+	
 	UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onGroupButtonClicked)];
 	tapGestureRecognizer.delaysTouchesBegan = YES;
 	tapGestureRecognizer.numberOfTapsRequired = 1;
@@ -101,6 +106,7 @@
 		}
 	}
 	self.posLabel.text = [@(self.selPosIdx + 1) stringValue];
+	self.orgSelPosIdx = self.selPosIdx;
 
 	tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onPosButtonClicked)];
 	tapGestureRecognizer.delaysTouchesBegan = YES;
@@ -187,6 +193,8 @@
 		
 		self.moreButtonItem.target = self;
 		self.moreButtonItem.action = @selector(onMoreButtonItemClicked);
+		
+		self.provideHistDataSwitch.on = customItem.history;
 
 		self.customItemHandler = [CustomItemHandler new];
 		self.customItemHandler.vc = self;
@@ -241,6 +249,68 @@
 		[self.switchOffImageButton addTarget:self action:@selector(onSelectImageButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
 		[self onImageSelected:self.switchOffImageButton imageURI:switchItem.uriOff];
 	}
+	
+	/* Add status label*/
+	UIBarButtonItem *tbBarButtonItem = [[UIBarButtonItem alloc] init];
+	UIView *view = [[UIView alloc] init];
+	view.translatesAutoresizingMaskIntoConstraints = NO;
+	[tbBarButtonItem setCustomView:view];
+	self.statusLabel = [[UILabel alloc] init];
+	self.statusLabel.translatesAutoresizingMaskIntoConstraints = NO;
+	[view addSubview:self.statusLabel];
+	[self.statusLabel.leadingAnchor constraintEqualToAnchor:view.leadingAnchor].active = YES;
+	[self.statusLabel.trailingAnchor constraintEqualToAnchor:view.trailingAnchor].active = YES;
+	[self.statusLabel.topAnchor constraintEqualToAnchor:view.topAnchor].active = YES;
+	[self.statusLabel.bottomAnchor constraintEqualToAnchor:view.bottomAnchor].active = YES;
+	[self.statusLabel setFont:[self.statusLabel.font fontWithSize:14]];
+	NSMutableArray *barItems = [NSMutableArray new];
+	[barItems addObject:tbBarButtonItem];
+	self.toolbarItems = barItems;
+	
+	/* Replace back navigation with cancel button */
+	UIBarButtonItem *cancelButton = [[UIBarButtonItem alloc] init];
+	cancelButton.title = @"Cancel";
+	cancelButton.target = self;
+	cancelButton.action = @selector(onCancelButtonClicked);
+	self.navigationItem.leftBarButtonItem = cancelButton;
+}
+
+-(void)onCancelButtonClicked {
+	
+	DashItem *currentData = [self getDashItem];
+	BOOL modified = !([currentData isEqual:self.orgItem] && self.orgSelGroupIdx == self.selGroupIdx && self.orgSelPosIdx == self.selPosIdx);
+	if (modified) {
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Go back without saving?" message:@"Data has been modified." preferredStyle:UIAlertControllerStyleAlert];
+		[alert addAction:[UIAlertAction actionWithTitle:@"Back" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self.navigationController popViewControllerAnimated:YES];
+		}]];
+		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		}]];
+		[self presentViewController:alert animated:TRUE completion:nil];
+
+	} else {
+		[self.navigationController popViewControllerAnimated:YES];
+	}
+
+}
+
+- (IBAction)onSaveButtonClicked:(id)sender {
+	DashItem *currentData = [self getDashItem];
+	BOOL modified = !([currentData isEqual:self.orgItem] && self.orgSelGroupIdx == self.selGroupIdx && self.orgSelPosIdx == self.selPosIdx);
+	if (!modified) {
+		[self setStatusMessage:@"Data was not modified." clearAfterDelay:YES];
+	} else {
+		//TODO: start save
+	}
+}
+
+-(void)setStatusMessage:(NSString *) msg clearAfterDelay:(BOOL)clearAfterDelay {
+	if (self.statusMsgTimer) {
+		[self.statusMsgTimer invalidate];
+	}
+	self.statusLabel.text = msg;
+	if (clearAfterDelay) {
+		self.statusMsgTimer = [NSTimer scheduledTimerWithTimeInterval:5 repeats:NO block:^(NSTimer * _Nonnull timer){self.statusLabel.text = nil; }];
+	}
 }
 
 -(DashItem *)getDashItem {
@@ -270,6 +340,7 @@
 		} //TODO: error message if no a number?
 		sliderItem.percent = self.displayInPercentSwitch.on;
 	} else if ([self.item isKindOfClass:[DashTextItem class]]) {
+		((DashTextItem *) self.item).inputtype = (int) self.inputTypeSegmentedCtrl.selectedSegmentIndex;
 		hasTextSize = YES;
 	} else if ([self.item isKindOfClass:[DashOptionItem class]]) {
 		hasTextSize = YES;
@@ -282,6 +353,7 @@
 		DashCustomItem *customItem = (DashCustomItem *) self.item;
 		customItem.history = self.provideHistDataSwitch.on;
 		NSMutableArray *paras = (NSMutableArray *) customItem.parameter;
+		[paras removeAllObjects];
 		NSString *p = self.paramter1TextField.text;
 		[paras addObject:(p ? p : @"")];
 		p = self.paramter2TextField.text;
@@ -294,7 +366,9 @@
 	self.item.topic_s = self.topicSubTextField.text;
 	if (hasTextSize) {
 		int textSize = (int) [self.textSizeSegmentedCtrl selectedSegmentIndex];
-		if (self.item.textsize == 0 && textSize != 1) {
+		if (self.item.textsize == 0 && textSize == 1) {
+			; // default value
+		} else {
 			self.item.textsize = textSize + 1;
 		}
 	}

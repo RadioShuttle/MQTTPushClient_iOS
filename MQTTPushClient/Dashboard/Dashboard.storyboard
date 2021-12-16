@@ -224,7 +224,11 @@
                     </tableView>
                     <toolbarItems/>
                     <navigationItem key="navigationItem" title="Group View" id="G2m-up-32G">
-                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="q4t-pm-S65"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="q4t-pm-S65">
+                            <connections>
+                                <action selector="onSaveButtonClicked:" destination="7jO-IT-1eZ" id="em7-qG-9HY"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -741,7 +745,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Text View" id="C6k-Xv-OaS">
-                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="RTq-1d-yNS"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="RTq-1d-yNS">
+                            <connections>
+                                <action selector="onSaveButtonClicked:" destination="gIo-mb-bZO" id="22f-OC-PvM"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="backgroundColorButton" destination="Xgl-lZ-cAQ" id="LN4-R6-1iX"/>
@@ -1323,7 +1331,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Option List" id="5OV-Nw-Q73">
-                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="9CY-3S-dsD"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="9CY-3S-dsD">
+                            <connections>
+                                <action selector="onSaveButtonClicked:" destination="Uio-YE-KpV" id="zAm-zO-Vso"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="backgroundColorButton" destination="tbi-c6-6ec" id="qnz-EC-EVb"/>
@@ -2096,7 +2108,11 @@
                     <navigationItem key="navigationItem" title="Custom View" id="NHu-Ia-FBb">
                         <rightBarButtonItems>
                             <barButtonItem title="More" image="More" id="crE-MT-jWN"/>
-                            <barButtonItem title="Save" image="Save" id="aWm-u6-Pby"/>
+                            <barButtonItem title="Save" image="Save" id="aWm-u6-Pby">
+                                <connections>
+                                    <action selector="onSaveButtonClicked:" destination="cyi-rP-5Tq" id="tFs-rS-Nix"/>
+                                </connections>
+                            </barButtonItem>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
@@ -2734,7 +2750,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Progress Bar/Slider" id="7kl-v2-ikf">
-                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="d2A-7C-wPm"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="d2A-7C-wPm">
+                            <connections>
+                                <action selector="onSaveButtonClicked:" destination="MCV-cn-8CD" id="cv4-2B-Zzh"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="backgroundColorButton" destination="xG4-J9-JvA" id="EDI-TV-5Ly"/>
@@ -3453,7 +3473,11 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Button/Switch" id="Un8-Vg-Vrx">
-                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="QHS-Zi-myV"/>
+                        <barButtonItem key="rightBarButtonItem" title="Save" image="Save" id="QHS-Zi-myV">
+                            <connections>
+                                <action selector="onSaveButtonClicked:" destination="zCt-rv-lxd" id="z9A-1H-Zoe"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="backgroundColorButton" destination="8WZ-b5-2bk" id="Krn-PN-ZOt"/>

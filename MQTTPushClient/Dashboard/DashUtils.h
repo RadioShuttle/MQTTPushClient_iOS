@@ -29,4 +29,7 @@
 
 +(NSString *)buildResourceURI:(NSString *)type resourceName:(NSString *)name;
 
+/* compare dash color (5 byte color: flag, a, r, g, b) */
++(BOOL)cmpColor:(int64_t)c color:(int64_t)c2;
+
 @end

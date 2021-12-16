@@ -20,4 +20,8 @@
 	clone.inputtype = self.inputtype;
 	return clone;
 }
+
+- (BOOL)isEqual:(id)other {
+	return [super isEqual:other] && self.inputtype == ((DashTextItem *) other).inputtype;
+}
 @end
