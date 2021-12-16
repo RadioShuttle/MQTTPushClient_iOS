@@ -4,4 +4,3 @@
 - Edit Javascript (Main storyboard and ScriptViewController): test message textview bound twice (and test data label not bound)
 
 Dashboard:
-- Images are not displayed in UIButton on physical devices (image chooser button). Without constraints it works. Check!

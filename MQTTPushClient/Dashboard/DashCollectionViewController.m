@@ -89,7 +89,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 -(IBAction)prepareForUnwind:(UIStoryboardSegue *)segue {
 	if (segue.sourceViewController == self.activeDetailView) {
 		self.activeDetailView = nil;
-		NSLog(@"prepare for unwind.");
 	}
 }
 

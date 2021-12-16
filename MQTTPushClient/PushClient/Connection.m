@@ -508,7 +508,7 @@ enum ConnectionState {
 			int len;
 
 			while ((resName = [enumerator nextObject])) {
-				NSLog(@"mssing resource: %@", resName);
+				NSLog(@"missing resource: %@", resName);
 				[command getResourceRequest:0 name:resName type:DASH512_PNG];
 				if (command.rawCmd.error || command.rawCmd.rc != RC_OK) {
 					break;

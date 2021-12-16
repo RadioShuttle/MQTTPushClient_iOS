@@ -305,7 +305,7 @@
 }
 
 - (void)webView:(WKWebView *)webView startURLSchemeTask:(id<WKURLSchemeTask>)urlSchemeTask {
-	NSLog(@"webview resource request: %@", [urlSchemeTask.request.URL path]);
+	// NSLog(@"webview resource request: %@", [urlSchemeTask.request.URL path]);
 	
 	NSString *path = [urlSchemeTask.request.URL path];
 	if ([path hasPrefix:@"/"]) {
@@ -453,7 +453,7 @@
 		 * passed to the webview!
 		 */
 		if (version == self.dashView.dashVersion && id_ == self.dashView.item.id_) {
-			NSLog(@"Dash item property changed %@", prop);
+			// NSLog(@"Dash item property changed %@", prop);
 			
 			if ([prop isEqualToString:@"background"]) {
 				uint64_t color = self.dashView.item.background;

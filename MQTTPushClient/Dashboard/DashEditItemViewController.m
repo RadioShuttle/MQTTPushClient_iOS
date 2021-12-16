@@ -28,6 +28,7 @@
 @property NSMutableArray<NSString *> *inputTypeDisplayValues;
 @property OptionListHandler *optionListHandler;
 @property CustomItemHandler *customItemHandler;
+@property uint64_t dashboardVersion;
 
 @property UILabel *statusLabel;
 @property NSTimer *statusMsgTimer;
@@ -52,10 +53,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+	self.dashboardVersion = self.dashboard.localVersion;
+	
 	/* add prefix to title */
 	NSString *prefix = (self.mode == Add ? @"Add" : @"Edit");
 	self.navigationItem.title = [NSString stringWithFormat:@"%@ %@", prefix,self.navigationItem.title];
+	if (self.mode == Add) {
+		self.item.id_ = self.dashboard.max_id + 1;
+	}
 	self.orgItem = [self.item copy];
 	
 	self.tableView.separatorColor = [UIColor clearColor];
@@ -294,12 +299,76 @@
 }
 
 - (IBAction)onSaveButtonClicked:(id)sender {
+	if (self.dashboardVersion != self.dashboard.localVersion) {
+		[self setStatusMessage:@"Version error. Close editor and try again." clearAfterDelay:NO];
+		return;
+	}
+	
 	DashItem *currentData = [self getDashItem];
 	BOOL modified = !([currentData isEqual:self.orgItem] && self.orgSelGroupIdx == self.selGroupIdx && self.orgSelPosIdx == self.selPosIdx);
 	if (!modified) {
 		[self setStatusMessage:@"Data was not modified." clearAfterDelay:YES];
 	} else {
-		//TODO: start save
+		/* prepare data for saving: clone dashboard */
+		NSMutableArray<DashGroupItem *> *groups = [self.dashboard.groups mutableCopy];
+		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [self.dashboard.groupItems mutableCopy];
+		/* item values may have changed by script, so get the original item */
+		for(int i = 0; i < groups.count; i++) {
+			groups[i] = (DashGroupItem *) [self.dashboard getUnmodifiedItemForID:groups[i].id_];
+			NSMutableArray<DashItem *> *items = [[groupItems objectForKey:@(groups[i].id_)] mutableCopy];
+			[groupItems setObject:items forKey:@(groups[i].id_)];
+			for(int j = 0; j < items.count; j++) {
+				items[j] = [self.dashboard getUnmodifiedItemForID:items[j].id_];
+			}
+		}
+		/* add new/modified item to cloned collection object */
+		DashGroupItem *group;
+		NSMutableArray<DashItem *> *items;
+		
+		if (self.mode == Add) {
+			if ([self.item isKindOfClass:[DashGroupItem class]]) {
+				[groups insertObject:(DashGroupItem *) self.item atIndex:self.selPosIdx];
+				[groupItems setObject:[NSArray new] forKey:@(self.item.id_)];
+			} else {
+				group = groups[self.selGroupIdx];
+				items = (NSMutableArray *) [groupItems objectForKey:@(group.id_)];
+				[items insertObject:self.item atIndex:self.selPosIdx];
+			}
+		} else { // mode == edit
+			if ([self.item isKindOfClass:[DashGroupItem class]]) {
+				if (self.orgSelPosIdx != self.selPosIdx) {
+					[groups removeObjectAtIndex:self.orgSelPosIdx];
+					[groups insertObject:(DashGroupItem *) self.item atIndex:(self.orgSelPosIdx < self.selPosIdx ? self.selPosIdx - 1 : self.selPosIdx)];
+				} else {
+					[groups replaceObjectAtIndex:self.orgSelPosIdx withObject:(DashGroupItem *) self.item];
+				}
+			} else {
+				group = groups[self.orgSelGroupIdx];
+				items = (NSMutableArray *) [groupItems objectForKey:@(group.id_)];
+				if (self.orgSelGroupIdx == self.selGroupIdx) {
+					if (self.orgSelPosIdx == self.selPosIdx) {
+						[items replaceObjectAtIndex:self.selPosIdx withObject:self.item];
+					} else {
+						[items removeObjectAtIndex:self.orgSelPosIdx];
+						[items insertObject:self.item atIndex:(self.orgSelPosIdx < self.selPosIdx ? self.selPosIdx - 1 : self.selPosIdx)];
+					}
+				} else {
+					[items removeObjectAtIndex:self.orgSelPosIdx];
+					group = groups[self.selGroupIdx];
+					items = (NSMutableArray *) [groupItems objectForKey:@(group.id_)];
+					[items insertObject:self.item atIndex:self.selPosIdx];
+				}
+			}
+		}
+		//TODO: remove log
+		for(DashGroupItem *g in groups) {
+			NSLog(@"Group %@", g.label);
+			items = (NSMutableArray *) [groupItems objectForKey:@(g.id_)];
+			for(DashItem* i in items) {
+				NSLog(@"     %@", i.label);
+			}
+		}
+		// end log
 	}
 }
 

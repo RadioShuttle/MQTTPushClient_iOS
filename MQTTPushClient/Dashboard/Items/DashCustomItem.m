@@ -33,7 +33,7 @@
 
 -(id)copyWithZone:(NSZone *)zone {
 	DashCustomItem *clone = [super copyWithZone:zone];
-	clone.parameter = [self.parameter copy];
+	clone.parameter = [self.parameter mutableCopy];
 	clone.html = self.html;
 	
 	return clone;
@@ -43,7 +43,6 @@
 	BOOL eq = [super isEqual:other];
 	if (eq) {
 		DashCustomItem *o = (DashCustomItem *) other;
-		// treat list with empty strings as count 0
 		int count = (int) MAX(self.parameter.count, o.parameter.count);
 		NSString *s1, *s2;
 		for(int i = 0; i < count; i++) {

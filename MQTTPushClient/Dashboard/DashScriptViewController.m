@@ -71,7 +71,7 @@
 - (void)onJavaScriptTaskFinished:(NSNotification *)notif {
 	uint64_t version = [[notif.userInfo helNumberForKey:@"version"] unsignedLongLongValue];
 	if (version == 0) { // ignore regular script results (test java script use version 0)
-		NSLog(@"Javascript task finished");
+		// NSLog(@"Javascript task finished");
 		NSError *error = [notif.userInfo objectForKey:@"error"];
 		if (error) {
 			self.statusMessage = [@"JavaScript error:\n" stringByAppendingString:error.localizedDescription];
@@ -148,7 +148,7 @@
 	self.scriptTextView.adjustsFontForContentSizeCategory = YES;
 	self.functionReturnLabel.font = courier;
 	self.functionReturnLabel.adjustsFontForContentSizeCategory = YES;
-	self.testMessageTextView.font = courier; //TODO:report wrong assignment with self.testMsgLabel!
+	self.testMessageTextView.font = courier;
 	self.testMessageTextView.adjustsFontForContentSizeCategory = YES;
 }
 

@@ -41,6 +41,7 @@
 /* returns an unmodified item clone for the given id , e.g. for editing */
 -(DashItem *)getUnmodifiedItemForID:(uint32_t) itemID;
 
+
 /* last received message date and sequence no */
 @property NSDate *lastReceivedMsgDate;
 @property int lastReceivedMsgSeqNo;
