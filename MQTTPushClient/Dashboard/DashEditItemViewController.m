@@ -368,14 +368,21 @@
 				}
 			}
 		}
+		/* prepare data to JSON */
+		NSMutableDictionary *dashJson = [Dashboard itemsToJSON:groups items:groupItems];
+
+		NSError *error;
+		NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dashJson options:0 error:&error];
+
 		//TODO: remove log
 		for(DashGroupItem *g in groups) {
 			NSLog(@"Group %@", g.label);
 			items = (NSMutableArray *) [groupItems objectForKey:@(g.id_)];
-			for(DashItem* i in items) {
+			for(DashItem * i in items) {
 				NSLog(@"     %@", i.label);
 			}
 		}
+		NSLog(@"JSON: \n%@", [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
 		// end log
 	}
 }
@@ -696,7 +703,7 @@
 }
 
 -(void)onFilterScriptContentUpdated:(NSString *)content {
-	self.filterSciptModifiedLabel.hidden = [self.orgItem.script_f isEqual:content];
+	self.filterSciptModifiedLabel.hidden = [Utils areEqual:self.orgItem.script_f s2:content];
 	self.item.script_f = content;
 	if ([Utils isEmpty:content]) {
 		[self.filterSciptButton setTitle:@"Add" forState:UIControlStateNormal];
@@ -707,7 +714,7 @@
 }
 
 -(void)onOutputScriptContentUpdated:(NSString *)content {
-	self.outputSciptModifiedLabel.hidden = [self.orgItem.script_p isEqual:content];
+	self.outputSciptModifiedLabel.hidden = [Utils areEqual:self.orgItem.script_p s2:content];
 	self.item.script_p = content;
 	if ([Utils isEmpty:content]) {
 		[self.outputSciptButton setTitle:@"Add" forState:UIControlStateNormal];

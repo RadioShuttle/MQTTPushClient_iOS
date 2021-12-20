@@ -327,4 +327,29 @@
 	return [settings writeToURL:fileURL atomically:YES];
 }
 
++(NSMutableDictionary *)itemsToJSON:(NSArray<DashGroupItem *> *)groups items:(NSDictionary<NSNumber *, NSArray<DashItem *> *> *)items {
+	NSMutableDictionary *jsonObj = [NSMutableDictionary new];
+	NSMutableArray *jsonGroups = [NSMutableArray new];
+	[jsonObj setObject:jsonGroups forKey:@"groups"];
+	
+	NSMutableDictionary *jsonGroup;
+	// NSDictionary<NSNumber *, NSArray<DashItem *> *>
+	NSArray<DashItem *> *list;
+	NSMutableArray *jsonItems;
+	for(DashGroupItem *group in groups) {
+		jsonGroup = (NSMutableDictionary *) [group toJSONObject];
+		[jsonGroups addObject:jsonGroup];
+		
+		jsonItems = [NSMutableArray new];
+		[jsonGroup setObject:jsonItems forKey:@"items"];
+		
+		list = [items objectForKey:@(group.id_)];
+		for(DashItem *e in list) {
+			[jsonItems addObject:[e toJSONObject]];
+		}
+	}	
+	return jsonObj;
+}
+
+
 @end

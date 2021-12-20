@@ -48,4 +48,12 @@
 	return eq;
 }
 
+- (NSDictionary *)toJSONObject {
+	NSMutableDictionary *o = [NSMutableDictionary new];
+	[o setObject:self.value ? self.value : @"" forKey:@"value"];
+	[o setObject:self.displayValue ? self.displayValue : @"" forKey:@"displayvalue"];
+	[o setObject:self.imageURI ? self.imageURI : @"" forKey:@"uri"];
+	return o;
+}
+
 @end

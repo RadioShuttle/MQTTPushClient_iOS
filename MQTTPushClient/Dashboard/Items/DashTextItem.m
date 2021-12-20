@@ -24,4 +24,13 @@
 - (BOOL)isEqual:(id)other {
 	return [super isEqual:other] && self.inputtype == ((DashTextItem *) other).inputtype;
 }
+
+- (NSDictionary *)toJSONObject {
+	NSMutableDictionary *o = (NSMutableDictionary *) [super toJSONObject];
+	[o setObject:@"text" forKey:@"type"];
+	[o setObject:[NSNumber numberWithInt:self.inputtype] forKey:@"inputtype"];
+
+	return o;
+}
+
 @end

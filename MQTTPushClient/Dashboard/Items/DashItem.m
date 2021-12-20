@@ -81,6 +81,31 @@
 	return item;
 }
 
+- (NSDictionary *)toJSONObject {
+	NSMutableDictionary *o = [NSMutableDictionary new];
+	if (![self isKindOfClass:[DashGroupItem class]]) {
+		[o setObject:self.topic_s ? self.topic_s : @"" forKey:@"topic_s"];
+		[o setObject:self.script_f ? self.script_f : @"" forKey:@"script_f"];
+
+		[o setObject:self.topic_p ? self.topic_p : @"" forKey:@"topic_p"];
+		[o setObject:self.script_p ? self.script_p : @"" forKey:@"script_p"];
+		
+		[o setObject:[NSNumber numberWithBool:self.retain_] forKey:@"retain"];
+		[o setObject:self.background_uri ? self.background_uri : @"" forKey:@"background_uri"];
+
+		[o setObject:[NSNumber numberWithBool:self.history] forKey:@"history"];
+	}
+	
+	[o setObject:self.label ? self.label : @"" forKey:@"label"];
+	[o setObject:[NSNumber numberWithUnsignedLongLong:self.textcolor] forKey:@"textcolor"];
+	[o setObject:[NSNumber numberWithUnsignedLongLong:self.background] forKey:@"background"];
+
+	[o setObject:[NSNumber numberWithInt:self.textsize] forKey:@"textsize"];
+	[o setObject:[NSNumber numberWithInt:self.id_] forKey:@"id"];
+
+	return o;
+}
+
 -(id)copyWithZone:(NSZone *)zone {
 	DashItem *clone = [[[self class] alloc] init];
 	clone.id_ = self.id_;

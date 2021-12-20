@@ -8,4 +8,10 @@
 
 @implementation DashGroupItem
 
+- (NSDictionary *)toJSONObject {
+	NSMutableDictionary *o = (NSMutableDictionary *) [super toJSONObject];
+	[o setObject:@"group" forKey:@"type"];
+	return o;
+}
+
 @end

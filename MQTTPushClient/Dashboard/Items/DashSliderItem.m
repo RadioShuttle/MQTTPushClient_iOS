@@ -69,4 +69,17 @@
 	return eq;
 }
 
+- (NSDictionary *)toJSONObject {
+	NSMutableDictionary *o = (NSMutableDictionary *) [super toJSONObject];
+	[o setObject:@"progress" forKey:@"type"];
+	
+	[o setObject:[NSNumber numberWithDouble:self.range_min] forKey:@"range_min"];
+	[o setObject:[NSNumber numberWithDouble:self.range_max] forKey:@"range_max"];
+	[o setObject:[NSNumber numberWithInt:self.decimal] forKey:@"decimal"];
+	[o setObject:[NSNumber numberWithBool:self.percent] forKey:@"percent"];
+	[o setObject:[NSNumber numberWithUnsignedLongLong:self.progresscolor] forKey:@"progresscolor"];
+
+	return o;
+}
+
 @end

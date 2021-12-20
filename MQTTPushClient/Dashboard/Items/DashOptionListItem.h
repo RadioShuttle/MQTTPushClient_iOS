@@ -13,4 +13,6 @@
 
 - (instancetype)initWithJSON:(NSDictionary *) dictObj;
 
+- (NSDictionary *)toJSONObject;
+
 @end

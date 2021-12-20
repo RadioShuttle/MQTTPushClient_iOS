@@ -57,4 +57,12 @@
 	return eq;
 }
 
+- (NSDictionary *)toJSONObject {
+	NSMutableDictionary *o = (NSMutableDictionary *) [super toJSONObject];
+	[o setObject:@"custom" forKey:@"type"];
+	[o setObject:self.html ? self.html : @"" forKey:@"html"];
+	[o setObject:[self.parameter copy] forKey:@"parameter"];	
+	return o;
+}
+
 @end

@@ -33,6 +33,8 @@
 
 - (instancetype)initWithJSON:(NSDictionary *)dictObj;
 
+- (NSDictionary *)toJSONObject;
+
 + (DashItem *)createObjectFromJSON:(NSDictionary *)dictObj;
 
 @end

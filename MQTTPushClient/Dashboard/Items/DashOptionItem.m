@@ -61,4 +61,18 @@
 	return eq;
 }
 
+- (NSDictionary *)toJSONObject {
+	NSMutableDictionary *o = (NSMutableDictionary *) [super toJSONObject];
+	[o setObject:@"optionlist" forKey:@"type"];
+	
+	NSMutableArray *jsonArray = [NSMutableArray new];
+	[o setObject:jsonArray forKey:@"optionlist"];
+	
+	for(int i = 0; i < self.optionList.count; i++) {
+		[jsonArray addObject:[self.optionList[i] toJSONObject]];
+	}
+	
+	return o;
+}
+
 @end

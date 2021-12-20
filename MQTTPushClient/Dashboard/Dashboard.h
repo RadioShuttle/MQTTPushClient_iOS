@@ -41,6 +41,7 @@
 /* returns an unmodified item clone for the given id , e.g. for editing */
 -(DashItem *)getUnmodifiedItemForID:(uint32_t) itemID;
 
++(NSMutableDictionary *)itemsToJSON:(NSArray<DashGroupItem *> *)groups items:(NSDictionary<NSNumber *, NSArray<DashItem *> *> *)items;
 
 /* last received message date and sequence no */
 @property NSDate *lastReceivedMsgDate;
