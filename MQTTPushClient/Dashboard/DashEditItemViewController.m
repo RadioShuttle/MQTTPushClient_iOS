@@ -19,6 +19,8 @@
 #import "DashColorChooser.h"
 #import "DashScriptViewController.h"
 #import "DashImageChooserTab.h"
+#import "NSDictionary+HelSafeAccessors.h"
+
 
 @import SafariServices;
 
@@ -29,6 +31,8 @@
 @property OptionListHandler *optionListHandler;
 @property CustomItemHandler *customItemHandler;
 @property uint64_t dashboardVersion;
+@property uint32_t saveRequestID;
+@property UIActivityIndicatorView *progressBar;
 
 @property UILabel *statusLabel;
 @property NSTimer *statusMsgTimer;
@@ -50,6 +54,8 @@
 @end
 
 @implementation DashEditItemViewController
+
+static int saveRequestCnt = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -278,6 +284,9 @@
 	cancelButton.target = self;
 	cancelButton.action = @selector(onCancelButtonClicked);
 	self.navigationItem.leftBarButtonItem = cancelButton;
+	
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSaveRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
+
 }
 
 -(void)onCancelButtonClicked {
@@ -295,18 +304,20 @@
 	} else {
 		[self.navigationController popViewControllerAnimated:YES];
 	}
-
 }
 
 - (IBAction)onSaveButtonClicked:(id)sender {
-	if (self.dashboardVersion != self.dashboard.localVersion) {
-		[self setStatusMessage:@"Version error. Close editor and try again." clearAfterDelay:NO];
+	if (self.saveRequestID > 0) {
+		[self setStatusMessage:@"A save operation is currently in progress." clearAfterDelay:YES];
+		return;
+	} else if (self.dashboardVersion != self.dashboard.localVersion) {
+		[self setStatusMessage:@"Version error. Quit the editor to update to the latest version." clearAfterDelay:NO];
 		return;
 	}
 	
-	DashItem *currentData = [self getDashItem];
-	BOOL modified = !([currentData isEqual:self.orgItem] && self.orgSelGroupIdx == self.selGroupIdx && self.orgSelPosIdx == self.selPosIdx);
-	if (!modified) {
+	DashItem *editedItem = [[self getDashItem] copy];
+	BOOL modified = !([editedItem isEqual:self.orgItem] && self.orgSelGroupIdx == self.selGroupIdx && self.orgSelPosIdx == self.selPosIdx);
+	if (!modified && self.mode == Edit) {
 		[self setStatusMessage:@"Data was not modified." clearAfterDelay:YES];
 	} else {
 		/* prepare data for saving: clone dashboard */
@@ -326,13 +337,13 @@
 		NSMutableArray<DashItem *> *items;
 		
 		if (self.mode == Add) {
-			if ([self.item isKindOfClass:[DashGroupItem class]]) {
-				[groups insertObject:(DashGroupItem *) self.item atIndex:self.selPosIdx];
-				[groupItems setObject:[NSArray new] forKey:@(self.item.id_)];
+			if ([editedItem isKindOfClass:[DashGroupItem class]]) {
+				[groups insertObject:(DashGroupItem *) editedItem atIndex:self.selPosIdx];
+				[groupItems setObject:[NSArray new] forKey:@(editedItem.id_)];
 			} else {
 				if (self.selGroupIdx == -1) { // first item in dashboard? add group
 					group = [DashGroupItem new];
-					group.id_ = self.item.id_ + 1;
+					group.id_ = editedItem.id_ + 1;
 					group.label = @"New Group";
 					[groups addObject:group];
 					[groupItems setObject:[NSMutableArray new] forKey:@(group.id_)];
@@ -340,36 +351,46 @@
 					group = groups[self.selGroupIdx];
 				}				
 				items = (NSMutableArray *) [groupItems objectForKey:@(group.id_)];
-				[items insertObject:self.item atIndex:self.selPosIdx];
+				[items insertObject:editedItem atIndex:self.selPosIdx];
 			}
 		} else { // mode == edit
-			if ([self.item isKindOfClass:[DashGroupItem class]]) {
+			if ([editedItem isKindOfClass:[DashGroupItem class]]) {
 				if (self.orgSelPosIdx != self.selPosIdx) {
 					[groups removeObjectAtIndex:self.orgSelPosIdx];
-					[groups insertObject:(DashGroupItem *) self.item atIndex:(self.orgSelPosIdx < self.selPosIdx ? self.selPosIdx - 1 : self.selPosIdx)];
+					[groups insertObject:(DashGroupItem *) editedItem atIndex:(self.orgSelPosIdx < self.selPosIdx ? self.selPosIdx - 1 : self.selPosIdx)];
 				} else {
-					[groups replaceObjectAtIndex:self.orgSelPosIdx withObject:(DashGroupItem *) self.item];
+					[groups replaceObjectAtIndex:self.orgSelPosIdx withObject:(DashGroupItem *) editedItem];
 				}
 			} else {
 				group = groups[self.orgSelGroupIdx];
 				items = (NSMutableArray *) [groupItems objectForKey:@(group.id_)];
 				if (self.orgSelGroupIdx == self.selGroupIdx) {
 					if (self.orgSelPosIdx == self.selPosIdx) {
-						[items replaceObjectAtIndex:self.selPosIdx withObject:self.item];
+						[items replaceObjectAtIndex:self.selPosIdx withObject:editedItem];
 					} else {
 						[items removeObjectAtIndex:self.orgSelPosIdx];
-						[items insertObject:self.item atIndex:(self.orgSelPosIdx < self.selPosIdx ? self.selPosIdx - 1 : self.selPosIdx)];
+						[items insertObject:editedItem atIndex:(self.orgSelPosIdx < self.selPosIdx ? self.selPosIdx - 1 : self.selPosIdx)];
 					}
 				} else {
 					[items removeObjectAtIndex:self.orgSelPosIdx];
 					group = groups[self.selGroupIdx];
 					items = (NSMutableArray *) [groupItems objectForKey:@(group.id_)];
-					[items insertObject:self.item atIndex:self.selPosIdx];
+					[items insertObject:editedItem atIndex:self.selPosIdx];
 				}
 			}
 		}
 		/* prepare data to JSON */
 		NSMutableDictionary *dashJson = [Dashboard itemsToJSON:groups items:groupItems];
+		[dashJson setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
+		
+		/* add locked resources */
+		NSMutableArray *lockedResources = [NSMutableArray new];
+		for(NSString *r in self.dashboard.resources) {
+			if (![Utils isEmpty:r]) {
+				[lockedResources addObject:r];
+			}
+		}
+		[dashJson setObject:lockedResources forKey:@"resources"];
 
 		NSError *error;
 		NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dashJson options:0 error:&error];
@@ -384,6 +405,24 @@
 		}
 		NSLog(@"JSON: \n%@", [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
 		// end log
+
+		NSMutableDictionary *userInfo = [NSMutableDictionary new];
+		self.saveRequestID = ++saveRequestCnt;
+		[userInfo setObject:[NSNumber numberWithInt:self.saveRequestID] forKey:@"save_request"];
+		
+		[self.connection saveDashboardForAccount:self.dashboard.account json:dashJson itemID:editedItem.id_ userInfo:userInfo];
+		[self showProgressBar];
+	}
+}
+
+- (void)onSaveRequestFinished:(NSNotification *)notif {
+	uint32_t saveRequestID = [[notif.userInfo helNumberForKey:@"save_request"] unsignedIntValue];
+	if (saveRequestID > 0 && self.saveRequestID == saveRequestID) {
+		self.saveRequestID = 0;
+		[self hideProgressBar];
+		
+		
+		//TODO: handle result
 	}
 }
 
@@ -1011,6 +1050,28 @@
 	
 }
 
+- (void)showProgressBar {
+	if (!self.progressBar) {
+		self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 64, 64)];
+		self.progressBar.color = [UILabel new].textColor;
+		self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
+		[self.view addSubview:self.progressBar];
+		[self.progressBar startAnimating];
+		
+		[self.progressBar.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0.0].active = YES;
+		[self.progressBar.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor constant:0.0].active = YES;
+		
+		[self.view bringSubviewToFront:self.progressBar];
+	}
+}
+
+- (void)hideProgressBar {
+	if (self.progressBar) {
+		[self.progressBar stopAnimating];
+		[self.progressBar removeFromSuperview];
+		self.progressBar = nil;
+	}
+}
 
 @end
 

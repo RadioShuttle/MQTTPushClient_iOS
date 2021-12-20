@@ -83,6 +83,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		vc.mode = self.argEditMode;
 		vc.item = self.argEditItem;
 		vc.dashboard = self.dashboard;
+		vc.connection = self.connection;
 	}
 }
 

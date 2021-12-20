@@ -9,6 +9,7 @@
 #import "DashCircleViewButton.h"
 #import "Dashboard.h"
 #import "DashOptionListItem.h"
+#import "Connection.h"
 
 @interface DashEditItemViewController : UITableViewController
 
@@ -18,6 +19,7 @@ typedef enum {Add, Edit} Mode;
 @property Mode mode;
 @property DashItem *item;
 @property Dashboard *dashboard;
+@property Connection *connection;
 
 /* the data before editing started */
 @property DashItem *orgItem;

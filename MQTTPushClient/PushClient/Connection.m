@@ -542,6 +542,14 @@ enum ConnectionState {
 	}
 }
 
+-(void)setDashboardForAccountAsync:(Account *)account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
+	//TODO: implement
+	
+	//TODO: remove the following line, after save implementation:
+	[self performSelectorOnMainThread:@selector(postServerUpdateNotification:) withObject:userInfo waitUntilDone:YES];
+
+}
+
 #pragma mark - public methods
 
 - (Cmd *)login:(Account *)account {
@@ -622,6 +630,12 @@ enum ConnectionState {
 - (void)publishMessageForAccount:(Account *)account topic:(NSString *)topic payload:(NSData *)payload retain:(BOOL)retain userInfo:(NSDictionary *)userInfo {
 	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account topic:topic payload:payload retain:retain userInfo: userInfo];});
 }
+
+-(void)saveDashboardForAccount:(Account *)account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
+	
+	dispatch_async(self.serialQueue, ^{[self setDashboardForAccountAsync:account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo];});
+}
+
 
 -(int)activeDashboardRequests {
 	return atomic_load(&_noOfActiveDashRequests);
