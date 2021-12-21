@@ -381,7 +381,7 @@ static int saveRequestCnt = 0;
 		}
 		/* prepare data to JSON */
 		NSMutableDictionary *dashJson = [Dashboard itemsToJSON:groups items:groupItems];
-		[dashJson setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
+		[dashJson setObject:@(DASHBOARD_PROTOCOL_VERSION) forKey:@"version"];
 		
 		/* add locked resources */
 		NSMutableArray *lockedResources = [NSMutableArray new];
