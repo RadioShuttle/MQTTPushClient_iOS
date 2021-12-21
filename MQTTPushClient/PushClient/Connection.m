@@ -543,7 +543,16 @@ enum ConnectionState {
 }
 
 -(void)setDashboardForAccountAsync:(Account *)account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
-	//TODO: implement
+
+	//TODO: saving on push.radioshuttle.de is disabled until test completed. remove after test:
+	if ([account.host isEqualToString:@"push.radioshuttle.de"]) {
+		NSMutableDictionary *errInfo = [NSMutableDictionary new];
+		[errInfo setValue:@"Saving on \"push.radioshuttle.de\" is disabled." forKey:NSLocalizedDescriptionKey];
+		account.error = [NSError errorWithDomain:@"ios_development" code:400 userInfo:errInfo];
+		[self performSelectorOnMainThread:@selector(postServerUpdateNotification:) withObject:userInfo waitUntilDone:YES];
+		return;
+	}
+	// end
 	
 	//TODO: remove the following line, after save implementation:
 	[self performSelectorOnMainThread:@selector(postServerUpdateNotification:) withObject:userInfo waitUntilDone:YES];

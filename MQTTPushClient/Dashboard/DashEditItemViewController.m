@@ -421,8 +421,11 @@ static int saveRequestCnt = 0;
 		self.saveRequestID = 0;
 		[self hideProgressBar];
 		
-		
-		//TODO: handle result
+		if (self.dashboard.account.error) {
+			[self setStatusMessage:self.dashboard.account.error.localizedDescription clearAfterDelay:NO];
+		} else {
+			[self.navigationController popViewControllerAnimated:YES];
+		}
 	}
 }
 
