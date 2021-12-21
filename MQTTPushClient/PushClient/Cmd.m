@@ -445,6 +445,36 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)setDashboard:(int)seqNo version:(uint64_t)version itemID:(uint32_t)itemID dashboard:(NSData *)dashboard {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"SET DASHBOARD request");
+	
+	unsigned char buffer[8];
+	buffer[7] = version & 0xff;
+	buffer[6] = version >> 8;
+	buffer[5] = version >> 16;
+	buffer[4] = version >> 24;
+	buffer[3] = version >> 32;
+	buffer[2] = version >> 40;
+	buffer[1] = version >> 48;
+	buffer[0] = version >> 56;
+	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:8];
+	buffer[3] = itemID & 0xff;
+	buffer[2] = itemID >> 8;
+	buffer[1] = itemID >> 16;
+	buffer[0] = itemID >> 24;
+	[data appendBytes:buffer length:4];
+	buffer[1] = dashboard.length & 0xff;
+	buffer[0] = dashboard.length >> 8;
+	[data appendBytes:buffer length:2];
+	[data appendData:dashboard];
+	[self writeCommand:CMD_SET_DASHBOARD seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
 - (RawCmd *)addActionRequest:(int)seqNo action:(Action *)action {
 	if (self.state == CommandStateEnd)
 		return nil;

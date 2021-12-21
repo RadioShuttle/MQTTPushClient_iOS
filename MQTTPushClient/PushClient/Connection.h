@@ -29,5 +29,5 @@
 - (void)getDashboardForAccount:(Dashboard *)dashboard;
 -(int)activeDashboardRequests;
 - (void)publishMessageForAccount:(Account *)account topic:(NSString *)topic payload:(NSData *)payload retain:(BOOL)retain userInfo:(NSDictionary *)userInfo;
--(void)saveDashboardForAccount:(Account *)account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo;
+-(void)saveDashboardForAccount:(Account *)account json:(NSDictionary *)jsonObj prevVersion:(uint64_t)version itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo;
 @end

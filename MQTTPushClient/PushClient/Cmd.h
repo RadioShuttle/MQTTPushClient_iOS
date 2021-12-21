@@ -60,5 +60,5 @@ enum ReturnCode {
 - (RawCmd *)getDashboardRequest:(int)seqNo;
 - (RawCmd *)getDashMessagesRequest:(int)seqNo date:(uint64_t)unix_date id:(uint32_t)messageID;
 - (RawCmd *)getResourceRequest:(int)seqNo name:(NSString *)name type:(NSString *)type;
-
+- (RawCmd *)setDashboard:(int)seqNo version:(uint64_t)version itemID:(uint32_t)itemID dashboard:(NSData *)dashboard;
 @end

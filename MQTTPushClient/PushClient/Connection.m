@@ -19,6 +19,7 @@
 #import "DashUtils.h"
 #import "DashMessage.h"
 #import "NSString+HELUtils.h"
+#import "NSDictionary+HelSafeAccessors.h"
 #import "Trace.h"
 #import <stdatomic.h>
 
@@ -199,7 +200,7 @@ enum ConnectionState {
 		NSMutableArray<Message *>*messageList = [NSMutableArray arrayWithCapacity:numRecords];
 		while (numRecords--) {
 			Message *message = [[Message alloc] init];
-			NSTimeInterval seconds = ((uint64_t)p[0] << 56) + ((uint64_t)p[1] << 48) + ((uint64_t)p[2] << 40) + ((uint64_t)p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
+			NSTimeInterval seconds = ((uint64_t)p[0] << 56) + ((uint64_t)p[1] << 48) + ((uint64_t)p[2] << 40) + ((uint64_t)p[3] << 32) + ((uint64_t)p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
 			message.timestamp = [NSDate dateWithTimeIntervalSince1970:seconds];
 			p += 8;
 			int count = (p[0] << 8) + p[1];
@@ -210,7 +211,7 @@ enum ConnectionState {
 			p += 2;
 			message.content = [NSData dataWithBytes:p length:count];
 			p += count;
-			int msgID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+			int msgID = (int) (((uint64_t)p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3]); // message is uint32 but wont get as big
 			message.messageID = msgID;
 			p += 4;
 			[messageList addObject:message];
@@ -334,7 +335,7 @@ enum ConnectionState {
 				p += 2;
 				message.content = [NSData dataWithBytes:p length:count];
 				p += count;
-				int msgID = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+				int msgID = (int) (((uint64_t) p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3]);
 				message.messageID = msgID;
 				p += 4;
 				/* subscription status */
@@ -516,7 +517,7 @@ enum ConnectionState {
 					p = (unsigned char *)command.rawCmd.data.bytes;
 					mdate = [Utils charArrayToUint64:p];
 					p += 8;
-					len = (p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3];
+					len = (int) (((uint64_t)p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3]);
 					p += 4;
 					NSData* data = [NSData dataWithBytes:p length:len];
 
@@ -542,7 +543,7 @@ enum ConnectionState {
 	}
 }
 
--(void)setDashboardForAccountAsync:(Account *)account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
+-(void)setDashboardForAccountAsync:(Account *)account json:(NSDictionary *)jsonObj prevVersion:(uint64_t)version itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
 
 	//TODO: saving on push.radioshuttle.de is disabled until test completed. remove after test:
 	if ([account.host isEqualToString:@"push.radioshuttle.de"]) {
@@ -554,9 +555,41 @@ enum ConnectionState {
 	}
 	// end
 	
-	//TODO: remove the following line, after save implementation:
-	[self performSelectorOnMainThread:@selector(postServerUpdateNotification:) withObject:userInfo waitUntilDone:YES];
-
+	NSError *error;
+	NSData * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObj options:0 error:&error];
+	if (error) {
+		/* unexprectd error - should not occur  */
+		account.error = error;
+		[self performSelectorOnMainThread:@selector(postServerUpdateNotification:) withObject:userInfo waitUntilDone:YES];
+		return;
+	}
+	
+	NSMutableDictionary *resultInfo = userInfo ? [userInfo mutableCopy] : [NSMutableDictionary new];
+	
+	Cmd *command = [self login:account];
+	if (!command.rawCmd.error) {
+		
+		//TODO: manage resources (update on server, download, ...)
+		
+		[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
+		if (!command.rawCmd.error) {
+			if (command.rawCmd.rc == RC_OK) {
+				unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+				uint64_t newVersion = [Utils charArrayToUint64:p];
+				if (newVersion == 0) {
+					//version error
+					//TODO: handle invalid version:
+					// get latest dashboard, error message ...
+				}
+			} else {
+				// should never occur
+				NSMutableDictionary *errInfo = [NSMutableDictionary new];
+				[errInfo setValue:@"Save dashboard: invalid args." forKey:NSLocalizedDescriptionKey];
+				account.error = [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
+			}
+		}
+	}
+	[self disconnect:account withCommand:command userInfo:resultInfo];
 }
 
 #pragma mark - public methods
@@ -640,9 +673,9 @@ enum ConnectionState {
 	dispatch_async(self.serialQueue, ^{[self publishMessageAsync:account topic:topic payload:payload retain:retain userInfo: userInfo];});
 }
 
--(void)saveDashboardForAccount:(Account *)account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
+-(void)saveDashboardForAccount:(Account *)account json:(NSDictionary *)jsonObj prevVersion:(uint64_t)version itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
 	
-	dispatch_async(self.serialQueue, ^{[self setDashboardForAccountAsync:account json:(NSDictionary *)jsonObj itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo];});
+	dispatch_async(self.serialQueue, ^{[self setDashboardForAccountAsync:account json:(NSDictionary *)jsonObj prevVersion:version itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo];});
 }
 
 

@@ -410,7 +410,7 @@ static int saveRequestCnt = 0;
 		self.saveRequestID = ++saveRequestCnt;
 		[userInfo setObject:[NSNumber numberWithInt:self.saveRequestID] forKey:@"save_request"];
 		
-		[self.connection saveDashboardForAccount:self.dashboard.account json:dashJson itemID:editedItem.id_ userInfo:userInfo];
+		[self.connection saveDashboardForAccount:self.dashboard.account json:dashJson prevVersion:self.dashboard.localVersion itemID:editedItem.id_ userInfo:userInfo];
 		[self showProgressBar];
 	}
 }

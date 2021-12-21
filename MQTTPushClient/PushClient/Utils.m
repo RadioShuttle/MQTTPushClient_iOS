@@ -28,7 +28,7 @@
 }
 
 + (uint64_t)charArrayToUint64:(unsigned char *)p {
-	return ((uint64_t)p[0] << 56) + ((uint64_t)p[1] << 48) + ((uint64_t)p[2] << 40) + ((uint64_t)p[3] << 32) + (p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
+	return ((uint64_t)p[0] << 56) + ((uint64_t)p[1] << 48) + ((uint64_t)p[2] << 40) + ((uint64_t)p[3] << 32) + ((uint64_t)p[4] << 24) + (p[5] << 16) + (p[6] << 8) + p[7];
 }
 
 +(BOOL) isEmpty:(NSString *)str {
