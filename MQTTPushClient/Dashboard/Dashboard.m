@@ -36,6 +36,7 @@
 	self.historicalData = [NSMutableDictionary new];
 	self.cachedCustomViews = [NSMutableDictionary new];
 	self.cachedCustomViewsVersion = 0;
+	self.protocolVersion = -1;
 	
 	NSURL *fileURL = [DashUtils appendStringToURL:self.account.cacheURL str:@"dashboard.json"];
 	NSError *error;
@@ -225,6 +226,8 @@
 			[lockedResources addObject:resourcesArrayJSON[i]];
 		}
 
+		int protocolVersion = [[dashboardObjJSON helNumberForKey:@"version"] intValue];
+
 		NSMutableDictionary<NSNumber *, DashItem *> *allItems = [NSMutableDictionary new];
 		NSMutableArray<DashGroupItem *> *groups = [NSMutableArray new];
 		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [NSMutableDictionary new];
@@ -264,6 +267,7 @@
 		self.groupItems = groupItems;
 		self.unmodifiedItems = allItems;
 		self.resources = lockedResources;
+		self.protocolVersion = protocolVersion;
 	}
 	return YES;
 }

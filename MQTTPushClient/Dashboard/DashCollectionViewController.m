@@ -124,6 +124,19 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	}
 }
 
+-(BOOL)checkIfUpdateRequired {
+	BOOL updateRequired = self.dashboard.protocolVersion != -1 && self.dashboard.protocolVersion != DASHBOARD_PROTOCOL_VERSION;
+	if (updateRequired) {
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Update required" message:@"This dashboard was created with a newer version. To modify the dashboard, update this app." preferredStyle:UIAlertControllerStyleAlert];
+		[alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
+		}]];
+		// [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
+		[self presentViewController:alert animated:TRUE completion:nil];
+	}
+	
+	return updateRequired;
+}
+
 - (void)onRequestFinished:(NSNotification *)notif {
 	/* publish request */
 	uint32_t publishRequestID = [[notif.userInfo helNumberForKey:@"publish_request"] unsignedIntValue];
@@ -547,7 +560,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 /* this function is called from action sheet edit - so edit mode is always turned on */
 -(void)onEditMenuItemClicked {
 	/* update toolbar: hide all menu items and add context related menu items */
-
+	
 	if (!self.buttonItemsHeaderNonEditMode) {
 		self.buttonItemsHeaderNonEditMode = self.navigationItem.rightBarButtonItems;
 	}
@@ -644,8 +657,14 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[self presentViewController:alert animated:TRUE completion:nil];
 }
 -(void)showDashItemEditor:(Mode) mode item:(DashItem *) item {
+	if ([self checkIfUpdateRequired]) {
+		//do not allow editing if current dashboard was created with a newer app version
+		return;
+	}
+	
 	self.argEditMode = mode;
 	self.argEditItem = item;
+
 	if ([item isKindOfClass:[DashGroupItem class]]) {
 		[self performSegueWithIdentifier:@"IDShowEditGroupItemView" sender:self];
 	} else if ([item isKindOfClass:[DashTextItem class]]) {

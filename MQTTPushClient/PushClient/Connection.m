@@ -578,14 +578,16 @@ enum ConnectionState {
 				uint64_t newVersion = [Utils charArrayToUint64:p];
 				if (newVersion == 0) {
 					//version error
-					//TODO: handle invalid version:
-					// get latest dashboard, error message ...
+					NSMutableDictionary *errInfo = [NSMutableDictionary new];
+					[errInfo setValue:@"Version error. Quit editor to update to latest version." forKey:NSLocalizedDescriptionKey];
+					command.rawCmd.error = [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
+					
 				}
 			} else {
 				// should never occur
 				NSMutableDictionary *errInfo = [NSMutableDictionary new];
-				[errInfo setValue:@"Save dashboard: invalid args." forKey:NSLocalizedDescriptionKey];
-				account.error = [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
+				[errInfo setValue:@"Saving dashboard failed (invalid args)." forKey:NSLocalizedDescriptionKey];
+				command.rawCmd.error= [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
 			}
 		}
 	}

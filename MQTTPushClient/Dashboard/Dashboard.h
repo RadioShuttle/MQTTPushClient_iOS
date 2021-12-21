@@ -54,6 +54,8 @@
 @property NSString *dashboardJS;
 /* version no of local stored dashboard */
 @property uint64_t localVersion;
+/* protocol version of local stored dashboard */
+@property int protocolVersion;
 
 /* Dashboard item data used in view controller */
 @property NSArray<DashGroupItem *> *groups;
