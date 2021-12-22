@@ -55,8 +55,6 @@
 
 @implementation DashEditItemViewController
 
-static int saveRequestCnt = 0;
-
 - (void)viewDidLoad {
     [super viewDidLoad];
 	self.dashboardVersion = self.parentCtrl.dashboard.localVersion;
@@ -407,7 +405,7 @@ static int saveRequestCnt = 0;
 		// end log
 
 		NSMutableDictionary *userInfo = [NSMutableDictionary new];
-		self.saveRequestID = ++saveRequestCnt;
+		self.saveRequestID = ++self.parentCtrl.saveRequestCnt;
 		[userInfo setObject:[NSNumber numberWithInt:self.saveRequestID] forKey:@"save_request"];
 		
 		[self.parentCtrl.connection saveDashboardForAccount:self.parentCtrl.dashboard.account json:dashJson prevVersion:self.parentCtrl.dashboard.localVersion itemID:editedItem.id_ userInfo:userInfo];

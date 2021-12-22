@@ -69,6 +69,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	self.jsTaskQueue = [NSMutableArray new];
 	self.publishReqIDCounter = 0;
 	
+	self.saveRequestCnt = 0;
+	
 	/* deliver local stored messages*/
 	[self deliverMessages:[[NSDate alloc]initWithTimeIntervalSince1970:0] seqNo:0 notify:NO];
 }
@@ -228,7 +230,12 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 					msg = @"Dashboard has been updated.";
 				}
 				
+				NSArray<NSNumber *> *selectedIDs = (self.editMode ? [self.dashboard objectIDsForIndexPaths:self.selectedItems] : nil);
 				NSDictionary * resultInfo = [self.dashboard setDashboard:dashboardJS version:serverVersion];
+				/* the position of selected items might have changed: */
+				if (self.editMode && selectedIDs.count > 0) {
+					[self setSelectionForObjects:selectedIDs];
+				}
 				dashboardUpdate = [[resultInfo helNumberForKey:@"dashboard_new"] boolValue];
 				if (self.activeDetailView) {
 					/* notify detail view about change */
@@ -260,23 +267,64 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			}
 		} else {
 			/* save request (delete) */
-			uint32_t saveRequestID = [[notif.userInfo helNumberForKey:@"save_request"] unsignedIntValue];
-			//TODO:
+			NSNumber *n = [notif.userInfo objectForKey:@"save_request"];
+			if (n && [n intValue] == 0) { // is this a delete request?
+				BOOL invalidVersion = [notif.userInfo helNumberForKey:@"invalidVersion"];
+				if (invalidVersion) {
+					/* rare case: dashboard was updated on diffrent mobile device and has not been updated yet.
+					 (This will be done with the next polling request "getMessages".) */
+					msg = @"Deletion failed (version error).";
+				} else {
+					uint64_t newVersion = [[notif.userInfo helNumberForKey:@"serverVersion"] unsignedLongLongValue];
+					NSString *newDashboard = [notif.userInfo helStringForKey:@"dashboardJS"];
+					if (newVersion > 0 && newDashboard) {
+						[self onDashboardSaved:newDashboard version:newVersion];
+					}
+				}
+			}
 		}
-		
 		/* show error/info message or reset status bar*/
 		[self showErrorMessage:msg];
 	}
 }
 
 -(void)onDashboardSaved:(NSString *)dashboardJS version:(uint64_t)version {
+	NSArray<NSNumber *> *selectedIDs = (self.editMode ? [self.dashboard objectIDsForIndexPaths:self.selectedItems] : nil);
 	NSDictionary * resultInfo = [self.dashboard setDashboard:dashboardJS version:version];
+	/* the position of selected items might have changed: */
+	if (self.editMode && selectedIDs.count > 0) {
+		[self setSelectionForObjects:selectedIDs];
+	}
 	BOOL dashboardUpdate = [[resultInfo helNumberForKey:@"dashboard_new"] boolValue];
 	if (dashboardUpdate) {
 		/* dashboard update? deliver all messages (cached and new messages) */
 		[self deliverMessages:[NSDate dateWithTimeIntervalSince1970:0L] seqNo:0 notify:NO];
 		[self.collectionView reloadData];
 		[self showErrorMessage:@"Dashboard has been saved."];
+	}
+}
+
+-(void)setSelectionForObjects:(NSArray<NSNumber *> *)selectedIDS {
+	[self.selectedItems removeAllObjects];
+	
+	NSArray<DashItem *> *items;
+	BOOL found;
+	for(NSNumber *id_ in selectedIDS) {
+		found = NO;
+		for(int i = 0; i < self.dashboard.groups.count && !found; i++) {
+			if (self.dashboard.groups[i].id_ == [id_ intValue]) {
+				[self.selectedItems addObject:@(i)];
+				found = YES;
+			} else {
+				items = [self.dashboard.groupItems objectForKey:@(self.dashboard.groups[i].id_)];
+				for(int j = 0; j < items.count && !found; j++) {
+					if (items[j].id_ == [id_ intValue]) {
+						[self.selectedItems addObject:[NSIndexPath indexPathForRow:j inSection:i]];
+						found = YES;
+					}
+				}
+			}
+		}
 	}
 }
 
@@ -736,7 +784,77 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 }
 
 -(void)onDeleteDashItemButtonClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Delete Selected Items" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performDeletion:NO];
+	}]];
 	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Delete All Items" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performDeletion:YES];
+	}]];
+	
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	
+	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
+	[self presentViewController:alert animated:TRUE completion:nil];
+
+}
+-(void)performDeletion:(BOOL)allItems {
+	/* prepare data for saving: clone dashboard */
+	
+	NSMutableArray<DashGroupItem *> *groups = [NSMutableArray new];
+	NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [NSMutableDictionary new];
+	
+	if (!allItems) {
+		DashGroupItem *group;
+		DashItem *item;
+		NSNumber *groupIndexPath;
+		NSIndexPath *itemIndexPath;
+		for(int i = 0; i < self.dashboard.groups.count; i++) {
+			/* item values may have changed by script, so get the original item */
+			group = (DashGroupItem *) [self.dashboard getUnmodifiedItemForID:self.dashboard.groups[i].id_];
+			groupIndexPath = [NSNumber numberWithInteger:i];
+			
+			NSArray<DashItem *> *items = [self.dashboard.groupItems objectForKey:@(group.id_)];
+			NSMutableArray<DashItem *> *modifiedItems = [NSMutableArray new];
+			for(int j = 0; j < items.count; j++) {
+				item = [self.dashboard getUnmodifiedItemForID:items[j].id_];
+				itemIndexPath = [NSIndexPath indexPathForRow:j inSection:i];
+				if (![self.selectedItems containsObject:itemIndexPath]) {
+					[modifiedItems addObject:item];
+				}
+			}
+			
+			/* groups with items will never be deleted. Only if a group is selected and has no (more) items. */
+			if (modifiedItems.count > 0 || ![self.selectedItems containsObject:groupIndexPath]) {
+				[groups addObject:group];
+				[groupItems setObject:modifiedItems forKey:@(group.id_)];
+			}
+		}
+	}
+	
+	/* prepare data to JSON */
+	NSMutableDictionary *dashJson = [Dashboard itemsToJSON:groups items:groupItems];
+	[dashJson setObject:@(DASHBOARD_PROTOCOL_VERSION) forKey:@"version"];
+	
+	/* add locked resources */
+	NSMutableArray *lockedResources = [NSMutableArray new];
+	for(NSString *r in self.dashboard.resources) {
+		if (![Utils isEmpty:r]) {
+			[lockedResources addObject:r];
+		}
+	}
+	[dashJson setObject:lockedResources forKey:@"resources"];
+
+	NSMutableDictionary *userInfo = [NSMutableDictionary new];
+	[userInfo setObject:[NSNumber numberWithInt:0] forKey:@"save_request"];
+
+	[self.connection saveDashboardForAccount:self.dashboard.account json:dashJson prevVersion:self.dashboard.localVersion itemID:0 userInfo:userInfo];
+	// [self showProgressBar]; //TODO:
+
 }
 
 #pragma mark <UICollectionViewDataSource>

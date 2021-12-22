@@ -34,5 +34,5 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *listViewButtonItem;
 
 -(void)onDashboardSaved:(NSString *)dashboardJS version:(uint64_t)version;
-
+@property int saveRequestCnt;
 @end

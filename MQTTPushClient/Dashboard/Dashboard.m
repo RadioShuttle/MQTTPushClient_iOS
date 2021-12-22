@@ -300,6 +300,31 @@
 	return [[self.unmodifiedItems objectForKey:@(itemID)] copy];
 }
 
+-(NSArray<NSNumber *> *)objectIDsForIndexPaths:(NSArray *)selectedItems {
+	NSMutableArray<NSNumber *> *ids = [NSMutableArray new];
+	int itemPos;
+	int groupIdx;
+	NSArray<DashItem *> *items;
+	for(int i = 0; i < selectedItems.count; i++) {
+		if ([selectedItems[i] isKindOfClass:[NSNumber class]]) {
+			groupIdx = [((NSNumber *) selectedItems[i]) intValue];
+			if (groupIdx < self.groups.count) {
+				[ids addObject:@(self.groups[groupIdx].id_)];
+			}
+		} else if ([selectedItems[i] isKindOfClass:[NSIndexPath class]]) {
+			groupIdx = (int) ((NSIndexPath *) selectedItems[i]).section;
+			itemPos = (int) ((NSIndexPath *) selectedItems[i]).row;
+			if (groupIdx < self.groups.count) {
+				items = [self.groupItems objectForKey:@(self.groups[groupIdx].id_)];
+				if (itemPos < items.count) {
+					[ids addObject:@(items[itemPos].id_)];
+				}
+			}
+		}
+	}
+	return ids;
+}
+
 #pragma mark - Dashboard view preferrences
 
 + (NSDictionary *) setPreferredViewDashboard:(BOOL)prefer forAccount:(Account *)account {

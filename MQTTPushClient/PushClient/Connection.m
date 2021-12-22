@@ -573,6 +573,7 @@ enum ConnectionState {
 		
 		[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
 		if (!command.rawCmd.error) {
+			//TODO: handle MQTT error (e.g. subscribe dashboard topic error)
 			if (command.rawCmd.rc == RC_OK) {
 				unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 				uint64_t newVersion = [Utils charArrayToUint64:p];
