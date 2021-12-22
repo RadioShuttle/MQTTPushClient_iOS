@@ -77,12 +77,12 @@
 		if ([vc.viewControllers[0] isKindOfClass:[DashImageChooserTab class]]) {
 			((DashImageChooserTab *) vc.viewControllers[0]).editor = self;
 			((DashImageChooserTab *) vc.viewControllers[0]).sourceButton = self.imageButton;
-			((DashImageChooserTab *) vc.viewControllers[0]).context = self.parentController.dashboard;
+			((DashImageChooserTab *) vc.viewControllers[0]).context = self.parentController.parentCtrl.dashboard;
 		}
 		if ([vc.viewControllers[1] isKindOfClass:[DashImageChooserTab class]]) {
 			((DashImageChooserTab *) vc.viewControllers[1]).editor = self;
 			((DashImageChooserTab *) vc.viewControllers[1]).sourceButton = self.imageButton;
-			((DashImageChooserTab *) vc.viewControllers[1]).context = self.parentController.dashboard;
+			((DashImageChooserTab *) vc.viewControllers[1]).context = self.parentController.parentCtrl.dashboard;
 		}
 	}
 	vc.hidesBottomBarWhenPushed = YES;
@@ -147,7 +147,7 @@
 	self.editItem.imageURI = imageURI;
 	UIImage *image = nil;
 	if (imageURI) {
-		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentController.dashboard.account.cacheURL];
+		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentController.parentCtrl.dashboard.account.cacheURL];
 	}
 	if (image) {
 		[self.imageButton setTitle:nil forState:UIControlStateNormal];

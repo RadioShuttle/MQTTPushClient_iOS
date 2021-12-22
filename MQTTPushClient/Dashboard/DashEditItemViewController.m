@@ -59,13 +59,13 @@ static int saveRequestCnt = 0;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-	self.dashboardVersion = self.dashboard.localVersion;
+	self.dashboardVersion = self.parentCtrl.dashboard.localVersion;
 	
 	/* add prefix to title */
 	NSString *prefix = (self.mode == Add ? @"Add" : @"Edit");
 	self.navigationItem.title = [NSString stringWithFormat:@"%@ %@", prefix,self.navigationItem.title];
 	if (self.mode == Add) {
-		self.item.id_ = self.dashboard.max_id + 1;
+		self.item.id_ = self.parentCtrl.dashboard.max_id + 1;
 	}
 	self.orgItem = [self.item copy];
 	
@@ -80,16 +80,16 @@ static int saveRequestCnt = 0;
 	
 	/* group */
 	if (self.mode == Add) {
-		if (self.dashboard.groups.count > 0) {
-			self.groupLabel.text = self.dashboard.groups.lastObject.label;
-			self.selGroupIdx = (int) self.dashboard.groups.count - 1;
+		if (self.parentCtrl.dashboard.groups.count > 0) {
+			self.groupLabel.text = self.parentCtrl.dashboard.groups.lastObject.label;
+			self.selGroupIdx = (int) self.parentCtrl.dashboard.groups.count - 1;
 		} else {
 			self.selGroupIdx = -1;
 		}
 	} else {
 		self.selGroupIdx = [self getPosOfItem:self.item groupPos:YES];
 		if (self.selGroupIdx >= 0) {
-			self.groupLabel.text = self.dashboard.groups[self.selGroupIdx].label;
+			self.groupLabel.text = self.parentCtrl.dashboard.groups[self.selGroupIdx].label;
 		}
 	}
 	self.orgSelGroupIdx = self.selGroupIdx;
@@ -105,13 +105,13 @@ static int saveRequestCnt = 0;
 	/* pos within group  */
 	if ([self.item isKindOfClass:[DashGroupItem class]]) {
 		if (self.mode == Add) {
-			self.selPosIdx = (int) self.dashboard.groups.count;
+			self.selPosIdx = (int) self.parentCtrl.dashboard.groups.count;
 		} else {
 			self.selPosIdx = [self getPosOfItem:self.item groupPos:YES];
 		}
 	} else {
 		if (self.mode == Add) {
-			self.selPosIdx = [self getNoOfItemsInGroup:(int) self.dashboard.groups.count - 1];
+			self.selPosIdx = [self getNoOfItemsInGroup:(int) self.parentCtrl.dashboard.groups.count - 1];
 		} else {
 			self.selPosIdx = [self getPosOfItem:self.item groupPos:NO];
 		}
@@ -285,7 +285,7 @@ static int saveRequestCnt = 0;
 	cancelButton.action = @selector(onCancelButtonClicked);
 	self.navigationItem.leftBarButtonItem = cancelButton;
 	
-	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSaveRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSaveRequestFinished:) name:@"ServerUpdateNotification" object:self.parentCtrl.connection];
 
 }
 
@@ -310,7 +310,7 @@ static int saveRequestCnt = 0;
 	if (self.saveRequestID > 0) {
 		[self setStatusMessage:@"A save operation is currently in progress." clearAfterDelay:YES];
 		return;
-	} else if (self.dashboardVersion != self.dashboard.localVersion) {
+	} else if (self.dashboardVersion != self.parentCtrl.dashboard.localVersion) {
 		[self setStatusMessage:@"Version error. Quit the editor to update to the latest version." clearAfterDelay:NO];
 		return;
 	}
@@ -321,15 +321,15 @@ static int saveRequestCnt = 0;
 		[self setStatusMessage:@"Data was not modified." clearAfterDelay:YES];
 	} else {
 		/* prepare data for saving: clone dashboard */
-		NSMutableArray<DashGroupItem *> *groups = [self.dashboard.groups mutableCopy];
-		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [self.dashboard.groupItems mutableCopy];
+		NSMutableArray<DashGroupItem *> *groups = [self.parentCtrl.dashboard.groups mutableCopy];
+		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [self.parentCtrl.dashboard.groupItems mutableCopy];
 		/* item values may have changed by script, so get the original item */
 		for(int i = 0; i < groups.count; i++) {
-			groups[i] = (DashGroupItem *) [self.dashboard getUnmodifiedItemForID:groups[i].id_];
+			groups[i] = (DashGroupItem *) [self.parentCtrl.dashboard getUnmodifiedItemForID:groups[i].id_];
 			NSMutableArray<DashItem *> *items = [[groupItems objectForKey:@(groups[i].id_)] mutableCopy];
 			[groupItems setObject:items forKey:@(groups[i].id_)];
 			for(int j = 0; j < items.count; j++) {
-				items[j] = [self.dashboard getUnmodifiedItemForID:items[j].id_];
+				items[j] = [self.parentCtrl.dashboard getUnmodifiedItemForID:items[j].id_];
 			}
 		}
 		/* add new/modified item to cloned collection object */
@@ -385,7 +385,7 @@ static int saveRequestCnt = 0;
 		
 		/* add locked resources */
 		NSMutableArray *lockedResources = [NSMutableArray new];
-		for(NSString *r in self.dashboard.resources) {
+		for(NSString *r in self.parentCtrl.dashboard.resources) {
 			if (![Utils isEmpty:r]) {
 				[lockedResources addObject:r];
 			}
@@ -410,7 +410,7 @@ static int saveRequestCnt = 0;
 		self.saveRequestID = ++saveRequestCnt;
 		[userInfo setObject:[NSNumber numberWithInt:self.saveRequestID] forKey:@"save_request"];
 		
-		[self.connection saveDashboardForAccount:self.dashboard.account json:dashJson prevVersion:self.dashboard.localVersion itemID:editedItem.id_ userInfo:userInfo];
+		[self.parentCtrl.connection saveDashboardForAccount:self.parentCtrl.dashboard.account json:dashJson prevVersion:self.parentCtrl.dashboard.localVersion itemID:editedItem.id_ userInfo:userInfo];
 		[self showProgressBar];
 	}
 }
@@ -421,10 +421,20 @@ static int saveRequestCnt = 0;
 		self.saveRequestID = 0;
 		[self hideProgressBar];
 		
-		if (self.dashboard.account.error) {
-			[self setStatusMessage:self.dashboard.account.error.localizedDescription clearAfterDelay:NO];
+		if (self.parentCtrl.dashboard.account.error) {
+			[self setStatusMessage:self.parentCtrl.dashboard.account.error.localizedDescription clearAfterDelay:NO];
 		} else {
-			[self.navigationController popViewControllerAnimated:YES];
+			BOOL versionError = [[notif.userInfo helNumberForKey:@"invalidVersion"] boolValue];
+			if (versionError) {
+				[self setStatusMessage:@"Version error. Quit editor to update to latest version." clearAfterDelay:NO];
+			} else {
+				uint64_t newVersion = [[notif.userInfo helNumberForKey:@"serverVersion"] unsignedLongLongValue];
+				NSString *newDashboard = [notif.userInfo helStringForKey:@"dashboardJS"];
+				if (newVersion > 0 && newDashboard) {
+					[self.parentCtrl onDashboardSaved:newDashboard version:newVersion];
+				}
+				[self.navigationController popViewControllerAnimated:YES];
+			}
 		}
 	}
 }
@@ -712,12 +722,12 @@ static int saveRequestCnt = 0;
 		if ([vc.viewControllers[0] isKindOfClass:[DashImageChooserTab class]]) {
 			((DashImageChooserTab *) vc.viewControllers[0]).editor = self;
 			((DashImageChooserTab *) vc.viewControllers[0]).sourceButton = src;
-			((DashImageChooserTab *) vc.viewControllers[0]).context = self.dashboard;
+			((DashImageChooserTab *) vc.viewControllers[0]).context = self.parentCtrl.dashboard;
 		}
 		if ([vc.viewControllers[1] isKindOfClass:[DashImageChooserTab class]]) {
 			((DashImageChooserTab *) vc.viewControllers[1]).editor = self;
 			((DashImageChooserTab *) vc.viewControllers[1]).sourceButton = src;
-			((DashImageChooserTab *) vc.viewControllers[1]).context = self.dashboard;
+			((DashImageChooserTab *) vc.viewControllers[1]).context = self.parentCtrl.dashboard;
 		}
 	}
 	vc.hidesBottomBarWhenPushed = YES;
@@ -776,7 +786,7 @@ static int saveRequestCnt = 0;
 	
 	UIImage *image = nil;
 	if (imageURI) {
-		image = [DashUtils loadImageResource:imageURI userDataDir:self.dashboard.account.cacheURL];
+		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentCtrl.dashboard.account.cacheURL];
 		
 		if (src == self.switchOnImageButton) {
 			if (self.switchOnColorButton.clearColor) {
@@ -924,15 +934,15 @@ static int saveRequestCnt = 0;
 	if ([self.item isKindOfClass:[DashGroupItem class]]) {
 		if (self.selGroupIdx >= 0) {
 			int i;
-			for(i = 0; i < self.dashboard.groups.count; i++) {
-				[posDisplayValues addObject:[NSString stringWithFormat:@"%d - %@",(i + 1),self.dashboard.groups[i].label ? self.dashboard.groups[i].label : @""]];
+			for(i = 0; i < self.parentCtrl.dashboard.groups.count; i++) {
+				[posDisplayValues addObject:[NSString stringWithFormat:@"%d - %@",(i + 1),self.parentCtrl.dashboard.groups[i].label ? self.parentCtrl.dashboard.groups[i].label : @""]];
 			}
 			[posDisplayValues addObject:[@(i + 1) stringValue]];
 		}
 	} else {
 		if (self.selGroupIdx >= 0) {
-			DashGroupItem *g = self.dashboard.groups[self.selGroupIdx];
-			NSArray<DashItem *> *items = [self.dashboard.groupItems objectForKey:@(g.id_)];
+			DashGroupItem *g = self.parentCtrl.dashboard.groups[self.selGroupIdx];
+			NSArray<DashItem *> *items = [self.parentCtrl.dashboard.groupItems objectForKey:@(g.id_)];
 			int i;
 			for(i = 0; i < items.count; i++) {
 				[posDisplayValues addObject:[NSString stringWithFormat:@"%d - %@",(i + 1),items[i].label ? items[i].label : @""]];
@@ -962,8 +972,8 @@ static int saveRequestCnt = 0;
 -(void)onGroupButtonClicked {
 	NSMutableArray *posDisplayValues = [NSMutableArray new];
 	if (self.selGroupIdx >= 0) {
-		for(int i = 0; i < self.dashboard.groups.count; i++) {
-			[posDisplayValues addObject:[NSString stringWithFormat:@"%d - %@",(i + 1),self.dashboard.groups[i].label ? self.dashboard.groups[i].label : @""]];
+		for(int i = 0; i < self.parentCtrl.dashboard.groups.count; i++) {
+			[posDisplayValues addObject:[NSString stringWithFormat:@"%d - %@",(i + 1),self.parentCtrl.dashboard.groups[i].label ? self.parentCtrl.dashboard.groups[i].label : @""]];
 		}
 	}
 	if (posDisplayValues.count > 0) {
@@ -972,7 +982,7 @@ static int saveRequestCnt = 0;
 			[alert addAction:[UIAlertAction actionWithTitle:posDisplayValues[i] style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 				if (self.selGroupIdx != i) {
 					self.selGroupIdx = i;
-					self.groupLabel.text = self.dashboard.groups[i].label;
+					self.groupLabel.text = self.parentCtrl.dashboard.groups[i].label;
 					self.selPosIdx = [self getNoOfItemsInGroup:i]; // last position in new group
 					self.posLabel.text = [@(self.selPosIdx + 1) stringValue];
 				}
@@ -1007,13 +1017,13 @@ static int saveRequestCnt = 0;
 -(int)getPosOfItem:(DashItem *)item groupPos:(BOOL)groupPos {
 	int pos = -1;
 	DashGroupItem *g;
-	for(int i = 0; i < self.dashboard.groups.count; i++) {
-		g = self.dashboard.groups[i];
+	for(int i = 0; i < self.parentCtrl.dashboard.groups.count; i++) {
+		g = self.parentCtrl.dashboard.groups[i];
 		if (item.id_ == g.id_) {
 			pos = i;
 			break;
 		} else {
-			NSArray<DashItem *> *items = [self.dashboard.groupItems objectForKey:@(g.id_)];
+			NSArray<DashItem *> *items = [self.parentCtrl.dashboard.groupItems objectForKey:@(g.id_)];
 			for(int j = 0; j < items.count; j++) {
 				if (items[j].id_ == item.id_) {
 					pos = (groupPos ? i : j);
@@ -1027,8 +1037,8 @@ static int saveRequestCnt = 0;
 
 -(int)getNoOfItemsInGroup:(int)groupIdx {
 	int n = 0;
-	if (groupIdx >= 0 && groupIdx < self.dashboard.groups.count) {
-		n = (int) [self.dashboard.groupItems objectForKey:@(self.dashboard.groups[groupIdx].id_)].count;
+	if (groupIdx >= 0 && groupIdx < self.parentCtrl.dashboard.groups.count) {
+		n = (int) [self.parentCtrl.dashboard.groupItems objectForKey:@(self.parentCtrl.dashboard.groups[groupIdx].id_)].count;
 	}
 	return n;
 }
@@ -1095,7 +1105,7 @@ static int saveRequestCnt = 0;
 	NSString *msg = [NSString stringWithFormat:@"%@ - %@",p1,p2];
 	cell.label.text = msg;
 	if (![Utils isEmpty:li.imageURI]) {
-		UIImage *img = [DashUtils loadImageResource:li.imageURI userDataDir:self.vc.dashboard.account.cacheURL];
+		UIImage *img = [DashUtils loadImageResource:li.imageURI userDataDir:self.vc.parentCtrl.dashboard.account.cacheURL];
 		[cell.optionImageView setImage:img];
 	} else {
 		[cell.optionImageView setImage:nil];

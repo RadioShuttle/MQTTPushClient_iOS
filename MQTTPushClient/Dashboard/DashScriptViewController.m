@@ -123,11 +123,11 @@
 	if (self.filterScriptMode) {
 		item.script_f = self.scriptTextView.text;
 		
-		jsTask = [[DashJavaScriptTask alloc]initWithItem:item message:dm version:0 account:self.parentCtrl.dashboard.account];
+		jsTask = [[DashJavaScriptTask alloc]initWithItem:item message:dm version:0 account:self.parentCtrl.parentCtrl.dashboard.account];
 	} else {
 		item.script_p = self.scriptTextView.text;
 		
-		jsTask = [[DashJavaScriptTask alloc]initWithItem:item publishData:dm version:0 account:self.parentCtrl.dashboard.account requestData:nil];
+		jsTask = [[DashJavaScriptTask alloc]initWithItem:item publishData:dm version:0 account:self.parentCtrl.parentCtrl.dashboard.account requestData:nil];
 	}
 	if (!self.operationQueue) {
 		self.operationQueue = [NSOperationQueue new];
@@ -194,7 +194,7 @@
 	if (self.filterScriptMode && ![Utils isEmpty:self.parentCtrl.item.topic_s]) {
 		DashMessage *newestMsg = nil;
 		
-		NSArray<DashMessage *> *msgs = [self.parentCtrl.dashboard.lastReceivedMsgs allValues];
+		NSArray<DashMessage *> *msgs = [self.parentCtrl.parentCtrl.dashboard.lastReceivedMsgs allValues];
 		for(DashMessage *m in msgs){
 			if ([MqttUtils topicIsMatched:self.parentCtrl.item.topic_s topic:m.topic]) {
 				if (!newestMsg || [m isNewerThan:newestMsg]) {

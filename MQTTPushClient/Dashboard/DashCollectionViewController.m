@@ -82,8 +82,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		DashEditItemViewController *vc = segue.destinationViewController;
 		vc.mode = self.argEditMode;
 		vc.item = self.argEditItem;
-		vc.dashboard = self.dashboard;
-		vc.connection = self.connection;
+		vc.parentCtrl = self;
 	}
 }
 
@@ -209,14 +208,14 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		return;
 	}
 
-	/* dashbaord request */
-
 	if (self.account.error) {
 		[self showErrorMessage:self.account.error.localizedDescription];
 	} else {
 		BOOL dashboardUpdate = NO;
 		NSString *msg;
 		NSString *response = [notif.userInfo helStringForKey:@"response"];
+
+		/* dashboardrequest */
 		if ([response isEqualToString:@"getDashboardRequest"]) {
 			uint64_t serverVersion = [[notif.userInfo helNumberForKey:@"serverVersion"] unsignedLongLongValue];
 			if (serverVersion > 0) {
@@ -226,7 +225,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				// msg = [notif.userInfo helStringForKey:@"dashboard_err"];
 				BOOL externalUpdate = self.dashboard.localVersion != 0;
 				if (externalUpdate) {
-					//TODO: save dashboard: only display message, if update was not caused by own save
 					msg = @"Dashboard has been updated.";
 				}
 				
@@ -260,10 +258,25 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				/* deliver new messages */
 				[self deliverMessages:msgsSinceDate seqNo:msgsSinceSeqNo notify:YES];
 			}
-			
+		} else {
+			/* save request (delete) */
+			uint32_t saveRequestID = [[notif.userInfo helNumberForKey:@"save_request"] unsignedIntValue];
+			//TODO:
 		}
+		
 		/* show error/info message or reset status bar*/
 		[self showErrorMessage:msg];
+	}
+}
+
+-(void)onDashboardSaved:(NSString *)dashboardJS version:(uint64_t)version {
+	NSDictionary * resultInfo = [self.dashboard setDashboard:dashboardJS version:version];
+	BOOL dashboardUpdate = [[resultInfo helNumberForKey:@"dashboard_new"] boolValue];
+	if (dashboardUpdate) {
+		/* dashboard update? deliver all messages (cached and new messages) */
+		[self deliverMessages:[NSDate dateWithTimeIntervalSince1970:0L] seqNo:0 notify:NO];
+		[self.collectionView reloadData];
+		[self showErrorMessage:@"Dashboard has been saved."];
 	}
 }
 

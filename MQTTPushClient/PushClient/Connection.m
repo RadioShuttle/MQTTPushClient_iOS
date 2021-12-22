@@ -577,11 +577,12 @@ enum ConnectionState {
 				unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 				uint64_t newVersion = [Utils charArrayToUint64:p];
 				if (newVersion == 0) {
-					//version error
-					NSMutableDictionary *errInfo = [NSMutableDictionary new];
-					[errInfo setValue:@"Version error. Quit editor to update to latest version." forKey:NSLocalizedDescriptionKey];
-					command.rawCmd.error = [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
-					
+					/* version error */
+					[resultInfo setObject:@(YES) forKey:@"invalidVersion"];
+				} else {
+					[resultInfo setObject:@(newVersion) forKey:@"serverVersion"];
+					NSString* dashboardStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+					[resultInfo setObject:dashboardStr forKey:@"dashboardJS"];
 				}
 			} else {
 				// should never occur

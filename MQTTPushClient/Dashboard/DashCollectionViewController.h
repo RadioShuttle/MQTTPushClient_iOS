@@ -33,4 +33,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusBarLabel;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *listViewButtonItem;
 
+-(void)onDashboardSaved:(NSString *)dashboardJS version:(uint64_t)version;
+
 @end

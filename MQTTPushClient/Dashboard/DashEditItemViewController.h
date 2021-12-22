@@ -10,6 +10,7 @@
 #import "Dashboard.h"
 #import "DashOptionListItem.h"
 #import "Connection.h"
+#import "DashCollectionViewController.h"
 
 @interface DashEditItemViewController : UITableViewController
 
@@ -18,8 +19,7 @@ typedef enum {Add, Edit} Mode;
 /* arguments passed by caller */
 @property Mode mode;
 @property DashItem *item;
-@property Dashboard *dashboard;
-@property Connection *connection;
+@property DashCollectionViewController *parentCtrl;
 
 /* the data before editing started */
 @property DashItem *orgItem;
