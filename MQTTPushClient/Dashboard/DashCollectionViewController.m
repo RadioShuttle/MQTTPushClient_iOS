@@ -31,6 +31,9 @@
 @property NSArray<UIBarButtonItem *> *buttonItemsFooterNonEditMode;
 @property Mode argEditMode;
 @property DashItem *argEditItem;
+
+@property UIActivityIndicatorView *progressBar;
+
 @end
 
 @implementation DashCollectionViewController
@@ -209,6 +212,12 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		}
 		return;
 	}
+	
+	/* if save/delete request, hide progress bar */
+	NSNumber *n = [notif.userInfo objectForKey:@"save_request"];
+	if (n && [n intValue] == 0) { // is this a delete request?
+		[self hideProgressBar];
+	}
 
 	if (self.account.error) {
 		[self showErrorMessage:self.account.error.localizedDescription];
@@ -304,6 +313,11 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	}
 }
 
+/* returns true, if an operation e.g. delete items is active and has not yet completed */
+-(BOOL)isOperationActive {
+	return (self.progressBar); // delete operation (=save dashboard)
+}
+
 -(void)setSelectionForObjects:(NSArray<NSNumber *> *)selectedIDS {
 	[self.selectedItems removeAllObjects];
 	
@@ -325,6 +339,29 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				}
 			}
 		}
+	}
+}
+
+- (void)showProgressBar {
+	if (!self.progressBar) {
+		self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 64, 64)];
+		self.progressBar.color = [UILabel new].textColor;
+		self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
+		[self.view addSubview:self.progressBar];
+		[self.progressBar startAnimating];
+		
+		[self.progressBar.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0.0].active = YES;
+		[self.progressBar.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor constant:0.0].active = YES;
+		
+		[self.view bringSubviewToFront:self.progressBar];
+	}
+}
+
+- (void)hideProgressBar {
+	if (self.progressBar) {
+		[self.progressBar stopAnimating];
+		[self.progressBar removeFromSuperview];
+		self.progressBar = nil;
 	}
 }
 
@@ -722,6 +759,11 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		//do not allow editing if current dashboard was created with a newer app version
 		return;
 	}
+	if ([self isOperationActive]) {
+		// do not allow add/edit whil operation active
+		[self showErrorMessage:@"Please wait until current action has been finished."];
+		return;
+	}
 	
 	self.argEditMode = mode;
 	self.argEditItem = item;
@@ -784,6 +826,12 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 }
 
 -(void)onDeleteDashItemButtonClicked {
+	if ([self isOperationActive]) {
+		// delete op is active
+		[self showErrorMessage:@"Please wait until current action has been finished."];
+		return;
+	}
+	
 	UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Delete" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
 	[alert addAction:[UIAlertAction actionWithTitle:@"Delete Selected Items" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		[self performDeletion:NO];
@@ -853,8 +901,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[userInfo setObject:[NSNumber numberWithInt:0] forKey:@"save_request"];
 
 	[self.connection saveDashboardForAccount:self.dashboard.account json:dashJson prevVersion:self.dashboard.localVersion itemID:0 userInfo:userInfo];
-	// [self showProgressBar]; //TODO:
-
+	[self showProgressBar];
 }
 
 #pragma mark <UICollectionViewDataSource>

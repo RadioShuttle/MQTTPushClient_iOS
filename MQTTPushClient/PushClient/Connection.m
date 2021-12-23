@@ -416,7 +416,6 @@ enum ConnectionState {
 				}
 			}
 		}
-		
 		[self disconnect:dashboard.account withCommand:command userInfo:resultInfo];
 	}
 	atomic_fetch_sub(&_noOfActiveDashRequests, 1);
@@ -568,7 +567,6 @@ enum ConnectionState {
 	
 	Cmd *command = [self login:account];
 	if (!command.rawCmd.error) {
-		
 		//TODO: manage resources (update on server, download, ...)
 		
 		[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
