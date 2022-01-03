@@ -16,7 +16,7 @@
 
 -(void)onBind:(DashItem *)item context:(Dashboard *)context label:(UILabel *)label selected:(BOOL)selected {
 
-	[label setText:item.label];
+	[label setText:[Utils isEmpty:item.label] ? @" " : item.label];
 
 	BOOL error1 = ![Utils isEmpty:item.error1];
 	BOOL error2 = ![Utils isEmpty:item.error2];

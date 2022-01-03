@@ -35,6 +35,11 @@ enum ConnectionState {
 @property atomic_int noOfActiveDashRequests;
 @end
 
+@interface FileInfo : NSObject
+@property NSString *name;
+@property uint64_t mdate;
+@end
+
 @implementation Connection
 
 - (instancetype)init {
@@ -568,28 +573,50 @@ enum ConnectionState {
 	Cmd *command = [self login:account];
 	if (!command.rawCmd.error) {
 		//TODO: manage resources (update on server, download, ...)
-		
-		[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
+		[command enumResources:0 type:DASH512_PNG];
 		if (!command.rawCmd.error) {
-			//TODO: handle MQTT error (e.g. subscribe dashboard topic error)
-			if (command.rawCmd.rc == RC_OK) {
-				unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
-				uint64_t newVersion = [Utils charArrayToUint64:p];
-				if (newVersion == 0) {
-					/* version error */
-					[resultInfo setObject:@(YES) forKey:@"invalidVersion"];
+			unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+			int noOfResources = (p[0] << 8) + p[1];
+			p += 2;
+			
+			int count;
+			NSMutableArray<FileInfo *> *serverResourceList = [NSMutableArray new];
+			FileInfo *fileInfo;
+			for(int i = 0; i < noOfResources; i++) {
+				count = (p[0] << 8) + p[1];
+				p += 2;
+				fileInfo = [FileInfo new];
+				fileInfo.name = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
+				// NSLog(@"filename: %@", fileInfo.name);
+				p += count;
+				fileInfo.mdate = [Utils charArrayToUint64:p];
+				p += 8;
+				[serverResourceList addObject:fileInfo];
+			}
+
+			[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
+			if (!command.rawCmd.error) {
+				//TODO: handle MQTT error (e.g. subscribe dashboard topic error)
+				if (command.rawCmd.rc == RC_OK) {
+					unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+					uint64_t newVersion = [Utils charArrayToUint64:p];
+					if (newVersion == 0) {
+						/* version error */
+						[resultInfo setObject:@(YES) forKey:@"invalidVersion"];
+					} else {
+						[resultInfo setObject:@(newVersion) forKey:@"serverVersion"];
+						NSString* dashboardStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+						[resultInfo setObject:dashboardStr forKey:@"dashboardJS"];
+					}
 				} else {
-					[resultInfo setObject:@(newVersion) forKey:@"serverVersion"];
-					NSString* dashboardStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-					[resultInfo setObject:dashboardStr forKey:@"dashboardJS"];
+					// should never occur
+					NSMutableDictionary *errInfo = [NSMutableDictionary new];
+					[errInfo setValue:@"Saving dashboard failed (invalid args)." forKey:NSLocalizedDescriptionKey];
+					command.rawCmd.error= [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
 				}
-			} else {
-				// should never occur
-				NSMutableDictionary *errInfo = [NSMutableDictionary new];
-				[errInfo setValue:@"Saving dashboard failed (invalid args)." forKey:NSLocalizedDescriptionKey];
-				command.rawCmd.error= [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
 			}
 		}
+		
 	}
 	[self disconnect:account withCommand:command userInfo:resultInfo];
 }
@@ -685,4 +712,7 @@ enum ConnectionState {
 	return atomic_load(&_noOfActiveDashRequests);
 }
 
+@end
+
+@implementation FileInfo
 @end

@@ -570,6 +570,17 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)enumResources:(int)seqNo type:(NSString *)type {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"ENUM RESOURCES request");
+	NSMutableData *data = [self dataFromString:type encoding:NSUTF8StringEncoding];
+	[self writeCommand:CMD_ENUM_RESOURCES seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	return self.rawCmd;
+}
+
 # pragma - socket delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {
