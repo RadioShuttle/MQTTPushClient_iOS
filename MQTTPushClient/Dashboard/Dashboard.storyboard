@@ -10,6 +10,106 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
+        <!--Dash Manage Images-->
+        <scene sceneID="mjd-pv-WXE">
+            <objects>
+                <collectionViewController storyboardIdentifier="ManageImages" title="Manage Images" id="tin-IO-ES3" userLabel="Dash Manage Images" customClass="DashManageImagesController" sceneMemberID="viewController">
+                    <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" id="PfC-Zr-wR4">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="mYI-tM-IMT">
+                            <size key="itemSize" width="100" height="100"/>
+                            <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                            <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                            <inset key="sectionInset" minX="16" minY="4" maxX="16" maxY="16"/>
+                        </collectionViewFlowLayout>
+                        <cells>
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="imageCell" id="nIl-sw-FXT" customClass="DashImageChooserCell">
+                                <rect key="frame" x="16" y="4" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
+                                    <rect key="frame" x="0.0" y="0.0" width="100" height="100"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="nHa-m5-85T">
+                                            <rect key="frame" x="-5" y="0.0" width="60" height="60"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="60" id="Wjj-RE-Y2U" userLabel="width = 60"/>
+                                                <constraint firstAttribute="height" constant="60" id="oL8-jg-WgI" userLabel="height = 60"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7gy-HH-LKv">
+                                            <rect key="frame" x="0.0" y="64" width="50" height="17"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                </view>
+                                <constraints>
+                                    <constraint firstItem="7gy-HH-LKv" firstAttribute="top" secondItem="nHa-m5-85T" secondAttribute="bottom" constant="4" id="1q7-Nw-h5Q"/>
+                                    <constraint firstItem="nHa-m5-85T" firstAttribute="centerX" secondItem="nIl-sw-FXT" secondAttribute="centerX" id="F3a-gz-uiC"/>
+                                    <constraint firstItem="nHa-m5-85T" firstAttribute="top" secondItem="nIl-sw-FXT" secondAttribute="top" id="IKs-Vz-nZU"/>
+                                    <constraint firstItem="7gy-HH-LKv" firstAttribute="leading" secondItem="nIl-sw-FXT" secondAttribute="leading" id="cMu-Lu-zHa"/>
+                                    <constraint firstAttribute="trailing" secondItem="7gy-HH-LKv" secondAttribute="trailing" id="quc-e5-pFT"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="imageView" destination="nHa-m5-85T" id="412-ip-KDm"/>
+                                    <outlet property="label" destination="7gy-HH-LKv" id="iVJ-y6-C9V"/>
+                                </connections>
+                            </collectionViewCell>
+                        </cells>
+                        <connections>
+                            <outlet property="dataSource" destination="tin-IO-ES3" id="7hx-d4-iKn"/>
+                            <outlet property="delegate" destination="tin-IO-ES3" id="uXj-KR-nnq"/>
+                        </connections>
+                    </collectionView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" id="OS0-V5-qxv">
+                            <view key="customView" contentMode="scaleToFill" id="Mrx-FL-4pU">
+                                <rect key="frame" x="20" y="11" width="283" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZ0-sP-olm">
+                                        <rect key="frame" x="0.0" y="0.0" width="283" height="32"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="PZ0-sP-olm" firstAttribute="leading" secondItem="Mrx-FL-4pU" secondAttribute="leading" id="Hfl-gN-RF9"/>
+                                    <constraint firstItem="PZ0-sP-olm" firstAttribute="top" secondItem="Mrx-FL-4pU" secondAttribute="top" id="OXS-aN-Brs"/>
+                                    <constraint firstAttribute="bottom" secondItem="PZ0-sP-olm" secondAttribute="bottom" id="bdb-y4-ma1"/>
+                                    <constraint firstAttribute="trailing" secondItem="PZ0-sP-olm" secondAttribute="trailing" id="jc0-7g-qNK"/>
+                                </constraints>
+                            </view>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="89V-8M-ygP"/>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="Manage Images" id="RZC-6u-jBn">
+                        <barButtonItem key="leftBarButtonItem" title="Cancel" id="Tlz-4x-AWe"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="More" image="More" id="ke9-1A-PAb"/>
+                            <barButtonItem title="Save" image="Save" id="CRK-pT-Uxd"/>
+                        </rightBarButtonItems>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="cancelButton" destination="Tlz-4x-AWe" id="aM6-4D-Yfe"/>
+                        <outlet property="moreButton" destination="ke9-1A-PAb" id="4Wk-A5-yZh"/>
+                        <outlet property="saveButton" destination="CRK-pT-Uxd" id="ESd-lC-D26"/>
+                        <outlet property="statusBarLabel" destination="PZ0-sP-olm" id="9UN-dQ-Nyt"/>
+                        <segue destination="Pk1-8P-MqU" kind="unwind" identifier="IDExitManageImages" unwindAction="prepareForUnwind:" id="VVw-FE-7Td"/>
+                    </connections>
+                </collectionViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="B2K-6D-TRG" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="Pk1-8P-MqU" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="683" y="-806"/>
+        </scene>
         <!--MessageList-->
         <scene sceneID="oBh-aC-WLI">
             <objects>
@@ -3905,7 +4005,7 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="qGM-rT-vMn" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="da2-Gs-Vz5" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="822" y="-826"/>
+            <point key="canvasLocation" x="1361" y="-806"/>
         </scene>
         <!--Dash Edit JavaScript-->
         <scene sceneID="uB1-w4-DYY">

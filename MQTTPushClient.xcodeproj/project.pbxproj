@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		2102CE692757674700A428A6 /* DashScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2102CE682757674700A428A6 /* DashScriptViewController.m */; };
 		210B9A3C26E653740071E876 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 210B9A3B26E653740071E876 /* Dashboard.storyboard */; };
+		2111003D2783073400A5C554 /* DashManageImagesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2111003C2783073400A5C554 /* DashManageImagesController.m */; };
 		2111DDBA2733CBC6002BA4EF /* utils.js in Resources */ = {isa = PBXBuildFile; fileRef = 2111DDB92733CBC6002BA4EF /* utils.js */; };
 		211394632744F24900BA3B6E /* DashCircleViewButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 211394622744F24900BA3B6E /* DashCircleViewButton.m */; };
 		211C470F273EB2FD00C9350A /* DashEditItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 211C470E273EB2FD00C9350A /* DashEditItemViewController.m */; };
@@ -238,6 +239,8 @@
 		2102CE672757674700A428A6 /* DashScriptViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashScriptViewController.h; sourceTree = "<group>"; };
 		2102CE682757674700A428A6 /* DashScriptViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashScriptViewController.m; sourceTree = "<group>"; };
 		210B9A3B26E653740071E876 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		2111003B2783073400A5C554 /* DashManageImagesController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashManageImagesController.h; sourceTree = "<group>"; };
+		2111003C2783073400A5C554 /* DashManageImagesController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashManageImagesController.m; sourceTree = "<group>"; };
 		2111DDB92733CBC6002BA4EF /* utils.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = utils.js; sourceTree = "<group>"; };
 		211394612744F24900BA3B6E /* DashCircleViewButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DashCircleViewButton.h; sourceTree = "<group>"; };
 		211394622744F24900BA3B6E /* DashCircleViewButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DashCircleViewButton.m; sourceTree = "<group>"; };
@@ -590,6 +593,8 @@
 				21FE473C272C03600067F60A /* DashPublishController.h */,
 				211C470D273EB2FD00C9350A /* DashEditItemViewController.h */,
 				211C470E273EB2FD00C9350A /* DashEditItemViewController.m */,
+				2111003B2783073400A5C554 /* DashManageImagesController.h */,
+				2111003C2783073400A5C554 /* DashManageImagesController.m */,
 				21F5BC052762025E00903694 /* DashImageChooserTab.h */,
 				21F5BC062762025E00903694 /* DashImageChooserTab.m */,
 				21E8E17C27550D2C00749832 /* DashColorChooser.h */,
@@ -1199,6 +1204,7 @@
 				21ACFBAE26F4A3E300737875 /* DashSliderItem.m in Sources */,
 				21EC25B926F9D5BB003CD109 /* DashCollectionFlowLayout.m in Sources */,
 				21ACFBAB26F4996E00737875 /* DashGroupItem.m in Sources */,
+				2111003D2783073400A5C554 /* DashManageImagesController.m in Sources */,
 				2171418126E7573100BD7969 /* DashCollectionViewController.m in Sources */,
 				84D6352E2243B75C0024E5A2 /* DynamicButton.m in Sources */,
 				2A2859D12142CC7000CFA5DC /* Cmd.m in Sources */,

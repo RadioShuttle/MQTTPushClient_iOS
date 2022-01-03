@@ -20,6 +20,7 @@
 #import "DashOptionItem.h"
 #import "DashCustomItemViewCell.h"
 #import "DashEditItemViewController.h"
+#import "DashManageImagesController.h"
 
 #import "DashJavaScriptTask.h"
 
@@ -641,7 +642,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[alert addAction:[UIAlertAction actionWithTitle:@"Edit Dashboard" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onEditMenuItemClicked];
 	}]];
 
-	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onManageImagesClicked];
 	}]];
 	[alert addAction:[UIAlertAction actionWithTitle:@"Reload" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onReloadMenuItemClicked];
 	}]];
@@ -653,6 +654,17 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
 	[self presentViewController:alert animated:TRUE completion:nil];
+}
+
+-(void)onManageImagesClicked {
+	UIStoryboard* storyboard = [UIStoryboard storyboardWithName:@"Dashboard" bundle:nil];
+	DashManageImagesController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ManageImages"];
+
+	/* set args */
+	vc.context = self.dashboard;
+	//vc.parentCtrl = self;
+	
+	[self.navigationController pushViewController:vc animated:YES];
 }
 
 /* this function is called from action sheet edit - so edit mode is always turned on */
