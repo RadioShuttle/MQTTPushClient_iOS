@@ -14,10 +14,12 @@
 
 /* valid resource names */
 @property NSMutableArray<NSString *> *resoureNames;
+/* locked resource uris */
 @property NSMutableSet<NSString *> *lockedResources;
+@property NSSet<NSString *> *lockedResourcesOrg;
 
-/* row -> UIImage|NSOperation: if value is an NSOperation object, the loading is currently in progress */
-@property NSMutableDictionary<NSNumber *, NSObject *> *resourceMap;
+/* resource uri -> UIImage|NSOperation: if value is an NSOperation object, the loading is currently in progress */
+@property NSMutableDictionary<NSString *, NSObject *> *resourceMap;
 @property NSOperationQueue* operationQueue;
 
 @end
@@ -35,6 +37,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	if (self.context.resources) {
 		[self.lockedResources addObjectsFromArray:self.context.resources];
 	}
+	self.lockedResourcesOrg = [self.lockedResources copy];
 	
 	self.resourceMap = [NSMutableDictionary new];
 	self.operationQueue = [[NSOperationQueue alloc] init];
@@ -53,6 +56,16 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	NSMutableArray *toolbarItems = [self.toolbarItems mutableCopy];
 	[toolbarItems addObject:self.editButtonItem];
 	self.toolbarItems = toolbarItems;
+	
+}
+
+/* called after an import operation */
+-(void)reload {
+	/* reread resource names */
+	self.resoureNames = [NSMutableArray new];
+	[self addExternalResourceNames:self.resoureNames];
+	
+	[self.collectionView reloadData];
 	
 }
 
@@ -81,7 +94,8 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	DashImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierImage forIndexPath:indexPath];
 	UIImage *img = nil;
 	
-	id resource = self.resourceMap[@(indexPath.row)];
+	NSString *key = [self resourceURIForIndexPath:indexPath];
+	id resource = self.resourceMap[key];
 	if ([resource isKindOfClass:[NSInvocationOperation class]]) {
 		/* loading in progress but no result yet */
 		img = nil;
@@ -99,17 +113,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	cell.imageView.image = img;
 	cell.label.text = self.resoureNames[indexPath.row];
 	
-	NSString *type;
-	NSString *fileName;
-	NSString *uri;
-	if ([cell.label.text hasPrefix:@"tmp/"]) {
-		type = @"imported";
-		fileName = [cell.label.text substringFromIndex:4];
-	} else {
-		type = @"user";
-		fileName = cell.label.text;
-	}
-	uri = [DashUtils buildResourceURI:type resourceName:fileName];
+	NSString *uri = [self resourceURIForIndexPath:indexPath];
 	
 	if ([self.lockedResources containsObject:uri]) {
 		[cell showLock];
@@ -124,11 +128,13 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 
 -(void)collectionView:(UICollectionView *)collectionView prefetchItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
 	NSInvocationOperation *op;
+	NSString *key;
 	for(NSIndexPath *p in indexPaths) {
-		id resource = self.resourceMap[@(p.row)];
+		key = [self resourceURIForIndexPath:p];
+		id resource = self.resourceMap[key];
 		if (!resource) {
 			op = [[NSInvocationOperation alloc]initWithTarget:self selector:@selector(loadImage:) object:p];
-			[self.resourceMap setObject:op forKey:@(p.row)];
+			[self.resourceMap setObject:op forKey:key];
 			[self.operationQueue addOperation:op];
 		}
 	}
@@ -136,20 +142,38 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 
 - (void)collectionView:(UICollectionView *)collectionView cancelPrefetchingForItemsAtIndexPaths:(NSArray<NSIndexPath *> *)indexPaths {
 	NSObject *val;
+	NSString *key;
 	for(NSIndexPath *p in indexPaths) {
-		val = self.resourceMap[@(p.row)];
+		key = [self resourceURIForIndexPath:p];
+		val = self.resourceMap[key];
 		if ([val isKindOfClass:[NSOperation class]]) {
 			[((NSOperation *) val) cancel];
-			[self.resourceMap removeObjectForKey:@(p.row)];
+			[self.resourceMap removeObjectForKey:key];
 		}
 	}
 }
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	if (self.isEditing) {
+		NSString *uri = [self resourceURIForIndexPath:indexPath];
+		if (uri) {
+			if ([self.lockedResources containsObject:uri]) {
+				[self.lockedResources removeObject:uri];
+			} else {
+				[self.lockedResources addObject:uri];
+			}
+			NSMutableArray *indexPathArr = [NSMutableArray new];
+			[indexPathArr addObject:indexPath];
+			[self.collectionView reloadItemsAtIndexPaths:indexPathArr];
+		}
+	}
+}
+
+-(NSString *)resourceURIForIndexPath:(NSIndexPath *)indexPath {
+	NSString* uri;
+	if (indexPath && indexPath.row < self.resoureNames.count) {
 		NSString *selectedResource = self.resoureNames[indexPath.row];
 		NSString *type;
 		NSString *fileName;
-		NSString *uri;
 		if ([selectedResource hasPrefix:@"tmp/"]) {
 			type = @"imported";
 			fileName = [selectedResource substringFromIndex:4];
@@ -158,15 +182,8 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 			fileName = selectedResource;
 		}
 		uri = [DashUtils buildResourceURI:type resourceName:fileName];
-		if ([self.lockedResources containsObject:uri]) {
-			[self.lockedResources removeObject:uri];
-		} else {
-			[self.lockedResources addObject:uri];
-		}
-		NSMutableArray *indexPathArr = [NSMutableArray new];
-		[indexPathArr addObject:indexPath];
-		[self.collectionView reloadItemsAtIndexPaths:indexPathArr];
 	}
+	return uri;
 }
 
 -(void)loadImage:(NSIndexPath *)indexPath {
@@ -183,49 +200,29 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	
 	NSMutableDictionary *args = [NSMutableDictionary new];
 	[args setObject:img forKey:@"image"];
-	[args setObject:indexPath forKey:@"indexPath"];
+	[args setObject:uri forKey:@"uri"];
 	
 	[self performSelectorOnMainThread:@selector(notifyUpdate:) withObject:args waitUntilDone:NO];
 }
 
 -(void)notifyUpdate:(NSDictionary *)data {
-	NSIndexPath *idx = data[@"indexPath"];
-	[self.resourceMap setObject:data[@"image"] forKey:@(idx.row)];
+	NSString *key = data[@"uri"];
+	[self.resourceMap setObject:data[@"image"] forKey:key];
 	NSMutableArray *args = [NSMutableArray new];
-	[args addObject:idx];
-	[self.collectionView reloadItemsAtIndexPaths:args];
+	NSString *uri;
+	NSIndexPath *idx;
+	for(int i = 0; i < self.resoureNames.count; i++) {
+		idx = [NSIndexPath indexPathForItem:i inSection:0];
+		uri = [self resourceURIForIndexPath:idx];
+		if ([key isEqualToString:uri]) {
+			[args addObject:idx];
+			[self.collectionView reloadItemsAtIndexPaths:args];
+			break;
+		}
+	}
 }
 
 #pragma mark <UICollectionViewDelegate>
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 -(void)addExternalResourceNames:(NSMutableArray *) res {
 	//TODO: consider moving to DashUtils
@@ -259,8 +256,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 }
 
 -(BOOL)hasModified {
-	//TODO:
-	return NO;
+	return ![self.lockedResourcesOrg isEqualToSet:self.lockedResources];
 }
 
 -(void)onCancelButtonClicked {
