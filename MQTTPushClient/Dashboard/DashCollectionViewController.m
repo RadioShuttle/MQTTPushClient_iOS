@@ -661,8 +661,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	DashManageImagesController *vc = [storyboard instantiateViewControllerWithIdentifier:@"ManageImages"];
 
 	/* set args */
-	vc.context = self.dashboard;
-	//vc.parentCtrl = self;
+	vc.parentCtrl = self;
 	
 	[self.navigationController pushViewController:vc animated:YES];
 }

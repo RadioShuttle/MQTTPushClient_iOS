@@ -6,6 +6,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Dashboard.h"
+#import "DashCollectionViewController.h"
 
 @interface DashManageImagesController : UICollectionViewController <UICollectionViewDataSourcePrefetching>
 
@@ -16,6 +17,6 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusBarLabel;
 
 /* args */
-@property Dashboard *context;
+@property DashCollectionViewController *parentCtrl;
 
 @end

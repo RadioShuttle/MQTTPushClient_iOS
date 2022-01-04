@@ -7,8 +7,10 @@
 #import "DashManageImagesController.h"
 #import "DashConsts.h"
 #import "NSString+HELUtils.h"
+#import "NSDictionary+HelSafeAccessors.h"
 #import "DashImageCell.h"
 #import "DashUtils.h"
+#import "Utils.h"
 
 @interface DashManageImagesController ()
 
@@ -22,6 +24,11 @@
 @property NSMutableDictionary<NSString *, NSObject *> *resourceMap;
 @property NSOperationQueue* operationQueue;
 
+@property uint64_t dashboardVersion;
+@property uint32_t saveRequestID;
+@property UIActivityIndicatorView *progressBar;
+@property NSTimer *statusMsgTimer;
+
 @end
 
 @implementation DashManageImagesController
@@ -34,8 +41,8 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	self.resoureNames = [NSMutableArray new];
 	[self addExternalResourceNames:self.resoureNames];
 	self.lockedResources = [NSMutableSet new];
-	if (self.context.resources) {
-		[self.lockedResources addObjectsFromArray:self.context.resources];
+	if (self.parentCtrl.dashboard.resources) {
+		[self.lockedResources addObjectsFromArray:self.parentCtrl.dashboard.resources];
 	}
 	self.lockedResourcesOrg = [self.lockedResources copy];
 	
@@ -56,6 +63,9 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	NSMutableArray *toolbarItems = [self.toolbarItems mutableCopy];
 	[toolbarItems addObject:self.editButtonItem];
 	self.toolbarItems = toolbarItems;
+	
+	self.dashboardVersion = self.parentCtrl.dashboard.localVersion;
+	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSaveRequestFinished:) name:@"ServerUpdateNotification" object:self.parentCtrl.connection];
 	
 }
 
@@ -196,7 +206,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 		uri = [DashUtils buildResourceURI:@"user" resourceName:resourceName];
 	}
 	
-	UIImage *img = [DashUtils loadImageResource:uri userDataDir:self.context.account.cacheURL];
+	UIImage *img = [DashUtils loadImageResource:uri userDataDir:self.parentCtrl.dashboard.account.cacheURL];
 	
 	NSMutableDictionary *args = [NSMutableDictionary new];
 	[args setObject:img forKey:@"image"];
@@ -227,7 +237,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 -(void)addExternalResourceNames:(NSMutableArray *) res {
 	//TODO: consider moving to DashUtils
 	NSFileManager *fm = [NSFileManager defaultManager];
-	NSURL* dir = [self.context.account.cacheURL URLByAppendingPathComponent:LOCAL_USER_FILES_DIR isDirectory:YES];
+	NSURL* dir = [self.parentCtrl.dashboard.account.cacheURL URLByAppendingPathComponent:LOCAL_USER_FILES_DIR isDirectory:YES];
 	NSDirectoryEnumerator *dirEnum = [fm enumeratorAtURL:dir includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsSubdirectoryDescendants errorHandler:nil];
 	
 	NSMutableArray *filenames = [NSMutableArray new];
@@ -243,7 +253,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	
 	/* imported files */
 	[filenames removeAllObjects];
-	NSURL* importDir = [self.context.account.cacheURL URLByAppendingPathComponent:LOCAL_IMPORTED_FILES_DIR isDirectory:YES];
+	NSURL* importDir = [self.parentCtrl.dashboard.account.cacheURL URLByAppendingPathComponent:LOCAL_IMPORTED_FILES_DIR isDirectory:YES];
 	dirEnum = [fm enumeratorAtURL:importDir includingPropertiesForKeys:nil options:NSDirectoryEnumerationSkipsSubdirectoryDescendants errorHandler:nil];
 	while ((file = [dirEnum nextObject])) {
 		if ([[file pathExtension] isEqualToString:DASH512_PNG]) {
@@ -273,7 +283,51 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 }
 
 -(void)onSaveButtonClicked {
+	if (self.saveRequestID > 0) {
+		[self setStatusMessage:@"A save operation is currently in progress." clearAfterDelay:YES];
+		return;
+	} else if (self.dashboardVersion != self.parentCtrl.dashboard.localVersion) {
+		[self setStatusMessage:@"Version error. Quit the editor to update to the latest version." clearAfterDelay:NO];
+		return;
+	}
 	
+	if (![self hasModified]) {
+		[self setStatusMessage:@"Data was not modified." clearAfterDelay:YES];
+	} else {
+
+ 		/* prepare data for saving: clone dashboard */
+		NSMutableArray<DashGroupItem *> *groups = [self.parentCtrl.dashboard.groups mutableCopy];
+		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [self.parentCtrl.dashboard.groupItems mutableCopy];
+		/* item values may have changed by script, so get the original item */
+		for(int i = 0; i < groups.count; i++) {
+			groups[i] = (DashGroupItem *) [self.parentCtrl.dashboard getUnmodifiedItemForID:groups[i].id_];
+			NSMutableArray<DashItem *> *items = [[groupItems objectForKey:@(groups[i].id_)] mutableCopy];
+			[groupItems setObject:items forKey:@(groups[i].id_)];
+			for(int j = 0; j < items.count; j++) {
+				items[j] = [self.parentCtrl.dashboard getUnmodifiedItemForID:items[j].id_];
+			}
+		}
+		
+		/* prepare data to JSON */
+		NSMutableDictionary *dashJson = [Dashboard itemsToJSON:groups items:groupItems];
+		[dashJson setObject:@(DASHBOARD_PROTOCOL_VERSION) forKey:@"version"];
+		
+		/* add locked resources */
+		NSMutableArray *lockedResources = [NSMutableArray new];
+		for(NSString *r in self.lockedResources) {
+			if (![Utils isEmpty:r]) {
+				[lockedResources addObject:r];
+			}
+		}
+		[dashJson setObject:lockedResources forKey:@"resources"];
+
+		NSMutableDictionary *userInfo = [NSMutableDictionary new];
+		self.saveRequestID = ++self.parentCtrl.saveRequestCnt;
+		[userInfo setObject:[NSNumber numberWithInt:self.saveRequestID] forKey:@"save_request"];
+		
+		[self.parentCtrl.connection saveDashboardForAccount:self.parentCtrl.dashboard.account json:dashJson prevVersion:self.parentCtrl.dashboard.localVersion itemID:0 userInfo:userInfo];
+		[self showProgressBar];
+	}
 }
 
 -(void)onMoreButtonClicked {
@@ -289,6 +343,63 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
 	[self presentViewController:alert animated:TRUE completion:nil];
 
+}
+
+- (void)onSaveRequestFinished:(NSNotification *)notif {
+	uint32_t saveRequestID = [[notif.userInfo helNumberForKey:@"save_request"] unsignedIntValue];
+	if (saveRequestID > 0 && self.saveRequestID == saveRequestID) {
+		self.saveRequestID = 0;
+		[self hideProgressBar];
+		
+		if (self.parentCtrl.dashboard.account.error) {
+			[self setStatusMessage:self.parentCtrl.dashboard.account.error.localizedDescription clearAfterDelay:NO];
+		} else {
+			BOOL versionError = [[notif.userInfo helNumberForKey:@"invalidVersion"] boolValue];
+			if (versionError) {
+				[self setStatusMessage:@"Version error. Quit editor to update to latest version." clearAfterDelay:NO];
+			} else {
+				uint64_t newVersion = [[notif.userInfo helNumberForKey:@"serverVersion"] unsignedLongLongValue];
+				NSString *newDashboard = [notif.userInfo helStringForKey:@"dashboardJS"];
+				if (newVersion > 0 && newDashboard) {
+					[self.parentCtrl onDashboardSaved:newDashboard version:newVersion];
+				}
+				[self.navigationController popViewControllerAnimated:YES];
+			}
+		}
+	}
+}
+
+- (void)showProgressBar {
+	if (!self.progressBar) {
+		self.progressBar = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 64, 64)];
+		self.progressBar.color = [UILabel new].textColor;
+		self.progressBar.translatesAutoresizingMaskIntoConstraints = NO;
+		[self.view addSubview:self.progressBar];
+		[self.progressBar startAnimating];
+		
+		[self.progressBar.centerXAnchor constraintEqualToAnchor:self.view.centerXAnchor constant:0.0].active = YES;
+		[self.progressBar.centerYAnchor constraintEqualToAnchor:self.view.centerYAnchor constant:0.0].active = YES;
+		
+		[self.view bringSubviewToFront:self.progressBar];
+	}
+}
+
+- (void)hideProgressBar {
+	if (self.progressBar) {
+		[self.progressBar stopAnimating];
+		[self.progressBar removeFromSuperview];
+		self.progressBar = nil;
+	}
+}
+
+-(void)setStatusMessage:(NSString *) msg clearAfterDelay:(BOOL)clearAfterDelay {
+	if (self.statusMsgTimer) {
+		[self.statusMsgTimer invalidate];
+	}
+	self.statusBarLabel.text = msg;
+	if (clearAfterDelay) {
+		self.statusMsgTimer = [NSTimer scheduledTimerWithTimeInterval:5 repeats:NO block:^(NSTimer * _Nonnull timer){self.statusBarLabel.text = nil; }];
+	}
 }
 
 -(void)onImportButtonClicked {
