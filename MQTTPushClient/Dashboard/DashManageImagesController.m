@@ -7,13 +7,15 @@
 #import "DashManageImagesController.h"
 #import "DashConsts.h"
 #import "NSString+HELUtils.h"
-#import "DashImageChooserTab.h"
+#import "DashImageCell.h"
 #import "DashUtils.h"
 
 @interface DashManageImagesController ()
 
 /* valid resource names */
 @property NSMutableArray<NSString *> *resoureNames;
+@property NSMutableSet<NSString *> *lockedResources;
+
 /* row -> UIImage|NSOperation: if value is an NSOperation object, the loading is currently in progress */
 @property NSMutableDictionary<NSNumber *, NSObject *> *resourceMap;
 @property NSOperationQueue* operationQueue;
@@ -29,6 +31,11 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 
 	self.resoureNames = [NSMutableArray new];
 	[self addExternalResourceNames:self.resoureNames];
+	self.lockedResources = [NSMutableSet new];
+	if (self.context.resources) {
+		[self.lockedResources addObjectsFromArray:self.context.resources];
+	}
+	
 	self.resourceMap = [NSMutableDictionary new];
 	self.operationQueue = [[NSOperationQueue alloc] init];
 	self.operationQueue.maxConcurrentOperationCount = 2;
@@ -71,7 +78,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-	DashImageChooserCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierImage forIndexPath:indexPath];
+	DashImageCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierImage forIndexPath:indexPath];
 	UIImage *img = nil;
 	
 	id resource = self.resourceMap[@(indexPath.row)];
@@ -91,6 +98,24 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	
 	cell.imageView.image = img;
 	cell.label.text = self.resoureNames[indexPath.row];
+	
+	NSString *type;
+	NSString *fileName;
+	NSString *uri;
+	if ([cell.label.text hasPrefix:@"tmp/"]) {
+		type = @"imported";
+		fileName = [cell.label.text substringFromIndex:4];
+	} else {
+		type = @"user";
+		fileName = cell.label.text;
+	}
+	uri = [DashUtils buildResourceURI:type resourceName:fileName];
+	
+	if ([self.lockedResources containsObject:uri]) {
+		[cell showLock];
+	} else {
+		[cell hideLock];
+	}
 
     return cell;
 }
@@ -117,6 +142,30 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 			[((NSOperation *) val) cancel];
 			[self.resourceMap removeObjectForKey:@(p.row)];
 		}
+	}
+}
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
+	if (self.isEditing) {
+		NSString *selectedResource = self.resoureNames[indexPath.row];
+		NSString *type;
+		NSString *fileName;
+		NSString *uri;
+		if ([selectedResource hasPrefix:@"tmp/"]) {
+			type = @"imported";
+			fileName = [selectedResource substringFromIndex:4];
+		} else {
+			type = @"user";
+			fileName = selectedResource;
+		}
+		uri = [DashUtils buildResourceURI:type resourceName:fileName];
+		if ([self.lockedResources containsObject:uri]) {
+			[self.lockedResources removeObject:uri];
+		} else {
+			[self.lockedResources addObject:uri];
+		}
+		NSMutableArray *indexPathArr = [NSMutableArray new];
+		[indexPathArr addObject:indexPath];
+		[self.collectionView reloadItemsAtIndexPaths:indexPathArr];
 	}
 }
 

@@ -140,6 +140,7 @@
 		21F5BC072762025E00903694 /* DashImageChooserTab.m in Sources */ = {isa = PBXBuildFile; fileRef = 21F5BC062762025E00903694 /* DashImageChooserTab.m */; };
 		21FC4D8626FC73700013F09D /* DashMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FC4D8526FC73700013F09D /* DashMessage.m */; };
 		21FCE9692701D01B00DBCA42 /* DashCircleBackroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */; };
+		21FE30A12784375500990506 /* DashImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 21FE30A02784375500990506 /* DashImageCell.m */; };
 		2A02D7FD218B4EFA005E6934 /* TopicsListTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */; };
 		2A0E8DF3218332780080DF12 /* AddTopicTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A0E8DF2218332780080DF12 /* AddTopicTableViewController.m */; };
 		2A197D832195810300CDF015 /* PrivacyPolicyTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A197D822195810300CDF015 /* PrivacyPolicyTableViewController.m */; };
@@ -415,6 +416,8 @@
 		21FC4D8526FC73700013F09D /* DashMessage.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashMessage.m; sourceTree = "<group>"; };
 		21FCE9672701D01B00DBCA42 /* DashCircleBackroundView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashCircleBackroundView.h; sourceTree = "<group>"; };
 		21FCE9682701D01B00DBCA42 /* DashCircleBackroundView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashCircleBackroundView.m; sourceTree = "<group>"; };
+		21FE309F2784375500990506 /* DashImageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashImageCell.h; sourceTree = "<group>"; };
+		21FE30A02784375500990506 /* DashImageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashImageCell.m; sourceTree = "<group>"; };
 		21FE473C272C03600067F60A /* DashPublishController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashPublishController.h; sourceTree = "<group>"; };
 		2A02D7FB218B4EFA005E6934 /* TopicsListTableViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TopicsListTableViewCell.h; sourceTree = "<group>"; };
 		2A02D7FC218B4EFA005E6934 /* TopicsListTableViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TopicsListTableViewCell.m; sourceTree = "<group>"; };
@@ -597,6 +600,8 @@
 				2111003C2783073400A5C554 /* DashManageImagesController.m */,
 				21F5BC052762025E00903694 /* DashImageChooserTab.h */,
 				21F5BC062762025E00903694 /* DashImageChooserTab.m */,
+				21FE309F2784375500990506 /* DashImageCell.h */,
+				21FE30A02784375500990506 /* DashImageCell.m */,
 				21E8E17C27550D2C00749832 /* DashColorChooser.h */,
 				21E8E17D27550D2C00749832 /* DashColorChooser.m */,
 				21E8E17F2755291D00749832 /* DashColorCell.h */,
@@ -1238,6 +1243,7 @@
 				84B49950217F5B720016F9CB /* CDMessage+CoreDataClass.m in Sources */,
 				2ADFE5682166286600FB19E4 /* MessageDataHandler.m in Sources */,
 				847874EC2177777B0059881B /* NSDictionary+HelSafeAccessors.m in Sources */,
+				21FE30A12784375500990506 /* DashImageCell.m in Sources */,
 				21EC25E026F9D779003CD109 /* DashGroupItemViewCell.m in Sources */,
 				2AEB225C2237E959008E2BC0 /* JavaScriptFilter.m in Sources */,
 				843578EE21AFF11F00F5B2F2 /* NotificationQueue.m in Sources */,

@@ -10,6 +10,8 @@
 @interface DashCircleBackroundView : UIView
 - (instancetype)initWithColor:(UIColor*) color;
 @property UIColor *fillColor;
+@property UIColor *borderColor;
+@property BOOL drawBorder;
 
 @property int padding;
 @end

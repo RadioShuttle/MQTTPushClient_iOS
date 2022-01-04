@@ -5,6 +5,7 @@
  */
 
 #import "DashImageChooserTab.h"
+#import "DashImageCell.h"
 #import "DashConsts.h"
 #import "DashUtils.h"
 #import "DashEditOptionViewController.h"
@@ -131,7 +132,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 			((UILabel *) [subviews firstObject]).textColor = self.noneLabelTextColor;
 		}
 	} else {
-		DashImageChooserCell *icell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierImage forIndexPath:indexPath];
+		DashImageCell *icell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifierImage forIndexPath:indexPath];
 		UIImage *img = nil;
 
 		id resource = self.resourceMap[@(indexPath.row - 1)];
@@ -318,9 +319,5 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	[res addObject:@"sentiment_very_dissatisfied"];
 	[res addObject:@"sentiment_very_satisfied"];
 }
-
-@end
-
-@implementation DashImageChooserCell
 
 @end

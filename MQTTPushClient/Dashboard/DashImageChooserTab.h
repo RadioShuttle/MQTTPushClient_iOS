@@ -8,11 +8,6 @@
 #import "Dashboard.h"
 #import "DashEditItemViewController.h"
 
-@interface DashImageChooserCell : UICollectionViewCell
-@property IBOutlet UILabel *label;
-@property IBOutlet UIImageView *imageView;
-@end
-
 @interface DashImageChooserTab : UICollectionViewController <UICollectionViewDataSourcePrefetching>
 @property UIViewController *editor; //TODO: consider using protocol
 /* image button responsible for open image chooser */

@@ -17,6 +17,7 @@
 	if (self = [super init]) {
 		[self setBackgroundColor:[UIColor clearColor]];
 		self.fillColor = color;
+		self.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:1];
 		self.padding = 2;
 	}
 	return self;
@@ -40,7 +41,13 @@
 	CGContextRef ctx = UIGraphicsGetCurrentContext();
 	CGContextAddEllipseInRect(ctx, r2);
 	CGContextSetFillColorWithColor(ctx, [self.fillColor CGColor]);
-	CGContextDrawPath(ctx, kCGPathFill);
+	if (self.drawBorder && self.borderColor) {
+		CGContextSetStrokeColor(ctx, CGColorGetComponents([self.borderColor CGColor]));
+		CGContextSetLineWidth(ctx, 1.0f);
+		CGContextDrawPath(ctx, kCGPathFillStroke);
+	} else {
+		CGContextDrawPath(ctx, kCGPathFill);
+	}
 }
 
 @end
