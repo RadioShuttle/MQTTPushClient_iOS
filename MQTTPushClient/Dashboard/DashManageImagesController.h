@@ -8,8 +8,7 @@
 #import "Dashboard.h"
 #import "DashCollectionViewController.h"
 
-@interface DashManageImagesController : UICollectionViewController <UICollectionViewDataSourcePrefetching>
-
+@interface DashManageImagesController : UICollectionViewController <UICollectionViewDataSourcePrefetching,  UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *cancelButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *saveButton;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;

@@ -15,6 +15,10 @@
 	return ![Utils isEmpty:uri] && [[uri lowercaseString] hasPrefix:@"res://user/"];
 }
 
++(BOOL) isImportedResource:(NSString *)uri {
+	return ![Utils isEmpty:uri] && [[uri lowercaseString] hasPrefix:@"res://imported/"];
+}
+
 +(BOOL) isInternalResource:(NSString *)uri {
 	return ![Utils isEmpty:uri] && [[uri lowercaseString] hasPrefix:@"res://internal/"];
 }
@@ -32,9 +36,17 @@
 }
 
 +(NSURL *)getUserFilesDir:(NSURL *)path {
+	return [DashUtils getInternalFilesDir:path subpath:LOCAL_USER_FILES_DIR];
+}
+
++(NSURL *)getImportedFilesDir:(NSURL *)path {
+	return [DashUtils getInternalFilesDir:path subpath:LOCAL_IMPORTED_FILES_DIR];
+}
+
++(NSURL *)getInternalFilesDir:(NSURL *)path subpath:(NSString *)subpath {
 	NSURL* dir = nil;
 	if (path) {
-		dir = [path URLByAppendingPathComponent:LOCAL_USER_FILES_DIR isDirectory:YES];
+		dir = [path URLByAppendingPathComponent:subpath isDirectory:YES];
 		
 		NSFileManager *fm = [NSFileManager defaultManager];
 		if (![fm fileExistsAtPath:[dir path]]) {
@@ -62,13 +74,12 @@
 		if ([self isInternalResource:uri]) {
 			img = [UIImage imageNamed:resourceName];
 		}
-		else if ([self isUserResource:uri]) {
+		else if ([self isUserResource:uri] || [self isImportedResource:uri]) {
 			NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
-			NSURL *localDir = [DashUtils getUserFilesDir:userDataDir];
+			NSURL *localDir = [self isUserResource:uri] ? [DashUtils getUserFilesDir:userDataDir] : [DashUtils getImportedFilesDir:userDataDir];
 			NSURL *fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
 			img = [UIImage imageWithContentsOfFile:[fileURL path]];
 		}
-		//TODO: handle imported files
 	}
 	return img;
 }

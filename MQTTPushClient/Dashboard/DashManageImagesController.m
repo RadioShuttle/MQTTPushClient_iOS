@@ -12,6 +12,8 @@
 #import "DashUtils.h"
 #import "Utils.h"
 
+@import Photos;
+
 @interface DashManageImagesController ()
 
 /* valid resource names */
@@ -28,6 +30,8 @@
 @property uint32_t saveRequestID;
 @property UIActivityIndicatorView *progressBar;
 @property NSTimer *statusMsgTimer;
+
+@property UIImagePickerController *imagePicker;
 
 @end
 
@@ -207,12 +211,13 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	}
 	
 	UIImage *img = [DashUtils loadImageResource:uri userDataDir:self.parentCtrl.dashboard.account.cacheURL];
-	
-	NSMutableDictionary *args = [NSMutableDictionary new];
-	[args setObject:img forKey:@"image"];
-	[args setObject:uri forKey:@"uri"];
-	
-	[self performSelectorOnMainThread:@selector(notifyUpdate:) withObject:args waitUntilDone:NO];
+	if (img) {
+		NSMutableDictionary *args = [NSMutableDictionary new];
+		[args setObject:img forKey:@"image"];
+		[args setObject:uri forKey:@"uri"];
+		
+		[self performSelectorOnMainThread:@selector(notifyUpdate:) withObject:args waitUntilDone:NO];
+	}
 }
 
 -(void)notifyUpdate:(NSDictionary *)data {
@@ -403,6 +408,93 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 }
 
 -(void)onImportButtonClicked {
+	/*
+	UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.image"] inMode:UIDocumentPickerModeImport];
+	documentPicker.delegate = self;
+	documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
+	[self presentViewController:documentPicker animated:YES completion:nil];
+	 */
+	
+	self.imagePicker = [[UIImagePickerController alloc] init];
+	self.imagePicker.delegate = self;
+	// self.imagePicker.allowsEditing = YES;
+	self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+	[self presentViewController:self.imagePicker animated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey,id> *)info {
+	
+	//TODO: UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary
+	
+	NSString *filename;
+	PHAsset *asset;
+	if (@available(iOS 11, *)) {
+		asset = info[UIImagePickerControllerPHAsset];
+		NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
+		filename = [resources.firstObject originalFilename].lastPathComponent;
+		// NSLog(@"Filename 2: %@", filename);
+	} else {
+		NSURL *u = info[UIImagePickerControllerReferenceURL];
+		//TODO: check u
+		NSMutableArray *urls = [NSMutableArray new];
+		[urls addObject:u];
+		PHFetchResult<PHAsset *> * result = [PHAsset fetchAssetsWithALAssetURLs:urls options:nil];
+		asset = result.firstObject;
+		NSArray<PHAssetResource *> *assetRes = [PHAssetResource assetResourcesForAsset:asset];
+		filename = assetRes.firstObject.originalFilename;
+		// NSLog(@"Filename 1: %@", filename);
+	}
+	
+	NSURL *dirURL = [DashUtils getImportedFilesDir:self.parentCtrl.dashboard.account.cacheURL];
+	NSArray* content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dirURL.path error:nil];
+	for(NSString *fn in content) {
+		// fn rangeOfString:@"_";
+		NSLog(@"imported file: %@",  fn);
+	}
+	
+	UIImage *img = info[UIImagePickerControllerOriginalImage];
+	CGSize s = img.size;
+	// CGFloat sc = img.scale;
+	
+	if (s.height > DASH_MAX_IMAGE_SIZE_PX || s.width > DASH_MAX_IMAGE_SIZE_PX) {
+		int heightRatio = round(s.width / (CGFloat) DASH_MAX_IMAGE_SIZE_PX);
+		int widthRatio = round(s.height / (CGFloat) DASH_MAX_IMAGE_SIZE_PX);
+		
+		int sampleSize = heightRatio > widthRatio ? heightRatio : widthRatio;
+		if (sampleSize > 1) {
+			s = CGSizeMake(s.width / sampleSize, s.height / sampleSize);
+		}
+	}
+	
+	PHImageRequestOptions *opts = [PHImageRequestOptions new];
+	opts.synchronous = NO;
+	opts.resizeMode = PHImageRequestOptionsResizeModeFast;
+	opts.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+
+	//TODO: check filename
+	filename = [[filename stringByDeletingPathExtension] enquoteHelios];
+	filename = [NSString stringWithFormat:@"%@.%@", filename, DASH512_PNG];
+	NSURL *localDir = [DashUtils getImportedFilesDir:self.parentCtrl.dashboard.account.cacheURL];
+	NSURL *fileURL = [DashUtils appendStringToURL:localDir str:filename];
+	
+	[[PHImageManager defaultManager] requestImageForAsset:asset targetSize:s contentMode:PHImageContentModeAspectFit options:opts resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+		
+		if ([[info helNumberForKey:PHImageResultIsDegradedKey] boolValue]) {
+			; //return;
+		} else {
+			if (result) {
+				if ([UIImagePNGRepresentation(result) writeToURL:fileURL atomically:YES]) {
+					[self performSelectorOnMainThread:@selector(reload) withObject:nil waitUntilDone:NO];
+				} else {
+				}
+			}
+		}
+
+		
+	}];
+
+	
+	[self.imagePicker dismissViewControllerAnimated:YES completion:nil];
 }
 
 @end
