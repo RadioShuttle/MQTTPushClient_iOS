@@ -21,6 +21,7 @@
 #import "DashCustomItemViewCell.h"
 #import "DashEditItemViewController.h"
 #import "DashManageImagesController.h"
+#import "DashUtils.h"
 
 #import "DashJavaScriptTask.h"
 
@@ -53,6 +54,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	// self.clearsSelectionOnViewWillAppear = NO;
 	
 	self.preferences = [Dashboard loadDashboardSettings:self.account];
+	
+	// [DashUtils clearImportedFilesDir:self.account.cacheURL]; //TODO: remove this line and add removeUnusedreferences in accountlist component
 	
 	/* calc label height and pass it to layout object. IMPORTANT: specify correct font and size (see storyboard) */
 	NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:@"Dummy" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0]}];

@@ -58,6 +58,61 @@
 	return dir;
 }
 
++(void)clearImportedFilesDir:(NSURL *)path {
+	NSFileManager *manager = [NSFileManager defaultManager];
+	NSError *error = nil;
+	NSURL *dirURL = [DashUtils getImportedFilesDir:path];
+	NSArray *files = [manager contentsOfDirectoryAtPath:dirURL.path
+												  error:&error];
+	if (!error) {
+		for(NSString *file in files) {
+			[manager removeItemAtPath:[dirURL.path stringByAppendingPathComponent:file]
+								error:&error];
+		}
+	}
+}
+
++(int) getImportedFilePrefix:(NSString *)fileName {
+	int p = -1;
+	NSRange range = [fileName rangeOfString:@"_"];
+	NSString *pref;
+	unichar c;
+	if (range.location != NSNotFound) {
+		pref = [fileName substringToIndex:range.location];
+		int cnt = 0;
+		for(int i = 0; i < pref.length; i++) {
+			c = [pref characterAtIndex:i];
+			if (c >= '0' && c <= '9') {
+				cnt++;
+			} else {
+				cnt = -1;
+				break;
+			}
+		}
+		if (cnt > 0 && cnt <= 9) {
+			p = [pref intValue];
+		}
+	}
+	return p;
+}
+
++(NSString *) filterResourceName:(NSString *)resourceName {
+	if ([resourceName hasPrefix:@"tmp/"]) {
+		resourceName = [resourceName substringFromIndex:4];
+		resourceName = [DashUtils removeImportedFilePrefix:resourceName];
+		resourceName = [NSString stringWithFormat:@"tmp/%@", resourceName];
+	}
+	return resourceName;
+}
+
++(NSString *)removeImportedFilePrefix:(NSString *)fileName {
+	NSRange range = [fileName rangeOfString:@"_"];
+	if (range.location != NSNotFound) {
+		fileName = [fileName substringFromIndex:(range.location + 1)];
+	}
+	return fileName;
+}
+
 +(NSURL *)appendStringToURL:(NSURL *)url str:(NSString *)str {
 	return [url URLByAppendingPathComponent:str isDirectory:NO];
 }

@@ -17,6 +17,12 @@
 
 +(NSURL *)getUserFilesDir:(NSURL *)path;
 +(NSURL *)getImportedFilesDir:(NSURL *)path;
++(void)clearImportedFilesDir:(NSURL *)path;
+
++(int) getImportedFilePrefix:(NSString *)fileName;
++(NSString *)removeImportedFilePrefix:(NSString *)fileName;
++(NSString *) filterResourceName:(NSString *)resourceName;
+
 +(NSURL *)appendStringToURL:(NSURL *)url str:(NSString *)str;
 +(BOOL)fileExists:(NSURL *)fileUrl;
 

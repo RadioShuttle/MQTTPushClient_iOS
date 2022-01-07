@@ -125,7 +125,10 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	}
 	
 	cell.imageView.image = img;
-	cell.label.text = self.resoureNames[indexPath.row];
+	
+	/* remove numeric id (prefix) from imported file for display */
+	NSString *filteredName = [DashUtils filterResourceName:self.resoureNames[indexPath.row]];
+	cell.label.text = filteredName;
 	
 	NSString *uri = [self resourceURIForIndexPath:indexPath];
 	
@@ -408,13 +411,27 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 }
 
 -(void)onImportButtonClicked {
-	/*
-	UIDocumentPickerViewController *documentPicker = [[UIDocumentPickerViewController alloc] initWithDocumentTypes:@[@"public.image"] inMode:UIDocumentPickerModeImport];
-	documentPicker.delegate = self;
-	documentPicker.modalPresentationStyle = UIModalPresentationFormSheet;
-	[self presentViewController:documentPicker animated:YES completion:nil];
-	 */
+	if (![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
+		[self setStatusMessage:@"The photo library is not available." clearAfterDelay:YES];
+		return;
+	}
 	
+	PHAuthorizationStatus status = [PHPhotoLibrary authorizationStatus];
+	
+	if (status == PHAuthorizationStatusDenied) {
+		[self setStatusMessage:@"The access to photo library has been denied." clearAfterDelay:YES];
+		return;
+	} else if (status == PHAuthorizationStatusNotDetermined) {
+		 // Access has not been determined.
+		 [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+			 if (status == PHAuthorizationStatusAuthorized) {
+				 // Access has been granted.
+			 }
+			 else {
+				 // Access has been denied.
+			 }
+		 }];
+	}
 	self.imagePicker = [[UIImagePickerController alloc] init];
 	self.imagePicker.delegate = self;
 	// self.imagePicker.allowsEditing = YES;
@@ -424,37 +441,54 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey,id> *)info {
 	
-	//TODO: UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary
+	if ([PHPhotoLibrary authorizationStatus] != PHAuthorizationStatusAuthorized) {
+		[self setStatusMessage:@"The access to photo library is not authorized" clearAfterDelay:YES];
+		return;
+	}
 	
 	NSString *filename;
 	PHAsset *asset;
+	
 	if (@available(iOS 11, *)) {
-		asset = info[UIImagePickerControllerPHAsset];
-		NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
-		filename = [resources.firstObject originalFilename].lastPathComponent;
-		// NSLog(@"Filename 2: %@", filename);
+		asset = info[UIImagePickerControllerPHAsset]; //TODO: phppickerviewcontroller since iOS 14
+		if (asset) {
+			NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
+			filename = [resources.firstObject originalFilename].lastPathComponent;
+			// NSLog(@"Filename 2: %@", filename);
+		}
 	} else {
 		NSURL *u = info[UIImagePickerControllerReferenceURL];
-		//TODO: check u
-		NSMutableArray *urls = [NSMutableArray new];
-		[urls addObject:u];
-		PHFetchResult<PHAsset *> * result = [PHAsset fetchAssetsWithALAssetURLs:urls options:nil];
-		asset = result.firstObject;
-		NSArray<PHAssetResource *> *assetRes = [PHAssetResource assetResourcesForAsset:asset];
-		filename = assetRes.firstObject.originalFilename;
-		// NSLog(@"Filename 1: %@", filename);
+		if (u) {
+			NSMutableArray *urls = [NSMutableArray new];
+			[urls addObject:u];
+			PHFetchResult<PHAsset *> * result = [PHAsset fetchAssetsWithALAssetURLs:urls options:nil];
+			asset = result.firstObject;
+			if (asset) {
+				NSArray<PHAssetResource *> *assetRes = [PHAssetResource assetResourcesForAsset:asset];
+				filename = assetRes.firstObject.originalFilename;
+				// NSLog(@"Filename 1: %@", filename);
+			}
+		}
 	}
 	
+	if (!asset) { // should not happen, but who knows
+		[self setStatusMessage:@"Import error." clearAfterDelay:YES];
+		return;
+	}
+	
+	/* all imported files have a prefix which is unique in import dir. get max id: */
 	NSURL *dirURL = [DashUtils getImportedFilesDir:self.parentCtrl.dashboard.account.cacheURL];
 	NSArray* content = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:dirURL.path error:nil];
+	int maxPrefixID = -1, uniquePrefixID;
 	for(NSString *fn in content) {
-		// fn rangeOfString:@"_";
-		NSLog(@"imported file: %@",  fn);
+		uniquePrefixID = [DashUtils getImportedFilePrefix:fn];
+		if (uniquePrefixID > maxPrefixID) {
+			maxPrefixID = uniquePrefixID;
+		}
 	}
-	
-	UIImage *img = info[UIImagePickerControllerOriginalImage];
-	CGSize s = img.size;
-	// CGFloat sc = img.scale;
+	maxPrefixID++;
+
+	CGSize s = CGSizeMake(asset.pixelWidth, asset.pixelHeight);
 	
 	if (s.height > DASH_MAX_IMAGE_SIZE_PX || s.width > DASH_MAX_IMAGE_SIZE_PX) {
 		int heightRatio = round(s.width / (CGFloat) DASH_MAX_IMAGE_SIZE_PX);
@@ -471,26 +505,29 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	opts.resizeMode = PHImageRequestOptionsResizeModeFast;
 	opts.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
 
-	//TODO: check filename
+	if ([Utils isEmpty:filename]) {
+		filename = @"image";
+	}
 	filename = [[filename stringByDeletingPathExtension] enquoteHelios];
-	filename = [NSString stringWithFormat:@"%@.%@", filename, DASH512_PNG];
+	filename = [NSString stringWithFormat:@"%d_%@.%@", maxPrefixID, filename, DASH512_PNG];
 	NSURL *localDir = [DashUtils getImportedFilesDir:self.parentCtrl.dashboard.account.cacheURL];
 	NSURL *fileURL = [DashUtils appendStringToURL:localDir str:filename];
 	
 	[[PHImageManager defaultManager] requestImageForAsset:asset targetSize:s contentMode:PHImageContentModeAspectFit options:opts resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-		
 		if ([[info helNumberForKey:PHImageResultIsDegradedKey] boolValue]) {
-			; //return;
+			;
 		} else {
+			BOOL ok = NO;
 			if (result) {
 				if ([UIImagePNGRepresentation(result) writeToURL:fileURL atomically:YES]) {
-					[self performSelectorOnMainThread:@selector(reload) withObject:nil waitUntilDone:NO];
-				} else {
+					[self reload];
+					ok = YES;
 				}
 			}
+			if (!ok) {
+				[self setStatusMessage:@"Import failed." clearAfterDelay:NO];
+			}
 		}
-
-		
 	}];
 
 	

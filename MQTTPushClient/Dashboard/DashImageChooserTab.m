@@ -94,15 +94,17 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	}
 	
 	UIImage *img = [DashUtils loadImageResource:uri userDataDir:self.context.account.cacheURL];
-	if (self.internal) {
-		img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+	if (img) {
+		if (self.internal) {
+			img = [img imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+		}
+		
+		NSMutableDictionary *args = [NSMutableDictionary new];
+		[args setObject:img forKey:@"image"];
+		[args setObject:indexPath forKey:@"indexPath"];
+		
+		[self performSelectorOnMainThread:@selector(notifyUpdate:) withObject:args waitUntilDone:NO];
 	}
-
-	NSMutableDictionary *args = [NSMutableDictionary new];
-	[args setObject:img forKey:@"image"];
-	[args setObject:indexPath forKey:@"indexPath"];
-
-	[self performSelectorOnMainThread:@selector(notifyUpdate:) withObject:args waitUntilDone:NO];
 }
 
 -(void)notifyUpdate:(NSDictionary *)data {
@@ -154,7 +156,9 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 		if (self.internal) {
 			icell.imageView.tintColor = self.imageTintColor;
 		}
-		icell.label.text = self.resoureNames[indexPath.row - 1];
+		
+		NSString *filteredName = [DashUtils filterResourceName:self.resoureNames[indexPath.row - 1]];
+		icell.label.text = filteredName;
 		cell = icell;
 	}
 	
