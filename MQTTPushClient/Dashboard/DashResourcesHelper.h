@@ -21,7 +21,7 @@
 /* load images from server for the given dash board (if no local copy exists) */
 -(void) syncImages:(Cmd *)command dash:(NSString *)currentDash;
 
-/* get all resources (images) stored on server */
+/* get all resource names (images) stored on server */
 -(NSMutableArray<FileInfo *> *)getServerResourceList:(RawCmd *)rawCmd;
 
 /* save imported images on server */
@@ -29,5 +29,8 @@
 
 /* call to delete imported resouce files after calling saveImportedResources and saving the dashboard on server */
 -(void)deleteImportedResouces;
+
+/* check resources for the given account, which are stored on server, but not referenced (anymore) */
+-(NSArray<NSString *> *)findUnusedResources:(NSMutableArray<FileInfo *> *)serverResourceList json:(NSMutableDictionary *)jsonObj;
 
 @end

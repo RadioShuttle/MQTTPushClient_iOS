@@ -64,5 +64,6 @@ enum ReturnCode {
 - (RawCmd *)setDashboard:(int)seqNo version:(uint64_t)version itemID:(uint32_t)itemID dashboard:(NSData *)dashboard;
 - (RawCmd *)enumResources:(int)seqNo type:(NSString *)type;
 - (RawCmd *)addResource:(int)seqNo filename:(NSString *)filename type:(NSString *)type fileURL:(NSURL *)resourceFileURL;
+- (RawCmd *)deleteResources:(int)seqNo resourceNames:(NSArray<NSString *> *)resourceNames type:(NSString *)type;
 
 @end

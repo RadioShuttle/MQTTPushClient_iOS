@@ -333,6 +333,63 @@
 	}
 }
 
+-(NSArray<NSString *> *)findUnusedResources:(NSMutableArray<FileInfo *> *)serverResourceList json:(NSMutableDictionary *)jsonObj {
+	
+	NSMutableSet<NSString *> *unusedResources = [NSMutableSet new];
+	for(FileInfo *fi in serverResourceList) {
+		[unusedResources addObject:fi.name];
+	}
+	
+	NSMutableSet<NSString *> *usedResources = [NSMutableSet new];
+	
+	NSArray *groups = jsonObj[@"groups"];
+	NSDictionary *item;
+	NSArray *items, *optionList;
+	NSString *resourceName;
+
+	for(NSDictionary *group in groups) {
+		items = group[@"items"];
+		
+		for(int j = 0; j < [items count]; j++) {
+			item = [items objectAtIndex:j];
+			resourceName = [DashUtils getURIPath:item[@"uri"]];
+			if (resourceName) {
+				[usedResources addObject:resourceName];
+			}
+			resourceName = [DashUtils getURIPath:item[@"uri_off"]];
+			if (resourceName) {
+				[usedResources addObject:resourceName];
+			}
+			resourceName = [DashUtils getURIPath:item[@"background_uri"]];
+			if (resourceName) {
+				[usedResources addObject:resourceName];
+			}
+			optionList = item[@"optionlist"];
+			for(NSDictionary *optionItem in optionList) {
+				resourceName = [DashUtils getURIPath:optionItem[@"uri"]];
+				if (resourceName) {
+					[usedResources addObject:resourceName];
+				}
+			}
+		}
+	}
+	NSArray *resources = [jsonObj objectForKey:@"resources"];
+	for(NSString * uri in resources) {
+		resourceName = [DashUtils getURIPath:uri];
+		if (resourceName) {
+			[usedResources addObject:resourceName];
+		}
+	}
+	[unusedResources minusSet:usedResources];
+	
+	NSMutableArray* unusedResArr = [NSMutableArray new];
+	for(NSString *uri in unusedResources) {
+		[unusedResArr addObject:uri];
+	}
+	return unusedResArr;
+}
+
+
 @end
 
 @implementation FileInfo

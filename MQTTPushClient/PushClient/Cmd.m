@@ -625,6 +625,26 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)deleteResources:(int)seqNo resourceNames:(NSArray<NSString *> *)resourceNames type:(NSString *)type {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"DELETE RESOURCE request");
+	NSMutableData *reqData = [NSMutableData new];
+	[reqData appendData:[self dataFromString:type encoding:NSUTF8StringEncoding]]; // type
+
+	unsigned char buf[] = {resourceNames.count >> 8, resourceNames.count & 0xff};
+	[reqData appendBytes:buf length:2];
+	
+	for(NSString* r in resourceNames) {
+		[reqData appendData:[self dataFromString:r encoding:NSUTF8StringEncoding]];
+	}
+	[self writeCommand:CMD_DEL_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:reqData];
+	[self readCommand];
+	[self waitForCommand];
+	
+	return self.rawCmd;
+}
+
 
 # pragma - socket delegate
 

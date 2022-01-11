@@ -475,7 +475,14 @@ enum ConnectionState {
 						[helper deleteImportedResouces];
 						
 						/* clean up (delete unused image resources) */
-						//TODO: unusedRes = findUnusedResources(serverResourceList); ...
+						NSArray<NSString *> *unusedRes = [helper findUnusedResources:serverResourceList json:mutableJsonObj];
+						if (unusedRes.count > 0) {
+							[command deleteResources:0 resourceNames:unusedRes type:DASH512_PNG];
+							if (command.rawCmd.error) {
+								NSLog(@"Error deleting resources: %@", command.rawCmd.error.localizedDescription);
+								command.rawCmd.error = nil; // ignore error
+							}
+						}
 						
 						unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 						uint64_t newVersion = [Utils charArrayToUint64:p];
