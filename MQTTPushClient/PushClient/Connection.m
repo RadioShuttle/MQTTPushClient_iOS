@@ -22,6 +22,7 @@
 #import "NSDictionary+HelSafeAccessors.h"
 #import "Trace.h"
 #import <stdatomic.h>
+#import "DashResourcesHelper.h"
 
 enum ConnectionState {
 	StateBusy,
@@ -33,11 +34,6 @@ enum ConnectionState {
 @property dispatch_queue_t serialQueue;
 @property enum ConnectionState state;
 @property atomic_int noOfActiveDashRequests;
-@end
-
-@interface FileInfo : NSObject
-@property NSString *name;
-@property uint64_t mdate;
 @end
 
 @implementation Connection
@@ -309,7 +305,7 @@ enum ConnectionState {
 
 /* getDashboardAsync gets the latest messages (including historical data),
  the up-to-date dashboard and (sync) resources */
-- (void)getDashboardAsync:(Dashboard *)dashboard localVersion:(uint64_t)localVersion timestamp:(uint64_t)timestamp messageID:(int)messageID  dashboard:(NSString *)localDashboardJS resourceDir:(NSURL *)resourceDir {
+- (void)getDashboardAsync:(Dashboard *)dashboard localVersion:(uint64_t)localVersion timestamp:(uint64_t)timestamp messageID:(int)messageID  dashboard:(NSString *)localDashboardJS {
 	Cmd *command = [self login:dashboard.account];
 
 	NSMutableDictionary *resultInfo = nil;
@@ -405,7 +401,8 @@ enum ConnectionState {
 				} else {
 					currentDash = localDashboardJS;
 				}
-				[self syncImages:command dash:currentDash resourceDir:resourceDir];
+				DashResourcesHelper *helper = [[DashResourcesHelper alloc] initWithAccountDir:dashboard.account.cacheURL];
+				[helper syncImages:command dash:currentDash];
 				
 				if (!command.rawCmd.error) {					
 					resultInfo = [NSMutableDictionary new];
@@ -425,128 +422,6 @@ enum ConnectionState {
 	}
 	atomic_fetch_sub(&_noOfActiveDashRequests, 1);
 }
-
--(void) syncImages:(Cmd *)command dash:(NSString *)currentDash resourceDir:(NSURL *)resourceDir {
-	if (![Utils isEmpty:currentDash]) {
-		NSData *jsonData = [currentDash dataUsingEncoding:NSUTF8StringEncoding];
-		NSError *error;
-		NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:&error];
-		if (error) {
-			NSLog(@"sync images, json parse error.");
-		} else {
-			NSArray *groups = [jsonDict valueForKey:@"groups"];
-			NSArray *resources = [jsonDict valueForKey:@"resources"];
-			
-			NSMutableSet *resourceNames = [NSMutableSet new];
-			NSString *uri;
-			NSString *resourceName;
-			NSString *internalFilename;
-			NSURL *localDir = [DashUtils getUserFilesDir:resourceDir];
-			NSURL *fileURL;
-			
-			//TODO: remove the following 2 lines after test. Otherwise all images will be reloaded from server
-			// [[NSFileManager defaultManager] removeItemAtURL:localDir error:nil];
-			// localDir = [DashUtils getUserFilesDir:resourceDir];
-
-			/* check if referenced resources exists */
-			for(int i = 0; i < [resources count]; i++) {
-				uri = [resources objectAtIndex:i];
-				if ([DashUtils isUserResource:uri]) {
-					resourceName = [DashUtils getURIPath:uri];
-					internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
-					fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
-					if (![DashUtils fileExists:fileURL]) {
-						// NSLog(@"internal filename not exists: %@", internalFilename);
-						[resourceNames addObject:resourceName];
-					}
-				}
-			}
-			
-			NSDictionary * group;
-			NSArray *items;
-			NSDictionary *item;
-			for(int i = 0; i < [groups count]; i++) {
-				group = [groups objectAtIndex:i];
-				items = [group valueForKey:@"items"];
-				for(int j = 0; j < [items count]; j++) {
-					item = [items objectAtIndex:j];
-					NSString *uris[3] = {@"uri", @"uri_off", @"background_uri"};
-					for(int z = 0; z < 3; z++) {
-						uri = [item objectForKey:uris[z]];
-						if (uri) {
-							if ([DashUtils isUserResource:uri]) {
-								resourceName = [DashUtils getURIPath:uri];
-								internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
-								fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
-								if (![DashUtils fileExists:fileURL]) {
-									[resourceNames addObject:resourceName];
-								}
-							}
-						}
-					}
-					NSArray *optionList = [item objectForKey:@"optionlist"];
-					if (optionList) {
-						NSDictionary * optionItem;
-						for(int z = 0; z < [optionList count]; z++) {
-							optionItem = [optionList objectAtIndex:z];
-							if (optionItem) {
-								uri = [optionItem objectForKey:@"uri"];
-								if ([DashUtils isUserResource:uri]) {
-									resourceName = [DashUtils getURIPath:uri];
-									internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
-									fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
-									if (![DashUtils fileExists:fileURL]) {
-										[resourceNames addObject:resourceName];
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-			
-			/* get all missing resources */
-			NSEnumerator *enumerator = [resourceNames objectEnumerator];
-			NSString *resName;
-			unsigned char *p;
-			uint64_t mdate;
-			int len;
-
-			while ((resName = [enumerator nextObject])) {
-				NSLog(@"missing resource: %@", resName);
-				[command getResourceRequest:0 name:resName type:DASH512_PNG];
-				if (command.rawCmd.error || command.rawCmd.rc != RC_OK) {
-					break;
-				}else {
-					p = (unsigned char *)command.rawCmd.data.bytes;
-					mdate = [Utils charArrayToUint64:p];
-					p += 8;
-					len = (int) (((uint64_t)p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3]);
-					p += 4;
-					NSData* data = [NSData dataWithBytes:p length:len];
-
-					internalFilename = [NSString stringWithFormat:@"%@.%@", [resName enquoteHelios], DASH512_PNG];
-					fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
-					if (![data writeToURL:fileURL atomically:YES]) {
-						NSLog(@"Resource file %@ could not be written.", resName);
-					} else {
-						NSDate *modDate = [NSDate dateWithTimeIntervalSince1970:mdate];
-						NSString *dateString = [NSDateFormatter localizedStringFromDate:modDate
-																			  dateStyle:NSDateFormatterShortStyle
-																			  timeStyle:NSDateFormatterFullStyle];
-						NSLog(@"File %@: modification date %@",internalFilename, dateString);
-						NSDictionary *attr = [NSDictionary dictionaryWithObjectsAndKeys: modDate, NSFileModificationDate, NULL];
-						[[NSFileManager defaultManager] setAttributes:attr ofItemAtPath:[fileURL path] error:&error];
-						if (error) {
-							NSLog(@"Error: %@ %@", error, [error userInfo]); //TODO
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
 -(void)setDashboardForAccountAsync:(Account *)account json:(NSDictionary *)jsonObj prevVersion:(uint64_t)version itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
 
 	//TODO: saving on push.radioshuttle.de is disabled until test completed. remove after test:
@@ -559,60 +434,65 @@ enum ConnectionState {
 	}
 	// end
 	
-	NSError *error;
-	NSData * jsonData = [NSJSONSerialization dataWithJSONObject:jsonObj options:0 error:&error];
-	if (error) {
-		/* unexprectd error - should not occur  */
-		account.error = error;
-		[self performSelectorOnMainThread:@selector(postServerUpdateNotification:) withObject:userInfo waitUntilDone:YES];
-		return;
-	}
-	
 	NSMutableDictionary *resultInfo = userInfo ? [userInfo mutableCopy] : [NSMutableDictionary new];
 	
 	Cmd *command = [self login:account];
 	if (!command.rawCmd.error) {
-		//TODO: manage resources (update on server, download, ...)
 		[command enumResources:0 type:DASH512_PNG];
 		if (!command.rawCmd.error) {
-			unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
-			int noOfResources = (p[0] << 8) + p[1];
-			p += 2;
 			
-			int count;
-			NSMutableArray<FileInfo *> *serverResourceList = [NSMutableArray new];
-			FileInfo *fileInfo;
-			for(int i = 0; i < noOfResources; i++) {
-				count = (p[0] << 8) + p[1];
-				p += 2;
-				fileInfo = [FileInfo new];
-				fileInfo.name = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
-				// NSLog(@"filename: %@", fileInfo.name);
-				p += count;
-				fileInfo.mdate = [Utils charArrayToUint64:p];
-				p += 8;
-				[serverResourceList addObject:fileInfo];
-			}
-
-			[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
-			if (!command.rawCmd.error) {
-				//TODO: handle MQTT error (e.g. subscribe dashboard topic error)
-				if (command.rawCmd.rc == RC_OK) {
-					unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
-					uint64_t newVersion = [Utils charArrayToUint64:p];
-					if (newVersion == 0) {
-						/* version error */
-						[resultInfo setObject:@(YES) forKey:@"invalidVersion"];
-					} else {
-						[resultInfo setObject:@(newVersion) forKey:@"serverVersion"];
-						NSString* dashboardStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-						[resultInfo setObject:dashboardStr forKey:@"dashboardJS"];
-					}
-				} else {
-					// should never occur
+			DashResourcesHelper *helper = [[DashResourcesHelper alloc] initWithAccountDir:account.cacheURL];
+			/* server resources on server: */
+			NSMutableArray<FileInfo *> *serverResourceList = [helper getServerResourceList:command.rawCmd];
+			
+			/* if images where added, they must be saved first -> check all resource uris */
+			NSMutableDictionary *mutableJsonObj = [jsonObj mutableCopy];
+			
+			@try {
+				[helper saveImportedResources:command serverResourceList:serverResourceList json:mutableJsonObj];
+			} @catch (NSException *ex) {
+				if (![ex.userInfo objectForKey:@"conn_error"]) {
 					NSMutableDictionary *errInfo = [NSMutableDictionary new];
-					[errInfo setValue:@"Saving dashboard failed (invalid args)." forKey:NSLocalizedDescriptionKey];
-					command.rawCmd.error= [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
+					[errInfo setValue:(ex.reason ? ex.reason : @"Saving resources failed.") forKey:NSLocalizedDescriptionKey];
+					command.rawCmd.error = [NSError errorWithDomain:@"SaveResourcesError" code:400 userInfo:errInfo];
+				}
+			}
+			if (!command.rawCmd.error) {
+				NSError *error;
+				NSData * jsonData = [NSJSONSerialization dataWithJSONObject:mutableJsonObj options:0 error:&error];
+				if (error) {
+					/* unexprectd error - should not occur  */
+					command.rawCmd.error = error; // will be passed to account error in disconnect
+					[self disconnect:account withCommand:command userInfo:resultInfo];
+					return;
+				}
+				
+				[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
+				if (!command.rawCmd.error) {
+					//TODO: handle MQTT error (e.g. subscribe dashboard topic error)
+					if (command.rawCmd.rc == RC_OK) {
+						/* delete imported files which have been copied to user dir */
+						[helper deleteImportedResouces];
+						
+						/* clean up (delete unused image resources) */
+						//TODO: unusedRes = findUnusedResources(serverResourceList); ...
+						
+						unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+						uint64_t newVersion = [Utils charArrayToUint64:p];
+						if (newVersion == 0) {
+							/* version error */
+							[resultInfo setObject:@(YES) forKey:@"invalidVersion"];
+						} else {
+							[resultInfo setObject:@(newVersion) forKey:@"serverVersion"];
+							NSString* dashboardStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+							[resultInfo setObject:dashboardStr forKey:@"dashboardJS"];
+						}
+					} else {
+						// should never occur
+						NSMutableDictionary *errInfo = [NSMutableDictionary new];
+						[errInfo setValue:@"Saving dashboard failed (invalid args)." forKey:NSLocalizedDescriptionKey];
+						command.rawCmd.error= [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
+					}
 				}
 			}
 		}
@@ -695,7 +575,7 @@ enum ConnectionState {
 	
 	atomic_fetch_add(&_noOfActiveDashRequests, 1);
 	
-	dispatch_async(self.serialQueue, ^{[self getDashboardAsync:dashboard localVersion:vers timestamp:ts messageID:messageID dashboard:db resourceDir:resourceDir];});
+	dispatch_async(self.serialQueue, ^{[self getDashboardAsync:dashboard localVersion:vers timestamp:ts messageID:messageID dashboard:db];});
 }
 
 - (void)publishMessageForAccount:(Account *)account topic:(NSString *)topic payload:(NSData *)payload retain:(BOOL)retain userInfo:(NSDictionary *)userInfo {
@@ -712,7 +592,4 @@ enum ConnectionState {
 	return atomic_load(&_noOfActiveDashRequests);
 }
 
-@end
-
-@implementation FileInfo
 @end

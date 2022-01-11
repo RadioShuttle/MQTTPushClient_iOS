@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2102CE692757674700A428A6 /* DashScriptViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2102CE682757674700A428A6 /* DashScriptViewController.m */; };
+		2108EF97278D6B1C00CEAAE5 /* DashResourcesHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2108EF96278D6B1C00CEAAE5 /* DashResourcesHelper.m */; };
 		210B9A3C26E653740071E876 /* Dashboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 210B9A3B26E653740071E876 /* Dashboard.storyboard */; };
 		2111003D2783073400A5C554 /* DashManageImagesController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2111003C2783073400A5C554 /* DashManageImagesController.m */; };
 		2111DDBA2733CBC6002BA4EF /* utils.js in Resources */ = {isa = PBXBuildFile; fileRef = 2111DDB92733CBC6002BA4EF /* utils.js */; };
@@ -239,6 +240,8 @@
 		0DC97F4BF288E69FF275C3DC /* Pods-MQTTPushClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MQTTPushClient.release.xcconfig"; path = "Pods/Target Support Files/Pods-MQTTPushClient/Pods-MQTTPushClient.release.xcconfig"; sourceTree = "<group>"; };
 		2102CE672757674700A428A6 /* DashScriptViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashScriptViewController.h; sourceTree = "<group>"; };
 		2102CE682757674700A428A6 /* DashScriptViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashScriptViewController.m; sourceTree = "<group>"; };
+		2108EF95278D6B1C00CEAAE5 /* DashResourcesHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashResourcesHelper.h; sourceTree = "<group>"; };
+		2108EF96278D6B1C00CEAAE5 /* DashResourcesHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashResourcesHelper.m; sourceTree = "<group>"; };
 		210B9A3B26E653740071E876 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
 		2111003B2783073400A5C554 /* DashManageImagesController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashManageImagesController.h; sourceTree = "<group>"; };
 		2111003C2783073400A5C554 /* DashManageImagesController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashManageImagesController.m; sourceTree = "<group>"; };
@@ -615,6 +618,8 @@
 				2131928326EF730C00E65AF0 /* DashConsts.h */,
 				21EF4EC326F1DEE40019C488 /* DashUtils.h */,
 				21EF4EC426F1DEE40019C488 /* DashUtils.m */,
+				2108EF95278D6B1C00CEAAE5 /* DashResourcesHelper.h */,
+				2108EF96278D6B1C00CEAAE5 /* DashResourcesHelper.m */,
 				2102CE672757674700A428A6 /* DashScriptViewController.h */,
 				2102CE682757674700A428A6 /* DashScriptViewController.m */,
 				21A3C7902732C9020012CD21 /* DashJavaScriptOutput.h */,
@@ -1264,6 +1269,7 @@
 				84B49956217F5B720016F9CB /* CDAccount+CoreDataProperties.m in Sources */,
 				84B49946217F595E0016F9CB /* MQTT.xcdatamodeld in Sources */,
 				2102CE692757674700A428A6 /* DashScriptViewController.m in Sources */,
+				2108EF97278D6B1C00CEAAE5 /* DashResourcesHelper.m in Sources */,
 				2171417E26E752CC00BD7969 /* SwitchViewSegue.m in Sources */,
 				2AF2BE62213FCC45009B57C7 /* ServerSetupTableViewController.m in Sources */,
 				2131928126EF6E0700E65AF0 /* DashItem.m in Sources */,

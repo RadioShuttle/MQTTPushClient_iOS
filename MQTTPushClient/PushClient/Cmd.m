@@ -581,6 +581,51 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)addResource:(int)seqNo filename:(NSString *)filename type:(NSString *)type fileURL:(NSURL *)resourceFileURL {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"SAVE RESOURCE request");
+	NSData *data = [[NSFileManager defaultManager] contentsAtPath:resourceFileURL.path];
+	NSMutableData *reqData = [NSMutableData new];
+	if (data) {
+		NSDictionary<NSFileAttributeKey, id> *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:resourceFileURL.path error:nil];
+		if (attrs) {
+			NSDate *modDate = attrs[NSFileModificationDate];
+			uint64_t t = modDate.timeIntervalSince1970;
+			
+			unsigned char buffer[8];
+			buffer[0] = 0;
+			[reqData appendBytes:buffer length:1]; // mode add
+			[reqData appendData:[self dataFromString:filename encoding:NSUTF8StringEncoding]]; // filename
+			[reqData appendData:[self dataFromString:type encoding:NSUTF8StringEncoding]]; // type
+
+			buffer[7] = t & 0xff;
+			buffer[6] = t >> 8;
+			buffer[5] = t >> 16;
+			buffer[4] = t >> 24;
+			buffer[3] = t >> 32;
+			buffer[2] = t >> 40;
+			buffer[1] = t >> 48;
+			buffer[0] = t >> 56;
+			[reqData appendBytes:buffer length:8]; // mod date
+			
+			t = (uint32_t) data.length;
+			buffer[3] = t & 0xff;
+			buffer[2] = t >> 8;
+			buffer[1] = t >> 16;
+			buffer[0] = t >> 24;
+			[reqData appendBytes:buffer length:4]; // data.len
+			
+			[reqData appendData:data]; // data
+		}
+		[self writeCommand:CMD_SAVE_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:reqData];
+		[self readCommand];
+		[self waitForCommand];
+	}
+	return self.rawCmd;
+}
+
+
 # pragma - socket delegate
 
 - (void)socket:(GCDAsyncSocket *)sock didConnectToHost:(NSString *)host port:(UInt16)port {

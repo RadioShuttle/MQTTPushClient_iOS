@@ -6,6 +6,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Topic.h"
+#import "Action.h"
 
 #define SecureTransportError 1550
 
@@ -62,4 +63,6 @@ enum ReturnCode {
 - (RawCmd *)getResourceRequest:(int)seqNo name:(NSString *)name type:(NSString *)type;
 - (RawCmd *)setDashboard:(int)seqNo version:(uint64_t)version itemID:(uint32_t)itemID dashboard:(NSData *)dashboard;
 - (RawCmd *)enumResources:(int)seqNo type:(NSString *)type;
+- (RawCmd *)addResource:(int)seqNo filename:(NSString *)filename type:(NSString *)type fileURL:(NSURL *)resourceFileURL;
+
 @end
