@@ -14,6 +14,7 @@
 #import "ServerListTableViewController.h"
 #import "TokenManager.h"
 #import "DashCollectionViewController.h"
+#import "DashResourcesHelper.h"
 
 @interface ServerListTableViewController ()
 
@@ -96,6 +97,11 @@
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccounts) forControlEvents:UIControlEventValueChanged];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.accountList = [AccountList sharedAccountList];
+
+	/* dashboard clean up task */
+	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+		[DashResourcesHelper deleteLocalImageResources:self.accountList];
+	});
 }
 
 - (void)viewWillAppear:(BOOL)animated {

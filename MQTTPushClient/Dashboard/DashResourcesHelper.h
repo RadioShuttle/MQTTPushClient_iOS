@@ -6,6 +6,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Cmd.h"
+#import "AccountList.h"
 
 @interface FileInfo : NSObject
 @property NSString *name;
@@ -32,5 +33,8 @@
 
 /* check resources for the given account, which are stored on server, but not referenced (anymore) */
 -(NSArray<NSString *> *)findUnusedResources:(NSMutableArray<FileInfo *> *)serverResourceList json:(NSMutableDictionary *)jsonObj;
+
+/* remove all local unused imported and downloaded images for all accounts */
++(void)deleteLocalImageResources:(AccountList *)accountList;
 
 @end

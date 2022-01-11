@@ -578,7 +578,6 @@ enum ConnectionState {
 	uint64_t ts = [dashboard.lastReceivedMsgDate timeIntervalSince1970];
 	int messageID = dashboard.lastReceivedMsgSeqNo;
 	NSString *db = dashboard.dashboardJS;
-	NSURL *resourceDir = dashboard.account.cacheURL;
 	
 	atomic_fetch_add(&_noOfActiveDashRequests, 1);
 	

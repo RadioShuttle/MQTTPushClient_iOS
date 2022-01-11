@@ -340,46 +340,7 @@
 		[unusedResources addObject:fi.name];
 	}
 	
-	NSMutableSet<NSString *> *usedResources = [NSMutableSet new];
-	
-	NSArray *groups = jsonObj[@"groups"];
-	NSDictionary *item;
-	NSArray *items, *optionList;
-	NSString *resourceName;
-
-	for(NSDictionary *group in groups) {
-		items = group[@"items"];
-		
-		for(int j = 0; j < [items count]; j++) {
-			item = [items objectAtIndex:j];
-			resourceName = [DashUtils getURIPath:item[@"uri"]];
-			if (resourceName) {
-				[usedResources addObject:resourceName];
-			}
-			resourceName = [DashUtils getURIPath:item[@"uri_off"]];
-			if (resourceName) {
-				[usedResources addObject:resourceName];
-			}
-			resourceName = [DashUtils getURIPath:item[@"background_uri"]];
-			if (resourceName) {
-				[usedResources addObject:resourceName];
-			}
-			optionList = item[@"optionlist"];
-			for(NSDictionary *optionItem in optionList) {
-				resourceName = [DashUtils getURIPath:optionItem[@"uri"]];
-				if (resourceName) {
-					[usedResources addObject:resourceName];
-				}
-			}
-		}
-	}
-	NSArray *resources = [jsonObj objectForKey:@"resources"];
-	for(NSString * uri in resources) {
-		resourceName = [DashUtils getURIPath:uri];
-		if (resourceName) {
-			[usedResources addObject:resourceName];
-		}
-	}
+	NSMutableSet<NSString *> *usedResources = [DashResourcesHelper getUsedResources:jsonObj];
 	[unusedResources minusSet:usedResources];
 	
 	NSMutableArray* unusedResArr = [NSMutableArray new];
@@ -389,6 +350,105 @@
 	return unusedResArr;
 }
 
++(void)deleteLocalImageResources:(AccountList *)accountList {
+	NSURL *accountDir;
+	for(int i = 0; i < accountList.count; i++) {
+		accountDir = [accountList objectAtIndexedSubscript:i].cacheURL;
+		if (accountDir) {
+			/* delete all files in imported files dir */
+			[DashUtils clearImportedFilesDir:accountDir];
+			
+			/* read dashboard */
+			NSURL *fileURL = [DashUtils appendStringToURL:accountDir str:@"dashboard.json"];
+			NSString *dashboardStr = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:nil];
+			if (dashboardStr) {
+				NSRange r = [dashboardStr rangeOfString:@"\n"];
+				if (r.location != NSNotFound) {
+					NSString * dashboardJS = [dashboardStr substringFromIndex:r.location + 1];
+					if (dashboardJS) {
+						NSData *jsonData = [dashboardJS dataUsingEncoding:NSUTF8StringEncoding];
+						NSDictionary *jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
+						if (jsonObj) {
+							NSMutableSet<NSString *> *usedResources = [DashResourcesHelper getUsedResources:jsonObj];
+							
+							NSURL *userDir = [DashUtils getUserFilesDir:accountDir];
+							NSFileManager *fm = [NSFileManager defaultManager];
+							NSArray<NSURL *> * urls = [fm contentsOfDirectoryAtURL:userDir includingPropertiesForKeys:nil options:0 error:nil];
+							NSString *filename, *resourceName;
+							NSString *fileExt = [NSString stringWithFormat:@".%@",DASH512_PNG];
+							for(NSURL *u in urls) {
+								filename = u.lastPathComponent;
+								if ([filename hasSuffix:fileExt]) {
+									resourceName = [[filename substringToIndex:filename.length - fileExt.length] dequoteHelios];
+									if (![usedResources containsObject:resourceName]) {
+										/* resource is not referenced so delete */
+										if ([[accountList objectAtIndexedSubscript:i].mqttUser hasPrefix:@"alu"]) {
+											[fm removeItemAtURL:u error:nil];
+											// NSLog(@"%@", u.lastPathComponent);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+/* returns all used resource names (referenced, locked) of given dashboard */
++(NSMutableSet<NSString *> *)getUsedResources:(NSDictionary *)jsonObj {
+	NSMutableSet<NSString *> *usedResources = [NSMutableSet new];
+	
+	NSArray *groups = jsonObj[@"groups"];
+	NSDictionary *item;
+	NSArray *items, *optionList;
+	NSString *resourceName, *uri;
+	
+	for(NSDictionary *group in groups) {
+		items = group[@"items"];
+		
+		for(int j = 0; j < [items count]; j++) {
+			item = [items objectAtIndex:j];
+			
+			uri = item[@"uri"];
+			if ([DashUtils isUserResource:uri]) {
+				resourceName = [DashUtils getURIPath:uri];
+				[usedResources addObject:resourceName];
+			}
+			
+			uri = item[@"uri_off"];
+			if ([DashUtils isUserResource:uri]) {
+				resourceName = [DashUtils getURIPath:uri];
+				[usedResources addObject:resourceName];
+			}
+			
+			uri = item[@"background_uri"];
+			if ([DashUtils isUserResource:uri]) {
+				resourceName = [DashUtils getURIPath:uri];
+				[usedResources addObject:resourceName];
+			}
+			
+			optionList = item[@"optionlist"];
+			for(NSDictionary *optionItem in optionList) {
+				uri = optionItem[@"uri"];
+				if ([DashUtils isUserResource:uri]) {
+					resourceName = [DashUtils getURIPath:uri];
+					[usedResources addObject:resourceName];
+				}
+			}
+		}
+	}
+	NSArray *resources = [jsonObj objectForKey:@"resources"];
+	for(NSString * uri in resources) {
+		if ([DashUtils isUserResource:uri]) {
+			resourceName = [DashUtils getURIPath:uri];
+			[usedResources addObject:resourceName];
+		}
+	}
+	return usedResources;
+}
 
 @end
 
