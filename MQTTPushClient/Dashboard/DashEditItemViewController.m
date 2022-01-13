@@ -862,6 +862,12 @@
 	} else if (src == self.switchOffColorButton) {
 		DashSwitchItem *switchItem = (DashSwitchItem *) self.item;
 		switchItem.colorOff = color;
+	} else if (src == self.switchOnBackgroundColorButton) {
+		DashSwitchItem *switchItem = (DashSwitchItem *) self.item;
+		switchItem.bgcolor = color;
+	} else if (src == self.switchOffBackgroundColorButton) {
+		DashSwitchItem *switchItem = (DashSwitchItem *) self.item;
+		switchItem.bgcolorOff = color;
 	}
 	
 	/* update related views */

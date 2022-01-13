@@ -24,7 +24,6 @@
 	/* background color */
 	if (color == DASH_COLOR_OS_DEFAULT) {
 		[self setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
-		// color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
 	} else {
 		[self setBackgroundColor:UIColorFromRGB(color)];
 	}

@@ -40,7 +40,7 @@
 		self.dashItemView = [[DashOptionItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
 	}
 
-	[self.errorView setBackgroundColor:UIColorFromRGB(DASH_DEFAULT_CELL_COLOR)]; //TODO: dark mode
+	[self.errorView setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
 	self.errorButton1.action = @selector(onErrorButton1Clicked);
 	self.errorButton2.action = @selector(onErrorButton2Clicked);
 

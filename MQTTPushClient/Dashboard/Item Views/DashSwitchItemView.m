@@ -87,11 +87,11 @@
 	UIColor *color;
 	
 	if (buttonBGColor == DASH_COLOR_CLEAR || buttonBGColor == DASH_COLOR_OS_DEFAULT) {
-		color = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR); //TODO: dark mode;
+		[self setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
 	} else {
 		color = UIColorFromRGB(buttonBGColor);
+		[self.button setBackgroundColor:color];
 	}
-	[self.button setBackgroundColor:color];
 	
 	/* set highlight color/image */
 	UIImage *highlightColorImg = [DashUtils imageWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.3f]];

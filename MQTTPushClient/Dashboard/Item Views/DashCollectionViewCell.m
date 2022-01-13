@@ -44,7 +44,7 @@
 
 		self.errorImageView1 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Error-Info"]];
 		self.errorImageView1.translatesAutoresizingMaskIntoConstraints = NO;
-		self.errorImageView1.tintColor = self.labelColor;
+		self.errorImageView1.tintColor = [UIColor darkTextColor];
 		[self addSubview:self.errorImageView1];
 		
 		[self.errorImageView1.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:-4.0].active = YES;
@@ -64,7 +64,7 @@
 		
 		self.errorImageView2 = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Error-Info"]];
 		self.errorImageView2.translatesAutoresizingMaskIntoConstraints = NO;
-		self.errorImageView2.tintColor = self.labelColor;
+		self.errorImageView2.tintColor = [UIColor darkTextColor];
 		[self addSubview:self.errorImageView2];
 		
 		[self.errorImageView2.trailingAnchor constraintEqualToAnchor:self.errorImageView1.leadingAnchor constant:-4.0].active = YES;

@@ -28,7 +28,7 @@
 }
 
 -(void)initDef {
-	self.borderColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.7]; //TODO: dark mode
+	self.borderColor = [UIColor colorNamed:@"Color_CircleButton_Border"];
 	self.fillColor = [UIColor colorWithRed:1 green:1 blue:1 alpha:1];
 	
 	UIImage *highlightColorImg = [DashUtils imageWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5f]];

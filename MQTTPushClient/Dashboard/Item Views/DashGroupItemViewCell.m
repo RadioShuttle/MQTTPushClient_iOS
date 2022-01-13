@@ -48,11 +48,6 @@
 		self.accountLabel.text = account.accountDescription;
 	}
 	
-	int64_t bg = item.background;
-	if (bg == DASH_COLOR_OS_DEFAULT) {
-		bg = DASH_DEFAULT_CELL_COLOR; // TODO: dark mode
-	}
-	
 	UIColor *textColor;
 	int64_t color = item.textcolor;
 	if (color == DASH_COLOR_OS_DEFAULT) {
@@ -60,8 +55,13 @@
 	} else {
 		textColor = UIColorFromRGB(color);
 	}
+
+	if (item.background == DASH_COLOR_OS_DEFAULT) {
+		[self.groupViewContainer setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
+	} else {
+		[self.groupViewContainer setBackgroundColor:UIColorFromRGB(item.background)];
+	}
 	
-	[self.groupViewContainer setBackgroundColor:UIColorFromRGB(bg)];
 	[self.groupLabel setTextColor:textColor];
 	[self.groupLabel setText:item.label];
 	
