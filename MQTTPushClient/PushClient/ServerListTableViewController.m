@@ -98,6 +98,14 @@
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.accountList = [AccountList sharedAccountList];
 
+	
+	if (@available(iOS 13.0, *)) { //TODO: remove test
+		/*
+		((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
+		[self.navigationController.view setNeedsLayout];
+		 */
+	}
+
 	/* dashboard clean up task */
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
 		[DashResourcesHelper deleteLocalImageResources:self.accountList];
@@ -116,6 +124,7 @@
 		[self.tableView reloadData];
 	[self updateAccounts];
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateList:) name:@"ServerUpdateNotification" object:nil];
+	
 }
 
 - (void)viewWillDisappear:(BOOL)animated {

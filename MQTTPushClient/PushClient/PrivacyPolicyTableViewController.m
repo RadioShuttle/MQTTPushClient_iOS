@@ -20,6 +20,10 @@
 	}
 	NSURL *url = [NSURL URLWithString:urlString];
 	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+	if (@available(iOS 13.0, *)) {
+		safariViewController.preferredBarTintColor = [UIColor systemBackgroundColor];
+		safariViewController.preferredControlTintColor = self.view.tintColor;
+	}
 	[self presentViewController:safariViewController animated:YES completion:^{}];
 }
 

@@ -193,7 +193,11 @@
 	cell.messageLabel.textColor = textColor;
 	cell.messageView.backgroundColor = backgroundColor;
 	if ([cdmessage.timestamp compare:self.lastViewed] == NSOrderedDescending) {
-		cell.backgroundColor = [UIColor colorWithRed:1.0 green:0.95 blue:0.0 alpha:1.0]; // Yellow
+		if (@available(iOS 13.0, *)) {
+			cell.backgroundColor = [UIColor colorNamed:@"Color_Highlight_Msgs"];
+		} else {
+			cell.backgroundColor = [UIColor colorWithRed:1.0 green:0.95 blue:0.0 alpha:1.0]; // Yellow
+		}
 	} else {
 		cell.backgroundColor = [UIColor clearColor];
 	}

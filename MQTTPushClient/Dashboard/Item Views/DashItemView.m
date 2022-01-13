@@ -23,10 +23,11 @@
 	int64_t color = item.background;
 	/* background color */
 	if (color == DASH_COLOR_OS_DEFAULT) {
-		color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
+		[self setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
+		// color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
+	} else {
+		[self setBackgroundColor:UIColorFromRGB(color)];
 	}
-	
-	[self setBackgroundColor:UIColorFromRGB(color)];
 	
 	/* background image (TODO: image caching) */
 	if (self.backgroundImageView) {
