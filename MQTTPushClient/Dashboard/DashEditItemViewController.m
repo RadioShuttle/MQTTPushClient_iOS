@@ -156,7 +156,7 @@
 	self.topicSubTextField.text = self.item.topic_s;
 	[self.filterSciptButton addTarget:self action:@selector(onFilterScriptButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 	[self onFilterScriptContentUpdated:self.item.script_f];
-	[self.filterSciptModifiedLabel setTextColor:UIColorFromRGB(DASH_COLOR_RED)]; //TODO: dark mode
+	[self.filterSciptModifiedLabel setTextColor:[UIColor colorNamed:@"Color_Script_Modified"]];
 
 	/* 4. Publish section */
 	
@@ -176,7 +176,7 @@
 	/* output script button */
 	[self.outputSciptButton addTarget:self action:@selector(onOutputScriptButtonClicked) forControlEvents:UIControlEventTouchUpInside];
 	[self onOutputScriptContentUpdated:self.item.script_p];
-	[self.outputSciptModifiedLabel setTextColor:UIColorFromRGB(DASH_COLOR_RED)]; //TODO: dark mode
+	[self.outputSciptModifiedLabel setTextColor:[UIColor colorNamed:@"Color_Script_Modified"]];
 
 	/* Option List */
 	if ([self.item isKindOfClass:[DashOptionItem class]]) {
@@ -836,7 +836,7 @@
 		} else if (src == self.switchOnColorButton || src == self.switchOffColorButton) {
 			uicolor = self.labelDefaultColor;
 		} else {
-			uicolor = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR); //TODO: default color
+			uicolor = [UIColor colorNamed:@"Color_Item_Background"];
 		}
 		[uicolor getRed:&r green:&g blue:&b alpha:&a]; // convert cs
 		uicolor = [UIColor colorWithRed:r green:g blue:b alpha:a];
@@ -880,10 +880,7 @@
 		UIColor *imageColor;
 		if (src.clearColor) {
 			titleColor = self.labelDefaultColor;
-			if ([DashUtils isInternalResource:((DashSwitchItem *) self.item).uri]) {
-				/* avoid tinting with blue/default system color of internal images */
-				imageColor = self.labelDefaultColor;
-			}
+			imageColor = nil;
 		} else {
 			titleColor = uicolor;
 			imageColor = uicolor;
@@ -906,10 +903,7 @@
 		UIColor *imageColor;
 		if (src.clearColor) {
 			titleColor = self.labelDefaultColor;
-			if ([DashUtils isInternalResource:((DashSwitchItem *) self.item).uriOff]) {
-				/* avoid tinting with blue/default system color of internal images */
-				imageColor = self.labelDefaultColor;
-			}
+			imageColor = nil;
 		} else {
 			titleColor = uicolor;
 			imageColor = uicolor;

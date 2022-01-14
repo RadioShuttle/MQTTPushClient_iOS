@@ -64,10 +64,11 @@
 	/* background color */
 	int64_t color = item.background;
 	if (color == DASH_COLOR_OS_DEFAULT) {
-		color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
+		[self.webView.scrollView setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
+	} else {
+		[self.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
 	}
 	self.webView.opaque = NO;
-	[self.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
 	
 	BOOL load = NO;
 	

@@ -35,7 +35,7 @@
 	[[self.imageButton imageView] setContentMode: UIViewContentModeScaleAspectFit];
 	self.imageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
 	[self.imageButton setTintColor:[UILabel new].textColor];
-	[self.imageButton setBackgroundColor:UIColorFromRGB(DASH_DEFAULT_CELL_COLOR)]; //TODO: dark mode
+	[self.imageButton setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
 	
 	[self.imageButton addTarget:self action:@selector(onSelectImageButtonCLicked) forControlEvents:UIControlEventTouchUpInside];
 
