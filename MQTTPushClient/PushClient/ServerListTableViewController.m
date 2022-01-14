@@ -20,10 +20,13 @@
 
 @property AccountList *accountList;
 @property NSIndexPath *indexPathSelected;
+@property NSInteger interfaceStyle;
 
 @end
 
 @implementation ServerListTableViewController
+
+static NSString * const interface_style_key = @"interface_style";
 
 - (void)updateList:(NSNotification *)sender {
 	Account *account = sender.userInfo[@"UpdatedServerKey"];
@@ -97,14 +100,9 @@
 	[self.tableView.refreshControl addTarget:self action:@selector(updateAccounts) forControlEvents:UIControlEventValueChanged];
 	self.navigationItem.rightBarButtonItem = self.editButtonItem;
 	self.accountList = [AccountList sharedAccountList];
-
 	
-	if (@available(iOS 13.0, *)) { //TODO: remove test
-		/*
-		((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.overrideUserInterfaceStyle = UIUserInterfaceStyleDark;
-		[self.navigationController.view setNeedsLayout];
-		 */
-	}
+	/* dark mode */
+	[self addThemeToolbarButton];
 
 	/* dashboard clean up task */
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -266,6 +264,71 @@
 		DashCollectionViewController *controller = segue.destinationViewController;
 		Account *account = self.accountList[self.indexPathSelected.row];
 		controller.account = account;
+	}
+}
+
+#pragma mark - theme
+
+-(void)addThemeToolbarButton {
+	if (@available(iOS 13.0, *)) {
+		NSString *val = [[NSUserDefaults standardUserDefaults] stringForKey:interface_style_key];
+		self.interfaceStyle = [val integerValue];
+		if (self.interfaceStyle > 0) {
+			[self updateTheme:self.interfaceStyle];
+		}
+		UIBarButtonItem *themeButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"DarkMode"] style:UIBarButtonItemStylePlain target:self action:@selector(onThemeButtonClicked)];
+		NSMutableArray * items = [self.toolbarItems mutableCopy];
+		[items addObject:themeButton];
+		UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+		[items addObject:flexItem];
+		self.toolbarItems = items;
+	}
+}
+
+-(void)onThemeButtonClicked {
+	if (@available(iOS 13.0, *)) {
+		NSString *menuLight = @"Light";
+		NSString *menuDark = @"Dark";
+		NSString *menuSystem = @"System Default";
+
+		if (self.interfaceStyle == UIDocumentBrowserUserInterfaceStyleDark) {
+			menuDark = [NSString stringWithFormat:@"  %@ \u2022", menuDark];
+		} else if (self.interfaceStyle == UIDocumentBrowserUserInterfaceStyleLight) {
+			menuLight = [NSString stringWithFormat:@"  %@ \u2022", menuLight];
+		} else {
+			menuSystem = [NSString stringWithFormat:@"  %@ \u2022", menuSystem];
+		}
+		
+		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Theme" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+		[alert addAction:[UIAlertAction actionWithTitle:menuLight style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self onThemeSelected:UIUserInterfaceStyleLight];
+		}]];
+		[alert addAction:[UIAlertAction actionWithTitle:menuDark style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self onThemeSelected:UIUserInterfaceStyleDark];
+		}]];
+		[alert addAction:[UIAlertAction actionWithTitle:menuSystem  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+			[self onThemeSelected:UIUserInterfaceStyleUnspecified];
+		}]];
+		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+		}]];
+		[self presentViewController:alert animated:TRUE completion:nil];
+	}
+}
+
+-(void)onThemeSelected:(UIUserInterfaceStyle) style API_AVAILABLE(ios(12.0)){
+	if (style != self.interfaceStyle) {
+		self.interfaceStyle = style;
+		[self updateTheme:style];
+		NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
+		[prefs setObject:[[NSNumber numberWithInteger:style] stringValue] forKey:interface_style_key];
+		[prefs synchronize];
+	}
+}
+
+-(void)updateTheme:(UIUserInterfaceStyle) style API_AVAILABLE(ios(12.0)){
+	if (@available(iOS 13.0, *)) {
+		((AppDelegate *)[[UIApplication sharedApplication] delegate]).window.overrideUserInterfaceStyle = style;
+		[self.navigationController.view setNeedsLayout]; // update toolbar. ios bug?
 	}
 }
 
