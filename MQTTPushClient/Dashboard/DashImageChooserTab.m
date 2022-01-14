@@ -36,7 +36,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	self.highLightColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:.3];
 	
 	self.internal = ((UITabBarController *) self.parentViewController).viewControllers.firstObject == self;
-	self.imageTintColor = [UIColor darkGrayColor]; //TODO: dark mode
+	self.imageTintColor = [UIColor colorNamed:@"Color_Internal_Image"];
 	NSMutableArray *res = [NSMutableArray new];
 	if (self.internal) {
 		[self addInternalResourceNames:res];
