@@ -111,6 +111,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onRequestFinished:) name:@"ServerUpdateNotification" object:self.connection];
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJavaScriptTaskFinished:) name:@"DashJavaScriptTaskNotification" object:nil];
 	}
+	/* disable sleep mode while dashboard is being displayed */
+	[UIApplication sharedApplication].idleTimerDisabled = YES;
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -130,6 +132,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		/* save last received messages */
 		[self.dashboard saveMessages];
 	}
+	
+	[UIApplication sharedApplication].idleTimerDisabled = NO;
 }
 
 -(BOOL)checkIfUpdateRequired {
