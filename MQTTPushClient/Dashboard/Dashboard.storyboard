@@ -150,7 +150,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="ijo-by-n83"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -375,7 +375,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="sgh-PJ-ObU"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -641,7 +641,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="Bpf-aO-QWd"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -718,7 +718,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="Sxn-TB-skB"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -903,7 +903,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="PDv-7s-nLW"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1257,7 +1257,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="D0T-KQ-1vJ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1334,7 +1334,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="UDb-iN-oyp"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1838,7 +1838,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="FZ1-Lq-f6I"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -1998,7 +1998,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="NUM-aJ-rZm"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2063,7 +2063,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="375" id="H9W-tz-Fds"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2098,7 +2098,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="375" id="Zka-Km-OZe"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2133,7 +2133,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="375" id="yhM-V7-MRG"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" name="Courier" family="Courier" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2251,7 +2251,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="jot-4h-KTq"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2517,7 +2517,7 @@
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="5NC-xY-ET0"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="1000" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="hAs-1I-K8f">
                                                     <rect key="frame" x="200" y="5" width="64" height="34"/>
@@ -2525,7 +2525,7 @@
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="dtS-49-iXO"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2562,7 +2562,7 @@
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="64" id="Jn2-IZ-Pbr"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2661,7 +2661,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="ruJ-GU-Cbg"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2738,7 +2738,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="1OQ-3e-E1b"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -2894,7 +2894,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="QZx-tl-Bge"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -3091,7 +3091,7 @@
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="Jjl-wp-w3c"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -3235,7 +3235,7 @@
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="bwd-2Y-UXs"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -3379,7 +3379,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="XfW-61-OXI"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>
@@ -3456,7 +3456,7 @@
                                                         <constraint firstAttribute="width" relation="lessThanOrEqual" constant="275" id="YYN-AQ-0xO"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                 </textField>
                                             </subviews>
                                             <constraints>

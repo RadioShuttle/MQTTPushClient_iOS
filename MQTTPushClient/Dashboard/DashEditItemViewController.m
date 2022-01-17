@@ -77,6 +77,7 @@
 	self.labelDefaultColor = self.labelTextField.textColor;
 	
 	/* group */
+	self.groupLabel.text = @" ";
 	if (self.mode == Add) {
 		if (self.parentCtrl.dashboard.groups.count > 0) {
 			self.groupLabel.text = self.parentCtrl.dashboard.groups.lastObject.label;
@@ -321,6 +322,11 @@
 		/* prepare data for saving: clone dashboard */
 		NSMutableArray<DashGroupItem *> *groups = [self.parentCtrl.dashboard.groups mutableCopy];
 		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [self.parentCtrl.dashboard.groupItems mutableCopy];
+		if (!groups) { // first dashboard?
+			groups = [NSMutableArray new];
+			groupItems = [NSMutableDictionary new];
+		}
+		
 		/* item values may have changed by script, so get the original item */
 		for(int i = 0; i < groups.count; i++) {
 			groups[i] = (DashGroupItem *) [self.parentCtrl.dashboard getUnmodifiedItemForID:groups[i].id_];
