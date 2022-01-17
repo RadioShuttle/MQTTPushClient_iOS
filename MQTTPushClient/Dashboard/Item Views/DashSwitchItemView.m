@@ -87,7 +87,7 @@
 	UIColor *color;
 	
 	if (buttonBGColor == DASH_COLOR_CLEAR || buttonBGColor == DASH_COLOR_OS_DEFAULT) {
-		[self setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
+		[self.button setBackgroundColor:[UIColor colorNamed:@"Color_Item_Background"]];
 	} else {
 		color = UIColorFromRGB(buttonBGColor);
 		[self.button setBackgroundColor:color];
