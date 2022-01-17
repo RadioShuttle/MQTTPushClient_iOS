@@ -469,7 +469,6 @@ enum ConnectionState {
 				
 				[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
 				if (!command.rawCmd.error) {
-					//TODO: handle MQTT error (e.g. subscribe dashboard topic error)
 					if (command.rawCmd.rc == RC_OK) {
 						/* delete imported files which have been copied to user dir */
 						[helper deleteImportedResouces];

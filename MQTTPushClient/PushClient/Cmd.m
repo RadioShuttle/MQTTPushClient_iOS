@@ -427,54 +427,6 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
-- (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSData *)content retainFlag:(BOOL)retainFlag {
-	if (self.state == CommandStateEnd)
-		return nil;
-	TRACE(@"MQTT PUBLISH request");
-	NSMutableData *data = [self dataFromString:topic encoding:NSUTF8StringEncoding];
-	NSUInteger count = content.length;
-	unsigned char buf[] = {count >> 8, count & 0xff};
-	[data appendBytes:buf length:2];
-	[data appendData:content];
-	unsigned char buffer[1];
-	buffer[0] = retainFlag;
-	[data appendBytes:buffer length:1];
-	[self writeCommand:CMD_MQTT_PUBLISH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
-	[self readCommand];
-	[self waitForCommand];
-	return self.rawCmd;
-}
-
-- (RawCmd *)setDashboard:(int)seqNo version:(uint64_t)version itemID:(uint32_t)itemID dashboard:(NSData *)dashboard {
-	if (self.state == CommandStateEnd)
-		return nil;
-	TRACE(@"SET DASHBOARD request");
-	
-	unsigned char buffer[8];
-	buffer[7] = version & 0xff;
-	buffer[6] = version >> 8;
-	buffer[5] = version >> 16;
-	buffer[4] = version >> 24;
-	buffer[3] = version >> 32;
-	buffer[2] = version >> 40;
-	buffer[1] = version >> 48;
-	buffer[0] = version >> 56;
-	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:8];
-	buffer[3] = itemID & 0xff;
-	buffer[2] = itemID >> 8;
-	buffer[1] = itemID >> 16;
-	buffer[0] = itemID >> 24;
-	[data appendBytes:buffer length:4];
-	buffer[1] = dashboard.length & 0xff;
-	buffer[0] = dashboard.length >> 8;
-	[data appendBytes:buffer length:2];
-	[data appendData:dashboard];
-	[self writeCommand:CMD_SET_DASHBOARD seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
-	[self readCommand];
-	[self waitForCommand];
-	return self.rawCmd;
-}
-
 - (RawCmd *)addActionRequest:(int)seqNo action:(Action *)action {
 	if (self.state == CommandStateEnd)
 		return nil;
@@ -523,6 +475,55 @@ enum StateCommand {
 	return self.rawCmd;
 }
 
+- (RawCmd *)mqttPublishRequest:(int)seqNo topic:(NSString *)topic content:(NSData *)content retainFlag:(BOOL)retainFlag {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"MQTT PUBLISH request");
+	NSMutableData *data = [self dataFromString:topic encoding:NSUTF8StringEncoding];
+	NSUInteger count = content.length;
+	unsigned char buf[] = {count >> 8, count & 0xff};
+	[data appendBytes:buf length:2];
+	[data appendData:content];
+	unsigned char buffer[1];
+	buffer[0] = retainFlag;
+	[data appendBytes:buffer length:1];
+	[self writeCommand:CMD_MQTT_PUBLISH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	[self readErrorInfo:self.rawCmd];
+	return self.rawCmd;
+}
+
+- (RawCmd *)setDashboard:(int)seqNo version:(uint64_t)version itemID:(uint32_t)itemID dashboard:(NSData *)dashboard {
+	if (self.state == CommandStateEnd)
+		return nil;
+	TRACE(@"SET DASHBOARD request");
+	
+	unsigned char buffer[8];
+	buffer[7] = version & 0xff;
+	buffer[6] = version >> 8;
+	buffer[5] = version >> 16;
+	buffer[4] = version >> 24;
+	buffer[3] = version >> 32;
+	buffer[2] = version >> 40;
+	buffer[1] = version >> 48;
+	buffer[0] = version >> 56;
+	NSMutableData *data = [NSMutableData dataWithBytes:buffer length:8];
+	buffer[3] = itemID & 0xff;
+	buffer[2] = itemID >> 8;
+	buffer[1] = itemID >> 16;
+	buffer[0] = itemID >> 24;
+	[data appendBytes:buffer length:4];
+	buffer[1] = dashboard.length & 0xff;
+	buffer[0] = dashboard.length >> 8;
+	[data appendBytes:buffer length:2];
+	[data appendData:dashboard];
+	[self writeCommand:CMD_SET_DASHBOARD seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
+	[self readCommand];
+	[self waitForCommand];
+	[self readErrorInfo:self.rawCmd];
+	return self.rawCmd;
+}
 
 - (RawCmd *)getDashMessagesRequest:(int)seqNo date:(uint64_t)since id:(uint32_t)messageID {
 	if (self.state == CommandStateEnd)
@@ -546,6 +547,7 @@ enum StateCommand {
 	[self writeCommand:CMD_GET_MESSAGES_DASH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
+	[self readErrorInfo:self.rawCmd];
 	return self.rawCmd;
 }
 
@@ -555,6 +557,7 @@ enum StateCommand {
 	TRACE(@"GET DASHBOARD request");
 	[self request:CMD_GET_DASHBOARD seqNo:seqNo];
 	[self waitForCommand];
+	[self readErrorInfo:self.rawCmd];
 	return self.rawCmd;
 }
 
@@ -567,6 +570,7 @@ enum StateCommand {
 	[self writeCommand:CMD_GET_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
+	[self readErrorInfo:self.rawCmd];
 	return self.rawCmd;
 }
 
@@ -578,6 +582,7 @@ enum StateCommand {
 	[self writeCommand:CMD_ENUM_RESOURCES seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
+	[self readErrorInfo:self.rawCmd];
 	return self.rawCmd;
 }
 
@@ -621,6 +626,7 @@ enum StateCommand {
 		[self writeCommand:CMD_SAVE_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:reqData];
 		[self readCommand];
 		[self waitForCommand];
+		[self readErrorInfo:self.rawCmd];
 	}
 	return self.rawCmd;
 }
@@ -641,10 +647,35 @@ enum StateCommand {
 	[self writeCommand:CMD_DEL_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:reqData];
 	[self readCommand];
 	[self waitForCommand];
+	[self readErrorInfo:self.rawCmd];
 	
 	return self.rawCmd;
 }
 
+/* Reads error info from response and sets an NSError in given reponse parameter. Only 503 (RC_MQTT_ERROR) and 500 (RC_SERVER_ERROR) are handled, not 40x */
+-(void)readErrorInfo:(RawCmd *)response {
+	if (response.rc == RC_SERVER_ERROR || response.rc == RC_MQTT_ERROR) {
+		if (response.numberOfBytesReceived > 0) {
+			unsigned char *p = (unsigned char *)response.data.bytes;
+			int errorCode = (p[0] << 8) + p[1];
+			p += 2;
+			NSUInteger len = (p[0] << 8) + p[1];
+			NSString *description = [[NSString alloc] initWithBytes:p + 2 length:len encoding:NSUTF8StringEncoding];
+			NSMutableString *msg = [NSMutableString new];
+			NSString *errDomain;
+			if (response.rc == RC_SERVER_ERROR) {
+				errDomain = @"PushServer Error";
+				[msg appendString:@"Server error: "];
+			} else { // RC_MQTT_ERROR
+				errDomain = @"MQTT Error";
+				[msg appendString:@"MQTT error: "];
+			}
+			[msg appendString:description];
+			
+			response.error = [NSError errorWithDomain:errDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:msg}];
+		}
+	}
+}
 
 # pragma - socket delegate
 
