@@ -490,7 +490,7 @@ enum StateCommand {
 	[self writeCommand:CMD_MQTT_PUBLISH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
-	[self readErrorInfo:self.rawCmd];
+	[self readErrorInfo];
 	return self.rawCmd;
 }
 
@@ -521,7 +521,7 @@ enum StateCommand {
 	[self writeCommand:CMD_SET_DASHBOARD seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
-	[self readErrorInfo:self.rawCmd];
+	[self readErrorInfo];
 	return self.rawCmd;
 }
 
@@ -547,7 +547,7 @@ enum StateCommand {
 	[self writeCommand:CMD_GET_MESSAGES_DASH seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
-	[self readErrorInfo:self.rawCmd];
+	[self readErrorInfo];
 	return self.rawCmd;
 }
 
@@ -557,7 +557,7 @@ enum StateCommand {
 	TRACE(@"GET DASHBOARD request");
 	[self request:CMD_GET_DASHBOARD seqNo:seqNo];
 	[self waitForCommand];
-	[self readErrorInfo:self.rawCmd];
+	[self readErrorInfo];
 	return self.rawCmd;
 }
 
@@ -570,7 +570,7 @@ enum StateCommand {
 	[self writeCommand:CMD_GET_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
-	[self readErrorInfo:self.rawCmd];
+	[self readErrorInfo];
 	return self.rawCmd;
 }
 
@@ -582,7 +582,7 @@ enum StateCommand {
 	[self writeCommand:CMD_ENUM_RESOURCES seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];
 	[self waitForCommand];
-	[self readErrorInfo:self.rawCmd];
+	[self readErrorInfo];
 	return self.rawCmd;
 }
 
@@ -626,7 +626,7 @@ enum StateCommand {
 		[self writeCommand:CMD_SAVE_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:reqData];
 		[self readCommand];
 		[self waitForCommand];
-		[self readErrorInfo:self.rawCmd];
+		[self readErrorInfo];
 	}
 	return self.rawCmd;
 }
@@ -647,32 +647,34 @@ enum StateCommand {
 	[self writeCommand:CMD_DEL_RESOURCE seqNo:seqNo flags:FLAG_REQUEST rc:0 data:reqData];
 	[self readCommand];
 	[self waitForCommand];
-	[self readErrorInfo:self.rawCmd];
+	[self readErrorInfo];
 	
 	return self.rawCmd;
 }
 
 /* Reads error info from response and sets an NSError in given reponse parameter. Only 503 (RC_MQTT_ERROR) and 500 (RC_SERVER_ERROR) are handled, not 40x */
--(void)readErrorInfo:(RawCmd *)response {
-	if (response.rc == RC_SERVER_ERROR || response.rc == RC_MQTT_ERROR) {
-		if (response.numberOfBytesReceived > 0) {
-			unsigned char *p = (unsigned char *)response.data.bytes;
-			int errorCode = (p[0] << 8) + p[1];
-			p += 2;
-			NSUInteger len = (p[0] << 8) + p[1];
-			NSString *description = [[NSString alloc] initWithBytes:p + 2 length:len encoding:NSUTF8StringEncoding];
-			NSMutableString *msg = [NSMutableString new];
-			NSString *errDomain;
-			if (response.rc == RC_SERVER_ERROR) {
-				errDomain = @"PushServer Error";
-				[msg appendString:@"Server error: "];
-			} else { // RC_MQTT_ERROR
-				errDomain = @"MQTT Error";
-				[msg appendString:@"MQTT error: "];
+-(void)readErrorInfo {
+	if (self.rawCmd.error == nil) {
+		if (self.rawCmd.rc == RC_SERVER_ERROR || self.rawCmd.rc == RC_MQTT_ERROR) {
+			if (self.rawCmd.numberOfBytesReceived > 0) {
+				unsigned char *p = (unsigned char *)self.rawCmd.data.bytes;
+				int errorCode = (p[0] << 8) + p[1];
+				p += 2;
+				NSUInteger len = (p[0] << 8) + p[1];
+				NSString *description = [[NSString alloc] initWithBytes:p + 2 length:len encoding:NSUTF8StringEncoding];
+				NSMutableString *msg = [NSMutableString new];
+				NSString *errDomain;
+				if (self.rawCmd.rc == RC_SERVER_ERROR) {
+					errDomain = @"PushServer Error";
+					[msg appendString:@"Server error: "];
+				} else { // RC_MQTT_ERROR
+					errDomain = @"MQTT Error";
+					[msg appendString:@"MQTT error: "];
+				}
+				[msg appendString:description];
+				
+				self.rawCmd.error = [NSError errorWithDomain:errDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:msg}];
 			}
-			[msg appendString:description];
-			
-			response.error = [NSError errorWithDomain:errDomain code:errorCode userInfo:@{NSLocalizedDescriptionKey:msg}];
 		}
 	}
 }
