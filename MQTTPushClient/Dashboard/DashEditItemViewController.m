@@ -504,6 +504,7 @@
 	}
 	self.item.topic_p = self.topicPubTextField.text;
 	self.item.topic_s = self.topicSubTextField.text;
+	self.item.retain_ = self.retainSwitch.on;
 	if (hasTextSize) {
 		int textSize = (int) [self.textSizeSegmentedCtrl selectedSegmentIndex];
 		if (self.item.textsize == 0 && textSize == 1) {

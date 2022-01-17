@@ -28,7 +28,7 @@
 - (NSDictionary *)toJSONObject {
 	NSMutableDictionary *o = (NSMutableDictionary *) [super toJSONObject];
 	[o setObject:@"text" forKey:@"type"];
-	[o setObject:[NSNumber numberWithInt:self.inputtype] forKey:@"inputtype"];
+	[o setObject:[NSNumber numberWithInt:self.inputtype] forKey:@"input_type"];
 
 	return o;
 }
