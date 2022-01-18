@@ -504,6 +504,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 		if (item) {
 			BOOL notify = NO;
+			BOOL outputScriptError = NO;
 			if (filterScript) {
 				/* notify dash object about update */
 				notify = YES;
@@ -512,6 +513,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				NSError *error = [notif.userInfo objectForKey:@"error"];
 				if (error) {
 					notify = YES;
+					outputScriptError = YES;
 				} else {
 					/* no topic? only javascript was executed. notify observers */
 					if ([Utils isEmpty:item.topic_p]) {
@@ -529,6 +531,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				/* notify dash object about update */
 				[self.collectionView reloadItemsAtIndexPaths:indexPaths];
 				if (self.activeDetailView) {
+					if (outputScriptError) {
+						uint32_t reqID = [[notif.userInfo helNumberForKey:@"publish_request"] unsignedIntValue];
+						[self.activeDetailView onPublishRequestFinished:reqID];
+					}
 					[self.activeDetailView onNewMessage];
 				}
 			}
