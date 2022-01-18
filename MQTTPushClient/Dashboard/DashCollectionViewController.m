@@ -619,7 +619,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if (!self.connection) {
 		self.connection = [[Connection alloc] init];
 	}
-	if (false && !self.timer) { //TODO: remove false
+	if (!self.timer) {
 		[self.connection getDashboardForAccount:self.dashboard];
 		self.timer = [NSTimer scheduledTimerWithTimeInterval:DASH_TIMER_INTERVAL_SEC repeats:YES block:^(NSTimer * _Nonnull timer) {
 			if ([self.connection activeDashboardRequests] == 0) {
