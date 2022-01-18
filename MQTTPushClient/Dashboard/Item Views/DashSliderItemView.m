@@ -115,9 +115,6 @@
 }
 
 -(void)onSliderValueChanged:(UISlider *)sliderCtrl {
-	self.formattedSliderValue = [self format:sliderCtrl.value * 100.0f percent:self.displayPC];
-	[self updateValueLabel];
-
 	DashSliderItem *item = (DashSliderItem *) self.dashItem;
 	if (item) {
 		double f = sliderCtrl.value / sliderCtrl.maximumValue;
@@ -125,6 +122,13 @@
 		NSString *formattedVal = [self.formatterUS stringFromNumber:@(value)];
 		NSData * data = [formattedVal dataUsingEncoding:NSUTF8StringEncoding];
 		[self performSend:data queue:YES];
+		
+		if (self.displayPC) {
+			self.formattedSliderValue = [self format:(f * 100) percent:YES];
+		} else {
+			self.formattedSliderValue = [self format:value percent:NO];
+		}
+		[self updateValueLabel];
 	}
 }
 
@@ -135,8 +139,6 @@
 
 	UIColor *progressTintColor = nil;
 	UIColor *trackTintColor = nil;
-
-	double progress = [DashSliderItem calcProgressInPercent:[sliderItem.content doubleValue] min:sliderItem.range_min max:sliderItem.range_max];
 	
 	self.formatter = [[NSNumberFormatter alloc] init];
 	[self.formatter setMaximumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
@@ -146,8 +148,28 @@
 	[self.formatterUS setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
 	[self.formatterUS setMaximumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
 	[self.formatterUS setRoundingMode: NSNumberFormatterRoundHalfUp];
-
-	self.formattedValue = [self format:progress percent:sliderItem.percent];
+	
+	/* calculate progress bar value (will be 0 if invalid/no data) */
+	double progress = 0;
+	self.formattedValue = sliderItem.content; // will be overwritten with formatted value
+	if (![Utils isEmpty:sliderItem.error1]) {
+		/* if java script error, there is no valid data, set progress bar to 0 */
+	} else {
+		if (![Utils isEmpty:sliderItem.content]) {
+			NSScanner *scanner = [NSScanner scannerWithString:sliderItem.content];
+			double v;
+			if ([scanner scanDouble:&v]) {
+				if (sliderItem.range_min < sliderItem.range_max && v >= sliderItem.range_min && v <= sliderItem.range_max) {
+					progress = [DashSliderItem calcProgressInPercent:v min:sliderItem.range_min max:sliderItem.range_max];
+					if (sliderItem.percent) {
+						self.formattedValue = [self format:progress percent:YES];
+					} else {
+						self.formattedValue = [self format:v percent:NO];
+					}
+				}
+			}
+		}
+	}
 	
 	int64_t color = sliderItem.progresscolor;
 
@@ -165,7 +187,7 @@
 		self.sliderCtrl.hidden = NO;
 		if (!self.updateProgressBarDisabled) {
 			[self.sliderCtrl setValue:progress / 100.0f];
-			self.formattedSliderValue = [self format:progress percent:sliderItem.percent];
+			self.formattedSliderValue = self.formattedValue;
 		}
 		[self.sliderCtrl setThumbTintColor:progressTintColor];
 		[self.sliderCtrl setMinimumTrackTintColor:progressTintColor];
