@@ -504,7 +504,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 
 		if (item) {
 			BOOL notify = NO;
-			BOOL outputScriptError = NO;
 			if (filterScript) {
 				/* notify dash object about update */
 				notify = YES;
@@ -513,7 +512,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				NSError *error = [notif.userInfo objectForKey:@"error"];
 				if (error) {
 					notify = YES;
-					outputScriptError = YES;
+					uint32_t reqID = [[notif.userInfo helNumberForKey:@"publish_request"] unsignedIntValue];
+					[self.activeDetailView onPublishRequestFinished:reqID];
 				} else {
 					/* no topic? only javascript was executed. notify observers */
 					if ([Utils isEmpty:item.topic_p]) {
@@ -531,10 +531,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 				/* notify dash object about update */
 				[self.collectionView reloadItemsAtIndexPaths:indexPaths];
 				if (self.activeDetailView) {
-					if (outputScriptError) {
-						uint32_t reqID = [[notif.userInfo helNumberForKey:@"publish_request"] unsignedIntValue];
-						[self.activeDetailView onPublishRequestFinished:reqID];
-					}
 					[self.activeDetailView onNewMessage];
 				}
 			}
@@ -553,7 +549,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[requestData setObject:[NSNumber numberWithUnsignedInt:self.publishReqIDCounter] forKey:@"publish_request"];
 	[requestData setObject:[NSNumber numberWithUnsignedLongLong:self.dashboard.localVersion] forKey:@"version"];
 	[requestData setObject:[NSNumber numberWithUnsignedLong:item.id_] forKey:@"id"];
-	
+	[requestData setObject:msg forKey:@"message"];
 
 	/* If an outputscript exists, javascript must be executed. */
 	if (![Utils isEmpty:item.script_p]) {
@@ -565,7 +561,6 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			[outputJS execute];
 		});
 	} else {
-
 		[self.connection publishMessageForAccount:self.dashboard.account topic:topic payload:payload retain:retain userInfo:requestData];
 
 	}
@@ -624,7 +619,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	if (!self.connection) {
 		self.connection = [[Connection alloc] init];
 	}
-	if (!self.timer) {
+	if (false && !self.timer) { //TODO: remove false
 		[self.connection getDashboardForAccount:self.dashboard];
 		self.timer = [NSTimer scheduledTimerWithTimeInterval:DASH_TIMER_INTERVAL_SEC repeats:YES block:^(NSTimer * _Nonnull timer) {
 			if ([self.connection activeDashboardRequests] == 0) {
