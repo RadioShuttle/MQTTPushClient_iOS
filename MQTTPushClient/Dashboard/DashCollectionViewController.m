@@ -457,6 +457,11 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 						}
 						item.lastMsgTimestamp = msg.timestamp;
 						item.content = [[NSString alloc]initWithData:msg.content encoding:NSUTF8StringEncoding];
+						if ([item class] == [DashSliderItem class]) {
+							/* check for valid content and generate error message */
+							item.error1 = nil;
+							[((DashSliderItem *) item) validateContent];
+						}
 						if (indexPathDict) {
 							NSIndexPath *loc = [NSIndexPath indexPathForRow:j inSection:i];
 							[indexPathDict setObject:loc forKey:[NSNumber numberWithUnsignedLong:item.id_]];
@@ -507,6 +512,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			if (filterScript) {
 				/* notify dash object about update */
 				notify = YES;
+				if ([item class] == [DashSliderItem class]) {
+					/* check for valid content and generate error message */
+					[((DashSliderItem *) item) validateContent];
+				}
 			} else { // outputscript
 				/* if an error occured, do not call publish but notify observers  */
 				NSError *error = [notif.userInfo objectForKey:@"error"];

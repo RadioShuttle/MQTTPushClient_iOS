@@ -142,11 +142,13 @@
 	
 	self.formatter = [[NSNumberFormatter alloc] init];
 	[self.formatter setMaximumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
+	[self.formatter setMinimumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
 	[self.formatter setRoundingMode: NSNumberFormatterRoundHalfUp];
 	
 	self.formatterUS = [[NSNumberFormatter alloc] init];
 	[self.formatterUS setLocale:[NSLocale localeWithLocaleIdentifier:@"en_US"]];
 	[self.formatterUS setMaximumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
+	[self.formatterUS setMinimumFractionDigits:sliderItem.decimal >= 0 ? sliderItem.decimal : 0];
 	[self.formatterUS setRoundingMode: NSNumberFormatterRoundHalfUp];
 	
 	/* calculate progress bar value (will be 0 if invalid/no data) */
