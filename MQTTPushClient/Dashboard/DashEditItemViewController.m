@@ -33,6 +33,7 @@
 @property uint64_t dashboardVersion;
 @property uint32_t saveRequestID;
 @property UIActivityIndicatorView *progressBar;
+@property UIColor *defaultTintColor;
 
 @property UILabel *statusLabel;
 @property NSTimer *statusMsgTimer;
@@ -69,6 +70,8 @@
 	
 	self.tableView.separatorColor = [UIColor clearColor];
 	self.tableView.allowsSelection = NO;
+	
+	self.defaultTintColor = self.view.tintColor;
 	
 	/* 1. General section */
 
@@ -690,11 +693,11 @@
 	if (src == self.textColorButton) {
 		vc.defaultColor = self.labelDefaultColor; // use label color as default color
 	} else if (src == self.progressColorButton) {
-		vc.defaultColor = self.view.tintColor; // use default tint color
+		vc.defaultColor = self.defaultTintColor; // use default tint color
 	} else if (src == self.switchOnColorButton || src == self.switchOffColorButton) {
 		vc.defaultColor = self.labelDefaultColor;
 	} else {
-		vc.defaultColor = UIColorFromRGB(DASH_DEFAULT_CELL_COLOR); //TODO: default color
+		vc.defaultColor = [UIColor colorNamed:@"Color_Item_Background"];
 	}
 	CGFloat r,g,b,a;
 	[vc.defaultColor getRed:&r green:&g blue:&b alpha:&a]; // convert cs
@@ -839,7 +842,7 @@
 		if (src == self.textColorButton) {
 			uicolor = self.labelDefaultColor; // use label color as default color
 		} else if (src == self.progressColorButton) {
-			uicolor = self.view.tintColor; // use default tint color
+			uicolor = self.defaultTintColor; // use default tint color
 		} else if (src == self.switchOnColorButton || src == self.switchOffColorButton) {
 			uicolor = self.labelDefaultColor;
 		} else {
