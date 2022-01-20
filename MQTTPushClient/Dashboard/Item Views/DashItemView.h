@@ -8,6 +8,7 @@
 #import "DashItem.h"
 #import "Dashboard.h"
 #import "DashPublishController.h"
+#import "DashItemViewContainer.h"
 
 @interface DashItemView : UIView
 
@@ -21,7 +22,7 @@
 @property uint64_t dashVersion;
 @property UIActivityIndicatorView *progressBar;
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context;
+-(void)onBind:(DashItem *)item context:(Dashboard *)context container:(id<DashItemViewContainer>)container;
 /* call this to add an empty ImageView to this view. this should be called before adding any other elements (beacuase of layering) */
 -(void)addBackgroundImageView;
 
@@ -43,5 +44,15 @@
 - (void)hideProgressBar;
 /* will be called when a publish request finishes. returns true, if requestID matches */
 -(BOOL) onPublishRequestFinished:(uint32_t) requestID;
+/* depending on context this is the parent DashCollectionViewCell or DashDetailViewController */
+@property (weak) id<DashItemViewContainer> container;
+
+/* bind errors */
+
+/* indicates image load error */
+@property int imageError;
+
+/* sets an error message (if not already set) and notifies containers */
+-(void)handleBindErrors;
 
 @end

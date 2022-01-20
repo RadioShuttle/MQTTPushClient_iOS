@@ -58,8 +58,8 @@
 	[self.webView.trailingAnchor constraintEqualToAnchor:self.trailingAnchor constant:0.0].active = YES;
 }
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
+-(void)onBind:(DashItem *)item context:(Dashboard *)context container:(id<DashItemViewContainer>)container {
+	[super onBind:item context:context container:container];
 	
 	/* background color */
 	int64_t color = item.background;

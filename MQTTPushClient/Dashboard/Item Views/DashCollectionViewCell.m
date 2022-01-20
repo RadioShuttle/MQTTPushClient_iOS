@@ -95,6 +95,14 @@
 	}
 }
 
+- (void)onUpdate:(DashItem *)item what:(NSString *)what {
+	if ([what isEqualToString:@"error"]) {
+		BOOL error1 = ![Utils isEmpty:item.error1];
+		BOOL error2 = ![Utils isEmpty:item.error2];
+		[self showErrorInfo:error1 error2:error2];
+	}
+}
+
 +(UIView *) createCheckmarkView:(UIView *)container yOffset:(int) yOffset {
 	UIView *checkmarkView = [[DashCircleBackroundView alloc] initWithColor:[UIColor colorWithRed:0 green:0 blue:0 alpha:.5]];
 	((DashCircleBackroundView *) checkmarkView).padding = 0;

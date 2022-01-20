@@ -9,7 +9,7 @@
 #import "DashCustomItemView.h"
 #import "DashCollectionViewCell.h"
 
-@interface DashCustomItemViewCell : DashCollectionViewCell <DashCustomViewContainer>
+@interface DashCustomItemViewCell : DashCollectionViewCell
 @property (weak, nonatomic) IBOutlet DashCustomItemView *webviewContainer;
 @property (weak, nonatomic) IBOutlet UILabel *customItemLabel;
 

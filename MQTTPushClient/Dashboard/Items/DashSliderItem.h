@@ -14,8 +14,5 @@
 @property int64_t progresscolor;
 @property BOOL percent;
 
-/* checks if content is a number and within the defined range and sets an error msg */
--(void)validateContent;
-
 +(double) calcProgressInPercent:(double)v min:(double)min max:(double)max;
 @end

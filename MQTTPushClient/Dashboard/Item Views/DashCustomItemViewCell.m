@@ -63,7 +63,7 @@
 	if (self.webviewContainer.userInteractionEnabled) {
 		self.webviewContainer.userInteractionEnabled = NO;
 	};
-	[self.webviewContainer onBind:item context:context];
+	[self.webviewContainer onBind:item context:context container:self];
 
 	[super onBind:item context:context label:self.customItemLabel selected:selected];
 

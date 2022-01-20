@@ -83,17 +83,4 @@
 	return o;
 }
 
--(void)validateContent {
-	/* ignore check if an error msg is already set */
-	if ([Utils isEmpty:self.error1] && ![Utils isEmpty:self.content]) {
-		NSScanner *scanner = [NSScanner scannerWithString:self.content];
-		double v;
-		if (![scanner scanDouble:&v]) {
-			self.error1 = @"Invalid format.";
-		} else if (v < self.range_min || v > self.range_max) {
-			self.error1 = @"Received value is out of range.";
-		}
-	}
-}
-
 @end

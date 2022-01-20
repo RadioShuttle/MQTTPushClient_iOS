@@ -121,8 +121,8 @@
 	[self performSend:data queue:NO];
 }
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
+-(void)onBind:(DashItem *)item context:(Dashboard *)context container:(id<DashItemViewContainer>)container {
+	[super onBind:item context:context container:container];
 	
 	/* set value text label */
 	NSString *content = item.content;
@@ -164,6 +164,7 @@
 	CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
 	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
 
+	[self handleBindErrors];
 }
 
 @end

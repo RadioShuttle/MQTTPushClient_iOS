@@ -17,7 +17,7 @@
 	DashSwitchItem *switchItem = (DashSwitchItem *) item;
 	
 	self.switchItemContainer.button.userInteractionEnabled = NO;
-	[self.switchItemContainer onBind:switchItem context:context];
+	[self.switchItemContainer onBind:switchItem context:context container:self];
 }
 
 @end

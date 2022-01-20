@@ -11,14 +11,18 @@
 
 @implementation DashItemView
 
+static NSString * const imageLoadErr = @"Image file could not be loaded.";
+
 - (instancetype)initDetailViewWithFrame:(CGRect)frame {
 	self = [super initWithFrame:frame];
 	self.detailView = YES;
 	return self;
 }
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context {
+-(void)onBind:(DashItem *)item context:(Dashboard *)context container:(id<DashItemViewContainer>)container {
 	self.dashItem = item;
+	self.container = container;
+	self.imageError = 0;
 	
 	int64_t color = item.background;
 	/* background color */
@@ -32,9 +36,23 @@
 	if (self.backgroundImageView) {
 		UIImage *backgroundImage = [DashUtils loadImageResource:item.background_uri userDataDir:context.account.cacheURL];
 		[self.backgroundImageView setImage:backgroundImage];
+		if (![Utils isEmpty:item.background_uri] && !backgroundImage) {
+			self.imageError |= 1;
+		}
 	}
 	self.dashVersion = context.localVersion;
 	self.publishEnabled = !([Utils isEmpty:item.topic_p] && [Utils isEmpty:item.script_p]);
+}
+
+-(void)handleBindErrors {
+	if (self.imageError == 0 && [Utils areEqual:self.dashItem.error1 s2:imageLoadErr]) {
+		/* reset error messages, resource found */
+		self.dashItem.error1 = nil;
+		[self.container onUpdate:self.dashItem what:@"error"];
+	} else if (self.imageError > 0 && [Utils isEmpty:self.dashItem.error1]) {
+		self.dashItem.error1 = imageLoadErr;
+		[self.container onUpdate:self.dashItem what:@"error"];
+	}
 }
 
 -(void)addBackgroundImageView {

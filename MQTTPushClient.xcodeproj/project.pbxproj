@@ -243,6 +243,7 @@
 		2108EF95278D6B1C00CEAAE5 /* DashResourcesHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashResourcesHelper.h; sourceTree = "<group>"; };
 		2108EF96278D6B1C00CEAAE5 /* DashResourcesHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashResourcesHelper.m; sourceTree = "<group>"; };
 		210B9A3B26E653740071E876 /* Dashboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Dashboard.storyboard; sourceTree = "<group>"; };
+		210C641027986D2300B50CB1 /* DashItemViewContainer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashItemViewContainer.h; sourceTree = "<group>"; };
 		2111003B2783073400A5C554 /* DashManageImagesController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DashManageImagesController.h; sourceTree = "<group>"; };
 		2111003C2783073400A5C554 /* DashManageImagesController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DashManageImagesController.m; sourceTree = "<group>"; };
 		2111DDB92733CBC6002BA4EF /* utils.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = utils.js; sourceTree = "<group>"; };
@@ -689,6 +690,7 @@
 				211394622744F24900BA3B6E /* DashCircleViewButton.m */,
 				21F2708C274BD5EB00164A79 /* DashEditorOptionTableViewCell.h */,
 				21F2708D274BD5EB00164A79 /* DashEditorOptionTableViewCell.m */,
+				210C641027986D2300B50CB1 /* DashItemViewContainer.h */,
 			);
 			path = "Item Views";
 			sourceTree = "<group>";

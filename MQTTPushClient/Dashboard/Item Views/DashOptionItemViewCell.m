@@ -11,6 +11,6 @@
 - (void)onBind:(DashItem *)item context:(Dashboard *)context selected:(BOOL)selected {
 	[super onBind:item context:context label:self.itemLabel selected:selected];
 	
-	[self.itemContainer onBind:item context:context];
+	[self.itemContainer onBind:item context:context container:self];
 }
 @end

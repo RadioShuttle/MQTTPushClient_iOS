@@ -63,8 +63,8 @@
 	[self.button addTarget:self action:@selector(buttonClicked) forControlEvents:UIControlEventTouchUpInside];
 }
 
--(void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
+-(void)onBind:(DashItem *)item context:(Dashboard *)context container:(id<DashItemViewContainer>)container {
+	[super onBind:item context:context container:container];
 	
 	DashSwitchItem *switchItem = (DashSwitchItem *) item;
 
@@ -98,10 +98,12 @@
 	[self.button setBackgroundImage:highlightColorImg forState:UIControlStateHighlighted];
 	
 	UIImage *image;
-	if (imageURI.length > 0) {
-		//TODO: caching
+	if (![Utils isEmpty:imageURI]) {
 		image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL];
 		image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate]; // enable tint
+		if (!image) {
+			self.imageError |= 2;
+		}
 	}
 	
 	if (buttonTintColor == DASH_COLOR_CLEAR) {
@@ -140,7 +142,7 @@
 		[self.button setTitleColor:color forState:UIControlStateNormal];
 	}
 	
-
+	[self handleBindErrors];
 }
 
 -(void)buttonClicked {

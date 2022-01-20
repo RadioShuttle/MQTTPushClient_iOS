@@ -31,7 +31,6 @@
 		self.dashItemView = [[DashTextItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
 	} else if ([DashCustomItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashCustomItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
-		((DashCustomItemView *) self.dashItemView).container = self;
 	} else if ([DashSwitchItem class] == [self.dashItem class]) {
 		self.dashItemView = [[DashSwitchItemView alloc] initDetailViewWithFrame:self.containerView.bounds];
 	} else if ([DashSliderItem class] == [self.dashItem class]) {
@@ -49,7 +48,7 @@
 
 	if (self.dashItemView) {
 		self.dashItemView.publishController = self.publishController;
-		[self.dashItemView onBind:self.dashItem context:self.dashboard];
+		[self.dashItemView onBind:self.dashItem context:self.dashboard container:self];
 		[self.containerView addSubview:self.dashItemView];
 		[self.view bringSubviewToFront:self.containerView];
 	}
@@ -101,7 +100,7 @@
 	/* a new message has arrived that matches dashItem.topic_s */
 	if (!self.invalid) {
 		/* update view */
-		[self.dashItemView onBind:self.dashItem context:self.dashboard];
+		[self.dashItemView onBind:self.dashItem context:self.dashboard container:self];
 		[self updateLabel];
 		[self updateErrorButtons];
 	}

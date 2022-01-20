@@ -88,8 +88,8 @@
 	self.optionListTableView.delegate = self;
 }
 
-- (void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
+- (void)onBind:(DashItem *)item context:(Dashboard *)context container:(id<DashItemViewContainer>)container {
+	[super onBind:item context:context container:container];
 	
 	self.optionItem = (DashOptionItem *) item;
 	if (self.detailView) {
@@ -137,9 +137,13 @@
 		}
 		
 		UIImage *image;
-		if (imageURI.length > 0) {
+		if (![Utils isEmpty:imageURI]) {
 			//TODO: caching
 			image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL];
+			if (!image) {
+				self.imageError |= 4;
+			}
+
 		}
 		if (image) {
 			[self.valueImageView setImage:image];
@@ -176,7 +180,7 @@
 		CGFloat labelFontSize = [DashUtils getLabelFontSize:item.textsize];
 		self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
 	}
-	
+	[self handleBindErrors];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

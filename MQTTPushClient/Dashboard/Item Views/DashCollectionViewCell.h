@@ -8,8 +8,9 @@
 #import "DashItem.h"
 #import "Dashboard.h"
 #import "DashCircleBackroundView.h"
+#import "DashItemViewContainer.h"
 
-@interface DashCollectionViewCell : UICollectionViewCell
+@interface DashCollectionViewCell : UICollectionViewCell <DashItemViewContainer>
 @property UIImageView *errorImageView1;
 @property DashCircleBackroundView *backgroundView1;
 @property UIImageView *errorImageView2;

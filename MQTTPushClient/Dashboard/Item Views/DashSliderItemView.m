@@ -10,7 +10,14 @@
 #import "DashConsts.h"
 #import "Utils.h"
 
+@interface DashSliderItemView ()
+@property int contentValError;
+@end
+
 @implementation DashSliderItemView
+
+static NSString * const contentFormatErr = @"Invalid format.";
+static NSString * const contentRangeErr = @"Received value is out of range.";
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -132,8 +139,9 @@
 	}
 }
 
-- (void)onBind:(DashItem *)item context:(Dashboard *)context {
-	[super onBind:item context:context];
+- (void)onBind:(DashItem *)item context:(Dashboard *)context container:(id<DashItemViewContainer>)container {
+	[super onBind:item context:context container:container];
+	self.contentValError = 0;
 	
 	DashSliderItem *sliderItem = (DashSliderItem *) item;
 
@@ -154,7 +162,7 @@
 	/* calculate progress bar value (will be 0 if invalid/no data) */
 	double progress = 0;
 	self.formattedValue = sliderItem.content; // will be overwritten with formatted value
-	if (![Utils isEmpty:sliderItem.error1]) {
+	if ([self isJavaScriptError]) {
 		/* if java script error, there is no valid data, set progress bar to 0 */
 	} else {
 		if (![Utils isEmpty:sliderItem.content]) {
@@ -168,7 +176,11 @@
 					} else {
 						self.formattedValue = [self format:v percent:NO];
 					}
+				} else {
+					self.contentValError = 2; // invalid range
 				}
+			} else {
+				self.contentValError = 1; // invalid format
 			}
 		}
 	}
@@ -216,6 +228,27 @@
 	self.valueLabel.font = [self.valueLabel.font fontWithSize:labelFontSize];
 
 	[self updateValueLabel];
+	[self handleBindErrors];
+}
+
+-(void) handleBindErrors {
+	if (self.contentValError == 0 && ([Utils areEqual:self.dashItem.error1 s2:contentFormatErr] || [Utils areEqual:self.dashItem.error1 s2:contentRangeErr])) {
+		/* reset error message */
+		self.dashItem.error1 = nil;
+		[self.container onUpdate:self.dashItem what:@"error"];
+	} else if (self.contentValError == 1 && [Utils isEmpty:self.dashItem.error1]) {
+		self.dashItem.error1 = contentFormatErr;
+		[self.container onUpdate:self.dashItem what:@"error"];
+	} else if (self.contentValError == 2 && [Utils isEmpty:self.dashItem.error1]) {
+		self.dashItem.error1 = contentRangeErr;
+		[self.container onUpdate:self.dashItem what:@"error"];
+	}
+	[super handleBindErrors]; // this will not override above errors
+}
+
+-(BOOL)isJavaScriptError {
+	/* all errors not caused by binding errors are considered to be a java script error (filter script) */
+	return ![Utils isEmpty:self.dashItem.error1] && ![Utils areEqual:self.dashItem.error1 s2:contentFormatErr] && ![Utils areEqual:self.dashItem.error1 s2:contentRangeErr] && ![Utils areEqual:self.dashItem.error1 s2:@"Image file could not be loaded."];
 }
 
 -(void)updateValueLabel {
