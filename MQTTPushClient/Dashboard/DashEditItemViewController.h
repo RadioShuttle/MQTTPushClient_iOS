@@ -40,6 +40,7 @@ typedef enum {Add, Edit} Mode;
 /* Background */
 @property IBOutlet DashCircleViewButton *backgroundColorButton;
 @property IBOutlet UIButton *backgroundImageButton;
+@property IBOutlet UILabel *backgroundImageErrorLabel;
 
 /* Subscribe */
 @property (weak, nonatomic) IBOutlet UITextField *topicSubTextField;
@@ -78,10 +79,12 @@ typedef enum {Add, Edit} Mode;
 @property IBOutlet DashCircleViewButton *switchOnColorButton;
 @property IBOutlet DashCircleViewButton *switchOnBackgroundColorButton;
 @property IBOutlet UIButton *switchOnImageButton;
+@property IBOutlet UILabel *switchOnImageErrorLabel;
 @property IBOutlet UITextField *switchOffValueTextField;
 @property IBOutlet DashCircleViewButton *switchOffColorButton;
 @property IBOutlet DashCircleViewButton *switchOffBackgroundColorButton;
 @property IBOutlet UIButton *switchOffImageButton;
+@property IBOutlet UILabel *switchOffImageErrorLabel;
 
 - (IBAction)onSaveButtonClicked:(id)sender;
 

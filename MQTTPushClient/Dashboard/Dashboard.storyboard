@@ -605,11 +605,20 @@
                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     </state>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Image file could not be loaded." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ten-d9-V3c">
+                                                    <rect key="frame" x="176" y="12" width="218" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="Ten-d9-V3c" secondAttribute="trailing" constant="20" id="8SP-wc-bw4"/>
                                                 <constraint firstItem="XUB-Fl-w7X" firstAttribute="leading" secondItem="C7q-FD-whk" secondAttribute="trailing" constant="4" id="96a-kj-Ghc"/>
                                                 <constraint firstAttribute="bottom" secondItem="XUB-Fl-w7X" secondAttribute="bottom" constant="12" id="Hq6-qh-ZQa"/>
                                                 <constraint firstItem="XUB-Fl-w7X" firstAttribute="top" secondItem="xqf-BL-oR1" secondAttribute="top" constant="6" id="QJI-JE-BdM"/>
+                                                <constraint firstItem="Ten-d9-V3c" firstAttribute="centerY" secondItem="XUB-Fl-w7X" secondAttribute="centerY" id="UHL-na-3dG"/>
+                                                <constraint firstItem="Ten-d9-V3c" firstAttribute="leading" secondItem="XUB-Fl-w7X" secondAttribute="trailing" constant="16" id="bXJ-in-nDb"/>
                                                 <constraint firstItem="C7q-FD-whk" firstAttribute="leading" secondItem="xqf-BL-oR1" secondAttribute="leadingMargin" id="sr9-fB-UTl"/>
                                                 <constraint firstItem="C7q-FD-whk" firstAttribute="centerY" secondItem="XUB-Fl-w7X" secondAttribute="centerY" id="tp6-mR-tSg"/>
                                             </constraints>
@@ -849,6 +858,7 @@
                     <connections>
                         <outlet property="backgroundColorButton" destination="Xgl-lZ-cAQ" id="LN4-R6-1iX"/>
                         <outlet property="backgroundImageButton" destination="XUB-Fl-w7X" id="dn0-oT-wh0"/>
+                        <outlet property="backgroundImageErrorLabel" destination="Ten-d9-V3c" id="Dan-Le-hWz"/>
                         <outlet property="filterSciptButton" destination="w7P-TJ-LMW" id="HMx-Pg-eg2"/>
                         <outlet property="filterSciptModifiedLabel" destination="hFb-hH-izg" id="fog-8E-tbg"/>
                         <outlet property="groupDropDownButon" destination="J1h-mC-zMt" id="XOd-tL-Yf1"/>
@@ -1133,11 +1143,20 @@
                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     </state>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image file could not be loaded." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oaf-K4-ZXP">
+                                                    <rect key="frame" x="180" y="10.5" width="218" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="hSJ-A0-y4e" firstAttribute="leading" secondItem="FhG-Ta-ebf" secondAttribute="trailing" constant="4" id="2Qz-3f-1fv"/>
+                                                <constraint firstAttribute="trailing" secondItem="Oaf-K4-ZXP" secondAttribute="trailing" constant="16" id="EwO-aI-RsL"/>
+                                                <constraint firstItem="Oaf-K4-ZXP" firstAttribute="firstBaseline" secondItem="hSJ-A0-y4e" secondAttribute="firstBaseline" id="Ic1-B1-04b"/>
                                                 <constraint firstItem="FhG-Ta-ebf" firstAttribute="centerY" secondItem="hSJ-A0-y4e" secondAttribute="centerY" id="VKz-Rg-az4"/>
                                                 <constraint firstItem="hSJ-A0-y4e" firstAttribute="top" secondItem="IIk-Py-Ula" secondAttribute="top" constant="6" id="WaN-W8-wS8"/>
+                                                <constraint firstItem="Oaf-K4-ZXP" firstAttribute="leading" secondItem="hSJ-A0-y4e" secondAttribute="trailing" constant="8" id="Yt6-5c-6Ov"/>
                                                 <constraint firstAttribute="bottom" secondItem="hSJ-A0-y4e" secondAttribute="bottom" constant="12" id="gOT-cE-oNX"/>
                                                 <constraint firstItem="FhG-Ta-ebf" firstAttribute="leading" secondItem="IIk-Py-Ula" secondAttribute="leadingMargin" id="p0k-A5-zas"/>
                                             </constraints>
@@ -1432,6 +1451,7 @@
                     <connections>
                         <outlet property="backgroundColorButton" destination="tbi-c6-6ec" id="qnz-EC-EVb"/>
                         <outlet property="backgroundImageButton" destination="hSJ-A0-y4e" id="6sW-UQ-rhR"/>
+                        <outlet property="backgroundImageErrorLabel" destination="Oaf-K4-ZXP" id="jPH-cL-BXL"/>
                         <outlet property="filterSciptButton" destination="enG-0i-Cbg" id="mZK-r9-es3"/>
                         <outlet property="filterSciptModifiedLabel" destination="4PF-hE-M7f" id="Rs6-qA-PTr"/>
                         <outlet property="groupLabel" destination="a0A-I3-SNU" id="3JP-ih-MQU"/>
@@ -1453,7 +1473,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ozk-gl-xsL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="749" y="574"/>
+            <point key="canvasLocation" x="747.82608695652175" y="573.88392857142856"/>
         </scene>
         <!--Dash Color Chooser-->
         <scene sceneID="2GG-Wn-B4I">
@@ -1622,11 +1642,20 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <state key="normal" title="None"/>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image file could not be loaded." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="oYc-37-UPt">
+                                                    <rect key="frame" x="144" y="13.5" width="254" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="Nxq-6i-Yr6" secondAttribute="bottom" constant="6" id="0sI-EV-bAe"/>
                                                 <constraint firstItem="v1T-tQ-3t3" firstAttribute="centerY" secondItem="Nxq-6i-Yr6" secondAttribute="centerY" id="84a-uq-c1g"/>
                                                 <constraint firstItem="Nxq-6i-Yr6" firstAttribute="top" secondItem="AQb-6Z-5q6" secondAttribute="top" constant="6" id="JYS-C2-VG8"/>
+                                                <constraint firstAttribute="trailing" secondItem="oYc-37-UPt" secondAttribute="trailing" constant="16" id="Kso-dB-1At"/>
+                                                <constraint firstItem="oYc-37-UPt" firstAttribute="leading" secondItem="Nxq-6i-Yr6" secondAttribute="trailing" constant="8" id="MQg-Gu-tTR"/>
+                                                <constraint firstItem="oYc-37-UPt" firstAttribute="centerY" secondItem="Nxq-6i-Yr6" secondAttribute="centerY" id="Pl0-y7-3rK"/>
                                                 <constraint firstItem="Nxq-6i-Yr6" firstAttribute="leading" secondItem="v1T-tQ-3t3" secondAttribute="trailing" constant="4" id="gRh-Zy-WjO"/>
                                                 <constraint firstItem="v1T-tQ-3t3" firstAttribute="leading" secondItem="AQb-6Z-5q6" secondAttribute="leadingMargin" id="kh3-i4-WYj"/>
                                             </constraints>
@@ -1689,6 +1718,7 @@
                     <connections>
                         <outlet property="cancelButton" destination="ekV-7n-X3p" id="JFm-u1-XLV"/>
                         <outlet property="imageButton" destination="Nxq-6i-Yr6" id="JV3-ae-0tA"/>
+                        <outlet property="imageErrLabel" destination="oYc-37-UPt" id="00s-Cs-qY7"/>
                         <outlet property="labelTextField" destination="yiI-Qc-fuo" id="mw1-hU-cNy"/>
                         <outlet property="posDropDownButton" destination="ymQ-ii-iY3" id="20L-H0-N4W"/>
                         <outlet property="posLabel" destination="WAU-W2-NMk" id="4l2-QL-qA0"/>
@@ -2481,10 +2511,19 @@
                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     </state>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image file could not be loaded." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T2B-at-doX">
+                                                    <rect key="frame" x="180" y="10.5" width="218" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="4ml-vS-7ju" firstAttribute="top" secondItem="xtP-aw-jix" secondAttribute="top" constant="6" id="3Ct-l6-5oh"/>
+                                                <constraint firstItem="T2B-at-doX" firstAttribute="leading" secondItem="4ml-vS-7ju" secondAttribute="trailing" constant="8" id="4Mm-7U-T9w"/>
+                                                <constraint firstItem="T2B-at-doX" firstAttribute="centerY" secondItem="4ml-vS-7ju" secondAttribute="centerY" id="IyD-uA-bFS"/>
                                                 <constraint firstAttribute="bottom" secondItem="4ml-vS-7ju" secondAttribute="bottom" constant="12" id="axI-m1-kRj"/>
+                                                <constraint firstAttribute="trailing" secondItem="T2B-at-doX" secondAttribute="trailing" constant="16" id="jfh-CU-RbI"/>
                                                 <constraint firstItem="4ml-vS-7ju" firstAttribute="leading" secondItem="9uc-tO-HOW" secondAttribute="trailing" constant="4" id="kp9-Jk-NMM"/>
                                                 <constraint firstItem="9uc-tO-HOW" firstAttribute="leading" secondItem="xtP-aw-jix" secondAttribute="leadingMargin" id="qox-bV-avS"/>
                                                 <constraint firstItem="9uc-tO-HOW" firstAttribute="centerY" secondItem="4ml-vS-7ju" secondAttribute="centerY" id="wYo-jf-UBu"/>
@@ -2836,6 +2875,7 @@
                     <connections>
                         <outlet property="backgroundColorButton" destination="xG4-J9-JvA" id="EDI-TV-5Ly"/>
                         <outlet property="backgroundImageButton" destination="4ml-vS-7ju" id="083-7n-bnr"/>
+                        <outlet property="backgroundImageErrorLabel" destination="T2B-at-doX" id="eYU-MJ-Hp0"/>
                         <outlet property="decimalTextField" destination="tef-B9-BH2" id="hVP-7O-FqM"/>
                         <outlet property="displayInPercentSwitch" destination="klb-hK-Xyc" id="fQE-eC-UG8"/>
                         <outlet property="filterSciptButton" destination="6wd-aI-eXF" id="pgv-tK-DJ4"/>
@@ -3055,13 +3095,22 @@
                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     </state>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image file could not be loaded." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="J7V-iG-QDY">
+                                                    <rect key="frame" x="180" y="10.5" width="218" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="J7V-iG-QDY" firstAttribute="centerY" secondItem="Vac-By-aM1" secondAttribute="centerY" id="2sT-kB-PhJ"/>
                                                 <constraint firstItem="ITw-BT-7st" firstAttribute="leading" secondItem="cA3-rg-LTd" secondAttribute="leadingMargin" id="HL7-GY-YcP"/>
                                                 <constraint firstAttribute="bottom" secondItem="Vac-By-aM1" secondAttribute="bottom" constant="12" id="OJW-p2-VqX"/>
+                                                <constraint firstAttribute="trailing" secondItem="J7V-iG-QDY" secondAttribute="trailing" constant="16" id="aAi-2g-LQe"/>
                                                 <constraint firstItem="Vac-By-aM1" firstAttribute="top" secondItem="cA3-rg-LTd" secondAttribute="top" constant="6" id="o6y-Tm-uHg"/>
                                                 <constraint firstItem="Vac-By-aM1" firstAttribute="leading" secondItem="ITw-BT-7st" secondAttribute="trailing" constant="4" id="tRr-Xl-iwZ"/>
                                                 <constraint firstItem="ITw-BT-7st" firstAttribute="centerY" secondItem="Vac-By-aM1" secondAttribute="centerY" id="ujp-jQ-LMb"/>
+                                                <constraint firstItem="J7V-iG-QDY" firstAttribute="leading" secondItem="Vac-By-aM1" secondAttribute="trailing" constant="8" id="zce-PX-bkG"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -3199,12 +3248,21 @@
                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     </state>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image file could not be loaded." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="NrF-0o-dKy">
+                                                    <rect key="frame" x="181" y="13.5" width="217" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="H93-lb-Myy" firstAttribute="centerY" secondItem="GNk-aS-xuD" secondAttribute="centerY" id="39A-UW-RfB"/>
                                                 <constraint firstItem="GNk-aS-xuD" firstAttribute="top" secondItem="cAt-xo-v2g" secondAttribute="top" constant="6" id="4nf-LW-JtF"/>
                                                 <constraint firstItem="H93-lb-Myy" firstAttribute="leading" secondItem="cAt-xo-v2g" secondAttribute="leadingMargin" id="OWt-G1-l6A"/>
+                                                <constraint firstItem="NrF-0o-dKy" firstAttribute="centerY" secondItem="GNk-aS-xuD" secondAttribute="centerY" id="jRf-cK-EVz"/>
+                                                <constraint firstAttribute="trailing" secondItem="NrF-0o-dKy" secondAttribute="trailing" constant="16" id="mTo-2S-VCc"/>
                                                 <constraint firstAttribute="bottom" secondItem="GNk-aS-xuD" secondAttribute="bottom" constant="6" id="to3-8Z-0mt"/>
+                                                <constraint firstItem="NrF-0o-dKy" firstAttribute="leading" secondItem="GNk-aS-xuD" secondAttribute="trailing" constant="8" id="vnE-4t-5F5"/>
                                                 <constraint firstItem="GNk-aS-xuD" firstAttribute="leading" secondItem="H93-lb-Myy" secondAttribute="trailing" constant="4" id="yZB-QZ-Q2Q"/>
                                             </constraints>
                                         </tableViewCellContentView>
@@ -3343,11 +3401,20 @@
                                                         <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     </state>
                                                 </button>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Image file could not be loaded." lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fAB-Mi-tgk">
+                                                    <rect key="frame" x="181" y="13.5" width="217" height="17"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
                                             </subviews>
                                             <constraints>
+                                                <constraint firstItem="fAB-Mi-tgk" firstAttribute="leading" secondItem="wcC-21-dip" secondAttribute="trailing" constant="8" id="DJ6-AM-6Z6"/>
+                                                <constraint firstItem="fAB-Mi-tgk" firstAttribute="centerY" secondItem="wcC-21-dip" secondAttribute="centerY" id="HZ1-nQ-s4w"/>
                                                 <constraint firstItem="wcC-21-dip" firstAttribute="leading" secondItem="M2T-mj-VL7" secondAttribute="trailing" constant="4" id="R8V-He-ACh"/>
                                                 <constraint firstItem="M2T-mj-VL7" firstAttribute="centerY" secondItem="wcC-21-dip" secondAttribute="centerY" id="Si3-L7-5nj"/>
                                                 <constraint firstItem="wcC-21-dip" firstAttribute="top" secondItem="f5z-UU-eQr" secondAttribute="top" constant="6" id="U7u-PG-mvd"/>
+                                                <constraint firstAttribute="trailing" secondItem="fAB-Mi-tgk" secondAttribute="trailing" constant="16" id="X22-OA-vUk"/>
                                                 <constraint firstAttribute="bottom" secondItem="wcC-21-dip" secondAttribute="bottom" constant="6" id="kuI-Vh-Sl9"/>
                                                 <constraint firstItem="M2T-mj-VL7" firstAttribute="leading" secondItem="f5z-UU-eQr" secondAttribute="leadingMargin" id="lOk-Ig-04g"/>
                                             </constraints>
@@ -3554,6 +3621,7 @@
                     <connections>
                         <outlet property="backgroundColorButton" destination="8WZ-b5-2bk" id="Krn-PN-ZOt"/>
                         <outlet property="backgroundImageButton" destination="Vac-By-aM1" id="hKt-iJ-Kze"/>
+                        <outlet property="backgroundImageErrorLabel" destination="J7V-iG-QDY" id="kyA-X8-I99"/>
                         <outlet property="filterSciptButton" destination="fbX-iY-T3o" id="o6C-TV-6Jp"/>
                         <outlet property="filterSciptModifiedLabel" destination="TsJ-Nt-kjj" id="Mb4-c9-Cl8"/>
                         <outlet property="groupDropDownButon" destination="h2l-lL-8QA" id="xpa-EW-Ntn"/>
@@ -3567,10 +3635,12 @@
                         <outlet property="switchOffBackgroundColorButton" destination="uYX-Uq-Vzm" id="ufH-XL-uhh"/>
                         <outlet property="switchOffColorButton" destination="teD-gY-ZVr" id="iHI-VV-Fhd"/>
                         <outlet property="switchOffImageButton" destination="wcC-21-dip" id="cuQ-yj-RmY"/>
+                        <outlet property="switchOffImageErrorLabel" destination="fAB-Mi-tgk" id="WaY-us-Ecs"/>
                         <outlet property="switchOffValueTextField" destination="Rib-ek-Xvb" id="cOV-0L-Ono"/>
                         <outlet property="switchOnBackgroundColorButton" destination="Sjt-LC-NAy" id="GDC-Bb-6iM"/>
                         <outlet property="switchOnColorButton" destination="Tzf-JW-iEZ" id="sQh-3x-Wmm"/>
                         <outlet property="switchOnImageButton" destination="GNk-aS-xuD" id="B5x-Td-MgQ"/>
+                        <outlet property="switchOnImageErrorLabel" destination="NrF-0o-dKy" id="zxv-0q-WVP"/>
                         <outlet property="switchOnValueTextField" destination="xxZ-B3-47h" id="KTC-g2-cTJ"/>
                         <outlet property="topicPubTextField" destination="SMt-nN-DyO" id="jmH-vA-4cC"/>
                         <outlet property="topicSubTextField" destination="O67-8M-cth" id="msL-VK-Iem"/>

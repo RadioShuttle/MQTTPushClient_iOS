@@ -19,6 +19,7 @@
 @property IBOutlet UITextField *valueTextField;
 @property IBOutlet UITextField *labelTextField;
 @property IBOutlet UIButton *imageButton;
+@property IBOutlet UILabel *imageErrLabel;
 @property IBOutlet UILabel *posLabel;
 @property IBOutlet UIButton *posDropDownButton;
 @property int selPosIdx;

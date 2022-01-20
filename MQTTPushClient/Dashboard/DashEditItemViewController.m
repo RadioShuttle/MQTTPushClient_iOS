@@ -154,6 +154,7 @@
 	self.backgroundImageButton.imageEdgeInsets = UIEdgeInsetsMake(4, 4, 4, 4);
 	[self.backgroundImageButton addTarget:self action:@selector(onSelectImageButtonCLicked:) forControlEvents:UIControlEventTouchUpInside];
 	[self onImageSelected:self.backgroundImageButton imageURI:self.item.background_uri];
+	
 
 	/* 3. Subscribe section */
 	
@@ -793,8 +794,10 @@
 	}
 	
 	UIImage *image = nil;
-	if (imageURI) {
+	BOOL showImageErr = NO;
+	if (![Utils isEmpty:imageURI]) {
 		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentCtrl.dashboard.account.cacheURL];
+		showImageErr = !image;
 		
 		if (src == self.switchOnImageButton) {
 			if (self.switchOnColorButton.clearColor) {
@@ -816,6 +819,15 @@
 			}
 		}
 	}
+	
+	if (src == self.backgroundImageButton) {
+		self.backgroundImageErrorLabel.hidden = !showImageErr;
+	} else if (src == self.switchOnImageButton) {
+		self.switchOnImageErrorLabel.hidden = !showImageErr;
+	} else if (src == self.switchOffImageButton) {
+		self.switchOffImageErrorLabel.hidden = !showImageErr;
+	}
+	
 	if (image) {
 		[src setTitle:nil forState:UIControlStateNormal];
 		src.contentHorizontalAlignment = UIControlContentHorizontalAlignmentFill;
