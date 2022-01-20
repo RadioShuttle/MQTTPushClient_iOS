@@ -21,6 +21,7 @@
 @property AccountList *accountList;
 @property NSIndexPath *indexPathSelected;
 @property NSInteger interfaceStyle;
+@property UIBarButtonItem *themeButton;
 
 @end
 
@@ -282,6 +283,7 @@ static NSString * const interface_style_key = @"interface_style";
 		UIBarButtonItem *flexItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
 		[items addObject:flexItem];
 		self.toolbarItems = items;
+		self.themeButton = themeButton;
 	}
 }
 
@@ -311,6 +313,10 @@ static NSString * const interface_style_key = @"interface_style";
 		}]];
 		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
+		
+		[alert setModalPresentationStyle:UIModalPresentationPopover];
+		alert.popoverPresentationController.barButtonItem = self.themeButton;
+
 		[self presentViewController:alert animated:TRUE completion:nil];
 	}
 }
