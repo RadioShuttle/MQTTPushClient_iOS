@@ -839,6 +839,8 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		}
 		item = [self.dashboard getUnmodifiedItemForID:item.id_];
 		[self showDashItemEditor:Edit item:item];
+	} else {
+		[self showErrorMessage:@"No item selected."];
 	}
 }
 

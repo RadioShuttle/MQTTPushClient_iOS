@@ -114,12 +114,15 @@
 			while ((resName = [enumerator nextObject])) {
 				NSLog(@"missing resource: %@", resName);
 				[command getResourceRequest:0 name:resName type:DASH512_PNG];
-				if (command.rawCmd.error) {
-					break; /* critical error - do not try to get more resource files yet */
-				}
-				else if (command.rawCmd.rc != RC_OK) {
-					continue; /* file not found - continue with loading next missing resource */
-				}else {
+				if (command.rawCmd.error || command.rawCmd.rc != RC_OK) {
+					if (command.rawCmd.error) {
+						NSLog(@"getResource request failed for resource %@. Error: %@", resName, command.rawCmd.error.localizedDescription);
+					} else {
+						NSLog(@"getResource request failed for resource %@. Error: Resource not found.", resName);
+					}
+					command.rawCmd.error = nil; // ignore file not found or other errors - missing resources are not critical
+					continue;
+				} else {
 					p = (unsigned char *)command.rawCmd.data.bytes;
 					mdate = [Utils charArrayToUint64:p];
 					p += 8;
