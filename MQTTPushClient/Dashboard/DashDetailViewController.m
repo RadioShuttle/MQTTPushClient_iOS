@@ -64,12 +64,20 @@
 			for(int i = 0; i < optItem.optionList.count; i++) {
 				if ([self.dashItem.content isEqualToString:optItem.optionList[i].value]) {
 					NSIndexPath *idx = [NSIndexPath indexPathForRow:i inSection:0];
-					[optView.optionListTableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionTop animated:NO];
+					[NSTimer scheduledTimerWithTimeInterval:0.25 repeats:NO block:^(NSTimer * _Nonnull timer) {
+						[optView.optionListTableView scrollToRowAtIndexPath:idx atScrollPosition:UITableViewScrollPositionTop animated:NO];
+					}];
 					break;
 				}
 			}
 		}
 	}
+}
+
+-(void)timerCalled
+{
+     NSLog(@"Timer Called");
+     // Your Code
 }
 
 /*
