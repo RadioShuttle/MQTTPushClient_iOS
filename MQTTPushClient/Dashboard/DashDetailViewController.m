@@ -74,12 +74,6 @@
 	}
 }
 
--(void)timerCalled
-{
-     NSLog(@"Timer Called");
-     // Your Code
-}
-
 /*
 #pragma mark - Navigation
 
