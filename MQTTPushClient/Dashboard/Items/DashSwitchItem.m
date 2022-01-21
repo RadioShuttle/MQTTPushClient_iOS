@@ -89,13 +89,13 @@
 	
 	[o setObject:self.val ? self.val : @"" forKey:@"val"];
 	[o setObject:self.uri ? self.uri : @"" forKey:@"uri"];
-	[o setObject:[NSNumber numberWithUnsignedLongLong:self.color] forKey:@"color"];
-	[o setObject:[NSNumber numberWithUnsignedLongLong:self.bgcolor] forKey:@"bgcolor"];
+	[o setObject:[NSNumber numberWithLongLong:self.color] forKey:@"color"];
+	[o setObject:[NSNumber numberWithLongLong:self.bgcolor] forKey:@"bgcolor"];
 
 	[o setObject:self.valOff ? self.valOff : @"" forKey:@"val_off"];
 	[o setObject:self.uriOff ? self.uriOff : @"" forKey:@"uri_off"];
-	[o setObject:[NSNumber numberWithUnsignedLongLong:self.colorOff] forKey:@"color_off"];
-	[o setObject:[NSNumber numberWithUnsignedLongLong:self.bgcolorOff] forKey:@"bgcolor_off"];
+	[o setObject:[NSNumber numberWithLongLong:self.colorOff] forKey:@"color_off"];
+	[o setObject:[NSNumber numberWithLongLong:self.bgcolorOff] forKey:@"bgcolor_off"];
 
 	return o;
 }

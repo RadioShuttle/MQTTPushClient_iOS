@@ -78,7 +78,7 @@
 	[o setObject:[NSNumber numberWithDouble:self.range_max] forKey:@"range_max"];
 	[o setObject:[NSNumber numberWithInt:self.decimal] forKey:@"decimal"];
 	[o setObject:[NSNumber numberWithBool:self.percent] forKey:@"percent"];
-	[o setObject:[NSNumber numberWithUnsignedLongLong:self.progresscolor] forKey:@"progresscolor"];
+	[o setObject:[NSNumber numberWithLongLong:self.progresscolor] forKey:@"progresscolor"];
 
 	return o;
 }

@@ -97,8 +97,8 @@
 	}
 	
 	[o setObject:self.label ? self.label : @"" forKey:@"label"];
-	[o setObject:[NSNumber numberWithUnsignedLongLong:self.textcolor] forKey:@"textcolor"];
-	[o setObject:[NSNumber numberWithUnsignedLongLong:self.background] forKey:@"background"];
+	[o setObject:[NSNumber numberWithLongLong:self.textcolor] forKey:@"textcolor"];
+	[o setObject:[NSNumber numberWithLongLong:self.background] forKey:@"background"];
 
 	[o setObject:[NSNumber numberWithInt:self.textsize] forKey:@"textsize"];
 	[o setObject:[NSNumber numberWithInt:self.id_] forKey:@"id"];
