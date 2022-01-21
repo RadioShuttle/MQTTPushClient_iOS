@@ -449,29 +449,12 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	NSString *filename;
 	PHAsset *asset;
 	
-	if (@available(iOS 11, *)) {
-		asset = info[UIImagePickerControllerPHAsset]; //TODO: phppickerviewcontroller since iOS 14
-		if (asset) {
-			NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
-			filename = [resources.firstObject originalFilename].lastPathComponent;
-			// NSLog(@"Filename 2: %@", filename);
-		}
-	} else {
-		NSURL *u = info[UIImagePickerControllerReferenceURL];
-		if (u) {
-			NSMutableArray *urls = [NSMutableArray new];
-			[urls addObject:u];
-			PHFetchResult<PHAsset *> * result = [PHAsset fetchAssetsWithALAssetURLs:urls options:nil];
-			asset = result.firstObject;
-			if (asset) {
-				NSArray<PHAssetResource *> *assetRes = [PHAssetResource assetResourcesForAsset:asset];
-				filename = assetRes.firstObject.originalFilename;
-				// NSLog(@"Filename 1: %@", filename);
-			}
-		}
-	}
-	
-	if (!asset) { // should not happen, but who knows
+	asset = info[UIImagePickerControllerPHAsset]; //TODO: phppickerviewcontroller since iOS 14
+	if (asset) {
+		NSArray *resources = [PHAssetResource assetResourcesForAsset:asset];
+		filename = [resources.firstObject originalFilename].lastPathComponent;
+		// NSLog(@"Filename 2: %@", filename);
+	} else { // should not happen, but who knows
 		[self setStatusMessage:@"Import error." clearAfterDelay:YES];
 		return;
 	}

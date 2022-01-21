@@ -44,7 +44,6 @@
 			NSURL *localDir = [DashUtils getUserFilesDir:self.accountDir];
 			NSURL *fileURL;
 			
-			//TODO: remove the following 2 lines after test. Otherwise all images will be reloaded from server
 			// [[NSFileManager defaultManager] removeItemAtURL:localDir error:nil];
 			// localDir = [DashUtils getUserFilesDir:resourceDir];
 			

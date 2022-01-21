@@ -400,20 +400,6 @@
 		}
 		[dashJson setObject:lockedResources forKey:@"resources"];
 
-		NSError *error;
-		NSData * jsonData = [NSJSONSerialization dataWithJSONObject:dashJson options:0 error:&error];
-
-		//TODO: remove log
-		for(DashGroupItem *g in groups) {
-			NSLog(@"Group %@", g.label);
-			items = (NSMutableArray *) [groupItems objectForKey:@(g.id_)];
-			for(DashItem * i in items) {
-				NSLog(@"     %@", i.label);
-			}
-		}
-		NSLog(@"JSON: \n%@", [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding]);
-		// end log
-
 		NSMutableDictionary *userInfo = [NSMutableDictionary new];
 		self.saveRequestID = ++self.parentCtrl.saveRequestCnt;
 		[userInfo setObject:[NSNumber numberWithInt:self.saveRequestID] forKey:@"save_request"];

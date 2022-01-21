@@ -138,7 +138,6 @@
 		
 		UIImage *image;
 		if (![Utils isEmpty:imageURI]) {
-			//TODO: caching
 			image = [DashUtils loadImageResource:imageURI userDataDir:context.account.cacheURL];
 			if (!image) {
 				self.imageError |= 4;

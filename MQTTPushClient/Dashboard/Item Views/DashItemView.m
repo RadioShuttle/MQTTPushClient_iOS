@@ -32,7 +32,6 @@ static NSString * const imageLoadErr = @"Image file could not be loaded.";
 		[self setBackgroundColor:UIColorFromRGB(color)];
 	}
 	
-	/* background image (TODO: image caching) */
 	if (self.backgroundImageView) {
 		UIImage *backgroundImage = [DashUtils loadImageResource:item.background_uri userDataDir:context.account.cacheURL];
 		[self.backgroundImageView setImage:backgroundImage];

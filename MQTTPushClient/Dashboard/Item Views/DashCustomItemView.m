@@ -376,12 +376,15 @@
 		} else if ([message.name isEqualToString:@"setBackgroundColor"]) {
 			int64_t color =[[dict helNumberForKey:@"color"] longLongValue];
 			self.dashView.item.background = color;
-			if (color == DASH_COLOR_OS_DEFAULT) {
-				color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
-			}
 			/* update this views background color */
-			[self.dashView setBackgroundColor:UIColorFromRGB(color)];
-			[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+			if (color == DASH_COLOR_OS_DEFAULT) {
+				UIColor *col = [UIColor colorNamed:@"Color_Item_Background"];
+				[self.dashView setBackgroundColor:col];
+				[self.dashView.webView.scrollView setBackgroundColor:col];
+			} else {
+				[self.dashView setBackgroundColor:UIColorFromRGB(color)];
+				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+			}
 			/* notify observer in case another view needs this info */
 			[self notifyObserver:@"background"];
 		} else if ([message.name isEqualToString:@"publish"]) {
@@ -458,12 +461,15 @@
 			
 			if ([prop isEqualToString:@"background"]) {
 				uint64_t color = self.dashView.item.background;
-				if (color == DASH_COLOR_OS_DEFAULT) {
-					color = DASH_DEFAULT_CELL_COLOR; //TODO: dark mode use color from asset
-				}
 				/* update this views background color */
-				[self.dashView setBackgroundColor:UIColorFromRGB(color)];
-				[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+				if (color == DASH_COLOR_OS_DEFAULT) {
+					UIColor *col = [UIColor colorNamed:@"Color_Item_Background"];
+					[self.dashView setBackgroundColor:col];
+					[self.dashView.webView.scrollView setBackgroundColor:col];
+				} else {
+					[self.dashView setBackgroundColor:UIColorFromRGB(color)];
+					[self.dashView.webView.scrollView setBackgroundColor:UIColorFromRGB(color)];
+				}
 			} else if ([prop isEqualToString:@"error"]) {
 				[self.dashView.container onUpdate:self.dashView.item what:@"error"];
 			} else if ([prop isEqualToString:@"userdata"]) {
