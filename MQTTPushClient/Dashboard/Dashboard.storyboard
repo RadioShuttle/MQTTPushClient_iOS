@@ -112,7 +112,9 @@
         <!--MessageList-->
         <scene sceneID="oBh-aC-WLI">
             <objects>
-                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="MessageList" id="JzK-uF-OyL" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Main" referencedIdentifier="MessageList" id="JzK-uF-OyL" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="MCh-jY-ziN"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tzF-4h-DdX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="244" y="-472"/>
@@ -3902,7 +3904,7 @@
                     <toolbarItems>
                         <barButtonItem style="plain" id="mh0-pb-SbM">
                             <view key="customView" contentMode="scaleToFill" id="4Yr-u2-VPH">
-                                <rect key="frame" x="20" y="11" width="283" height="32"/>
+                                <rect key="frame" x="20" y="11" width="374" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ny-lx-5gl">
@@ -3920,12 +3922,6 @@
                                     <constraint firstItem="1ny-lx-5gl" firstAttribute="top" secondItem="4Yr-u2-VPH" secondAttribute="top" id="iRG-g2-Hif"/>
                                 </constraints>
                             </view>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="bwo-Ib-p9L"/>
-                        <barButtonItem title="Message View" image="List" id="rbh-YV-M6z">
-                            <connections>
-                                <segue destination="JzK-uF-OyL" kind="custom" identifier="IDShowMessageList" customClass="SwitchViewSegue" id="BhN-nW-1El"/>
-                            </connections>
                         </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Dashboard" id="6RS-Xe-5xe">
@@ -3945,7 +3941,6 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="dashCollectionFlowLayout" destination="jX3-IZ-LVW" id="tfP-8c-eLo"/>
-                        <outlet property="listViewButtonItem" destination="rbh-YV-M6z" id="srU-ET-yGs"/>
                         <outlet property="statusBarLabel" destination="1ny-lx-5gl" id="bvC-Zz-amo"/>
                         <segue destination="7jO-IT-1eZ" kind="show" identifier="IDShowEditGroupItemView" id="Q1Y-01-NGa"/>
                         <segue destination="gIo-mb-bZO" kind="show" identifier="IDShowEditTextItemView" id="a0i-Gh-TtV"/>
@@ -3953,6 +3948,7 @@
                         <segue destination="cyi-rP-5Tq" kind="show" identifier="IDShowEditCustomItemView" id="u9T-4A-fq2"/>
                         <segue destination="MCV-cn-8CD" kind="show" identifier="IDShowEditSliderItemView" id="l8E-cm-luE"/>
                         <segue destination="zCt-rv-lxd" kind="show" identifier="IDShowEditSwitchItemView" id="yDP-Tj-fEA"/>
+                        <segue destination="JzK-uF-OyL" kind="show" identifier="IDShowMessageList" customClass="SwitchViewSegue" id="F1O-0m-OB4"/>
                     </connections>
                 </collectionViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pvJ-LA-fYD" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4229,7 +4225,6 @@
         <image name="Add" width="24" height="24"/>
         <image name="DropDown" width="24" height="24"/>
         <image name="Error-Info" width="24" height="24"/>
-        <image name="List" width="24" height="24"/>
         <image name="Manage Images" width="24" height="24"/>
         <image name="More" width="24" height="24"/>
         <image name="NotificationDisabled" width="18" height="18"/>

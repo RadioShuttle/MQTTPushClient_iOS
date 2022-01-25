@@ -18,6 +18,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *statusLabel;
 @property (strong, nonatomic) IBOutlet UILabel *tableViewHeaderLabel;
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *trashBarButtonItem;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *moreButton;
 @property NSDateFormatter *dateFormatter;
 @property NSDateFormatter *sectionDateFormatter;
 @property (strong, nonatomic) NSFetchedResultsController<CDMessage *> *frc;
@@ -114,6 +115,9 @@
 	} else {
 		self.tableView.tableHeaderView = self.topicSearchController.searchBar;
 	}
+	
+	self.moreButton.target = self;
+	self.moreButton.action = @selector(onMoreButtonClicked);
 	
 	[self updateAccount];
 }
@@ -358,6 +362,27 @@
 
 - (void)dismissActionList {
 	[self dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)onMoreButtonClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[alert addAction:[UIAlertAction actionWithTitle:@"MQTT Actions" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performSegueWithIdentifier:@"IDShowMqttActions" sender:self];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Dashbaord View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self performSegueWithIdentifier:@"IDShowDashboard" sender:self];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Delete Messages"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self trashAction:self.moreButton];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	alert.popoverPresentationController.barButtonItem = self.moreButton;
+
+	[self presentViewController:alert animated:TRUE completion:nil];
+
 }
 
 #pragma mark - Notifications

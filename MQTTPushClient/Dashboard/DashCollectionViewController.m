@@ -648,6 +648,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[alert addAction:[UIAlertAction actionWithTitle:@"Edit Dashboard" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onEditMenuItemClicked];
 	}]];
 
+	[alert addAction:[UIAlertAction actionWithTitle:@"Messages View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self performSegueWithIdentifier:@"IDShowMessageList" sender:self];
+	}]];
+
 	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onManageImagesClicked];
 	}]];
 	[alert addAction:[UIAlertAction actionWithTitle:@"Reload" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onReloadMenuItemClicked];

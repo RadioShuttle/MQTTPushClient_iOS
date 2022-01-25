@@ -751,14 +751,9 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem systemItem="trash" id="jYR-Ne-NLa">
-                            <connections>
-                                <action selector="trashAction:" destination="k5Q-cm-GtU" id="bbW-b0-j0S"/>
-                            </connections>
-                        </barButtonItem>
                         <barButtonItem style="plain" id="Qdu-Ql-xed">
                             <view key="customView" contentMode="scaleToFill" id="2rd-HO-GUn">
-                                <rect key="frame" x="45" y="11" width="283" height="32"/>
+                                <rect key="frame" x="42" y="11" width="333" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-nn-elx">
@@ -777,27 +772,19 @@
                                 </constraints>
                             </view>
                         </barButtonItem>
-                        <barButtonItem systemItem="flexibleSpace" id="Xee-3T-ep3"/>
-                        <barButtonItem tag="1" title="Dashboard" image="Dashboard" id="FWe-1m-WA6">
-                            <connections>
-                                <segue destination="ZoG-TN-Jvt" kind="custom" identifier="IDShowDashboard" customClass="SwitchViewSegue" id="uB2-p4-bjf"/>
-                            </connections>
-                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Messages" id="sRy-hS-iYz">
-                        <barButtonItem key="rightBarButtonItem" title="MQTT Actions" id="EF9-ur-0wd">
-                            <connections>
-                                <segue destination="lL1-on-hWC" kind="popoverPresentation" identifier="IDShowMqttActions" popoverAnchorBarButtonItem="EF9-ur-0wd" id="Ia3-jN-VAq">
-                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                </segue>
-                            </connections>
-                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="More" image="More" id="ec6-Yf-rHf"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
+                        <outlet property="moreButton" destination="ec6-Yf-rHf" id="56k-KQ-76f"/>
                         <outlet property="statusLabel" destination="5WO-nn-elx" id="2xx-nK-Re0"/>
                         <outlet property="tableViewHeaderLabel" destination="wSS-Sk-0Dn" id="II8-vU-klY"/>
-                        <outlet property="trashBarButtonItem" destination="jYR-Ne-NLa" id="ZAD-jE-wuu"/>
+                        <segue destination="ZoG-TN-Jvt" kind="show" identifier="IDShowDashboard" customClass="SwitchViewSegue" id="Ota-s8-5jA"/>
+                        <segue destination="lL1-on-hWC" kind="popoverPresentation" identifier="IDShowMqttActions" popoverAnchorBarButtonItem="ec6-Yf-rHf" id="yA9-nB-IQa">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="D3X-ps-hNk" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -807,7 +794,9 @@
         <!--Dashboard-->
         <scene sceneID="ASd-z2-X9C">
             <objects>
-                <viewControllerPlaceholder storyboardName="Dashboard" id="ZoG-TN-Jvt" sceneMemberID="viewController"/>
+                <viewControllerPlaceholder storyboardName="Dashboard" id="ZoG-TN-Jvt" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="biF-eG-o8L"/>
+                </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="XPi-yg-2qX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="443" y="627"/>
@@ -1575,7 +1564,7 @@
         <image name="AboutImage" width="83.5" height="83.5"/>
         <image name="Banner" width="18" height="18"/>
         <image name="BannerSound" width="18" height="18"/>
-        <image name="Dashboard" width="24" height="24"/>
+        <image name="More" width="24" height="24"/>
         <image name="NotificationDisabled" width="18" height="18"/>
         <image name="NotificationNone" width="18" height="18"/>
         <namedColor name="Color_New_Messages">
@@ -1592,7 +1581,7 @@
         <segue reference="QQs-B3-hzJ"/>
         <segue reference="f8M-ja-CCs"/>
         <segue reference="RAn-RK-BL9"/>
-        <segue reference="qXE-kb-Rdd"/>
+        <segue reference="Ota-s8-5jA"/>
         <segue reference="vfE-Bn-KJx"/>
     </inferredMetricsTieBreakers>
 </document>
