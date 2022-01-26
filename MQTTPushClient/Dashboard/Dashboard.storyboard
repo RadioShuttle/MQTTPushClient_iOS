@@ -416,7 +416,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1h-mC-zMt">
-                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -954,7 +954,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="889-dK-gPQ">
-                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -1180,7 +1180,7 @@
                                                     <state key="normal" title="Edit"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8H3-82-1VE">
-                                                    <rect key="frame" x="308" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="284" y="-2" width="48" height="48"/>
                                                     <state key="normal" image="Add"/>
                                                 </button>
                                             </subviews>
@@ -1909,7 +1909,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8r-6E-aG6">
-                                                    <rect key="frame" x="119.5" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="119.5" y="-2" width="48" height="48"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -2322,7 +2322,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ulv-uv-97K">
-                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -2975,7 +2975,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2l-lL-8QA">
-                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
+                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -3908,7 +3908,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1ny-lx-5gl">
-                                        <rect key="frame" x="0.0" y="0.0" width="283" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="374" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -3923,6 +3923,7 @@
                                 </constraints>
                             </view>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="afF-N0-s1Q"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Dashboard" id="6RS-Xe-5xe">
                         <rightBarButtonItems>
