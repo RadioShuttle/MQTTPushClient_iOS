@@ -53,6 +53,7 @@
 				break;
 			}
 		}
+		eq = eq && [Utils areEqual:self.html s2:o.html];
 	}
 	return eq;
 }
