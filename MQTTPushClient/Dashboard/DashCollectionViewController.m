@@ -648,7 +648,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[alert addAction:[UIAlertAction actionWithTitle:@"Edit Dashboard" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onEditMenuItemClicked];
 	}]];
 
-	[alert addAction:[UIAlertAction actionWithTitle:@"Messages View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self performSegueWithIdentifier:@"IDShowMessageList" sender:self];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Messages" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self performSegueWithIdentifier:@"IDShowMessageList" sender:self];
 	}]];
 
 	[alert addAction:[UIAlertAction actionWithTitle:@"Manage Images" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onManageImagesClicked];
@@ -761,9 +761,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	}]];
 	[alert addAction:[UIAlertAction actionWithTitle:@"Option List" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashOptionItem new]];
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Group View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashGroupItem new]];
-	}]];
 	[alert addAction:[UIAlertAction actionWithTitle:@"Custom View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashCustomItem new]];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Group" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self showDashItemEditor:Add item:[DashGroupItem new]];
 	}]];
 
 	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {

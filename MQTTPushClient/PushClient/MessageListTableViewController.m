@@ -369,7 +369,7 @@
 	[alert addAction:[UIAlertAction actionWithTitle:@"MQTT Actions" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		[self performSegueWithIdentifier:@"IDShowMqttActions" sender:self];
 	}]];
-	[alert addAction:[UIAlertAction actionWithTitle:@"Dashbaord View" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+	[alert addAction:[UIAlertAction actionWithTitle:@"Dashboard" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
 		[self performSegueWithIdentifier:@"IDShowDashboard" sender:self];
 	}]];
 	[alert addAction:[UIAlertAction actionWithTitle:@"Delete Messages"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {

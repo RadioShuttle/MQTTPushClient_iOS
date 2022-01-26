@@ -4,3 +4,8 @@
 - Edit Javascript (Main storyboard and ScriptViewController): test message textview bound twice (and test data label not bound)
 
 Dashboard:
+set correct links for online help:
+- Manage Images link: DashManageImagesController.onHelpMenuClicked
+- Custom View HTML: DashEditItemViewController.showCustomViewHelp
+- Filter Script: DashScriptViewController.showScriptHelp
+

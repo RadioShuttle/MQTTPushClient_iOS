@@ -752,12 +752,12 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" id="Qdu-Ql-xed">
-                            <view key="customView" contentMode="scaleToFill" id="2rd-HO-GUn">
-                                <rect key="frame" x="42" y="11" width="333" height="32"/>
+                            <view key="customView" contentMode="scaleToFill" misplaced="YES" id="2rd-HO-GUn">
+                                <rect key="frame" x="16" y="11" width="343" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-nn-elx">
-                                        <rect key="frame" x="0.0" y="0.0" width="283" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="333" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>

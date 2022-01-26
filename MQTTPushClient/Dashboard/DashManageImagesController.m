@@ -13,6 +13,7 @@
 #import "Utils.h"
 
 @import Photos;
+@import SafariServices;
 
 @interface DashManageImagesController ()
 
@@ -63,10 +64,6 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	
 	self.moreButton.target = self;
 	self.moreButton.action = @selector(onMoreButtonClicked);
-	
-	NSMutableArray *toolbarItems = [self.toolbarItems mutableCopy];
-	[toolbarItems addObject:self.editButtonItem];
-	self.toolbarItems = toolbarItems;
 	
 	self.dashboardVersion = self.parentCtrl.dashboard.localVersion;
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onSaveRequestFinished:) name:@"ServerUpdateNotification" object:self.parentCtrl.connection];
@@ -343,6 +340,14 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	[alert addAction:[UIAlertAction actionWithTitle:@"Import" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onImportButtonClicked];
 	}]];
 	
+	if (!self.isEditing) {
+		[alert addAction:[UIAlertAction actionWithTitle:@"Edit" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onEditMenuClicked];
+		}]];
+	}
+
+	[alert addAction:[UIAlertAction actionWithTitle:@"Help" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {[self onHelpMenuClicked];
+	}]];
+
 	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 	}]];
 	
@@ -437,6 +442,38 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	// self.imagePicker.allowsEditing = YES;
 	self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
 	[self presentViewController:self.imagePicker animated:YES completion:nil];
+}
+
+-(void)onEditMenuClicked {
+	[self setEditing:YES];
+	NSMutableArray *toolbarItems = [self.toolbarItems mutableCopy];
+	[toolbarItems addObject:self.editButtonItem];
+	self.toolbarItems = toolbarItems;
+	
+	self.editButtonItem.target = self;
+	self.editButtonItem.action = @selector(onEditDoneClicked);
+}
+
+-(void)onEditDoneClicked {
+	NSMutableArray *toolbarItems = [self.toolbarItems mutableCopy];
+	[toolbarItems removeObject:self.editButtonItem];
+	self.toolbarItems = toolbarItems;
+	[self setEditing:NO];
+}
+
+-(void)onHelpMenuClicked {
+	//TODO: set correct hyperlinks once the documentation has been published
+	NSString *urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/filter-scripts.html";
+	if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
+		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/filter-scripts.html";
+	}
+	NSURL *url = [NSURL URLWithString:urlString];
+	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
+	if (@available(iOS 13.0, *)) {
+		safariViewController.preferredBarTintColor = [UIColor systemBackgroundColor];
+		safariViewController.preferredControlTintColor = self.view.tintColor;
+	}
+	[self presentViewController:safariViewController animated:YES completion:^{}];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<UIImagePickerControllerInfoKey,id> *)info {
