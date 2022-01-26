@@ -4198,20 +4198,16 @@
                         </connections>
                     </tableView>
                     <toolbarItems>
-                        <barButtonItem systemItem="trash" id="5z2-UP-oER"/>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="X2Y-ra-9yV"/>
-                        <barButtonItem title="Help" id="Cpl-N1-tl0"/>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Edit JavaScript" id="63J-oC-j2s">
-                        <barButtonItem key="rightBarButtonItem" systemItem="play" id="Yf7-1I-xBj"/>
+                        <barButtonItem key="rightBarButtonItem" title="More" image="More" id="lhG-IW-T5L"/>
                     </navigationItem>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
-                        <outlet property="clearButton" destination="5z2-UP-oER" id="kuB-hK-ByS"/>
                         <outlet property="functionMsgLabel" destination="quh-Vw-Khb" id="UpQ-jT-JOL"/>
                         <outlet property="functionReturnLabel" destination="rJF-4q-t5r" id="PnG-3P-yTW"/>
-                        <outlet property="helpButton" destination="Cpl-N1-tl0" id="DY2-be-GUo"/>
-                        <outlet property="runToolbarButton" destination="Yf7-1I-xBj" id="u0L-qa-Kul"/>
+                        <outlet property="moreButton" destination="lhG-IW-T5L" id="2cu-tG-B5s"/>
                         <outlet property="scriptTextView" destination="wvW-cH-3Wb" id="qPN-Vy-Pik"/>
                         <outlet property="testMessageTextView" destination="M10-Mi-dfk" id="8Hj-Dj-jD7"/>
                         <outlet property="testMsgLabel" destination="xnY-Bz-lHY" id="ZT2-A2-89q"/>

@@ -30,9 +30,7 @@
 @property(nullable, copy) NSData *testData;
 @property NSOperationQueue *operationQueue;
 
-@property IBOutlet UIBarButtonItem *clearButton;
-@property IBOutlet UIBarButtonItem *helpButton;
-@property IBOutlet UIBarButtonItem *runToolbarButton;
+@property IBOutlet UIBarButtonItem *moreButton;
 
 @end
 
@@ -56,16 +54,31 @@
 	[self.tableView registerNib:nib forHeaderFooterViewReuseIdentifier:@"IDScriptViewSectionHeader"];
 	
 	[self setTestMessage];
-	self.clearButton.target = self;
-	self.clearButton.action = @selector(onClearButtonClicked);
 	
-	self.helpButton.target = self;
-	self.helpButton.action = @selector(showScriptHelp);
-
-	self.runToolbarButton.target = self;
-	self.runToolbarButton.action = @selector(testScript:);
+	self.moreButton.target = self;
+	self.moreButton.action = @selector(onMoreButtonClicked);
 
 	[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onJavaScriptTaskFinished:) name:@"DashJavaScriptTaskNotification" object:nil];
+}
+
+-(void)onMoreButtonClicked {
+	UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Run" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self testScript:nil];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Clear" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self onClearButtonClicked];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Help"  style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+		[self showScriptHelp];
+	}]];
+	[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+	}]];
+	
+	[alert setModalPresentationStyle:UIModalPresentationPopover];
+	alert.popoverPresentationController.barButtonItem = self.moreButton;
+
+	[self presentViewController:alert animated:TRUE completion:nil];
 }
 
 - (void)onJavaScriptTaskFinished:(NSNotification *)notif {
