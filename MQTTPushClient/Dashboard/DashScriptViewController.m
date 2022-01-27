@@ -297,10 +297,17 @@
 }
 
 - (void)showScriptHelp {
-	//TODO: set correct hyperlinks once the documentation has been published
-	NSString *urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/filter-scripts.html";
-	if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
-		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/filter-scripts.html";
+	NSString *urlString;
+	if (self.filterScriptMode) {
+		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/dashboard_scripts.html#filter_script";
+		if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
+			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/dashboard_scripts.html#filter_script";
+		}
+	} else {
+		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/dashboard_scripts.html#output_script";
+		if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
+			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/dashboard_scripts.html#output_script";
+		}
 	}
 	NSURL *url = [NSURL URLWithString:urlString];
 	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];

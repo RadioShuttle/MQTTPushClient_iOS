@@ -462,10 +462,9 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 }
 
 -(void)onHelpMenuClicked {
-	//TODO: set correct hyperlinks once the documentation has been published
-	NSString *urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/filter-scripts.html";
+	NSString *urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/dashboard.html#manage_images";
 	if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
-		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/filter-scripts.html";
+		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/dashboard.html#manage_images";
 	}
 	NSURL *url = [NSURL URLWithString:urlString];
 	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
