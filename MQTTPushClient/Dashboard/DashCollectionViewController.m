@@ -135,7 +135,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 }
 
 -(BOOL)checkIfUpdateRequired {
-	BOOL updateRequired = self.dashboard.protocolVersion != -1 && self.dashboard.protocolVersion != DASHBOARD_PROTOCOL_VERSION;
+	BOOL updateRequired = self.dashboard.protocolVersion != -1 && self.dashboard.protocolVersion > DASHBOARD_PROTOCOL_VERSION;
 	if (updateRequired) {
 		UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Update required" message:@"This dashboard was created with a newer version. To modify the dashboard, update this app." preferredStyle:UIAlertControllerStyleAlert];
 		[alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
@@ -205,7 +205,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 								value = [indexPathDict objectForKey:key];
 								[indexPaths addObject:value];
 							}
+							[UIView setAnimationsEnabled:NO];
 							[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+							[UIView setAnimationsEnabled:YES];
 							if (self.activeDetailView) {
 								if ([indexPathDict objectForKey:[NSNumber numberWithUnsignedLong:self.activeDetailView.dashItem.id_]]) {
 									[self.activeDetailView onNewMessage];
@@ -430,7 +432,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		while ((value = [enumerator nextObject])) {
 			[indexPaths addObject:value];
 		}
+		[UIView setAnimationsEnabled:NO];
 		[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+		[UIView setAnimationsEnabled:YES];
+
 		if (self.activeDetailView) {
 			if ([indexPathDict objectForKey:[NSNumber numberWithUnsignedLong:self.activeDetailView.dashItem.id_]]) {
 				[self.activeDetailView onNewMessage];
@@ -529,7 +534,10 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			}
 			if (notify) {
 				/* notify dash object about update */
+				[UIView setAnimationsEnabled:NO];
 				[self.collectionView reloadItemsAtIndexPaths:indexPaths];
+				[UIView setAnimationsEnabled:YES];
+
 				if (self.activeDetailView) {
 					[self.activeDetailView onNewMessage];
 				}
@@ -735,7 +743,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			}
 		}
 		[self.selectedItems removeAllObjects];
+		[UIView setAnimationsEnabled:NO];
 		[self.collectionView reloadItemsAtIndexPaths:selectedItems];
+		[UIView setAnimationsEnabled:YES];
 		
 		DashGroupItemViewCell *groupView;
 		DashGroupItem *groupItem;
@@ -953,7 +963,9 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		}
 		NSMutableArray *p = [NSMutableArray new];
 		[p addObject:indexPath];
+		[UIView setAnimationsEnabled:NO];
 		[collectionView reloadItemsAtIndexPaths:p];
+		[UIView setAnimationsEnabled:YES];
 	} else {
 		DashItem *group = [self.dashboard.groups objectAtIndex:[indexPath section]];
 		NSNumber *key = [NSNumber numberWithUnsignedInt:group.id_];
