@@ -14,7 +14,7 @@
 
 #define MAGIC "MQTP"
 #define PROTOCOL_MAJOR 1
-#define PROTOCOL_MINOR 5
+#define PROTOCOL_MINOR 6
 #define MAGIC_SIZE 4
 #define HEADER_SIZE 12
 
@@ -514,9 +514,11 @@ enum StateCommand {
 	buffer[1] = itemID >> 16;
 	buffer[0] = itemID >> 24;
 	[data appendBytes:buffer length:4];
-	buffer[1] = dashboard.length & 0xff;
-	buffer[0] = dashboard.length >> 8;
-	[data appendBytes:buffer length:2];
+	buffer[3] = dashboard.length & 0xff;
+	buffer[2] = dashboard.length >> 8;
+	buffer[1] = dashboard.length >> 16;
+	buffer[0] = dashboard.length >> 24;
+	[data appendBytes:buffer length:4];
 	[data appendData:dashboard];
 	[self writeCommand:CMD_SET_DASHBOARD seqNo:seqNo flags:FLAG_REQUEST rc:0 data:data];
 	[self readCommand];

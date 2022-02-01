@@ -387,8 +387,8 @@ enum ConnectionState {
 					unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
 					serverVersion = [Utils charArrayToUint64:p];
 					p += 8;
-					int count = (p[0] << 8) + p[1];
-					p += 2;
+					int count = (int) (((uint64_t)p[0] << 24) + (p[1] << 16) + (p[2] << 8) + p[3]);
+					p += 4;
 					dashboardJS = [[NSString alloc] initWithBytes:p length:count encoding:NSUTF8StringEncoding];
 					// NSLog(@"Dashboard: %@", dashboard);
 				}
