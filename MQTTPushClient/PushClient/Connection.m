@@ -402,7 +402,7 @@ enum ConnectionState {
 					currentDash = localDashboardJS;
 				}
 				DashResourcesHelper *helper = [[DashResourcesHelper alloc] initWithAccountDir:dashboard.account.cacheURL];
-				[helper syncImages:command dash:currentDash];
+				int syncRes = [helper syncResources:command dash:currentDash];
 				
 				if (!command.rawCmd.error) {					
 					resultInfo = [NSMutableDictionary new];
@@ -415,6 +415,12 @@ enum ConnectionState {
 					[resultInfo setObject:historicalData forKey:@"historicalData"];
 					[resultInfo setObject:[NSDate dateWithTimeIntervalSince1970:timestamp] forKey:@"msgs_since_date"];
 					[resultInfo setObject:[NSNumber numberWithUnsignedLongLong:messageID] forKey:@"msgs_since_seqno"];
+					if ((syncRes & 1) > 0) {
+						[resultInfo setObject:@(YES) forKey:@"resource_img_update"];
+					}
+					if ((syncRes & 2) > 0) {
+						[resultInfo setObject:@(YES) forKey:@"resource_html_update"];
+					}
 				}
 			}
 		}
@@ -422,6 +428,7 @@ enum ConnectionState {
 	}
 	atomic_fetch_sub(&_noOfActiveDashRequests, 1);
 }
+
 -(void)setDashboardForAccountAsync:(Account *)account json:(NSDictionary *)jsonObj prevVersion:(uint64_t)version itemID:(uint32_t)itemID userInfo:(NSDictionary *)userInfo {
 
 	NSMutableDictionary *resultInfo = userInfo ? [userInfo mutableCopy] : [NSMutableDictionary new];
@@ -433,61 +440,75 @@ enum ConnectionState {
 			
 			DashResourcesHelper *helper = [[DashResourcesHelper alloc] initWithAccountDir:account.cacheURL];
 			/* server resources on server: */
-			NSMutableArray<FileInfo *> *serverResourceList = [helper getServerResourceList:command.rawCmd];
-			
-			/* if images where added, they must be saved first -> check all resource uris */
-			NSMutableDictionary *mutableJsonObj = [jsonObj mutableCopy];
-			
-			@try {
-				[helper saveImportedResources:command serverResourceList:serverResourceList json:mutableJsonObj];
-			} @catch (NSException *ex) {
-				if (![ex.userInfo objectForKey:@"conn_error"]) {
-					NSMutableDictionary *errInfo = [NSMutableDictionary new];
-					[errInfo setValue:(ex.reason ? ex.reason : @"Saving resources failed.") forKey:NSLocalizedDescriptionKey];
-					command.rawCmd.error = [NSError errorWithDomain:@"SaveResourcesError" code:400 userInfo:errInfo];
-				}
-			}
+			NSMutableArray<FileInfo *> *serverImageResourceList = [helper getServerResourceList:command.rawCmd];
+			[command enumResources:0 type:DASH_HTML];
 			if (!command.rawCmd.error) {
-				NSError *error;
-				NSData * jsonData = [NSJSONSerialization dataWithJSONObject:mutableJsonObj options:0 error:&error];
-				if (error) {
-					/* unexprectd error - should not occur  */
-					command.rawCmd.error = error; // will be passed to account error in disconnect
-					[self disconnect:account withCommand:command userInfo:resultInfo];
-					return;
-				}
+				NSMutableArray<FileInfo *> *serverHtmlResourceList= [helper getServerResourceList:command.rawCmd];
 				
-				[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
-				if (!command.rawCmd.error) {
-					if (command.rawCmd.rc == RC_OK) {
-						/* delete imported files which have been copied to user dir */
-						[helper deleteImportedResouces];
-						
-						/* clean up (delete unused image resources) */
-						NSArray<NSString *> *unusedRes = [helper findUnusedResources:serverResourceList json:mutableJsonObj];
-						if (unusedRes.count > 0) {
-							[command deleteResources:0 resourceNames:unusedRes type:DASH512_PNG];
-							if (command.rawCmd.error) {
-								NSLog(@"Error deleting resources: %@", command.rawCmd.error.localizedDescription);
-								command.rawCmd.error = nil; // ignore error
-							}
-						}
-						
-						unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
-						uint64_t newVersion = [Utils charArrayToUint64:p];
-						if (newVersion == 0) {
-							/* version error */
-							[resultInfo setObject:@(YES) forKey:@"invalidVersion"];
-						} else {
-							[resultInfo setObject:@(newVersion) forKey:@"serverVersion"];
-							NSString* dashboardStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-							[resultInfo setObject:dashboardStr forKey:@"dashboardJS"];
-						}
-					} else {
-						// should never occur
+				/* if images where added, they must be saved first -> check all resource uris */
+				NSMutableDictionary *mutableJsonObj = [jsonObj mutableCopy];
+				@try {
+					[helper saveImportedResources:command serverResourceList:serverImageResourceList json:mutableJsonObj];
+					[helper saveHTMLResources:command json:mutableJsonObj];
+				} @catch (NSException *ex) {
+					if (![ex.userInfo objectForKey:@"conn_error"]) {
 						NSMutableDictionary *errInfo = [NSMutableDictionary new];
-						[errInfo setValue:@"Saving dashboard failed (invalid args)." forKey:NSLocalizedDescriptionKey];
-						command.rawCmd.error= [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
+						[errInfo setValue:(ex.reason ? ex.reason : @"Saving resources failed.") forKey:NSLocalizedDescriptionKey];
+						command.rawCmd.error = [NSError errorWithDomain:@"SaveResourcesError" code:400 userInfo:errInfo];
+					}
+				}
+				if (!command.rawCmd.error) {
+					NSError *error;
+					NSData * jsonData = [NSJSONSerialization dataWithJSONObject:mutableJsonObj options:0 error:&error];
+					if (error) {
+						/* unexprectd error - should not occur  */
+						command.rawCmd.error = error; // will be passed to account error in disconnect
+						[self disconnect:account withCommand:command userInfo:resultInfo];
+						return;
+					}
+					
+					[command setDashboard:0 version:version itemID:itemID dashboard:jsonData];
+					if (!command.rawCmd.error) {
+						if (command.rawCmd.rc == RC_OK) {
+							unsigned char *p = (unsigned char *)command.rawCmd.data.bytes;
+							uint64_t newVersion = [Utils charArrayToUint64:p];
+
+							/* delete imported files which have been copied to user dir */
+							[helper deleteImportedResouces];
+							
+							/* clean up (delete unused image and html resources) */
+							NSArray *types = [NSArray arrayWithObjects:DASH512_PNG,DASH_HTML, nil];
+							NSMutableArray<FileInfo *> *list;
+							for(NSString * t in types) {
+								if ([t isEqual:DASH512_PNG]) {
+									list = serverImageResourceList;
+								} else {
+									list = serverHtmlResourceList;
+								}
+								NSArray<NSString *> *unusedRes = [helper findUnusedResources:list type:t json:mutableJsonObj];
+								if (unusedRes.count > 0) {
+									[command deleteResources:0 resourceNames:unusedRes type:t];
+									if (command.rawCmd.error) {
+										NSLog(@"Error deleting resources: %@", command.rawCmd.error.localizedDescription);
+										command.rawCmd.error = nil; // ignore error
+									}
+								}
+							}
+							
+							if (newVersion == 0) {
+								/* version error */
+								[resultInfo setObject:@(YES) forKey:@"invalidVersion"];
+							} else {
+								[resultInfo setObject:@(newVersion) forKey:@"serverVersion"];
+								NSString* dashboardStr = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+								[resultInfo setObject:dashboardStr forKey:@"dashboardJS"];
+							}
+						} else {
+							// should never occur
+							NSMutableDictionary *errInfo = [NSMutableDictionary new];
+							[errInfo setValue:@"Saving dashboard failed (invalid args)." forKey:NSLocalizedDescriptionKey];
+							command.rawCmd.error= [NSError errorWithDomain:@"RequsetError" code:400 userInfo:errInfo];
+						}
 					}
 				}
 			}

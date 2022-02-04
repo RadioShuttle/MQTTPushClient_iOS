@@ -8,10 +8,11 @@
 #define DashConsts_h
 
 // json protocol version
-#define DASHBOARD_PROTOCOL_VERSION 0
+#define DASHBOARD_PROTOCOL_VERSION 1
 
 // file releated
 #define DASH512_PNG	@"dash512png"
+#define DASH_HTML @"dashhtml"
 #define LOCAL_IMPORTED_FILES_DIR @"images/imported"
 #define LOCAL_USER_FILES_DIR @"images/user"
 

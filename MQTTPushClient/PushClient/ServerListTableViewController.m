@@ -107,7 +107,7 @@ static NSString * const interface_style_key = @"interface_style";
 
 	/* dashboard clean up task */
 	dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-		[DashResourcesHelper deleteLocalImageResources:self.accountList];
+		[DashResourcesHelper deleteLocalResources:self.accountList];
 	});
 }
 

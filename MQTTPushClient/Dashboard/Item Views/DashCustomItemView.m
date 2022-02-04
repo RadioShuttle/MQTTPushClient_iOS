@@ -104,6 +104,15 @@
 	
 	if (load) {
 		[self showProgressBar];
+		if ([DashUtils isHTMLResource:self.item.htmlUri]) {
+			NSString *html = [DashUtils loadHTMLResource:self.item.htmlUri userDataDir:context.account.cacheURL];
+			if (!html) {
+				self.dashItem.error1 = @"Could not load HTML resource file.";
+				[self.container onUpdate:self.dashItem what:@"error"];
+			} else {
+				self.item.html = html;
+			}
+		}
 		
 		NSURL *colorsScriptURL = [[NSBundle mainBundle] URLForResource:@"javascript_color" withExtension:@"js"];
 		NSString *colorScriptStr = [NSString stringWithContentsOfURL:colorsScriptURL encoding:NSUTF8StringEncoding error:NULL];

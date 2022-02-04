@@ -20,6 +20,7 @@
 
 	self.parameter = [NSMutableArray new];
 	self.html = [dictObj helStringForKey:@"html"];
+	self.htmlUri = [dictObj helStringForKey:@"htmlUri"];
 	
 	if (dictObj) {
 		NSArray *parameterListJSON = [dictObj helArrayForKey:@"parameter"];
@@ -35,6 +36,7 @@
 	DashCustomItem *clone = [super copyWithZone:zone];
 	clone.parameter = [self.parameter mutableCopy];
 	clone.html = self.html;
+	clone.htmlUri = self.htmlUri;
 	
 	return clone;
 }
@@ -53,7 +55,7 @@
 				break;
 			}
 		}
-		eq = eq && [Utils areEqual:self.html s2:o.html];
+		eq = eq && [Utils areEqual:self.html s2:o.html] && [Utils areEqual:self.htmlUri s2:o.htmlUri];
 	}
 	return eq;
 }
@@ -62,7 +64,8 @@
 	NSMutableDictionary *o = (NSMutableDictionary *) [super toJSONObject];
 	[o setObject:@"custom" forKey:@"type"];
 	[o setObject:self.html ? self.html : @"" forKey:@"html"];
-	[o setObject:[self.parameter copy] forKey:@"parameter"];	
+	[o setObject:self.htmlUri ? self.htmlUri : @"" forKey:@"htmlUri"];
+	[o setObject:[self.parameter copy] forKey:@"parameter"];
 	return o;
 }
 

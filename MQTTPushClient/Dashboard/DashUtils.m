@@ -23,6 +23,10 @@
 	return ![Utils isEmpty:uri] && [[uri lowercaseString] hasPrefix:@"res://internal/"];
 }
 
++(BOOL) isHTMLResource:(NSString *)uri {
+	return ![Utils isEmpty:uri] && [[uri lowercaseString] hasPrefix:@"res://html/"];
+}
+
 +(NSString *)getURIPath:(NSString *)uri {
 	NSString *uriPath = nil;
 	if (uri) {
@@ -138,6 +142,19 @@
 	}
 	return img;
 }
+
++(NSString *)loadHTMLResource:(NSString *)uri userDataDir:(NSURL *)userDataDir {
+	NSString *html;
+	if (![Utils isEmpty:uri]) {
+		NSString *resourceName = [DashUtils getURIPath:uri];
+		NSString *internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH_HTML];
+		NSURL *localDir = [DashUtils getUserFilesDir:userDataDir];
+		NSURL *fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
+		html = [NSString stringWithContentsOfURL:fileURL encoding:NSUTF8StringEncoding error:nil];
+	}
+	return html;
+}
+
 
 +(NSString *)getResourceURIFromResourceName:(NSString *) resourceName userDataDir:(NSURL *)userDataDir {
 	NSString *uri = nil;

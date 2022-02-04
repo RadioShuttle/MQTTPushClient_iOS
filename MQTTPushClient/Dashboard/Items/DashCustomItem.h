@@ -11,6 +11,7 @@
 
 @interface DashCustomItem : DashItem
 @property NSString *html;
+@property NSString *htmlUri;
 @property NSArray<NSString *> *parameter;
 
 /* last message received matching dash item's topic */

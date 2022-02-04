@@ -12,6 +12,7 @@
 +(BOOL) isUserResource:(NSString *)uri;
 +(BOOL) isImportedResource:(NSString *)uri;
 +(BOOL) isInternalResource:(NSString *)uri;
++(BOOL) isHTMLResource:(NSString *)uri;
 
 +(NSString *)getURIPath:(NSString *)uri;
 
@@ -29,6 +30,7 @@
 +(NSString *)getResourceURIFromResourceName:(NSString *) resourceName userDataDir:(NSURL *)userDataDir;
 
 +(UIImage *)loadImageResource:(NSString *)uri userDataDir:(NSURL *)userDataDir;
++(NSString *)loadHTMLResource:(NSString *)uri userDataDir:(NSURL *)userDataDir;
 
 /* returns font size for given itemSize: 0 - default, 1 small, 2 medium, 3 large */
 +(CGFloat)getLabelFontSize:(int)itemSize;

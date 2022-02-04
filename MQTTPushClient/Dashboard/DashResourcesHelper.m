@@ -15,6 +15,12 @@
 @property NSMutableArray* trash;
 @end
 
+@interface Resource : NSObject
+-(instancetype)initWithName:(NSString *)name type:(NSString*)type;
+@property NSString *name;
+@property NSString *type;
+@end
+
 @implementation DashResourcesHelper
 
 - (instancetype)initWithAccountDir:(NSURL *)dir {
@@ -26,7 +32,8 @@
 	return self;
 }
 
--(void) syncImages:(Cmd *)command dash:(NSString *)currentDash {
+-(int) syncResources:(Cmd *)command dash:(NSString *)currentDash {
+	int rc = 0;
 	if (![Utils isEmpty:currentDash]) {
 		NSData *jsonData = [currentDash dataUsingEncoding:NSUTF8StringEncoding];
 		NSError *error;
@@ -37,7 +44,7 @@
 			NSArray *groups = [jsonDict objectForKey:@"groups"];
 			NSArray *resources = [jsonDict objectForKey:@"resources"];
 			
-			NSMutableSet *resourceNames = [NSMutableSet new];
+			NSMutableSet<Resource *> *resourceNames = [NSMutableSet new];
 			NSString *uri;
 			NSString *resourceName;
 			NSString *internalFilename;
@@ -56,7 +63,7 @@
 					fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
 					if (![DashUtils fileExists:fileURL]) {
 						// NSLog(@"internal filename not exists: %@", internalFilename);
-						[resourceNames addObject:resourceName];
+						[resourceNames addObject:[[Resource alloc] initWithName:resourceName type:DASH512_PNG]];
 					}
 				}
 			}
@@ -69,16 +76,16 @@
 				items = [group objectForKey:@"items"];
 				for(int j = 0; j < [items count]; j++) {
 					item = [items objectAtIndex:j];
-					NSString *uris[3] = {@"uri", @"uri_off", @"background_uri"};
-					for(int z = 0; z < 3; z++) {
+					NSString *uris[4] = {@"uri", @"uri_off", @"background_uri", @"htmlUri"};
+					for(int z = 0; z < 4; z++) {
 						uri = [item objectForKey:uris[z]];
 						if (uri) {
-							if ([DashUtils isUserResource:uri]) {
+							if ([DashUtils isUserResource:uri] || [DashUtils isHTMLResource:uri]) {
 								resourceName = [DashUtils getURIPath:uri];
-								internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
+								internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], ([DashUtils isUserResource:uri] ? DASH512_PNG : DASH_HTML)];
 								fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
 								if (![DashUtils fileExists:fileURL]) {
-									[resourceNames addObject:resourceName];
+									[resourceNames addObject:[[Resource alloc] initWithName:resourceName type:([DashUtils isUserResource:uri] ? DASH512_PNG : DASH_HTML)]];
 								}
 							}
 						}
@@ -95,7 +102,7 @@
 									internalFilename = [NSString stringWithFormat:@"%@.%@", [resourceName enquoteHelios], DASH512_PNG];
 									fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
 									if (![DashUtils fileExists:fileURL]) {
-										[resourceNames addObject:resourceName];
+										[resourceNames addObject:[[Resource alloc] initWithName:resourceName type:DASH512_PNG]];
 									}
 								}
 							}
@@ -105,22 +112,19 @@
 			}
 			
 			/* get all missing resources */
-			NSEnumerator *enumerator = [resourceNames objectEnumerator];
-			NSString *resName;
+			NSEnumerator<Resource *> *enumerator = [resourceNames objectEnumerator];
+			Resource *resName;
 			unsigned char *p;
 			uint64_t mdate;
 			int len;
 			
 			while ((resName = [enumerator nextObject])) {
 				NSLog(@"missing resource: %@", resName);
-				[command getResourceRequest:0 name:resName type:DASH512_PNG];
-				if (command.rawCmd.error || command.rawCmd.rc != RC_OK) {
-					if (command.rawCmd.error) {
-						NSLog(@"getResource request failed for resource %@. Error: %@", resName, command.rawCmd.error.localizedDescription);
-					} else {
-						NSLog(@"getResource request failed for resource %@. Error: Resource not found.", resName);
-					}
-					command.rawCmd.error = nil; // ignore file not found or other errors - missing resources are not critical
+				[command getResourceRequest:0 name:resName.name type:resName.type];
+				if (command.rawCmd.error) {
+					break;
+				} else if (command.rawCmd.rc != RC_OK) {
+					NSLog(@"getResource request failed for resource %@. Error: Resource not found.", resName);
 					continue;
 				} else {
 					p = (unsigned char *)command.rawCmd.data.bytes;
@@ -130,11 +134,16 @@
 					p += 4;
 					NSData* data = [NSData dataWithBytes:p length:len];
 					
-					internalFilename = [NSString stringWithFormat:@"%@.%@", [resName enquoteHelios], DASH512_PNG];
+					internalFilename = [NSString stringWithFormat:@"%@.%@", [resName.name enquoteHelios], resName.type];
 					fileURL = [DashUtils appendStringToURL:localDir str:internalFilename];
 					if (![data writeToURL:fileURL atomically:YES]) {
 						NSLog(@"Resource file %@ could not be written.", resName);
 					} else {
+						if ([resName.type isEqual:DASH512_PNG]) {
+							rc = rc | 1;
+						} else if ([resName.type isEqual:DASH_HTML]) {
+							rc = rc | 2;
+						}
 						NSDate *modDate = [NSDate dateWithTimeIntervalSince1970:mdate];
 						NSString *dateString = [NSDateFormatter localizedStringFromDate:modDate
 																			  dateStyle:NSDateFormatterShortStyle
@@ -150,6 +159,7 @@
 			}
 		}
 	}
+	return rc;
 }
 
 -(NSMutableArray<FileInfo *> *)getServerResourceList:(RawCmd *)rawCmd {
@@ -172,6 +182,65 @@
 		[serverResourceList addObject:fileInfo];
 	}
 	return serverResourceList;
+}
+
+-(void)saveHTMLResources:(Cmd*)command  json:(NSMutableDictionary *)jsonObj {
+	NSMutableArray *groups = [[jsonObj objectForKey:@"groups"] mutableCopy];
+	[jsonObj setObject:groups forKey:@"groups"];
+	
+	if (groups.count > 0) {
+		NSURL *userDir = [DashUtils getUserFilesDir:self.accountDir];
+		NSURL *fileURL;
+
+		NSMutableDictionary * group;
+		NSMutableArray *items;
+		NSMutableDictionary *item;
+		NSString *type, *html, *htmlUri, *resourceName, *newResourceName, *filename;
+		unichar f[8];
+		for(int i = 0; i < [groups count]; i++) {
+			group = [[groups objectAtIndex:i] mutableCopy];
+			[groups setObject:group atIndexedSubscript:i];
+			items = [[group objectForKey:@"items"] mutableCopy];
+			[group setObject:items forKey:@"items"];
+		
+			for(int j = 0; j < [items count]; j++) {
+				item = [[items objectAtIndex:j] mutableCopy];
+				[items setObject:item atIndexedSubscript:j];
+				type = [item helStringForKey:@"type"];
+				if ([@"custom" isEqual:type]) {
+					html = [item helStringForKey:@"html"];
+					htmlUri = [item helStringForKey:@"htmlUri"];
+					if (![Utils isEmpty:html]) {
+						/* html content must be saved to file */
+						do {
+							for(int k = 0; k < 8; k++) {
+								f[k] = 97 + arc4random_uniform(26);
+							}
+							resourceName = [NSString stringWithCharacters:f length:8];
+							filename = [NSString stringWithFormat:@"%@.%@",resourceName, DASH_HTML];
+							fileURL = [DashUtils appendStringToURL:userDir str:filename];
+						} while([DashUtils fileExists:fileURL]);
+						if ([html writeToURL:fileURL atomically:YES encoding:NSUTF8StringEncoding error:nil]) {
+							newResourceName = [self addResource:resourceName type:DASH_HTML fileURL:fileURL command:command];
+							if (![resourceName isEqual:newResourceName]) {
+								filename = [NSString stringWithFormat:@"%@.%@",newResourceName, DASH_HTML];
+								NSURL *newFileURL = [DashUtils appendStringToURL:userDir str:filename];
+								[[NSFileManager defaultManager] moveItemAtPath:fileURL.path toPath:newFileURL.path error:nil];
+							}
+							html = @"";
+							htmlUri = [NSString stringWithFormat:@"res://html/%@", newResourceName];
+							[item setObject:html forKey:@"html"];
+							[item setObject:htmlUri forKey:@"htmlUri"];
+						} else {
+							@throw [NSException exceptionWithName:@"IOException" reason:@"Save failed." userInfo:nil];
+						}
+					} else if ([DashUtils isHTMLResource:htmlUri]) {
+						;
+					}
+				}
+			}
+		}
+	}
 }
 
 -(void)saveImportedResources:(Cmd*)command serverResourceList:(NSMutableArray<FileInfo *> *)serverResourceList json:(NSMutableDictionary *)jsonObj {
@@ -338,24 +407,30 @@
 	}
 }
 
--(NSArray<NSString *> *)findUnusedResources:(NSMutableArray<FileInfo *> *)serverResourceList json:(NSMutableDictionary *)jsonObj {
+-(NSArray<NSString *> *)findUnusedResources:(NSMutableArray<FileInfo *> *)serverResourceList type:(NSString *)type json:(NSMutableDictionary *)jsonObj {
 	
 	NSMutableSet<NSString *> *unusedResources = [NSMutableSet new];
 	for(FileInfo *fi in serverResourceList) {
 		[unusedResources addObject:fi.name];
 	}
 	
-	NSMutableSet<NSString *> *usedResources = [DashResourcesHelper getUsedResources:jsonObj];
+	NSMutableSet<NSString *> *usedResources =  [NSMutableSet new];
+	NSSet<Resource *> *res = [DashResourcesHelper getUsedResources:jsonObj];
+	for(Resource *r in res) {
+		if ([type isEqual:r.type]) {
+			[usedResources addObject:r.name];
+		}
+	}
 	[unusedResources minusSet:usedResources];
 	
 	NSMutableArray* unusedResArr = [NSMutableArray new];
-	for(NSString *uri in unusedResources) {
-		[unusedResArr addObject:uri];
+	for(NSString *r in unusedResources) {
+		[unusedResArr addObject:r];
 	}
 	return unusedResArr;
 }
 
-+(void)deleteLocalImageResources:(AccountList *)accountList {
++(void)deleteLocalResources:(AccountList *)accountList {
 	NSURL *accountDir;
 	for(int i = 0; i < accountList.count; i++) {
 		accountDir = [accountList objectAtIndexedSubscript:i].cacheURL;
@@ -374,23 +449,24 @@
 						NSData *jsonData = [dashboardJS dataUsingEncoding:NSUTF8StringEncoding];
 						NSDictionary *jsonObj = [NSJSONSerialization JSONObjectWithData:jsonData options:0 error:nil];
 						if (jsonObj) {
-							NSMutableSet<NSString *> *usedResources = [DashResourcesHelper getUsedResources:jsonObj];
+							NSMutableSet<Resource *> *usedResources = [DashResourcesHelper getUsedResources:jsonObj];
 							
 							NSURL *userDir = [DashUtils getUserFilesDir:accountDir];
 							NSFileManager *fm = [NSFileManager defaultManager];
 							NSArray<NSURL *> * urls = [fm contentsOfDirectoryAtURL:userDir includingPropertiesForKeys:nil options:0 error:nil];
 							NSString *filename, *resourceName;
-							NSString *fileExt = [NSString stringWithFormat:@".%@",DASH512_PNG];
+							NSString *fileExtImg = [NSString stringWithFormat:@".%@",DASH512_PNG];
+							NSString *fileExtHtml = [NSString stringWithFormat:@".%@",DASH_HTML];
+							Resource *resource;
 							for(NSURL *u in urls) {
 								filename = u.lastPathComponent;
-								if ([filename hasSuffix:fileExt]) {
-									resourceName = [[filename substringToIndex:filename.length - fileExt.length] dequoteHelios];
-									if (![usedResources containsObject:resourceName]) {
+								if ([filename hasSuffix:fileExtImg] || [filename hasSuffix:fileExtHtml]) {
+									resourceName = [[filename substringToIndex:filename.length - ([filename hasSuffix:fileExtImg] ? fileExtImg.length : fileExtHtml.length)] dequoteHelios];
+									resource = [[Resource alloc] initWithName:resourceName type:([filename hasSuffix:fileExtImg] ? DASH512_PNG : DASH_HTML)];
+									
+									if (![usedResources containsObject:resource]) {
 										/* resource is not referenced so delete */
-										if ([[accountList objectAtIndexedSubscript:i].mqttUser hasPrefix:@"alu"]) {
-											[fm removeItemAtURL:u error:nil];
-											// NSLog(@"%@", u.lastPathComponent);
-										}
+										[fm removeItemAtURL:u error:nil];
 									}
 								}
 							}
@@ -403,8 +479,8 @@
 }
 
 /* returns all used resource names (referenced, locked) of given dashboard */
-+(NSMutableSet<NSString *> *)getUsedResources:(NSDictionary *)jsonObj {
-	NSMutableSet<NSString *> *usedResources = [NSMutableSet new];
++(NSMutableSet<Resource *> *)getUsedResources:(NSDictionary *)jsonObj {
+	NSMutableSet<Resource *> *usedResources = [NSMutableSet new];
 	
 	NSArray *groups = jsonObj[@"groups"];
 	NSDictionary *item;
@@ -420,27 +496,34 @@
 			uri = item[@"uri"];
 			if ([DashUtils isUserResource:uri]) {
 				resourceName = [DashUtils getURIPath:uri];
-				[usedResources addObject:resourceName];
+				[usedResources addObject:[[Resource alloc] initWithName:resourceName type:DASH512_PNG]];
+				;
 			}
 			
 			uri = item[@"uri_off"];
 			if ([DashUtils isUserResource:uri]) {
 				resourceName = [DashUtils getURIPath:uri];
-				[usedResources addObject:resourceName];
+				[usedResources addObject:[[Resource alloc] initWithName:resourceName type:DASH512_PNG]];
 			}
 			
 			uri = item[@"background_uri"];
 			if ([DashUtils isUserResource:uri]) {
 				resourceName = [DashUtils getURIPath:uri];
-				[usedResources addObject:resourceName];
+				[usedResources addObject:[[Resource alloc] initWithName:resourceName type:DASH512_PNG]];
 			}
-			
+
+			uri = item[@"htmlUri"];
+			if ([DashUtils isHTMLResource:uri]) {
+				resourceName = [DashUtils getURIPath:uri];
+				[usedResources addObject:[[Resource alloc] initWithName:resourceName type:DASH_HTML]];
+			}
+
 			optionList = item[@"optionlist"];
 			for(NSDictionary *optionItem in optionList) {
 				uri = optionItem[@"uri"];
 				if ([DashUtils isUserResource:uri]) {
 					resourceName = [DashUtils getURIPath:uri];
-					[usedResources addObject:resourceName];
+					[usedResources addObject:[[Resource alloc] initWithName:resourceName type:DASH512_PNG]];
 				}
 			}
 		}
@@ -449,7 +532,7 @@
 	for(NSString * uri in resources) {
 		if ([DashUtils isUserResource:uri]) {
 			resourceName = [DashUtils getURIPath:uri];
-			[usedResources addObject:resourceName];
+			[usedResources addObject:[[Resource alloc] initWithName:resourceName type:DASH512_PNG]];
 		}
 	}
 	return usedResources;
@@ -458,4 +541,37 @@
 @end
 
 @implementation FileInfo
+@end
+
+@implementation Resource
+
+-(instancetype)initWithName:(NSString *)name type:(NSString*)type {
+	if (self = [super init]) {
+		self.name = name;
+		self.type = type;
+	}
+	return self;
+}
+
+- (BOOL)isEqual:(id)other
+{
+	if (other == self) {
+		return YES;
+	} else if (other == nil || ![other isKindOfClass:[Resource class]]) {
+		return NO;
+	} else {
+		Resource *o = (Resource *) other;
+		return [self.name isEqual:o.name] && [self.type isEqual:o.type];
+	}
+}
+
+- (NSUInteger)hash
+{
+	NSUInteger p = 31;
+	NSUInteger result = 1;
+	result = result * p + [self.name hash];
+	result = result * p + [self.type hash];
+	return result;
+}
+
 @end

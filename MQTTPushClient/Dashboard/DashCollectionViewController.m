@@ -273,11 +273,18 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 			if (historicalData.count > 0) {
 				[self.dashboard addHistoricalData:historicalData];
 			}
-			
+
+			/* if resources have been updated, */
+			BOOL resourceImageUpdates = [[notif.userInfo helNumberForKey:@"resource_img_update"] boolValue];
+			BOOL resourceHtmlUpdates = [[notif.userInfo helNumberForKey:@"resource_html_update"] boolValue];
+
 			if (dashboardUpdate) {
 				/* dashboard update? deliver all messages (cached and new messages) */
 				[self deliverMessages:[NSDate dateWithTimeIntervalSince1970:0L] seqNo:0 notify:NO];
 				[self.collectionView reloadData];
+			} else if (resourceHtmlUpdates || resourceImageUpdates) {
+				/* received missing resources requires to update UI (including reloading html in custom views) */
+				[self onReloadMenuItemClicked];
 			} else if ([dashMessages count] > 0) {
 				/* deliver new messages */
 				[self deliverMessages:msgsSinceDate seqNo:msgsSinceSeqNo notify:YES];
@@ -825,6 +832,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		for(int j = 0; j < items.count; j++) {
 			if ([items[j] isKindOfClass:[DashCustomItem class]]) {
 				((DashCustomItem *) items[j]).reloadRequested = YES;
+				((DashCustomItem *) items[j]).error1 = @"";
 				p = [NSIndexPath indexPathForRow:j inSection:i];
 				/* only add if no cached message exist to prevent multiple notificateions */
 				// [list addObject:p];
