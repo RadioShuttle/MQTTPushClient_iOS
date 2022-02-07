@@ -210,6 +210,7 @@
 				[self setStatusMessage:@"Could not load HTML resource file." clearAfterDelay:NO];
 			} else {
 				customItem.html = html;
+				((DashCustomItem *) self.orgItem).html = html;
 			}
 		}
 		self.htmlTextView.text = customItem.html;
