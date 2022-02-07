@@ -565,7 +565,7 @@
 	[examples addObject:@"gauge"];
 	[examples addObject:@"clock"];
 	[examples addObject:@"light_switch_with_color_chooser"];
-	[examples addObject:@"termometer"];
+	[examples addObject:@"thermometer"];
 	[examples addObject:@"line_graph"];
 
 	for(int i = 0; i < titles.count; i++) {
