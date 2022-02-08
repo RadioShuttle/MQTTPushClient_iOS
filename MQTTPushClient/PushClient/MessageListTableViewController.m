@@ -108,14 +108,11 @@
 	self.topicSearchController = [[UISearchController alloc] initWithSearchResultsController:nil];
 	self.topicSearchController.obscuresBackgroundDuringPresentation = NO;
 	self.topicSearchController.searchBar.placeholder = @"Search Topics";
+	self.topicSearchController.searchBar.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
 	self.topicSearchController.searchResultsUpdater = self;
 	self.definesPresentationContext = YES;
-	if (@available(iOS 11, *)) {
-		self.navigationItem.searchController = self.topicSearchController;
-	} else {
-		self.tableView.tableHeaderView = self.topicSearchController.searchBar;
-	}
-	
+	self.navigationItem.searchController = self.topicSearchController;
+
 	self.moreButton.target = self;
 	self.moreButton.action = @selector(onMoreButtonClicked);
 	
