@@ -26,6 +26,7 @@
 
 @class OptionListHandler;
 @class CustomItemHandler;
+@class EditOptionListResult;
 @interface DashEditItemViewController ()
 @property NSMutableArray<NSString *> *inputTypeDisplayValues;
 @property OptionListHandler *optionListHandler;
@@ -42,6 +43,9 @@
 @property DashOptionListItem *argOptionListItem;
 @property int argOptionListPos;
 @property int argOptionListItemCnt;
+
+/* set after return of option list item editor */
+@property EditOptionListResult *editOptionListResult;
 @end
 
 @interface OptionListHandler : NSObject <UITableViewDataSource, UITableViewDelegate>
@@ -52,6 +56,13 @@
 @interface CustomItemHandler : NSObject <UITextViewDelegate>
 @property (weak) DashEditItemViewController *vc;
 - (void)keyboardNotification:(NSNotification*)notification;
+@end
+
+@interface EditOptionListResult : NSObject
+@property Mode mode;
+@property DashOptionListItem *item;
+@property int oldPos;
+@property int newPos;
 @end
 
 @implementation DashEditItemViewController
@@ -651,6 +662,28 @@
 }
 
 - (void)onOptionListItemUpdated:(Mode)mode item:(DashOptionListItem *)item oldPos:(int)oldPos newPos:(int)newPos {
+	if (!self.tableView.window) {
+		/* window must be attached to view, so update option list table a bit later in viewDidAppear */
+		self.editOptionListResult = [EditOptionListResult new];
+		self.editOptionListResult.mode = mode;
+		self.editOptionListResult.item = item;
+		self.editOptionListResult.oldPos = oldPos;
+		self.editOptionListResult.newPos = newPos;
+	} else {
+		[self updateOptionListItemUpdated:mode item:item oldPos:oldPos newPos:newPos];
+	}
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+	[super viewDidAppear:animated];
+	if (self.editOptionListResult) {
+		[self updateOptionListItemUpdated:self.editOptionListResult.mode item:self.editOptionListResult.item oldPos:self.editOptionListResult.oldPos newPos:self.editOptionListResult.newPos];
+		self.editOptionListResult = nil;
+	}
+}
+
+-(void)updateOptionListItemUpdated:(Mode)mode item:(DashOptionListItem *)item oldPos:(int)oldPos newPos:(int)newPos {
+
 	DashOptionItem *optItem = (DashOptionItem *) self.item;
 	if (![self.optionListHandler.item.optionList isKindOfClass:[NSMutableArray class]]) {
 		self.optionListHandler.item = [self.optionListHandler.item.optionList mutableCopy];
@@ -1224,3 +1257,6 @@
 
 @end
 
+@implementation EditOptionListResult
+
+@end
