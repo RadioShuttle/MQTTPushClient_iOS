@@ -84,7 +84,10 @@
 	[self addSubview:self.itemImageView];
 
 	self.itemImageWidthCstr = [self.itemImageView.widthAnchor constraintEqualToConstant:152];
+	self.itemImageWidthCstr.priority = 999;
 	self.itemImageHeightCstr = [self.itemImageView.heightAnchor constraintEqualToConstant:152];
+	self.itemImageHeightCstr.priority = 999;
+
 	[self.itemImageView.leadingAnchor constraintEqualToAnchor:self.checkedImageView.trailingAnchor constant:8].active = YES;
 	[self.itemImageView.topAnchor constraintEqualToAnchor:self.topAnchor constant:4].active = YES;
 	[self.itemImageView.bottomAnchor constraintEqualToAnchor:self.bottomAnchor constant:-4].active = YES;
