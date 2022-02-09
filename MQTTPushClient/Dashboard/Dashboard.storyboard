@@ -210,12 +210,12 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="rVz-EA-FuP">
                                         <rect key="frame" x="0.0" y="116" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rVz-EA-FuP" id="mCw-1S-JH2">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="rVz-EA-FuP" id="mCw-1S-JH2">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Color:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pRr-bM-VAV">
-                                                    <rect key="frame" x="20" y="13.5" width="96" height="21"/>
+                                                    <rect key="frame" x="20" y="11.5" width="96" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="wMr-jP-Olc"/>
                                                     </constraints>
@@ -224,9 +224,9 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sug-Ix-uhM" customClass="DashCircleViewButton">
-                                                    <rect key="frame" x="120" y="6" width="36" height="36"/>
+                                                    <rect key="frame" x="120" y="6" width="36" height="32"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="36" id="9yW-bz-kIJ" userLabel="height"/>
+                                                        <constraint firstAttribute="height" priority="999" constant="36" id="9yW-bz-kIJ" userLabel="height"/>
                                                         <constraint firstAttribute="width" constant="36" id="HmB-D1-fMZ" userLabel="width"/>
                                                     </constraints>
                                                     <state key="normal" title="Set"/>
@@ -476,12 +476,12 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="luc-cO-N7W">
                                         <rect key="frame" x="0.0" y="160" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="luc-cO-N7W" id="wHs-RG-poh">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="luc-cO-N7W" id="wHs-RG-poh">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Color:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bSy-mE-FiD">
-                                                    <rect key="frame" x="20" y="13.5" width="96" height="21"/>
+                                                    <rect key="frame" x="20" y="11.5" width="96" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="LHg-df-W84"/>
                                                     </constraints>
@@ -490,10 +490,10 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cff-jt-Ufv" customClass="DashCircleViewButton">
-                                                    <rect key="frame" x="120" y="6" width="36" height="36"/>
+                                                    <rect key="frame" x="120" y="6" width="36" height="32"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="36" id="4Rp-sC-VsS" userLabel="width"/>
-                                                        <constraint firstAttribute="height" constant="36" id="XnD-9j-tef" userLabel="height"/>
+                                                        <constraint firstAttribute="width" priority="999" constant="36" id="4Rp-sC-VsS" userLabel="width"/>
+                                                        <constraint firstAttribute="height" priority="999" constant="36" id="XnD-9j-tef" userLabel="height"/>
                                                     </constraints>
                                                     <state key="normal" title="Set"/>
                                                 </button>
@@ -1014,12 +1014,12 @@
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Jtl-Hv-L1c">
                                         <rect key="frame" x="0.0" y="160" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Jtl-Hv-L1c" id="5M3-8s-blE">
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Jtl-Hv-L1c" id="5M3-8s-blE">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" text="Text Color:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0PT-ce-6mo">
-                                                    <rect key="frame" x="20" y="13.5" width="96" height="21"/>
+                                                    <rect key="frame" x="20" y="11.5" width="96" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="96" id="QqH-5C-ws9"/>
                                                     </constraints>
@@ -1028,9 +1028,9 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ccZ-QE-4EB" customClass="DashCircleViewButton">
-                                                    <rect key="frame" x="120" y="6" width="36" height="36"/>
+                                                    <rect key="frame" x="120" y="6" width="36" height="32"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="height" constant="36" id="Ai1-lx-Xv7" userLabel="height"/>
+                                                        <constraint firstAttribute="height" priority="999" constant="36" id="Ai1-lx-Xv7" userLabel="height"/>
                                                         <constraint firstAttribute="width" constant="36" id="O3w-uo-axg" userLabel="width"/>
                                                     </constraints>
                                                     <state key="normal" title="Set"/>
@@ -1168,7 +1168,7 @@
                             </tableViewSection>
                             <tableViewSection headerTitle="Option List" id="jjA-bB-TUA">
                                 <cells>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="aY7-g3-Tdr">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="44" id="aY7-g3-Tdr">
                                         <rect key="frame" x="0.0" y="448" width="414" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="aY7-g3-Tdr" id="kfc-bp-CsM">
@@ -1220,7 +1220,7 @@
                                                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1k-c0-apd">
                                                                         <rect key="frame" x="48" y="0.0" width="318" height="44"/>
                                                                         <constraints>
-                                                                            <constraint firstAttribute="height" constant="43.5" id="F1x-lP-y03"/>
+                                                                            <constraint firstAttribute="height" priority="999" constant="43.5" id="F1x-lP-y03"/>
                                                                         </constraints>
                                                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                         <nil key="textColor"/>
