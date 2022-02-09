@@ -108,7 +108,7 @@
 
 		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 	} else {
 		[self performSegueWithIdentifier:@"IDExitEditOption" sender:self];
 	}
@@ -139,7 +139,7 @@
 		[alert setModalPresentationStyle:UIModalPresentationPopover];
 		alert.popoverPresentationController.sourceView = self.posDropDownButton;
 		alert.popoverPresentationController.sourceRect = self.posDropDownButton.bounds;
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
 

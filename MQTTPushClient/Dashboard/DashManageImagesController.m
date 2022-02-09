@@ -281,7 +281,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 		}]];
 		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 	} else {
 		[self performSegueWithIdentifier:@"IDExitManageImages" sender:nil];
 	}
@@ -354,7 +354,7 @@ static NSString * const reuseIdentifierImage = @"imageCell";
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
-	[self presentViewController:alert animated:TRUE completion:nil];
+	[self presentViewController:alert animated:YES completion:nil];
 
 }
 

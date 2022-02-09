@@ -324,7 +324,7 @@
 		}]];
 		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 
 	} else {
 		[self.navigationController popViewControllerAnimated:YES];
@@ -558,7 +558,7 @@
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
-	[self presentViewController:alert animated:TRUE completion:nil];
+	[self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)onInsertExampleClicked {
@@ -591,7 +591,7 @@
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
-	[self presentViewController:alert animated:TRUE completion:nil];
+	[self presentViewController:alert animated:YES completion:nil];
 
 }
 
@@ -620,7 +620,7 @@
 		}]];
 		[alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
 		}]];
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
 
@@ -1015,7 +1015,7 @@
 		[alert setModalPresentationStyle:UIModalPresentationPopover];
 		alert.popoverPresentationController.sourceView = self.posDropDownButton;
 		alert.popoverPresentationController.sourceRect = self.posDropDownButton.bounds;
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
 
@@ -1045,7 +1045,7 @@
 		[alert setModalPresentationStyle:UIModalPresentationPopover];
 		alert.popoverPresentationController.sourceView = self.groupDropDownButon;
 		alert.popoverPresentationController.sourceRect = self.groupDropDownButon.bounds;
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 	}
 }
 

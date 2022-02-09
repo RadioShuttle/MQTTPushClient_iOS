@@ -141,7 +141,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 		[alert addAction:[UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {;
 		}]];
 		// [alert addAction:[UIAlertAction actionWithTitle:@"Cancel" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {}]];
-		[self presentViewController:alert animated:TRUE completion:nil];
+		[self presentViewController:alert animated:YES completion:nil];
 	}
 	
 	return updateRequired;
@@ -677,7 +677,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
-	[self presentViewController:alert animated:TRUE completion:nil];
+	[self presentViewController:alert animated:YES completion:nil];
 }
 
 -(void)onManageImagesClicked {
@@ -789,7 +789,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.lastObject;
-	[self presentViewController:alert animated:TRUE completion:nil];
+	[self presentViewController:alert animated:YES completion:nil];
 }
 -(void)showDashItemEditor:(Mode) mode item:(DashItem *) item {
 	if ([self checkIfUpdateRequired]) {
@@ -887,7 +887,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
 	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
-	[self presentViewController:alert animated:TRUE completion:nil];
+	[self presentViewController:alert animated:YES completion:nil];
 
 }
 -(void)performDeletion:(BOOL)allItems {
