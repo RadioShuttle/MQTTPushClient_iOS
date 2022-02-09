@@ -886,7 +886,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	
 	[alert setModalPresentationStyle:UIModalPresentationPopover];
 	
-	alert.popoverPresentationController.barButtonItem = self.navigationItem.rightBarButtonItems.firstObject;
+	alert.popoverPresentationController.barButtonItem = self.toolbarItems.firstObject;
 	[self presentViewController:alert animated:YES completion:nil];
 
 }
