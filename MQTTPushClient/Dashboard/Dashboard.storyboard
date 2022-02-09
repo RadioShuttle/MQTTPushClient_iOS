@@ -416,7 +416,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J1h-mC-zMt">
-                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
+                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -954,7 +954,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="889-dK-gPQ">
-                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
+                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -1180,7 +1180,7 @@
                                                     <state key="normal" title="Edit"/>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8H3-82-1VE">
-                                                    <rect key="frame" x="284" y="-2" width="48" height="48"/>
+                                                    <rect key="frame" x="308" y="10" width="24" height="24"/>
                                                     <state key="normal" image="Add"/>
                                                 </button>
                                             </subviews>
@@ -1456,6 +1456,7 @@
                         <outlet property="backgroundImageErrorLabel" destination="Oaf-K4-ZXP" id="jPH-cL-BXL"/>
                         <outlet property="filterSciptButton" destination="enG-0i-Cbg" id="mZK-r9-es3"/>
                         <outlet property="filterSciptModifiedLabel" destination="4PF-hE-M7f" id="Rs6-qA-PTr"/>
+                        <outlet property="groupDropDownButon" destination="889-dK-gPQ" id="wJq-4B-I0p"/>
                         <outlet property="groupLabel" destination="a0A-I3-SNU" id="3JP-ih-MQU"/>
                         <outlet property="labelTextField" destination="tvn-Ry-SCY" id="W6y-PK-YdW"/>
                         <outlet property="optionListAddButton" destination="8H3-82-1VE" id="tv4-GK-UbT"/>
@@ -1909,7 +1910,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w8r-6E-aG6">
-                                                    <rect key="frame" x="119.5" y="-2" width="48" height="48"/>
+                                                    <rect key="frame" x="119.5" y="10" width="24" height="24"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -2322,7 +2323,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ulv-uv-97K">
-                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
+                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
@@ -2975,7 +2976,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="h2l-lL-8QA">
-                                                    <rect key="frame" x="155.5" y="-2" width="48" height="48"/>
+                                                    <rect key="frame" x="155.5" y="10" width="24" height="24"/>
                                                     <state key="normal" image="DropDown"/>
                                                 </button>
                                             </subviews>
