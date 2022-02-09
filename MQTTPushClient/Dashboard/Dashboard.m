@@ -348,6 +348,9 @@
 +(NSDictionary *) loadDashboardSettings:(Account *) account {
 	NSURL *fileURL = [DashUtils appendStringToURL:account.cacheURL str:@"dashboard_settings.plist"];
 	NSDictionary *settings = [NSDictionary dictionaryWithContentsOfURL:fileURL];
+	if (!settings) {
+		settings = [NSDictionary new];
+	}
 	return settings;
 }
 
