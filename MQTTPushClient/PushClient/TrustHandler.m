@@ -169,6 +169,15 @@ static NSString *kPrefkeyExpires = @"ExpireDate";
 	if (trustedAnchors != NULL) {
 		SecTrustSetAnchorCertificates(trust, trustedAnchors);
 		SecTrustSetAnchorCertificatesOnly(trust, false);
+		
+		/* ssl with host verification: */
+		// SecPolicyRef policy = SecPolicyCreateSSL(true, (__bridge CFStringRef)host);
+
+		/* use BasicX509 policy which does not have any restrictions regading period of validity. */
+		SecPolicyRef policy = SecPolicyCreateBasicX509();
+		SecTrustSetPolicies(trust, policy);
+		// CFShow(policy);
+		CFRelease(policy);
 	}
 
 	SecCertificateRef cert = SecTrustGetCertificateCount(trust) ? SecTrustGetCertificateAtIndex(trust, 0) : NULL;
