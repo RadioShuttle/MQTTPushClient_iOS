@@ -108,7 +108,14 @@
 	self.topicSearchController = [[UISearchController alloc] initWithSearchResultsController:nil];
 	self.topicSearchController.obscuresBackgroundDuringPresentation = NO;
 	self.topicSearchController.searchBar.placeholder = @"Search Topics";
-	self.topicSearchController.searchBar.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	if (@available(iOS 13.0, *)) {
+		self.topicSearchController.searchBar.searchTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+	} else {
+		@try {
+			UITextField * sf = [self.topicSearchController.searchBar valueForKey:@"searchField"];
+			sf.autocapitalizationType = UITextAutocapitalizationTypeNone;
+		} @catch(NSException *exception) {} // catch invalid key exception
+	}
 	self.topicSearchController.searchResultsUpdater = self;
 	self.definesPresentationContext = YES;
 	self.navigationItem.searchController = self.topicSearchController;
