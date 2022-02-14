@@ -122,6 +122,8 @@
 	[checkmarkView addSubview:imageView];
 	[imageView.heightAnchor constraintEqualToConstant:24].active = YES;
 	[imageView.widthAnchor constraintEqualToConstant:24].active = YES;
+	[imageView.centerYAnchor constraintEqualToAnchor:checkmarkView.centerYAnchor constant:0].active = YES;
+	[imageView.leadingAnchor constraintEqualToAnchor:checkmarkView.leadingAnchor constant:0].active = YES;
 	return checkmarkView;
 }
 
