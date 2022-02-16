@@ -222,9 +222,9 @@
 
 - (void)showScriptHelp {
 	[self dismissViewControllerAnimated:YES completion:^{
-		NSString *urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/filter-scripts.html";
+		NSString *urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/filter-scripts.html?client=iOS";
 		if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
-			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/filter-scripts.html";
+			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/filter-scripts.html?client=iOS";
 		}
 		NSURL *url = [NSURL URLWithString:urlString];
 		SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];

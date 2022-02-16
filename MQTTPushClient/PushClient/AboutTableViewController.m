@@ -26,7 +26,7 @@
 }
 
 - (IBAction)helpAction:(UIButton *)sender {
-	NSURL *url = [NSURL URLWithString:@"https://help.radioshuttle.de/mqttapp/1.0/"];
+	NSURL *url = [NSURL URLWithString:@"https://help.radioshuttle.de/mqttapp/1.0/?client=iOS"];
 	SFSafariViewController *safariViewController = [[SFSafariViewController alloc] initWithURL:url];
 	if (@available(iOS 13.0, *)) {
 		safariViewController.preferredBarTintColor = [UIColor systemBackgroundColor];

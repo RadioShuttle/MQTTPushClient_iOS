@@ -299,14 +299,14 @@
 - (void)showScriptHelp {
 	NSString *urlString;
 	if (self.filterScriptMode) {
-		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/dashboard_scripts.html#filter_script";
+		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/dashboard_scripts.html#filter_script?client=iOS";
 		if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
-			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/dashboard_scripts.html#filter_script";
+			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/dashboard_scripts.html#filter_script?client=iOS";
 		}
 	} else {
-		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/dashboard_scripts.html#output_script";
+		urlString = @"https://help.radioshuttle.de/mqttapp/1.0/en/dashboard_scripts.html#output_script?client=iOS";
 		if ([[[NSLocale preferredLanguages] firstObject] hasPrefix:@"de"]) {
-			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/dashboard_scripts.html#output_script";
+			urlString = @"https://help.radioshuttle.de/mqttapp/1.0/de/dashboard_scripts.html#output_script?client=iOS";
 		}
 	}
 	NSURL *url = [NSURL URLWithString:urlString];
