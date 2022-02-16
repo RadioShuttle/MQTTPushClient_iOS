@@ -73,14 +73,14 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="IDAddServerCell" id="vVE-SJ-HLX">
-                                <rect key="frame" x="0.0" y="89" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="89" width="375" height="43.5"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vVE-SJ-HLX" id="T8V-Jd-bcC">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add new server" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ieh-10-yXS">
-                                            <rect key="frame" x="16" y="11" width="343" height="21.5"/>
+                                            <rect key="frame" x="16" y="11" width="343" height="21"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -752,12 +752,12 @@
                     </tableView>
                     <toolbarItems>
                         <barButtonItem style="plain" id="Qdu-Ql-xed">
-                            <view key="customView" contentMode="scaleToFill" misplaced="YES" id="2rd-HO-GUn">
+                            <view key="customView" contentMode="scaleToFill" id="2rd-HO-GUn">
                                 <rect key="frame" x="16" y="11" width="343" height="32"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5WO-nn-elx">
-                                        <rect key="frame" x="0.0" y="0.0" width="333" height="32"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="343" height="32"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
@@ -1174,7 +1174,7 @@
                                                         <constraint firstAttribute="width" constant="80" id="6Wd-gF-8IH"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits" keyboardType="numbersAndPunctuation"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no" keyboardType="numbersAndPunctuation"/>
                                                     <connections>
                                                         <action selector="validateFields:" destination="pqg-gq-pYt" eventType="editingChanged" id="Mj9-1o-31k"/>
                                                         <outlet property="delegate" destination="pqg-gq-pYt" id="hZc-MJ-XXx"/>
@@ -1222,7 +1222,7 @@
                                                 <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" adjustsFontForContentSizeCategory="YES" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="NvM-nQ-c2G">
                                                     <rect key="frame" x="74" y="6" width="285" height="34"/>
                                                     <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
-                                                    <textInputTraits key="textInputTraits"/>
+                                                    <textInputTraits key="textInputTraits" autocorrectionType="no"/>
                                                     <connections>
                                                         <action selector="validateFields:" destination="pqg-gq-pYt" eventType="editingChanged" id="N6D-qX-hV2"/>
                                                         <outlet property="delegate" destination="pqg-gq-pYt" id="esJ-uR-6qL"/>
