@@ -56,6 +56,8 @@
 	self.labelTextField.text = self.item.displayValue;
 	if (![Utils isEmpty:self.item.imageURI]) {
 		[self onImageSelected:self.item.imageURI];
+	} else {
+		self.imageErrLabel.hidden = YES;
 	}
 	self.posLabel.text = [@(self.pos + 1) stringValue];
 	self.selPosIdx = self.pos;
@@ -146,8 +148,10 @@
 -(void)onImageSelected:(NSString *)imageURI {
 	self.editItem.imageURI = imageURI;
 	UIImage *image = nil;
+	BOOL showImageErr = NO;
 	if (imageURI) {
 		image = [DashUtils loadImageResource:imageURI userDataDir:self.parentController.parentCtrl.dashboard.account.cacheURL];
+		showImageErr = !image;
 	}
 	if (image) {
 		[self.imageButton setTitle:nil forState:UIControlStateNormal];
@@ -160,6 +164,7 @@
 		self.imageButton.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
 		[self.imageButton setTitle:@"None" forState:UIControlStateNormal];
 	}
+	self.imageErrLabel.hidden = !showImageErr;
 }
 
 - (IBAction) unwindImageChooserOptionItem:(UIStoryboardSegue*)unwindSegue {
