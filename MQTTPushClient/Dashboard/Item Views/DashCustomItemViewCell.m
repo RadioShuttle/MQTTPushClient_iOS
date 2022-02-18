@@ -6,6 +6,7 @@
 
 #import "DashCustomItemViewCell.h"
 #import "Utils.h"
+#import "DashConsts.h"
 
 @implementation DashCustomItemViewCell
 
@@ -86,6 +87,7 @@
 	[self.contentView addSubview:cv];
 	
 	UILabel *label = [[UILabel alloc] init];
+	[label setFont:[UIFont systemFontOfSize:DASH_LABEL_FONT_SIZE]];
 	label.translatesAutoresizingMaskIntoConstraints = NO;
 	[self.contentView addSubview:label];
 	

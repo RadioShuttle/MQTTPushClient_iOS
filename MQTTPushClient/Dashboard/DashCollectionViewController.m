@@ -56,7 +56,7 @@ static NSString * const reuseIGroupItem = @"groupItemCell";
 	self.preferences = [Dashboard loadDashboardSettings:self.account];
 	
 	/* calc label height and pass it to layout object. IMPORTANT: specify correct font and size (see storyboard) */
-	NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:@"Dummy" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:17.0]}];
+	NSAttributedString* labelString = [[NSAttributedString alloc] initWithString:@"Dummy" attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:DASH_LABEL_FONT_SIZE]}];
 	CGRect cellRect = [labelString boundingRectWithSize:CGSizeMake(100.0f, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin context:nil];
 	
 	// sets height to DASH_ZOOM_X + cellRect.size.height
