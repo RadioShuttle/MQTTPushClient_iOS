@@ -13,6 +13,7 @@
 #import "DashConsts.h"
 #import "DashUtils.h"
 #import "Utils.h"
+#import "MqttUtils.h"
 #import "DashEditItemViewController.h"
 #import "DashEditorOptionTableViewCell.h"
 #import "DashEditOptionViewController.h"
@@ -345,6 +346,37 @@
 	if (!modified && self.mode == Edit) {
 		[self setStatusMessage:@"Data was not modified." clearAfterDelay:YES];
 	} else {
+
+		/* validate topics */
+		NSString *topicChecked;
+		int step = 0;
+		BOOL wildCardAllowed = !editedItem.history;
+		/* check topic format */
+		@try {
+			topicChecked = @"Topic (sub): ";
+			if (editedItem.topic_s.length > 0) {
+				[MqttUtils topicValidate:editedItem.topic_s wildcardAllowed:wildCardAllowed];
+			}
+			step++;
+			topicChecked = @"Topic (pub): ";
+			if (editedItem.topic_p.length > 0) {
+				[MqttUtils topicValidate:editedItem.topic_p wildcardAllowed:NO];
+			}
+		} @catch(NSException *ex) {
+			NSMutableString *errTopic = [NSMutableString stringWithString:topicChecked];
+			if (ex.reason) {
+				if ([ex.reason hasPrefix:@"Wildcards are not allowed"] && step == 0 && !wildCardAllowed) {
+					[errTopic appendString:@"Wildcards are not allowed, if historical data are to be provided."];
+				} else {
+					[errTopic appendString:ex.reason];
+				}
+			} else {
+				[errTopic appendString:@"Invalid format."];
+			}
+			[self setStatusMessage:errTopic clearAfterDelay:NO];
+			return;
+		}
+		
 		/* prepare data for saving: clone dashboard */
 		NSMutableArray<DashGroupItem *> *groups = [self.parentCtrl.dashboard.groups mutableCopy];
 		NSMutableDictionary<NSNumber *, NSArray<DashItem *> *> *groupItems = [self.parentCtrl.dashboard.groupItems mutableCopy];
